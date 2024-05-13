@@ -2,20 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using TMPro;
 
 public class PlayerMovement : MonoBehaviour
 {
 
 
     private Rigidbody2D rb;
+    private CapsuleCollider2D capsuleCollider;
     private Animator anim;
     private Vector2 direction;
     private CinemachineVirtualCamera cm;
+    private SpriteRenderer spriteRenderer;
 
     [Header("Statistics")]
     public float velocity = 10;
     public float jumpStrength = 5;
-    public float dashVelocity = 20;
+    public float rollVelocity = 20;
+    public float smashVelocity = 20;
+    public float gravityScale = 10;
+    public float slowFallGravity = 2;
+    private Vector2 capsuleColliderSize;
+    private Vector2 targetPosition;
 
     [Header("Collisions")]
     public Vector2 down;    
@@ -26,29 +34,42 @@ public class PlayerMovement : MonoBehaviour
     public bool canMove;
     public bool isGrounded;
     private bool canDoubleJump;
-    public bool canDash;
-    public bool doingDash;
+    public bool canRoll;
+    public bool doingRoll;
+    public bool canSmash;
+    public bool doingSmash;
     public bool tapFloor;
     public bool doingShake = false;
-    
+    public bool doingJump;
+    private float targetPositionaux;
+
     private void Awake()
 
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         cm = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
+        capsuleCollider = GetComponent<CapsuleCollider2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
     void Start()
     {
-        
+        capsuleColliderSize = capsuleCollider.size;
     }
 
     void Update()
     {
-
+        //if (!canSmash)
+        //{
+        //    Movement();
+        //}
         Movement();
         CheckGround();
+      // if(Mathf.Abs(rb.velocity.x) > 10f)  print(rb.velocity);
+
+
     }
+
 
     private IEnumerator CameraShake()
     {
@@ -73,52 +94,121 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    private void Dash(float x, float y) 
+    private void Roll(float x, float y) 
     {
-        anim.SetBool("Dash",true);
-        Vector3 playerPosition = Camera.main.WorldToViewportPoint(transform.position);
-        Camera.main.GetComponent<RippleEffect>().Emit(playerPosition);
-        StartCoroutine(CameraShake());
+        anim.SetBool("Roll",true);
+       // Vector3 playerPosition = Camera.main.WorldToViewportPoint(transform.position);
+        //Camera.main.GetComponent<RippleEffect>().Emit(playerPosition);
+        //StartCoroutine(CameraShake());
 
-        canDash = true; 
-        rb.velocity = Vector2.zero;
-        rb.velocity += new Vector2(x, y).normalized * dashVelocity;
-        StartCoroutine(PreDash());
+        canRoll = true; 
+        //rb.velocity = Vector2.zero;
+        rb.velocity += new Vector2(x, y).normalized * rollVelocity;
+        StartCoroutine(SwitchCapsuleColliderSize());
+        StartCoroutine(PreRoll());
     }
 
-    private IEnumerator PreDash()
+    private IEnumerator PreRoll()
     {
-        StartCoroutine(FloorDash());
-        rb.gravityScale = 0;
-        doingDash = true;  
+        StartCoroutine(FloorRoll());
+        //rb.gravityScale = 0;
+        doingRoll = true;  
         
         yield return new WaitForSeconds(0.3f);
-        rb.gravityScale = 3;
-        doingDash = false;
-        EndDash();
+        //rb.gravityScale = gravityScale;
+        doingRoll = false;
+        EndRoll();
     }
 
-    private IEnumerator FloorDash()
+
+    private IEnumerator FloorRoll()
     {
         yield return new WaitForSeconds(0.15f);
         if(isGrounded)
         {
-            canDash = false;
+            canRoll = false;
         }
     }
 
-    public void EndDash()
+    public void EndRoll()
     {
-        anim.SetBool("Dash", false);
+        anim.SetBool("Roll", false);
+    }
+
+    private void Smash(float x, float y)
+    {
+        spriteRenderer.color = Color.red;
+        anim.SetBool("Smash", true);
+        canSmash = true;
+        rb.velocity = Vector2.zero;
+        //rb.velocity += new Vector2(x, y).normalized * smashVelocity;
+        Vector2 m_NewForce = new Vector2(smashVelocity, .0f);
+        rb.AddForce(m_NewForce, ForceMode2D.Impulse);
+        StartCoroutine(PreSmash());
+    }
+
+    private IEnumerator PreSmash()
+    {
+        StartCoroutine(FloorSmash());
+        rb.gravityScale = 0;
+        doingSmash = true;
+
+        yield return new WaitForSeconds(.3f);       
+        rb.gravityScale = gravityScale;
+        doingSmash = false;
+        EndSmash();
+    }
+        private IEnumerator FloorSmash()
+    {
+        yield return new WaitForSeconds(0.15f);
+        if (isGrounded)
+        {
+            canSmash = false;
+        }
+    }
+
+    public void EndSmash()
+    {
+        spriteRenderer.color = Color.white  ;
+        anim.SetBool("Smash", false);
     }
 
     private void TapFloor()
     {
-        canDash=false;
-        doingDash=false;
+        canRoll=false;
+        doingRoll=false;
         anim.SetBool("Jump", false);
     }
 
+    private void SlowFall()
+    {
+        if(!isGrounded)
+        {
+            rb.gravityScale = 3;
+        }
+        else
+        {
+            rb.gravityScale = 10;
+        }
+    }
+
+
+
+    private IEnumerator MovetoTarget()
+    {
+        targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        var viewportPoint = Camera.main.ViewportToWorldPoint(targetPosition);
+        //targetPositionaux =  transform.position.x - viewportPoint.x;
+        targetPositionaux =  transform.localScale.x;
+        print(targetPositionaux);
+       // rb = false;
+        transform.position = Vector2.MoveTowards(transform.position, targetPosition, velocity * Time.deltaTime);
+        yield return new WaitForSeconds((.01f));
+        targetPosition = Camera.main.ViewportToWorldPoint(viewportPoint);
+        //rb.simulated = true;
+        yield return new WaitWhile(()=> Vector3.Distance(transform.position, targetPosition)> .05f);
+        targetPositionaux = 0;
+    }
     private void Movement()
     {
         float x = Input.GetAxis("Horizontal");
@@ -126,13 +216,23 @@ public class PlayerMovement : MonoBehaviour
 
         float xRaw = Input.GetAxisRaw("Horizontal");
         float yRaw = Input.GetAxisRaw("Vertical");
+        
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (isGrounded) StartCoroutine(MovetoTarget());
+            direction = new Vector2(targetPositionaux / targetPositionaux,0).normalized;
+        }
+        else
+        {
 
         direction = new Vector2(x, y);
+        }
+
 
         Walk();
-        BetterJump();
+        //BetterJump();
 
-        if (Input.GetKeyDown(KeyCode.Space)) 
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             if (isGrounded)
             {
@@ -144,26 +244,56 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    if ( canDoubleJump)
-                    {   
+                    if (canDoubleJump)
+                    {
                         Jump();
-                        canDoubleJump= false;   
-                        
+                        canDoubleJump = false;
+
                     }
                 }
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.X) && !doingDash)
+        if (Input.GetKeyDown(KeyCode.DownArrow) && !doingRoll)
         {
-            if(xRaw !=0 || yRaw !=0)
+            if (xRaw != 0 || yRaw != 0)
             {
-                Dash(xRaw, yRaw);
+                Roll(xRaw, yRaw);
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !doingSmash)
+        {
+            if (xRaw != 0 || yRaw != 0)
+            {
+                Smash(xRaw, yRaw);
+            }
+        }
 
-        if(isGrounded && !tapFloor)
+        if (Input.GetMouseButtonDown(1))
+        {
+            print("SlowFall");
+
+            if (!isGrounded)
+            {
+                anim.SetBool("SlowFall", true);
+                rb.velocity = Vector2.zero;
+                rb.gravityScale = slowFallGravity;
+            }
+           
+        }
+        else if (Input.GetMouseButtonUp(1))
+        {
+            anim.SetBool("SlowFall", false);
+            rb.gravityScale = 10;
+        }
+
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    if(isGrounded) StartCoroutine(MovetoTarget());
+        //}
+
+            if (isGrounded && !tapFloor)
         {
             TapFloor();
             tapFloor = true;
@@ -189,22 +319,18 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void EndJump()
-    {        
-        anim.SetBool("Jump", false);
-    }
 
     private void BetterJump() 
     {        
-        if (rb.velocity.y < 0) 
-        {
-            rb.velocity += Vector2.up * Physics2D.gravity.y * (2.5f - 1) * Time.deltaTime;
-        }
-        else if(rb.velocity.y > 0 && !Input.GetKey(KeyCode.Space))  
-        {
-            rb.velocity += Vector2.up * Physics2D.gravity.y * (2.0f - 1) * Time.deltaTime;
+        //if (rb.velocity.y < 0) 
+        //{
+        //    rb.velocity += Vector2.up * Physics2D.gravity.y * (2.5f - 1) * Time.deltaTime;
+        //}
+        //else if(rb.velocity.y > 0 && !Input.GetKey(KeyCode.Space))  
+        //{
+        //    rb.velocity += Vector2.up * Physics2D.gravity.y * (2.0f - 1) * Time.deltaTime;
 
-        }
+        //}
     }
 
     private void CheckGround()
@@ -213,23 +339,41 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Jump() 
     {
+        StartCoroutine(SwitchCapsuleColliderSize());
         rb.velocity = new Vector2 (rb.velocity.x, 0);
-        rb.velocity += Vector2.up * jumpStrength;
+        rb.velocity += Vector2.up * jumpStrength;        
     }
+
+    public void EndJump()
+    {        
+        anim.SetBool("Jump", false);
+        
+    }
+    private IEnumerator SwitchCapsuleColliderSize()
+    {
+        yield return new WaitForSeconds(.1f);
+        capsuleCollider.size = capsuleColliderSize * new Vector2(1,0.5f);
+        yield return new WaitForSeconds(.3f);
+        capsuleCollider.size = capsuleColliderSize;
+    }
+
     private void Walk()
     {   
-        if(canMove && !doingDash) 
+        if(canMove && !doingRoll) 
         {
-            rb.velocity = new Vector2(direction.x * velocity, rb.velocity.y);
-            
-            if(direction != Vector2.zero) 
+            rb.velocity = new Vector2(direction.x * velocity, rb.velocity.y);           
+
+            if (direction != Vector2.zero) 
             {
                 if (!isGrounded)
                 {
+                    
                     anim.SetBool("Jump", true);
                 }
                 else
                 {
+                    
+                    
                     anim.SetBool("Walk", true);
                     
                 }
