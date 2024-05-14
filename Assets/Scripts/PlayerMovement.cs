@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using TMPro;
-
+using System;
+using Unity.VisualScripting;
 public class PlayerMovement : MonoBehaviour
 {
 
@@ -13,17 +14,27 @@ public class PlayerMovement : MonoBehaviour
     private Animator anim;
     private Vector2 direction;
     private CinemachineVirtualCamera cm;
+
     private SpriteRenderer spriteRenderer;
+    public GameObject flappyCollider;
+    public GameObject faillingCollider;
 
     [Header("Statistics")]
     public float velocity = 10;
     public float jumpStrength = 5;
     public float rollVelocity = 20;
-    public float smashVelocity = 20;
     public float gravityScale = 10;
     public float slowFallGravity = 2;
+    public float clickMoveSpeed = 5;
+    public float fallingGravity = 1;
+    public float fallingVelocity = 20;
+    public float smashVelocity = 20;
+    public float rotationFallingSpeed = 10;
+
     private Vector2 capsuleColliderSize;
-    private Vector2 targetPosition;
+    private Vector3 screenPosition;
+    private Vector3 targetPosition;
+
 
     [Header("Collisions")]
     public Vector2 down;    
@@ -41,7 +52,9 @@ public class PlayerMovement : MonoBehaviour
     public bool tapFloor;
     public bool doingShake = false;
     public bool doingJump;
-    private float targetPositionaux;
+    public bool mouseWalk;
+    public bool flappyMode;
+   
 
     private void Awake()
 
@@ -55,6 +68,8 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         capsuleColliderSize = capsuleCollider.size;
+        targetPosition = transform.position;
+
     }
 
     void Update()
@@ -65,9 +80,15 @@ public class PlayerMovement : MonoBehaviour
         //}
         Movement();
         CheckGround();
+
+       // rb.MovePosition(targetPosition);
       // if(Mathf.Abs(rb.velocity.x) > 10f)  print(rb.velocity);
 
 
+    }
+    private void FixedUpdate()
+    {
+        
     }
 
 
@@ -141,11 +162,17 @@ public class PlayerMovement : MonoBehaviour
         anim.SetBool("Smash", true);
         canSmash = true;
         rb.velocity = Vector2.zero;
-        //rb.velocity += new Vector2(x, y).normalized * smashVelocity;
-        Vector2 m_NewForce = new Vector2(smashVelocity, .0f);
-        rb.AddForce(m_NewForce, ForceMode2D.Impulse);
+        //Vector3 smashPosition = new Vector3(transform.position.x, transform.position.y + 550,0);
+        rb.velocity += new Vector2(x, 0).normalized * smashVelocity;
+
+        //Vector2 m_NewForce = new Vector2(smashVelocity, .0f);
+        //rb.AddForce(m_NewForce, ForceMode2D.Impulse);
+
+        //transform.position = Vector3.MoveTowards(transform.position, smashPosition, 200 * Time.deltaTime);
         StartCoroutine(PreSmash());
     }
+
+
 
     private IEnumerator PreSmash()
     {
@@ -178,6 +205,10 @@ public class PlayerMovement : MonoBehaviour
         canRoll=false;
         doingRoll=false;
         anim.SetBool("Jump", false);
+
+
+
+        anim.SetBool("Flappy", false);
     }
 
     private void SlowFall()
@@ -192,22 +223,24 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void Failling(float x, float y)
+    {
 
+        rb.gravityScale = fallingGravity;
+        //  rb.velocity = Vector2.zero;
+        rb.velocity += new Vector2(x, y).normalized * fallingVelocity;
+        //transform.rotation = Quaternion.Euler(0,0, rb.velocity.y * rotationFallingSpeed);
+    }
 
     private IEnumerator MovetoTarget()
     {
-        targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        var viewportPoint = Camera.main.ViewportToWorldPoint(targetPosition);
-        //targetPositionaux =  transform.position.x - viewportPoint.x;
-        targetPositionaux =  transform.localScale.x;
-        print(targetPositionaux);
-       // rb = false;
-        transform.position = Vector2.MoveTowards(transform.position, targetPosition, velocity * Time.deltaTime);
-        yield return new WaitForSeconds((.01f));
-        targetPosition = Camera.main.ViewportToWorldPoint(viewportPoint);
-        //rb.simulated = true;
-        yield return new WaitWhile(()=> Vector3.Distance(transform.position, targetPosition)> .05f);
-        targetPositionaux = 0;
+        //rb.constraints = RigidbodyConstraints2D.FreezePositionY;
+        anim.SetBool("Walk", false);       
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, clickMoveSpeed * Time.deltaTime);
+        yield return new WaitWhile(()=> transform.position.x == targetPosition.x);
+        //rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        //rb.constraints = RigidbodyConstraints2D.None;
+        anim.SetBool("Walk", true);
     }
     private void Movement()
     {
@@ -217,40 +250,45 @@ public class PlayerMovement : MonoBehaviour
         float xRaw = Input.GetAxisRaw("Horizontal");
         float yRaw = Input.GetAxisRaw("Vertical");
         
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (isGrounded) StartCoroutine(MovetoTarget());
-            direction = new Vector2(targetPositionaux / targetPositionaux,0).normalized;
-        }
-        else
-        {
 
         direction = new Vector2(x, y);
-        }
-
 
         Walk();
         //BetterJump();
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (isGrounded)
+            if (!flappyCollider.GetComponent<FlappyCollider>().isFlappy)
             {
-                anim.SetBool("Jump", true);
-                canDoubleJump = true;
-                Jump();
+
+                if (isGrounded)
+                {
+                    anim.SetBool("Jump", true);
+                    canDoubleJump = true;
+                    Jump();
+                }
+                else
+                {
+                    if (Input.GetKeyDown(KeyCode.Space))
+                    {
+                        if (canDoubleJump)
+                        {
+                            Jump();
+                            canDoubleJump = false;
+
+                        }
+                    }
+                }
+              
             }
             else
             {
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    if (canDoubleJump)
-                    {
-                        Jump();
-                        canDoubleJump = false;
-
-                    }
-                }
+                canDoubleJump = false;
+                anim.SetBool("Walk", true);
+                anim.SetBool("Jump", false);
+                anim.SetBool("Flappy", true);
+                rb.gravityScale = 10;
+                FlappyJump();
             }
         }
 
@@ -268,6 +306,17 @@ public class PlayerMovement : MonoBehaviour
             {
                 Smash(xRaw, yRaw);
             }
+        }
+
+        if (isGrounded && !tapFloor)
+        {
+            TapFloor();
+            tapFloor = true;
+        }
+
+        if (!isGrounded && tapFloor)
+        {
+            tapFloor = false;
         }
 
         if (Input.GetMouseButtonDown(1))
@@ -288,21 +337,45 @@ public class PlayerMovement : MonoBehaviour
             rb.gravityScale = 10;
         }
 
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    if(isGrounded) StartCoroutine(MovetoTarget());
-        //}
-
-            if (isGrounded && !tapFloor)
+        if (mouseWalk)
         {
-            TapFloor();
-            tapFloor = true;
+
+            if (Input.GetMouseButtonDown(0))
+            {
+
+                screenPosition = Input.mousePosition;
+                screenPosition.z = Camera.main.nearClipPlane + 25;
+                targetPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+
+                targetPosition.y = transform.position.y;
+                targetPosition.z = transform.position.z;
+
+                if (targetPosition.x < 0 && transform.localScale.x > 0)
+                {
+                    transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+                }
+                else if (targetPosition.x > 0 && transform.localScale.x < 0)
+                {
+                    transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+                }
+            }
+            StartCoroutine(MovetoTarget());
         }
 
-        if(!isGrounded && tapFloor)
+        if (faillingCollider.GetComponent<FallingCollider>().isFalling)
         {
-            tapFloor = false;
+
+            if (xRaw != 0 || yRaw != 0)
+            {
+                Failling(xRaw, yRaw);
+            }else if (isGrounded)
+            {
+                faillingCollider.GetComponent<FallingCollider>().isFalling = false;
+                rb.gravityScale = gravityScale;
+            }
         }
+
+        
 
         float velocity;
         if (rb.velocity.y > 0) velocity = 1;
@@ -318,7 +391,6 @@ public class PlayerMovement : MonoBehaviour
             if(velocity == -1) EndJump();  
         }
     }
-
 
     private void BetterJump() 
     {        
@@ -337,6 +409,12 @@ public class PlayerMovement : MonoBehaviour
     {
         isGrounded = Physics2D.OverlapCircle(((Vector2)transform.position) + down, collisionRatio, layerFloor);
     }
+    private void FlappyJump()
+    {
+        rb.velocity = new Vector2(rb.velocity.x, 0);
+        rb.velocity += Vector2.up * jumpStrength;
+    }
+
     private void Jump() 
     {
         StartCoroutine(SwitchCapsuleColliderSize());
@@ -357,35 +435,43 @@ public class PlayerMovement : MonoBehaviour
         capsuleCollider.size = capsuleColliderSize;
     }
 
+    private void GetDirecction()
+    {
+        if (direction.x < 0 && transform.localScale.x > 0)
+        {
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        }
+        else if (direction.x > 0 && transform.localScale.x < 0)
+        {
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+
+        }
+    }
+
     private void Walk()
     {   
-        if(canMove && !doingRoll) 
+        if(canMove && !doingRoll && !doingSmash) 
         {
             rb.velocity = new Vector2(direction.x * velocity, rb.velocity.y);           
 
             if (direction != Vector2.zero) 
             {
-                if (!isGrounded)
+                if (!isGrounded && !flappyCollider.GetComponent<FlappyCollider>().isFlappy)
                 {
                     
                     anim.SetBool("Jump", true);
                 }
-                else
+                else if (isGrounded && !flappyCollider.GetComponent<FlappyCollider>().isFlappy)
                 {
-                    
-                    
                     anim.SetBool("Walk", true);
-                    
                 }
-                if(direction.x < 0 && transform.localScale.x > 0) 
+                else if (!isGrounded && flappyCollider.GetComponent<FlappyCollider>().isFlappy)
                 {
-                    transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+                   // anim.SetBool("Flappy", true);
+                    anim.SetBool("Jump", true);
                 }
-                else if(direction.x > 0 && transform.localScale.x < 0) 
-                {
-                    transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-              
-                }
+
+                    GetDirecction();
             }
             else
             {
