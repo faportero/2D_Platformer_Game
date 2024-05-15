@@ -4,7 +4,7 @@ using UnityEngine;
 public class InputManager : MonoBehaviour
 {
     //This is the Text for the Label at the top of the screen
-    string m_DeviceType;
+    static string m_DeviceType;
 
     void Update()
     {
