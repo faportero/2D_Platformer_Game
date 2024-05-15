@@ -1,15 +1,15 @@
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
-public class InputManager : MonoBehaviour
+public  class InputManager : MonoBehaviour
 {
     //This is the Text for the Label at the top of the screen
-    static string m_DeviceType;
+    public static string m_DeviceType;
 
-    void Update()
+    void Awake()
     {
         //Output the device type to the console window
-        Debug.Log("Device type : " + m_DeviceType);
+        //Debug.Log("Device type : " + m_DeviceType);
 
         //Check if the device running this is a console
         if (SystemInfo.deviceType == DeviceType.Console)
@@ -35,7 +35,7 @@ public class InputManager : MonoBehaviour
         {
             m_DeviceType = "Unknown";
         }
-        print(m_DeviceType);
+       // print(m_DeviceType);
     }
     
 }

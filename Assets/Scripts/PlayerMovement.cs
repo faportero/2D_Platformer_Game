@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Cinemachine;
 using TMPro;
 using System;
@@ -19,6 +20,11 @@ public class PlayerMovement : MonoBehaviour
     public GameObject flappyCollider;
     public GameObject faillingCollider;
 
+    public Joystick joystick;
+    public SwipeDetector swipeDetector;
+
+    private Touch theTouch;
+
     [Header("Statistics")]
     public float velocity = 10;
     public float jumpStrength = 5;
@@ -31,16 +37,23 @@ public class PlayerMovement : MonoBehaviour
     public float smashVelocity = 20;
     public float rotationFallingSpeed = 10;
 
+    private int jumpMaxCount = 2;
+    private int jumpsPerformedt = 0;
+
     private Vector2 capsuleColliderSize;
     private Vector3 screenPosition;
     private Vector3 targetPosition;
+    private float x;
+    private float y;
+    private float xRaw;
+    private float yRaw;
 
 
     [Header("Collisions")]
-    public Vector2 down;    
+    public Vector2 down;
     public float collisionRatio;
     public LayerMask layerFloor;
-    
+
     [Header("Bools")]
     public bool canMove;
     public bool isGrounded;
@@ -54,7 +67,7 @@ public class PlayerMovement : MonoBehaviour
     public bool doingJump;
     public bool mouseWalk;
     public bool flappyMode;
-   
+
 
     private void Awake()
 
@@ -64,31 +77,24 @@ public class PlayerMovement : MonoBehaviour
         cm = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        //swipeDetector = GetComponent<SwipeDetector>();
     }
     void Start()
     {
         capsuleColliderSize = capsuleCollider.size;
         targetPosition = transform.position;
-
     }
 
     void Update()
     {
-        //if (!canSmash)
-        //{
-        //    Movement();
-        //}
+
         Movement();
         CheckGround();
-
-       // rb.MovePosition(targetPosition);
-      // if(Mathf.Abs(rb.velocity.x) > 10f)  print(rb.velocity);
-
 
     }
     private void FixedUpdate()
     {
-        
+
     }
 
 
@@ -115,14 +121,14 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    private void Roll(float x, float y) 
+    private void Roll(float x, float y)
     {
-        anim.SetBool("Roll",true);
-       // Vector3 playerPosition = Camera.main.WorldToViewportPoint(transform.position);
+        anim.SetBool("Roll", true);
+        // Vector3 playerPosition = Camera.main.WorldToViewportPoint(transform.position);
         //Camera.main.GetComponent<RippleEffect>().Emit(playerPosition);
         //StartCoroutine(CameraShake());
 
-        canRoll = true; 
+        canRoll = true;
         //rb.velocity = Vector2.zero;
         rb.velocity += new Vector2(x, y).normalized * rollVelocity;
         StartCoroutine(SwitchCapsuleColliderSize());
@@ -133,8 +139,8 @@ public class PlayerMovement : MonoBehaviour
     {
         StartCoroutine(FloorRoll());
         //rb.gravityScale = 0;
-        doingRoll = true;  
-        
+        doingRoll = true;
+
         yield return new WaitForSeconds(0.3f);
         //rb.gravityScale = gravityScale;
         doingRoll = false;
@@ -145,7 +151,7 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator FloorRoll()
     {
         yield return new WaitForSeconds(0.15f);
-        if(isGrounded)
+        if (isGrounded)
         {
             canRoll = false;
         }
@@ -180,12 +186,12 @@ public class PlayerMovement : MonoBehaviour
         rb.gravityScale = 0;
         doingSmash = true;
 
-        yield return new WaitForSeconds(.3f);       
+        yield return new WaitForSeconds(.3f);
         rb.gravityScale = gravityScale;
         doingSmash = false;
         EndSmash();
     }
-        private IEnumerator FloorSmash()
+    private IEnumerator FloorSmash()
     {
         yield return new WaitForSeconds(0.15f);
         if (isGrounded)
@@ -196,14 +202,14 @@ public class PlayerMovement : MonoBehaviour
 
     public void EndSmash()
     {
-        spriteRenderer.color = Color.white  ;
+        spriteRenderer.color = Color.white;
         anim.SetBool("Smash", false);
     }
 
     private void TapFloor()
     {
-        canRoll=false;
-        doingRoll=false;
+        canRoll = false;
+        doingRoll = false;
         anim.SetBool("Jump", false);
 
 
@@ -213,7 +219,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void SlowFall()
     {
-        if(!isGrounded)
+        if (!isGrounded)
         {
             rb.gravityScale = 3;
         }
@@ -235,62 +241,115 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator MovetoTarget()
     {
         //rb.constraints = RigidbodyConstraints2D.FreezePositionY;
-        anim.SetBool("Walk", false);       
+        anim.SetBool("Walk", false);
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, clickMoveSpeed * Time.deltaTime);
-        yield return new WaitWhile(()=> transform.position.x == targetPosition.x);
+        yield return new WaitWhile(() => transform.position.x == targetPosition.x);
         //rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         //rb.constraints = RigidbodyConstraints2D.None;
         anim.SetBool("Walk", true);
     }
+
+
     private void Movement()
     {
-        float x = Input.GetAxis("Horizontal");
-        float y = Input.GetAxis("Vertical");
+        if (InputManager.m_DeviceType == "Desktop")
+        {
 
-        float xRaw = Input.GetAxisRaw("Horizontal");
-        float yRaw = Input.GetAxisRaw("Vertical");
-        
+            x = Input.GetAxis("Horizontal");
+            y = Input.GetAxis("Vertical");
 
-        direction = new Vector2(x, y);
+            xRaw = Input.GetAxisRaw("Horizontal");
+            yRaw = Input.GetAxisRaw("Vertical");
+            direction = new Vector2(x, y);
+        }
+        else if (InputManager.m_DeviceType == "Handheld")
+        {
+            x = joystick.Horizontal;
+            y = joystick.Vertical;
+
+            xRaw = Mathf.Round(joystick.Horizontal);
+            yRaw = Mathf.Round(joystick.Vertical);
+            direction = new Vector2(x, y);
+
+        }
+
+
 
         Walk();
         //BetterJump();
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (!flappyCollider.GetComponent<FlappyCollider>().isFlappy)
-            {
+        // if (Input.GetKeyDown(KeyCode.Space) || swipeDetector.TapPerformed)
+        //if (InputManager.m_DeviceType == "Desktop")
+        //{
 
+        //    if (Input.GetKeyDown(KeyCode.Space))
+        //    {
+        //        //print("saltaaaaaaaa");
+        //        if (!flappyCollider.GetComponent<FlappyCollider>().isFlappy)
+        //        {
+
+        //            if (isGrounded)
+        //            {
+        //                anim.SetBool("Jump", true);
+        //                canDoubleJump = true;
+        //                Jump();
+        //                //swipeDetector.TapPerformed = false;
+        //            }
+        //            else
+        //            {
+        //                if (Input.GetKeyDown(KeyCode.Space))
+        //                {
+        //                    if (canDoubleJump)
+        //                    {
+        //                        Jump();
+        //                        canDoubleJump = false;
+        //                        //swipeDetector.TapPerformed = false;
+
+        //                    }
+        //                }
+        //            }
+
+        //        }
+        //        else
+        //        {
+        //            canDoubleJump = false;
+        //            anim.SetBool("Walk", true);
+        //            anim.SetBool("Jump", false);
+        //            anim.SetBool("Flappy", true);
+        //            rb.gravityScale = 10;
+        //            FlappyJump();
+        //        }
+        //    }
+
+        //}
+        //else 
+        if (Input.touchCount >0) {
+           //  jumpCount = 0;
+            //if (InputManager.m_DeviceType == "Handheld")
+           // {
+                if (jumpsPerformedt < jumpMaxCount && theTouch.phase == TouchPhase.Began)
+                {
                 if (isGrounded)
                 {
+                    
                     anim.SetBool("Jump", true);
+                       
                     canDoubleJump = true;
                     Jump();
+                    jumpsPerformedt++;
+                   // print(jumpCount);
                 }
-                else
+                else if(canDoubleJump)
                 {
-                    if (Input.GetKeyDown(KeyCode.Space))
-                    {
-                        if (canDoubleJump)
-                        {
-                            Jump();
-                            canDoubleJump = false;
 
-                        }
-                    }
                 }
-              
+                     Jump();
+                     canDoubleJump = false;
             }
-            else
-            {
-                canDoubleJump = false;
-                anim.SetBool("Walk", true);
-                anim.SetBool("Jump", false);
-                anim.SetBool("Flappy", true);
-                rb.gravityScale = 10;
-                FlappyJump();
             }
-        }
+            
+        //}
+
 
         if (Input.GetKeyDown(KeyCode.DownArrow) && !doingRoll)
         {
@@ -329,7 +388,7 @@ public class PlayerMovement : MonoBehaviour
                 rb.velocity = Vector2.zero;
                 rb.gravityScale = slowFallGravity;
             }
-           
+
         }
         else if (Input.GetMouseButtonUp(1))
         {
@@ -368,14 +427,15 @@ public class PlayerMovement : MonoBehaviour
             if (xRaw != 0 || yRaw != 0)
             {
                 Failling(xRaw, yRaw);
-            }else if (isGrounded)
+            }
+            else if (isGrounded)
             {
                 faillingCollider.GetComponent<FallingCollider>().isFalling = false;
                 rb.gravityScale = gravityScale;
             }
         }
 
-        
+
 
         float velocity;
         if (rb.velocity.y > 0) velocity = 1;
@@ -383,17 +443,17 @@ public class PlayerMovement : MonoBehaviour
 
         if (!isGrounded)
         {
-          
+
             anim.SetFloat("VerticalVelocity", velocity);
         }
         else
         {
-            if(velocity == -1) EndJump();  
+            if (velocity == -1) EndJump();
         }
     }
 
-    private void BetterJump() 
-    {        
+    private void BetterJump()
+    {
         //if (rb.velocity.y < 0) 
         //{
         //    rb.velocity += Vector2.up * Physics2D.gravity.y * (2.5f - 1) * Time.deltaTime;
@@ -415,22 +475,22 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity += Vector2.up * jumpStrength;
     }
 
-    private void Jump() 
+    private void Jump()
     {
         StartCoroutine(SwitchCapsuleColliderSize());
-        rb.velocity = new Vector2 (rb.velocity.x, 0);
-        rb.velocity += Vector2.up * jumpStrength;        
+        rb.velocity = new Vector2(rb.velocity.x, 0);
+        rb.velocity += Vector2.up * jumpStrength;
     }
 
     public void EndJump()
-    {        
+    {
         anim.SetBool("Jump", false);
-        
+
     }
     private IEnumerator SwitchCapsuleColliderSize()
     {
         yield return new WaitForSeconds(.1f);
-        capsuleCollider.size = capsuleColliderSize * new Vector2(1,0.5f);
+        capsuleCollider.size = capsuleColliderSize * new Vector2(1, 0.5f);
         yield return new WaitForSeconds(.3f);
         capsuleCollider.size = capsuleColliderSize;
     }
@@ -449,16 +509,16 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void Walk()
-    {   
-        if(canMove && !doingRoll && !doingSmash) 
+    {
+        if (canMove && !doingRoll && !doingSmash)
         {
-            rb.velocity = new Vector2(direction.x * velocity, rb.velocity.y);           
+            rb.velocity = new Vector2(direction.x * velocity, rb.velocity.y);
 
-            if (direction != Vector2.zero) 
+            if (direction != Vector2.zero)
             {
                 if (!isGrounded && !flappyCollider.GetComponent<FlappyCollider>().isFlappy)
                 {
-                    
+
                     anim.SetBool("Jump", true);
                 }
                 else if (isGrounded && !flappyCollider.GetComponent<FlappyCollider>().isFlappy)
@@ -467,11 +527,11 @@ public class PlayerMovement : MonoBehaviour
                 }
                 else if (!isGrounded && flappyCollider.GetComponent<FlappyCollider>().isFlappy)
                 {
-                   // anim.SetBool("Flappy", true);
+                    // anim.SetBool("Flappy", true);
                     anim.SetBool("Jump", true);
                 }
 
-                    GetDirecction();
+                GetDirecction();
             }
             else
             {
@@ -479,4 +539,5 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
+
 }
