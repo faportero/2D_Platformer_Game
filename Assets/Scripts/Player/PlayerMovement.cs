@@ -279,79 +279,79 @@ public class PlayerMovement : MonoBehaviour
         //BetterJump();
 
         // if (Input.GetKeyDown(KeyCode.Space) || swipeDetector.TapPerformed)
-        //if (InputManager.m_DeviceType == "Desktop")
-        //{
+        if (InputManager.m_DeviceType == "Desktop")
+        {
 
-        //    if (Input.GetKeyDown(KeyCode.Space))
-        //    {
-        //        //print("saltaaaaaaaa");
-        //        if (!flappyCollider.GetComponent<FlappyCollider>().isFlappy)
-        //        {
-
-        //            if (isGrounded)
-        //            {
-        //                anim.SetBool("Jump", true);
-        //                canDoubleJump = true;
-        //                Jump();
-        //                //swipeDetector.TapPerformed = false;
-        //            }
-        //            else
-        //            {
-        //                if (Input.GetKeyDown(KeyCode.Space))
-        //                {
-        //                    if (canDoubleJump)
-        //                    {
-        //                        Jump();
-        //                        canDoubleJump = false;
-        //                        //swipeDetector.TapPerformed = false;
-
-        //                    }
-        //                }
-        //            }
-
-        //        }
-        //        else
-        //        {
-        //            canDoubleJump = false;
-        //            anim.SetBool("Walk", true);
-        //            anim.SetBool("Jump", false);
-        //            anim.SetBool("Flappy", true);
-        //            rb.gravityScale = 10;
-        //            FlappyJump();
-        //        }
-        //    }
-
-        //}
-        //else 
-        if (Input.touchCount >0) {
-           //  jumpCount = 0;
-            //if (InputManager.m_DeviceType == "Handheld")
-           // {
-                if (jumpsPerformedt < jumpMaxCount && theTouch.phase == TouchPhase.Began)
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                //print("saltaaaaaaaa");
+                if (!flappyCollider.GetComponent<FlappyCollider>().isFlappy)
                 {
-                if (isGrounded)
-                {
-                    
-                    anim.SetBool("Jump", true);
-                       
-                    canDoubleJump = true;
-                    Jump();
-                    jumpsPerformedt++;
-                   // print(jumpCount);
-                }
-                else if(canDoubleJump)
-                {
+
+                    if (isGrounded)
+                    {
+                        anim.SetBool("Jump", true);
+                        canDoubleJump = true;
+                        Jump();
+                        //swipeDetector.TapPerformed = false;
+                    }
+                    else
+                    {
+                        if (Input.GetKeyDown(KeyCode.Space))
+                        {
+                            if (canDoubleJump)
+                            {
+                                Jump();
+                                canDoubleJump = false;
+                                //swipeDetector.TapPerformed = false;
+
+                            }
+                        }
+                    }
 
                 }
-                     Jump();
-                     canDoubleJump = false;
+                else
+                {
+                    canDoubleJump = false;
+                    anim.SetBool("Walk", true);
+                    anim.SetBool("Jump", false);
+                    anim.SetBool("Flappy", true);
+                    rb.gravityScale = 10;
+                    FlappyJump();
+                }
             }
-            }
-            
-        //}
+
+        }
+            //else 
+            //if (Input.touchCount >0) {
+            //   //  jumpCount = 0;
+            //    //if (InputManager.m_DeviceType == "Handheld")
+            //   // {
+            //        if (jumpsPerformedt < jumpMaxCount && theTouch.phase == TouchPhase.Began)
+            //        {
+            //        if (isGrounded)
+            //        {
+
+            //            anim.SetBool("Jump", true);
+
+            //            canDoubleJump = true;
+            //            Jump();
+            //            jumpsPerformedt++;
+            //           // print(jumpCount);
+            //        }
+            //        else if(canDoubleJump)
+            //        {
+
+            //        }
+            //             Jump();
+            //             canDoubleJump = false;
+            //    }
+            //    }
+
+            //}
 
 
-        if (Input.GetKeyDown(KeyCode.DownArrow) && !doingRoll)
+            if (Input.GetKeyDown(KeyCode.DownArrow) && !doingRoll)
         {
             if (xRaw != 0 || yRaw != 0)
             {
