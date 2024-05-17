@@ -55,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask layerFloor;
 
     [Header("Bools")]
-    public bool canMove;
+    public bool canMove = true;
     public bool isGrounded;
     private bool canDoubleJump;
     public bool canRoll;
@@ -87,10 +87,14 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        //if (canMove)
+        //{
 
+        //    Movement();
+        //    CheckGround();
+        //}
         Movement();
         CheckGround();
-
     }
     private void FixedUpdate()
     {
@@ -229,6 +233,22 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void Die()
+    {
+        if (!canMove)
+        {
+            StartCoroutine(Diying());
+            print("Murio");
+
+        }
+    }
+
+    private IEnumerator Diying()
+    {
+        
+        anim.Play("Die");
+        yield return new WaitForSeconds(3);
+    }
     private void Failling(float x, float y)
     {
 

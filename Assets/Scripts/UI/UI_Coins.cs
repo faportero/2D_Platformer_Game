@@ -15,7 +15,5 @@ public class UI_Coins : MonoBehaviour
         coinCount += 1;
         coinCount = Mathf.Clamp(coinCount, 0f, maxCoins);
         coinCountText.text = coinCount.ToString();
-
-
     }
 }

@@ -38,7 +38,7 @@ public class Enemy : MonoBehaviour
                 if (enemy.sustanceType == sustanceType)
                 {
                     collision.GetComponent<PlayerController>().TakeAdiccion(enemy);
-                    //print(enemy);
+                    print(enemy);
                 }
             }
 
@@ -51,9 +51,10 @@ public class Enemy : MonoBehaviour
     }
     public void EnemyDie()
     {
-        isAdict = false;
         //gameObject.SetActive(false);
-        Destroy(gameObject, .2f);
+        gameObject.GetComponent<BoxCollider2D>().enabled = false;
+        Destroy(gameObject);
+        isAdict = false;
     }
 
     public void Effect()
