@@ -8,7 +8,7 @@ public class UI_AdiccionBar : MonoBehaviour
     public AnimationCurve curve;
     private float maxAdiccion = 100;
     public float currentAdiccion = 0;
-    private float fillSpeed = 1.5f;
+    private float fillSpeed = 1f;
     [SerializeField] private Image adiccionFillBar;
     private float duration = 3;
 

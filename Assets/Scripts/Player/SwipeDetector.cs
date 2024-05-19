@@ -27,10 +27,7 @@ public class SwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     public SwipeDirection swipeDirection;
 
     // Propiedad para acceder a TapPerformed de lectura y escritura
-    public bool TapPerformed
-    {
-        get; set;
-    }
+    public bool TapPerformed;
 
     // Propiedad para acceder a IsPressing de lectura y escritura
     public bool IsPressing

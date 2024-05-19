@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private UI_Lifes uiLifes;
     [HideInInspector] public List <Enemy> enemies;
     [HideInInspector] public List <Ability> abilities;
-    private PlayerMovement playerMovement;
+    private PlayerMovementNew playerMovement;
    
 
     public bool isDie = false;   
@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
 
         enemies = new List<Enemy>();
         abilities = new List<Ability>();
-        playerMovement = GetComponent<PlayerMovement>();
+        playerMovement = GetComponent<PlayerMovementNew>();
         FindEnemies();
         FindAbilities();
     }
