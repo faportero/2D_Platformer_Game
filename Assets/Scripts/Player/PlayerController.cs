@@ -2,23 +2,36 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static PlayerMovementNew;
 
 public class PlayerController : MonoBehaviour
 {
+    [HideInInspector] public static Vector3 lastPosition;
+
     [SerializeField] private float adictionAmount;
     private float currentAdiction;
-    [HideInInspector] public int coinsAmount = 0;
+    [SerializeField] public int coinsAmount = 0;
+    [SerializeField] public int SaludAmount = 0;
     public int lifesAmount;
     [SerializeField] private UI_AdiccionBar adiccionBar;
     [SerializeField] private UI_Coins uiCoins;
     [SerializeField] private UI_Lifes uiLifes;
+    [SerializeField] private UI_Salud uiSalud;
     [HideInInspector] public List <Enemy> enemies;
     [HideInInspector] public List <Ability> abilities;
     private PlayerMovementNew playerMovement;
    
 
-    public bool isDie = false;   
+    public bool isDie = false;
 
+    private void Awake()
+    {
+        if (lastPosition != Vector3.zero) 
+        {
+            transform.position = lastPosition;
+            //playerMovement.movementMode = MovementMode.RunnerMode;
+        } 
+}
     private void Start()
     {
         currentAdiction = adiccionBar.currentAdiccion;
@@ -64,7 +77,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        print(adiccionBar.currentAdiccion);
+        //print(adiccionBar.currentAdiccion);
     }
 
     public void TakeAdiccion(Enemy enemy)
@@ -94,6 +107,25 @@ public class PlayerController : MonoBehaviour
     {
        uiCoins.UpdateCoins();
     }
+
+    public void TakeSalud()
+    {
+        SaludAmount += 1;
+        if(SaludAmount == 4)
+        {
+            playerMovement.canSmash = true;
+            uiSalud.saludCount = 0;
+            SaludAmount = 0;
+            
+            
+        }
+        else
+        {
+            playerMovement.canSmash = false;
+
+        }
+
+    }
     public void LoseLife()
     {
         if (lifesAmount > 0)
@@ -119,6 +151,17 @@ public class PlayerController : MonoBehaviour
             LoseLife();
 
         }
+        if(collision.tag == "Salud")
+        {
+            uiSalud.UpdateSalud();
+            TakeSalud();
+        }
+        if (collision.tag == "CheckPoint")
+        {
+            print("cheeeeeeeeeeeeeeck");
+            lastPosition = collision.transform.position;
+        }
+
     }
 
 }

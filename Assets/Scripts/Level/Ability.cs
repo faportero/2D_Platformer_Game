@@ -53,7 +53,7 @@ public class Ability : MonoBehaviour
     {
         //gameObject.SetActive(false);
         gameObject.GetComponent<BoxCollider2D>().enabled = false;
-        Destroy(gameObject);
+        Destroy(gameObject, .5f);
         
     }
 

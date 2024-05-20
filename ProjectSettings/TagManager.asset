@@ -8,6 +8,9 @@ TagManager:
   - Enemy
   - Coin
   - Ability
+  - Salud
+  - Wall
+  - CheckPoint
   layers:
   - Default
   - TransparentFX

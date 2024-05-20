@@ -1,6 +1,7 @@
-    using System.Collections;
+using System.Collections;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.SceneManagement;
 using static SwipeDetector;
 using static Enemy;
 using System;
@@ -72,12 +73,18 @@ public class PlayerMovementNew : MonoBehaviour
     public bool flappyMode;
 
     public bool isPC;
-
-
+    private bool canJump = true;
+    private bool tapDetected;
+    private float tapStartTime;
+    private Vector2 tapStartPos;
+    private float tapTimeThreshold = .2f;
+    private float swipeDistanceThreshold = 50;
+    private bool isSlowFalling;
 
     private void Awake()
 
     {
+
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         cm = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
@@ -98,16 +105,16 @@ public class PlayerMovementNew : MonoBehaviour
         switch (movementMode)
         {
             case MovementMode.TapMode:
-                print("TapMovement");
+                //print("TapMovement");
                 TapMovement();
                 break;
             case MovementMode.RunnerMode:
-                print("RunnerMode");
+               // print("RunnerMode");
                 RunnerMovement();
                 CheckGround();
                 break;
             case MovementMode.FallingMode:
-                print("FallingMode");
+               // print("FallingMode");
                 //if (xRaw != 0 || yRaw != 0)
                 //{
                 GetInputDirection();
@@ -116,7 +123,7 @@ public class PlayerMovementNew : MonoBehaviour
                // }
                 break;
             case MovementMode.FlappyMode:
-                print("FlappyMode");
+               // print("FlappyMode");
                 FlappyMovement();
                 break;
         }
@@ -211,7 +218,7 @@ public class PlayerMovementNew : MonoBehaviour
 
                 float clicDirection = targetPosition.x;
                 clicDirection = clicDirection - transform.position.x;
-                print("screenPosAux = " + clicDirection);
+                //print("screenPosAux = " + clicDirection);
 
                 if (clicDirection < 0 && transform.localScale.x > 0)
                 {
@@ -226,6 +233,7 @@ public class PlayerMovementNew : MonoBehaviour
         }
         else if (!isPC)
         {
+
             if (swipeDetector.TapPerformed == true)
             {
 
@@ -264,62 +272,48 @@ public class PlayerMovementNew : MonoBehaviour
     {
         rb.gravityScale = gravityScale;
         //direction = new Vector2(1, 1);
-        if (!doingSmash && !doingRoll) direction = new Vector2(1, 1);
+        if (!doingSmash && !doingRoll) direction = new Vector2(1.2f, 1);
         else if (doingSmash) direction = new Vector2(smashVelocity, 0);
         if (anim.GetBool("SlowFall")) direction = new Vector2(slowFallGravity, 0);
         //else if (doingRoll && !isGrounded) rb.velocity += new Vector2(1, yRaw).normalized * rollVelocity;
 
 
-        Walk();        
+        Walk();
         anim.SetBool("Walk", true);
         if (isPC)
         {
             if (Input.GetKeyDown(KeyCode.Space))
-            {            
+            {
                 if (isGrounded)
                 {
                     anim.SetBool("Jump", true);
                     canDoubleJump = true;
-                    Jump();                      
+                    Jump();
+
                 }
                 else
-                {                       
-                    //anim.SetBool("Jump", false);
-                    //anim.SetBool("Walk", true);
+                {
                     if (Input.GetKeyDown(KeyCode.Space))
                     {
                         if (canDoubleJump)
                         {
                             Jump();
-                            canDoubleJump = false;                               
+                            canDoubleJump = false;
+
 
                         }
                     }
-                }               
+                }
 
-            }
-            if (Input.GetKeyDown(KeyCode.DownArrow) && !doingRoll)
-            {
-
-                //direction = new Vector2(0, y);
-                Roll(0, -1);
-               
-            }
-
-            if (Input.GetKeyDown(KeyCode.LeftShift) && !doingSmash)
-            {
-                
-               
-                Smash(1, 0);
-                
             }
 
             if (Input.GetMouseButtonDown(1))
+            // if (Input.GetKey(KeyCode.Space))
             {
-                print("SlowFall");
 
                 if (!isGrounded)
                 {
+                    //isSlowFalling = true;
                     anim.SetBool("Walk", false);
                     anim.SetBool("SlowFall", true);
                     //direction = new Vector2(.2f, 0);
@@ -328,14 +322,34 @@ public class PlayerMovementNew : MonoBehaviour
                     rb.gravityScale = slowFallGravity;
                 }
 
-            }            
+            }
+            //if (Input.GetKeyUp(KeyCode.Space) && isSlowFalling)
             else if (Input.GetMouseButtonUp(1))
             {
+                // isSlowFalling = false;
                 anim.SetBool("SlowFall", false);
                 anim.SetBool("Walk", true);
                 rb.gravityScale = 10;
             }
 
+
+            if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)  && !doingRoll)
+            {
+
+                //direction = new Vector2(0, y);
+                Roll(0, -1);
+               
+            }
+
+            if (canSmash && Input.GetKeyDown(KeyCode.LeftShift) && !doingSmash)
+            {
+                
+               
+                Smash(1, 0);                
+                
+            }
+
+           
 
             if (isGrounded && !tapFloor)
             {
@@ -366,48 +380,140 @@ public class PlayerMovementNew : MonoBehaviour
         
         else if(!isPC)
         {
-            if (swipeDetector.TapPerformed == true)
+            if (Input.touchCount > 0)
             {
-                if (isGrounded)
+                Touch touch = Input.GetTouch(0);
+
+                if (touch.phase == TouchPhase.Began)
                 {
-                    swipeDetector.TapPerformed = false;
-                    anim.SetBool("Jump", true);
-                    canDoubleJump = true;
-                    Jump();
+                    tapDetected = true;
+                    tapStartTime = Time.time;
+                    tapStartPos = touch.position;
                 }
-                else
+                // Detectar el final del toque
+                else if (touch.phase == TouchPhase.Ended && tapDetected)
                 {
-                    //anim.SetBool("Jump", false);
-                    //anim.SetBool("Walk", true);
-                    if (swipeDetector.TapPerformed == true)
+                    tapDetected = false;
+                    float tapEndTime = Time.time;
+                    Vector2 tapEndPos = touch.position;
+                    float tapDuration = tapEndTime - tapStartTime;
+                    float swipeDistance = Vector2.Distance(tapStartPos, tapEndPos);
+
+                    if (tapDuration < tapTimeThreshold && swipeDistance < swipeDistanceThreshold)
                     {
-                        if (canDoubleJump)
+                        // Esto es un tap
+                        //HandleJump();
+                        if (isGrounded)
                         {
                             swipeDetector.TapPerformed = false;
+                            anim.SetBool("Jump", true);
+                            canDoubleJump = true;
                             Jump();
-                            canDoubleJump = false;
+                        }
+                        else
+                        {
+                            if (swipeDetector.TapPerformed == true)
+                            {
+                                if (canDoubleJump)
+                                {
+                                    swipeDetector.TapPerformed = false;
+                                    Jump();
+                                    canDoubleJump = false;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Esto es un swipe
+                        // HandleSwipe(tapStartPos, tapEndPos);
+                        if (swipeDetector.swipeDirection == SwipeDirection.Down && !doingRoll)
+                        {
+                            swipeDetector.TapPerformed = false;
+                            Roll(0, -1);
+                            swipeDetector.swipeDirection = SwipeDirection.None;
 
+                        }
+                        
+                        if (swipeDetector.swipeDirection == SwipeDirection.Right && !doingSmash)
+                        {
+                            Smash(1, 0);
+                            swipeDetector.TapPerformed = false;
+                            swipeDetector.swipeDirection = SwipeDirection.None;
                         }
                     }
                 }
-
             }
 
-            if (swipeDetector.swipeDirection == SwipeDirection.Down && !doingRoll)
-                {
-                    //direction = new Vector2(0, y);
-                    Roll(0, -1);
-                swipeDetector.TapPerformed = false;
-                swipeDetector.swipeDirection = SwipeDirection.None;
-
-                }
-
-            if (swipeDetector.swipeDirection == SwipeDirection.Right && !doingSmash)
+            if (!isGrounded && Input.touchCount > 0 && swipeDetector.IsPressing)
+            //if (!isGrounded && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Stationary)
+            // if (Input.GetKey(KeyCode.Space))
             {
-                Smash(1, 0);
-                swipeDetector.TapPerformed = false;
-                swipeDetector.swipeDirection = SwipeDirection.None;
+
+               if (!isSlowFalling)
+                {
+
+                    isSlowFalling = true;
+                    anim.SetBool("Walk", false);
+                    anim.SetBool("SlowFall", true);
+                    //direction = new Vector2(.2f, 0);
+                    //rb.velocity = Vector2.zero;
+                    rb.velocity = new Vector2(.2f, rb.velocity.y);
+                    rb.gravityScale = slowFallGravity;
+                }
+                
+                
+
             }
+            //if (Input.GetKeyUp(KeyCode.Space) && isSlowFalling)
+            if (Input.touchCount == 0 && isSlowFalling)
+            {
+                if (isSlowFalling)
+                {
+                    isSlowFalling = false;
+                    anim.SetBool("SlowFall", false);
+                    anim.SetBool("Walk", true);
+                    rb.gravityScale = 10;
+                }
+            }
+
+            //if (swipeDetector.TapPerformed == true)
+            //{
+            //    if (isGrounded)
+            //    {
+            //        swipeDetector.TapPerformed = false;
+            //        anim.SetBool("Jump", true);
+            //        canDoubleJump = true;
+            //        Jump();
+            //    }
+            //    else
+            //    {
+            //        if (swipeDetector.TapPerformed == true)
+            //        {
+            //            if (canDoubleJump)
+            //            {
+            //                swipeDetector.TapPerformed = false;
+            //                Jump();
+            //                canDoubleJump = false;
+            //            }
+            //        }
+            //    }
+            //}
+
+            //if (swipeDetector.swipeDirection == SwipeDirection.Down && !doingRoll)
+            //{
+            //    swipeDetector.TapPerformed = false;
+            //    Roll(0, -1);
+            //    swipeDetector.swipeDirection = SwipeDirection.None;
+
+            //}
+
+            //if (swipeDetector.swipeDirection == SwipeDirection.Right && !doingSmash)
+            //{
+            //    Smash(1, 0);
+            //    swipeDetector.TapPerformed = false;
+            //    swipeDetector.swipeDirection = SwipeDirection.None;
+            //}
 
             if (isGrounded && !tapFloor)
             {
@@ -543,7 +649,7 @@ public class PlayerMovementNew : MonoBehaviour
         if (!canMove)
         {
             StartCoroutine(Diying());
-            print("Murio");
+            print("Murio");          
 
         }
     }
@@ -552,6 +658,10 @@ public class PlayerMovementNew : MonoBehaviour
 
         anim.Play("Die");
         yield return new WaitForSeconds(3);
+        //Time.timeScale = 0;
+        
+        SceneManager.LoadScene("Test");
+
     }
 
     private void FallingMovement(float x, float y)
@@ -623,9 +733,7 @@ public class PlayerMovementNew : MonoBehaviour
                         // xRaw = -1;
                         //clicDirection = 1;
                         transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-                    }
-
-                    
+                    }                    
 
                 print(clicDirection);
                 }
@@ -652,6 +760,42 @@ public class PlayerMovementNew : MonoBehaviour
                 rb.velocity = new Vector2(rb.velocity.x, 0);
                 rb.velocity += Vector2.up * jumpStrength;
                 
+            }
+        }
+        else if(!isPC) 
+        {
+            if (Input.touchCount > 0)
+            {
+                Touch touch = Input.GetTouch(0);
+
+                if (touch.phase == TouchPhase.Began)
+                {
+                    tapDetected = true;
+                    tapStartTime = Time.time;
+                    tapStartPos = touch.position;
+                }
+                // Detectar el final del toque
+                else if (touch.phase == TouchPhase.Ended && tapDetected)
+                {
+                    tapDetected = false;
+                    float tapEndTime = Time.time;
+                    Vector2 tapEndPos = touch.position;
+                    float tapDuration = tapEndTime - tapStartTime;
+                    float swipeDistance = Vector2.Distance(tapStartPos, tapEndPos);
+
+                    if (tapDuration < tapTimeThreshold && swipeDistance < swipeDistanceThreshold)
+                    {
+                        // Esto es un tap
+                        rb.velocity = new Vector2(rb.velocity.x, 0);
+                        rb.velocity += Vector2.up * jumpStrength;
+                    }
+                    else
+                    {
+                        // Esto es un swipe
+                        // HandleSwipe(tapStartPos, tapEndPos);
+                        
+                    }
+                }
             }
         }
     }

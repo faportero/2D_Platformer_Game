@@ -9,7 +9,7 @@ public class SwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     //private bool isTap = false;
     //private bool isPressing = false;
     private float pressTime = 0f;
-    public float pressThreshold = 0.5f; // Tiempo mínimo de presión para considerarla un "press and hold"
+    public float pressThreshold = 0.05f; // Tiempo mínimo de presión para considerarla un "press and hold"
 
     public float tapThreshold = 10f; // Umbral de distancia para considerar un tap
 
@@ -30,17 +30,16 @@ public class SwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     public bool TapPerformed;
 
     // Propiedad para acceder a IsPressing de lectura y escritura
-    public bool IsPressing
-    {
-        get; set;
-    }
+    public bool IsPressing = false;
+
 
     public void OnPointerDown(PointerEventData eventData)
     {
         startPosition = eventData.position;
         isSwiping = true;
         TapPerformed = true; // Restablecer el valor de isTap en cada nuevo toque
-        IsPressing = true;
+       // IsPressing = true;
+        Invoke("Pressing", .5f);
         pressTime = Time.time;
     }
 
@@ -49,7 +48,7 @@ public class SwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         endPosition = eventData.position;
         isSwiping = false;
         IsPressing = false;
-        //TapPerformed = false;
+        TapPerformed = false;
 
         // Calcular la distancia entre la posición inicial y final
         float swipeDistance = Vector2.Distance(startPosition, endPosition);
@@ -74,28 +73,35 @@ public class SwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         {
             swipeDirection = SwipeDirection.None; // Restablecer la dirección a "None"
             TapPerformed = true; 
-            Invoke("ResetTap", 0.05f);
+            Invoke("ResetTap", 0.5f);
         }
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        TapPerformed = true;
-        Invoke("ResetTap", 0.05f);
+        //TapPerformed = true;
+        //Invoke("ResetTap", 0.5f);
     }
 
+    private void Pressing()
+    {
+        IsPressing = true;
+    }
     private void ResetTap()
     {
-        TapPerformed = false;
+        //TapPerformed = false;
+        IsPressing = false;
     }
 
     private void Update()
     {
+        //Debug.Log("esta presionando" + IsPressing);
         if (IsPressing && Time.time - pressTime > pressThreshold)
         {
             // Si se mantiene presionado el tap durante más tiempo del umbral, hacemos algo aquí
-            Debug.Log(TapPerformed);
+           // Debug.Log(TapPerformed);
+            //IsPressing = true;
         }
-            Debug.Log(TapPerformed);
+           
     }
 }
