@@ -20,7 +20,7 @@ public class UI_Lifes : MonoBehaviour
         if (lifes.Count >= 0)
         {            
             GameObject lastChild = lifes[lifes.Count - 1];            
-            lifes.Remove(lastChild);
+            //lifes.Remove(lastChild);
             lastChild.GetComponent<Image>().color = Color.black;
 
         }

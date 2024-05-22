@@ -15,6 +15,7 @@ public class Enemy : MonoBehaviour
     public bool isAdict = false;
     private List<Enemy> e;
     private PlayerController playerController;
+    private PlayerMovementNew playerMovement;
 
     public enum SustanceType
     {
@@ -42,11 +43,14 @@ public class Enemy : MonoBehaviour
         {
            if(e.Count == 0) e = collision.GetComponent<PlayerController>().enemies;
             playerController = collision.GetComponent<PlayerController>();
+            playerMovement = collision.GetComponent<PlayerMovementNew>();
             isAdict = true;
             foreach (Enemy enemy in e)
             {
                 if (enemy.sustanceType == sustanceType)
                 {
+                    if (!playerMovement.doingSmash)
+                    {
                     collision.GetComponent<PlayerController>().TakeAdiccion(enemy);
                     //print(collision.GetComponent<PlayerController>().currentAdiction);
                     collision.GetComponent<PlayerController>().SaludAmount = 0;
@@ -57,6 +61,11 @@ public class Enemy : MonoBehaviour
                     Effect();
                     //print(collision.GetComponent<PlayerController>().SaludAmount);
                     //print(collision.GetComponent<PlayerController>().uiSalud.saludCount);
+                    }
+                    else
+                    {
+                        EnemyDie();
+                    }
                 }
             }
 
@@ -71,7 +80,8 @@ public class Enemy : MonoBehaviour
     {
         gameObject.GetComponent<BoxCollider2D>().enabled = false;
         gameObject.SetActive(false);
-        //Destroy(gameObject,1);
+        //D
+        //estroy(gameObject,1);
         isAdict = false;
     }
 

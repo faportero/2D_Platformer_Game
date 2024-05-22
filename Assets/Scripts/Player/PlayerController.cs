@@ -35,7 +35,6 @@ public class PlayerController : MonoBehaviour
         if (lastPosition != Vector3.zero) 
         {
             transform.position = lastPosition;
-            //playerMovement.movementMode = MovementMode.RunnerMode;
         } 
 }
     private void Start()
@@ -83,7 +82,6 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        //print(adiccionBar.currentAdiccion);
        EnemyEffect();
     }
 
@@ -91,23 +89,19 @@ public class PlayerController : MonoBehaviour
     {
         if(enemy.isAdict)
         {
-            //print(adiccionBar.currentAdiccion);
             adiccionBar.UpdateAdiccion(adictionAmount);
             enemy.Effect();
             enemy.EnemyDie();
-            currentAdiction = adiccionBar.currentAdiccion;           
-
+            currentAdiction = adiccionBar.currentAdiccion;  
         }
        
     }
     public void TakeAbility(Ability ability)
     {     
-        //print(adiccionBar.currentAdiccion);
         adiccionBar.UpdateAdiccion(adictionAmount);
         ability.NewAbility();
         ability.AbilityDie();
         currentAdiction = adiccionBar.currentAdiccion;
-
     }
     public void TakeUICoin()
     {
@@ -121,26 +115,26 @@ public class PlayerController : MonoBehaviour
         if(SaludAmount == 3)
         {
             playerMovement.canSmash = true;
-            //uiSalud.saludCount = 0;
-            //SaludAmount = 0;         
-            
         }
-        else
-        {
+        else        {
             playerMovement.canSmash = false;
-
         }
+
+        StopAllCoroutines();
+        effectPanel.SetActive(false);
+        isCannabis = false;
+        isCocaMetaHero = false;
+        isPsilo = false;
+        isAlcohol = false;
+        isTabaco = false;
 
     }
     public void LoseLife()
     {
         if (lifesAmount > 0)
         {
-            //print(lifesAmount);
-            lifesAmount -= 1;
-            //   lifesAmount = Mathf.Clamp(lifesAmount, 0, maxLifes);            
-            uiLifes.UpdateLife();
-
+            lifesAmount -= 1;          
+            uiLifes.UpdateLife(); 
         }
         else
         {
@@ -153,38 +147,31 @@ public class PlayerController : MonoBehaviour
     {
         if (!isDie)
         {
-
             if(isCannabis)
             {
-
-                StartCoroutine(CurrentEffect(5));
-       
+                StartCoroutine(CurrentEffect(5));       
             }
             else if(isCocaMetaHero)
             {
-                StartCoroutine(CurrentEffect(5));
-            
+                StartCoroutine(CurrentEffect(5));            
             }
             else if(isAlcohol)
             {
-
+                StartCoroutine(CurrentEffect(5));            
+            }
+            else if (isPsilo)
+            {
                 StartCoroutine(CurrentEffect(5));
-            
             }
             else if(isTabaco)
             {
-                StartCoroutine(CurrentEffect(5));     
+                StartCoroutine(CurrentEffect(5));  
                 
             }
         }
     }
     private IEnumerator CurrentEffect(float delay) 
     {
-        //isCannabis = false;
-        //isCocaMetaHero = false;
-        //isPsilo = false;
-        //isAlcohol = false;
-        //isTabaco = false;
         effectPanel.SetActive(true);
         yield return new WaitForSecondsRealtime(delay);
         StopAllCoroutines();
@@ -194,29 +181,6 @@ public class PlayerController : MonoBehaviour
         isPsilo = false;
         isAlcohol = false;
         isTabaco = false;
-        //if (isCannabis)
-        //{
-        //    isCannabis = false;           
-        //}
-        //else if (isCocaMetaHero)
-        //{
-        //    isCocaMetaHero = false;
-        //}
-        //else if (isPsilo)
-        //{
-        //    isPsilo = false;
-        //}
-        //else if (isAlcohol)
-        //{
-        //    isAlcohol = false;
-        //}
-        //else if (isTabaco)
-        //{
-        //    isTabaco = false;
-
-        //}
-
-
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
