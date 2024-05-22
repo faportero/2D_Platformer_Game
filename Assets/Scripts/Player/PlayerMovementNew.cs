@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using static SwipeDetector;
 using static Enemy;
 using System;
+using System.Collections.Generic;
 
 public class PlayerMovementNew : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public class PlayerMovementNew : MonoBehaviour
     private Animator anim;
     private CinemachineVirtualCamera cm;
     private SpriteRenderer spriteRenderer;
+    private PlayerController playerController;
 
     [Header("Level Colisions")]
     public GameObject flappyCollider;
@@ -90,6 +92,7 @@ public class PlayerMovementNew : MonoBehaviour
         cm = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        playerController = GetComponent<PlayerController>();
 
     }
 
@@ -282,29 +285,57 @@ public class PlayerMovementNew : MonoBehaviour
         anim.SetBool("Walk", true);
         if (isPC)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space) && !playerController.isCocaMetaHero)
             {
                 if (isGrounded)
                 {
                     anim.SetBool("Jump", true);
                     canDoubleJump = true;
-                    Jump();
+                    //Invoke("Jump", 2f);
+                    if (!playerController.isCannabis)
+                    {
+                        StartCoroutine(Jump(0));
+                    }
+                    else
+                    {
+                        //anim.SetBool("Walk", true);
+                        StartCoroutine(Jump(.5f));
+
+                    }
 
                 }
                 else
                 {
-                    if (Input.GetKeyDown(KeyCode.Space))
+                    if (Input.GetKeyDown(KeyCode.Space) && !playerController.isCocaMetaHero)
                     {
                         if (canDoubleJump)
                         {
-                            Jump();
-                            canDoubleJump = false;
+                            //Invoke("Jump", 2f);
+                            if (!playerController.isCannabis)
+                            {
+                                StartCoroutine(Jump(0));
+                                canDoubleJump = false;
+                            }
+                            else
+                            {
+                                StartCoroutine(Jump(.5f));
+                                canDoubleJump = false;
+
+                            }
 
 
                         }
                     }
                 }
 
+            }
+            if (playerController.isCocaMetaHero)
+            {
+                if (isGrounded)
+                {
+                    anim.SetBool("Jump", true);                   
+                    StartCoroutine(Jump(0)); 
+                }
             }
 
             if (Input.GetMouseButtonDown(1))
@@ -408,7 +439,7 @@ public class PlayerMovementNew : MonoBehaviour
                             swipeDetector.TapPerformed = false;
                             anim.SetBool("Jump", true);
                             canDoubleJump = true;
-                            Jump();
+                            //Invoke("Jump", 2f);
                         }
                         else
                         {
@@ -417,7 +448,7 @@ public class PlayerMovementNew : MonoBehaviour
                                 if (canDoubleJump)
                                 {
                                     swipeDetector.TapPerformed = false;
-                                    Jump();
+                                    //Invoke("Jump", 2f);
                                     canDoubleJump = false;
                                 }
                             }
@@ -542,6 +573,11 @@ public class PlayerMovementNew : MonoBehaviour
         }
 
     }
+
+    //private IEnumerator DisableEnemyEffect()
+    //{
+    //    yield return new WaitForSeconds
+    //}
     private IEnumerator SwitchCapsuleColliderSize()
     {
         yield return new WaitForSeconds(.1f);
@@ -550,11 +586,24 @@ public class PlayerMovementNew : MonoBehaviour
         capsuleCollider.size = capsuleColliderSize;
     }
 
-    private void Jump()
+    private IEnumerator Jump(float delay)
     {
-        StartCoroutine(SwitchCapsuleColliderSize());
-        rb.velocity = new Vector2(rb.velocity.x, 0);
-        rb.velocity += Vector2.up * jumpStrength;
+        if (!playerController.isCannabis)
+        {
+            StartCoroutine(SwitchCapsuleColliderSize());
+            rb.velocity = new Vector2(rb.velocity.x, 0);
+            rb.velocity += Vector2.up * jumpStrength;
+        }
+        else
+        {
+            anim.SetBool("Walk", true);
+            anim.SetBool("Jump", false);
+            yield return new WaitForSeconds(delay);
+            StartCoroutine(SwitchCapsuleColliderSize());
+            rb.velocity = new Vector2(rb.velocity.x, 0);
+            rb.velocity += Vector2.up * jumpStrength;
+        }
+
     }
     public void EndJump()
     {
@@ -640,6 +689,9 @@ public class PlayerMovementNew : MonoBehaviour
     }
     public void EndSmash()
     {
+        gameObject.GetComponent<PlayerController>().SaludAmount = 0;
+        gameObject.GetComponent<PlayerController>().uiSalud.saludCount = 0;
+        gameObject.GetComponent<PlayerController>().uiSalud.UpdateSalud(0);
         spriteRenderer.color = Color.white;
         anim.SetBool("Smash", false);
     }

@@ -9,7 +9,7 @@ public class UI_AdiccionBar : MonoBehaviour
     private float maxAdiccion = 100;
     public float currentAdiccion = 0;
     private float fillSpeed = 1f;
-    [SerializeField] private Image adiccionFillBar;
+    [SerializeField] public Image adiccionFillBar;
     private float duration = 3;
 
     private void Start()
@@ -24,12 +24,13 @@ public class UI_AdiccionBar : MonoBehaviour
         UpdateAdiccionBar();
     }
 
+
     private void UpdateAdiccionBar()
     {
         float targetFillAmount = currentAdiccion / maxAdiccion;
         adiccionFillBar.fillAmount = targetFillAmount;
         //StartCoroutine(LerpValue(0, 1));
-       // adiccionFillBar.fillAmount = Mathf.Lerp(adiccionFillBar.fillAmount, targetFillAmount, curve.Evaluate(currentAdiccion * Time.deltaTime));
+        // adiccionFillBar.fillAmount = Mathf.Lerp(adiccionFillBar.fillAmount, targetFillAmount, curve.Evaluate(currentAdiccion * Time.deltaTime));
         adiccionFillBar.DOFillAmount(targetFillAmount, fillSpeed);
         //adiccionFillBar.fillAmount = curve.Evaluate(targetFillAmount * Time.deltaTime);
     }

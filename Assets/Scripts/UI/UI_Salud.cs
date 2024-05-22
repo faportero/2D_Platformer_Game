@@ -5,14 +5,14 @@ using UnityEngine;
 public class UI_Salud : MonoBehaviour
 {
     
-    private float maxSalud = 4;
+    private float maxSalud = 3;
     public float saludCount = 0;
     [HideInInspector] public TextMeshProUGUI coinCountText;
 
 
-    public void UpdateSalud()
+    public void UpdateSalud(int amount)
     {
-        saludCount += 1;
+        saludCount += amount;
         saludCount = Mathf.Clamp(saludCount, 0f, maxSalud);
         coinCountText.text = saludCount.ToString();
     }
