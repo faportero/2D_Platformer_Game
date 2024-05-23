@@ -328,9 +328,11 @@ public class PlayerMovementNew : MonoBehaviour
     private void RunnerMovement()
     {
         rb.gravityScale = gravityScale;
-        if (!doingSmash && !doingRoll) direction = new Vector2(1.2f, 1);
+        if (!doingSmash && !doingRoll && !playerController.isCannabis) direction = new Vector2(1.2f, 1);
+        else if(playerController.isCannabis) direction = new Vector2(.75f, 1);
         else if (doingSmash) direction = new Vector2(smashVelocity, 0);
-        if (anim.GetBool("SlowFall")) direction = new Vector2(slowFallGravity, 0);      
+        //if (anim.GetBool("SlowFall")) direction = new Vector2(slowFallGravity, 0);      
+        if (isSlowFalling) direction = new Vector2(slowFallGravity, 0);      
 
 
         Walk();
@@ -346,10 +348,12 @@ public class PlayerMovementNew : MonoBehaviour
                     
                     if (!playerController.isCannabis && !playerController.isAlcohol)
                     {
+                        
                         StartCoroutine(Jump(0));
                     }
                     else
-                    {   
+                    {
+                        
                         canSmash = false;
                         canDoubleJump = false;
                         //anim.SetBool("Jump", true);
@@ -385,7 +389,7 @@ public class PlayerMovementNew : MonoBehaviour
                 }
             }
 
-            if (playerController.isTabaco)
+            if (playerController.isPsilo)
             {
                 Camera.main.ResetWorldToCameraMatrix();
                 Camera.main.ResetProjectionMatrix();
@@ -397,23 +401,32 @@ public class PlayerMovementNew : MonoBehaviour
                 Camera.main.ResetProjectionMatrix();
             }
 
-            if (Input.GetMouseButtonDown(1))
+            if (playerController.isTabaco && !doingShake)
             {
-                if (!isGrounded)
-                {
-
-                    anim.SetBool("Walk", false);
-                    anim.SetBool("SlowFall", true);
-                    rb.velocity = new Vector2(.2f, rb.velocity.y);
-                    rb.gravityScale = slowFallGravity;
-                }
-
+                // StartCoroutine(CameraShake(1f));
+                StartCoroutine(HeartbeatShakeSequence());
             }
-            else if (Input.GetMouseButtonUp(1))
+
+            if (isSlowFalling)
             {
-                anim.SetBool("SlowFall", false);
-                anim.SetBool("Walk", true);
-                rb.gravityScale = 10;
+                if (Input.GetMouseButtonDown(1))
+                {
+                    if (!isGrounded)
+                    {
+
+                        anim.SetBool("Walk", false);
+                        anim.SetBool("SlowFall", true);
+                        rb.velocity = new Vector2(.2f, rb.velocity.y);
+                        rb.gravityScale = slowFallGravity;
+                    }
+
+                }
+                else if (Input.GetMouseButtonUp(1))
+                {
+                    anim.SetBool("SlowFall", false);
+                    anim.SetBool("Walk", true);
+                    rb.gravityScale = 10;
+                }
             }
 
 
@@ -572,7 +585,7 @@ public class PlayerMovementNew : MonoBehaviour
                 }
             }
 
-            if (playerController.isTabaco)
+            if (playerController.isPsilo)
             {
                 Camera.main.ResetWorldToCameraMatrix();
                 Camera.main.ResetProjectionMatrix();
@@ -584,6 +597,11 @@ public class PlayerMovementNew : MonoBehaviour
                 Camera.main.ResetProjectionMatrix();
             }
 
+            if (playerController.isTabaco && !doingShake)
+            {
+                // StartCoroutine(CameraShake(1f));
+                StartCoroutine(HeartbeatShakeSequence());
+            }
 
             if (!isGrounded && Input.touchCount > 0 && swipeDetector.IsPressing)
             {
@@ -640,6 +658,34 @@ public class PlayerMovementNew : MonoBehaviour
 
     }
 
+    public void ChangeSlowFalling(bool isSlowFall)
+    {
+        isSlowFalling=isSlowFall;
+        //playerController.uiCoins.UpdateCoins(-2);
+    }
+
+    private IEnumerator CameraShake(float tiempo)
+    {
+        //doingShake = true;
+        CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin = cm.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 15;
+
+        yield return new WaitForSeconds(tiempo);
+        cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0;
+        //doingShake = false;
+    }
+    private IEnumerator HeartbeatShakeSequence()
+    {
+        // Tres latidos
+        doingShake = true;
+        for (int i = 0; i < 3; i++)
+        {
+            yield return StartCoroutine(CameraShake(.1f)); // Temblor por 1 segundo
+            yield return new WaitForSeconds(.3f); // Pausa por 1 segundo
+        }
+        doingShake = false;
+    }
+
     private IEnumerator SwitchCapsuleColliderSize()
     {
         yield return new WaitForSeconds(.1f);
@@ -652,12 +698,14 @@ public class PlayerMovementNew : MonoBehaviour
     {
         if (!playerController.isCannabis)
         {
+            
             StartCoroutine(SwitchCapsuleColliderSize());
             rb.velocity = new Vector2(rb.velocity.x, 0);
             rb.velocity += Vector2.up * jumpStrength;
         }
         else
         {
+            
             anim.SetBool("Walk", true);
             anim.SetBool("Jump", false);
             yield return new WaitForSeconds(delay);
@@ -744,7 +792,8 @@ public class PlayerMovementNew : MonoBehaviour
     }
     public void EndSmash()
     {
-        gameObject.GetComponent<PlayerController>().SaludAmount = 0;
+        UserData.health = 0;
+        //gameObject.GetComponent<PlayerController>().SaludAmount = 0;
         gameObject.GetComponent<PlayerController>().uiSalud.saludCount = 0;
         gameObject.GetComponent<PlayerController>().uiSalud.UpdateSalud(0);
         spriteRenderer.color = Color.white;
@@ -755,7 +804,7 @@ public class PlayerMovementNew : MonoBehaviour
     {
         if (!canMove)
         {
-            StartCoroutine(Diying());
+            //StartCoroutine(Diying());
             print("Murio");          
 
         }
@@ -783,8 +832,8 @@ public class PlayerMovementNew : MonoBehaviour
     }
     void Mover(Vector2 direccion)
     {
-        //newPosition = faillingTargets[0].transform.position.x;
         // Calcula la nueva posición del objeto
+        //rb.position = faillingTargets[2].transform.position;
         Vector2 nuevaPosicion = rb.position + direccion * 5;
 
 
@@ -794,48 +843,57 @@ public class PlayerMovementNew : MonoBehaviour
     }
     private void FallingMovement()
     {
-        camOffset.m_Offset = new Vector3(0, 0, -25);
+        //camOffset.m_Offset = new Vector3(0, 0, -15);
         direction = new Vector2(x, 0);
-        CinemachineTransposer transposer = cm.GetCinemachineComponent<CinemachineTransposer>();
+        //CinemachineTransposer transposer = cm.GetCinemachineComponent<CinemachineTransposer>();
 
-        if (transposer != null)
-        {
-            // Deshabilitar el seguimiento en el eje X
-            transposer.m_FollowOffset.x = 0f;
-        }
+        //if (transposer != null)
+        //{
+        //    // Deshabilitar el seguimiento en el eje X
+        //    transposer.m_FollowOffset.x = 0f;
+        //}
 
         int movimientosIzquierda = 0; 
         int movimientosDerecha = 0;
         int maxMovimientos = 2;
-       
-        if(isPC)
+
+        if (!isGrounded)
         {
 
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-          
-                if (movimientosIzquierda < maxMovimientos)
-                {
-                    Mover(Vector3.left);
-                    movimientosIzquierda++;
-                    movimientosDerecha = Mathf.Max(0, movimientosDerecha - 1); 
-                }
-            }
-
-    
-            if (Input.GetKeyDown(KeyCode.RightArrow))
+            if (isPC)
             {
 
-                if (movimientosDerecha < maxMovimientos)
+                if (Input.GetKeyDown(KeyCode.LeftArrow))
                 {
-                    Mover(Vector3.right);
-                    movimientosDerecha++;
-                    movimientosIzquierda = Mathf.Max(0, movimientosIzquierda - 1); 
+
+                    if (movimientosIzquierda < maxMovimientos)
+                    {
+                        Mover(Vector3.left);
+                        movimientosIzquierda++;
+                        movimientosDerecha = Mathf.Max(0, movimientosDerecha - 1);
+                    }
                 }
+
+
+                if (Input.GetKeyDown(KeyCode.RightArrow))
+                {
+
+                    if (movimientosDerecha < maxMovimientos)
+                    {
+                        Mover(Vector3.right);
+                        movimientosDerecha++;
+                        movimientosIzquierda = Mathf.Max(0, movimientosIzquierda - 1);
+                    }
+                }
+
             }
 
         }
+        //else
+        //{
 
+        //    movementMode = MovementMode.RunnerMode;
+        //}
         else if(!isPC)
         {
             float screenWidth = Screen.width;

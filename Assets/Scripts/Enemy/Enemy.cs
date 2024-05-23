@@ -53,7 +53,8 @@ public class Enemy : MonoBehaviour
                     {
                     collision.GetComponent<PlayerController>().TakeAdiccion(enemy);
                     //print(collision.GetComponent<PlayerController>().currentAdiction);
-                    collision.GetComponent<PlayerController>().SaludAmount = 0;
+                    UserData.health = 0;
+                    //collision.GetComponent<PlayerController>().SaludAmount = 0;
                     collision.GetComponent<PlayerController>().uiSalud.saludCount = 0;
                     collision.GetComponent<PlayerMovementNew>().canSmash = false;
                     collision.GetComponent<PlayerController>().uiSalud.UpdateSalud(0);

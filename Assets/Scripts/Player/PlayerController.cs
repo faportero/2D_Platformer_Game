@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public int SaludAmount = 0;
     public int lifesAmount;
     [SerializeField] private UI_AdiccionBar adiccionBar;
-    [SerializeField] private UI_Coins uiCoins;
+     public UI_Coins uiCoins;
     [SerializeField] private UI_Lifes uiLifes;
     [SerializeField] public UI_Salud uiSalud;
     [HideInInspector] public List <Enemy> enemies;
@@ -32,6 +32,9 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        UserData.coins = 0;
+        UserData.health = 0;
+
         if (lastPosition != Vector3.zero) 
         {
             transform.position = lastPosition;
@@ -105,14 +108,16 @@ public class PlayerController : MonoBehaviour
     }
     public void TakeUICoin()
     {
-       uiCoins.UpdateCoins();
+       uiCoins.UpdateCoins(1);
     }
 
     public void TakeSalud()
     {
-        SaludAmount += 1;
-        SaludAmount = Mathf.Clamp(SaludAmount, 0, 3);
-        if(SaludAmount == 3)
+        UserData.health += 1;
+        UserData.health = Mathf.Clamp(UserData.health, 0, 3);
+        //SaludAmount += 1;
+        //SaludAmount = Mathf.Clamp(SaludAmount, 0, 3);
+        if (SaludAmount == 3)
         {
             playerMovement.canSmash = true;
         }
@@ -131,15 +136,16 @@ public class PlayerController : MonoBehaviour
     }
     public void LoseLife()
     {
-        if (lifesAmount > 0)
+        if (UserData.lifes > 0)
         {
-            lifesAmount -= 1;          
+            UserData.lifes -= 1;
+            //lifesAmount -= 1;          
             uiLifes.UpdateLife(); 
         }
         else
         {
-            playerMovement.canMove = false;
-            playerMovement.Die();
+            //playerMovement.canMove = false;
+           // playerMovement.Die();
         }
     }
 
