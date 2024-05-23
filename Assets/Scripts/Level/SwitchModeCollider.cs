@@ -28,9 +28,15 @@ public class SwitchModeCollider : MonoBehaviour
                     break;
                 case PlayerMovementMode.FallingMode:
                     collision.GetComponent<PlayerMovementNew>().movementMode = MovementMode.FallingMode;                                                         
+                    collision.GetComponent<Rigidbody2D>().gravityScale = 0;
+                    collision.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                    //collision.GetComponent<Rigidbody2D>().gravityScale = collision.GetComponent<PlayerMovementNew>().fallingGravity;
+                    collision.GetComponent<Rigidbody2D>().velocity += new Vector2(0, -collision.GetComponent<PlayerMovementNew>().fallingVelocity);
+                    //collision.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+                    //Destroy(collision.GetComponent<Rigidbody2D>());
                     break;
                 case PlayerMovementMode.FlappyMode:
-                    collision.GetComponent<PlayerMovementNew>().movementMode = MovementMode.FlappyMode;                                                
+                    collision.GetComponent<PlayerMovementNew>().movementMode = MovementMode.FlappyMode;
                     break;
             }
 
