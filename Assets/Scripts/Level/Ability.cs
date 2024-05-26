@@ -9,7 +9,7 @@ public class Ability : MonoBehaviour
    
     private List<Ability> a;
     [SerializeField] private GameObject player;
-    [SerializeField]private PlayerController playerController;
+    private PlayerController playerController;
 
     public bool canDoubleJump;
     public bool isInmune;    
@@ -18,7 +18,6 @@ public class Ability : MonoBehaviour
     {
         Inmunidad,
         SaltoDoble,
-        Desintoxicacion,
         VidaExtra,
         Paracaidas        
     }
@@ -69,9 +68,6 @@ public class Ability : MonoBehaviour
             case AbilityType.SaltoDoble:
                 print("SaltoDoble");
                 canDoubleJump = true;
-                break;
-            case AbilityType.Desintoxicacion:
-                print("Desintoxicacion");
                 break;
             case AbilityType.VidaExtra:
                 print("VidaExtra");

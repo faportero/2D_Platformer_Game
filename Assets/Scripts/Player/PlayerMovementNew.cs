@@ -86,7 +86,7 @@ public class PlayerMovementNew : MonoBehaviour
     private bool isSlowFalling;
 
     public List<GameObject> faillingTargets;
-
+    [SerializeField] LevelManager levelManager;
     private void Awake()
 
     {
@@ -792,8 +792,8 @@ public class PlayerMovementNew : MonoBehaviour
     }
     public void EndSmash()
     {
-        UserData.health = 0;
-        //gameObject.GetComponent<PlayerController>().SaludAmount = 0;
+        //UserData.health = 0;
+        gameObject.GetComponent<PlayerController>().SaludAmount = 0;
         gameObject.GetComponent<PlayerController>().uiSalud.saludCount = 0;
         gameObject.GetComponent<PlayerController>().uiSalud.UpdateSalud(0);
         spriteRenderer.color = Color.white;
@@ -804,16 +804,23 @@ public class PlayerMovementNew : MonoBehaviour
     {
         if (!canMove)
         {
-            //StartCoroutine(Diying());
+
+            StartCoroutine(Diying());
             print("Murio");          
 
         }
     }
     private IEnumerator Diying()
     {
-
         anim.Play("Die");
         yield return new WaitForSeconds(3);        
+        playerController.isDie = true;
+        playerController.escudo = false;
+        playerController.saltoDoble = false;
+        playerController.vidaExtra = false;
+        playerController.paracaidas = false;
+        
+        levelManager.GameOver();
         //SceneManager.LoadScene("Test");
 
     }

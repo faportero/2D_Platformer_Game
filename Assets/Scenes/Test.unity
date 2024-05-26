@@ -11940,6 +11940,7 @@ GameObject:
   - component: {fileID: 223510372}
   - component: {fileID: 223510374}
   - component: {fileID: 223510373}
+  - component: {fileID: 223510375}
   m_Layer: 5
   m_Name: SaltoDoble
   m_TagString: Untagged
@@ -12006,6 +12007,74 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 223510371}
   m_CullTransparentMesh: 1
+--- !u!114 &223510375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 223510371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 223510373}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1167769221}
+        m_TargetAssemblyTypeName: AudioPause, Assembly-CSharp
+        m_MethodName: Pause
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1477688871}
+        m_TargetAssemblyTypeName: UI_Habilidades, Assembly-CSharp
+        m_MethodName: BuySaltoDoble
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &230593218
 GameObject:
   m_ObjectHideFlags: 0
@@ -18978,6 +19047,7 @@ GameObject:
   - component: {fileID: 354673364}
   - component: {fileID: 354673366}
   - component: {fileID: 354673365}
+  - component: {fileID: 354673367}
   m_Layer: 5
   m_Name: VidaExtra
   m_TagString: Untagged
@@ -19044,6 +19114,119 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 354673363}
   m_CullTransparentMesh: 1
+--- !u!114 &354673367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 354673363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 354673365}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1167769221}
+        m_TargetAssemblyTypeName: AudioPause, Assembly-CSharp
+        m_MethodName: Pause
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1477688871}
+        m_TargetAssemblyTypeName: UI_Habilidades, Assembly-CSharp
+        m_MethodName: BuyVidaExtra
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!1 &367674870
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 367674872}
+  - component: {fileID: 367674871}
+  m_Layer: 0
+  m_Name: LevelManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &367674871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 367674870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d31a9dcea635f1146918cb43d26e01c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UI_Habilidades: {fileID: 1477688869}
+--- !u!4 &367674872
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 367674870}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &382544045
 GameObject:
   m_ObjectHideFlags: 0
@@ -25307,11 +25490,11 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.1
-  far clip plane: 5000
+  near clip plane: 0.3
+  far clip plane: 1000
   field of view: 50
   orthographic: 0
-  orthographic size: 10
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -54340,9 +54523,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1524914224}
-        m_TargetAssemblyTypeName: PlayerMovementNew, Assembly-CSharp
-        m_MethodName: ChangeSlowFalling
+      - m_Target: {fileID: 1167769221}
+        m_TargetAssemblyTypeName: AudioPause, Assembly-CSharp
+        m_MethodName: Pause
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -54350,24 +54533,12 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1011467925}
-        m_TargetAssemblyTypeName: UI_Coins, Assembly-CSharp
-        m_MethodName: UpdateCoins
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: -10
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1167769221}
-        m_TargetAssemblyTypeName: AudioPause, Assembly-CSharp
-        m_MethodName: Pause
-        m_Mode: 6
+      - m_Target: {fileID: 1477688871}
+        m_TargetAssemblyTypeName: UI_Habilidades, Assembly-CSharp
+        m_MethodName: BuyParacaidas
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -72433,6 +72604,7 @@ GameObject:
   - component: {fileID: 1119285360}
   - component: {fileID: 1119285362}
   - component: {fileID: 1119285361}
+  - component: {fileID: 1119285363}
   m_Layer: 5
   m_Name: Escudo
   m_TagString: Untagged
@@ -72499,6 +72671,74 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1119285359}
   m_CullTransparentMesh: 1
+--- !u!114 &1119285363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1119285359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1119285361}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1167769221}
+        m_TargetAssemblyTypeName: AudioPause, Assembly-CSharp
+        m_MethodName: Pause
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1477688871}
+        m_TargetAssemblyTypeName: UI_Habilidades, Assembly-CSharp
+        m_MethodName: BuyEscudo
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1135074257
 GameObject:
   m_ObjectHideFlags: 0
@@ -85957,13 +86197,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1477688870}
+  - component: {fileID: 1477688871}
   m_Layer: 5
   m_Name: PanelHabilidades
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1477688870
 RectTransform:
   m_ObjectHideFlags: 0
@@ -85984,6 +86225,32 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1477688871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1477688869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdd41f5b03dd97d40b6cbfd975efa3e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  escudo: {fileID: 1119285363}
+  saltoDoble: {fileID: 223510375}
+  vidaExtra: {fileID: 354673367}
+  paracaidas: {fileID: 742164327}
+  txEscudo: {fileID: 1547401756}
+  txSaltoDoble: {fileID: 2068094645}
+  txVidaExtra: {fileID: 941644812}
+  txParacaidas: {fileID: 694880716}
+  txCoins: {fileID: 790810069}
+  valorEscudo: 2
+  valorSaltoDoble: 2
+  valorVidaExtra: 2
+  valorParacaidas: 2
+  levelManager: {fileID: 367674871}
 --- !u!1001 &1482889875
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -87123,13 +87390,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   adictionAmount: 25
   currentAdiction: 0
-  coinsAmount: 1
   SaludAmount: 3
   lifesAmount: 10
   adiccionBar: {fileID: 1637826007}
   uiCoins: {fileID: 1011467925}
+  coinsAmount: 0
   uiLifes: {fileID: 1212748249}
   uiSalud: {fileID: 958312599}
+  uiHabilidades: {fileID: 1477688871}
   enemies: []
   abilities: []
   effectPanel: {fileID: 1316001047}
@@ -87139,6 +87407,10 @@ MonoBehaviour:
   isPsilo: 0
   isAlcohol: 0
   isTabaco: 0
+  escudo: 0
+  saltoDoble: 0
+  vidaExtra: 0
+  paracaidas: 0
 --- !u!114 &1524914224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87188,6 +87460,7 @@ MonoBehaviour:
   - {fileID: 320825735}
   - {fileID: 1393085484}
   - {fileID: 1706667197}
+  levelManager: {fileID: 367674871}
 --- !u!1001 &1529772698
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -122391,6 +122664,7 @@ SceneRoots:
   - {fileID: 2056989615}
   - {fileID: 572677871}
   - {fileID: 519381438}
+  - {fileID: 367674872}
   - {fileID: 1167769222}
   - {fileID: 1988474409}
   - {fileID: 897043878}

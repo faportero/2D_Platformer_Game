@@ -5,14 +5,14 @@ using UnityEngine;
 public class UI_Coins : MonoBehaviour
 {
     
-    private float maxCoins = 999;
+    private float maxCoins = 9999999;
     public float coinCount = 0;
     [SerializeField] private TextMeshProUGUI coinCountText;
 
     private void Start()
     {
-        coinCountText.text = UserData.coins.ToString();
         
+        coinCountText.text = UserData.coins.ToString();        
     }
 
     public void UpdateCoins(int value)

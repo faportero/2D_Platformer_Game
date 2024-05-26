@@ -12,28 +12,32 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private float adictionAmount;
     public float currentAdiction;
-    [SerializeField] public int coinsAmount = 0;
     [SerializeField] public int SaludAmount = 0;
     public int lifesAmount;
     [SerializeField] private UI_AdiccionBar adiccionBar;
      public UI_Coins uiCoins;
+    public int coinsAmount;
     [SerializeField] private UI_Lifes uiLifes;
     [SerializeField] public UI_Salud uiSalud;
+    [SerializeField] public UI_Habilidades uiHabilidades;
     [HideInInspector] public List <Enemy> enemies;
     [HideInInspector] public List <Ability> abilities;
     public GameObject effectPanel;    
     private PlayerMovementNew playerMovement;
+    
    
 
     public bool isDie = false;
 
     public bool isCannabis, isCocaMetaHero, isPsilo, isAlcohol, isTabaco;
+    public bool escudo, saltoDoble, vidaExtra, paracaidas;
+   
     private bool isEnemy;
 
     private void Awake()
     {
-        UserData.coins = 0;
-        UserData.health = 0;
+        coinsAmount = UserData.coins;
+        uiCoins.coinCount = coinsAmount;
 
         if (lastPosition != Vector3.zero) 
         {
@@ -106,17 +110,17 @@ public class PlayerController : MonoBehaviour
         ability.AbilityDie();
         currentAdiction = adiccionBar.currentAdiccion;
     }
-    public void TakeUICoin()
+    public void TakeUICoin(int value)
     {
-       uiCoins.UpdateCoins(1);
+       uiCoins.UpdateCoins(value);
     }
 
     public void TakeSalud()
     {
-        UserData.health += 1;
-        UserData.health = Mathf.Clamp(UserData.health, 0, 3);
-        //SaludAmount += 1;
-        //SaludAmount = Mathf.Clamp(SaludAmount, 0, 3);
+        //UserData.health += 1;
+        //UserData.health = Mathf.Clamp(UserData.health, 0, 3);
+        SaludAmount += 1;
+        SaludAmount = Mathf.Clamp(SaludAmount, 0, 3);
         if (SaludAmount == 3)
         {
             playerMovement.canSmash = true;
@@ -136,46 +140,46 @@ public class PlayerController : MonoBehaviour
     }
     public void LoseLife()
     {
-        if (UserData.lifes > 0)
+        if (lifesAmount > 0)
         {
-            UserData.lifes -= 1;
-            //lifesAmount -= 1;          
+            lifesAmount -= 1;
+            lifesAmount -= 1;          
             uiLifes.UpdateLife(); 
         }
         else
         {
-            //playerMovement.canMove = false;
-           // playerMovement.Die();
+            playerMovement.canMove = false;
+            uiHabilidades.CheckAvailable();
+            playerMovement.Die();            
         }
     }
 
+
     private void EnemyEffect()
-    {
-        if (!isDie)
+    {     
+        if(isCannabis)
         {
-            if(isCannabis)
-            {
-                StartCoroutine(CurrentEffect(5));       
-            }
-            else if(isCocaMetaHero)
-            {
-                StartCoroutine(CurrentEffect(5));            
-            }
-            else if(isAlcohol)
-            {
-                StartCoroutine(CurrentEffect(5));            
-            }
-            else if (isPsilo)
-            {
-                StartCoroutine(CurrentEffect(5));
-            }
-            else if(isTabaco)
-            {
-                StartCoroutine(CurrentEffect(5));  
-                
-            }
+            StartCoroutine(CurrentEffect(5));       
         }
+        else if(isCocaMetaHero)
+        {
+            StartCoroutine(CurrentEffect(5));            
+        }
+        else if(isAlcohol)
+        {
+            StartCoroutine(CurrentEffect(5));            
+        }
+        else if (isPsilo)
+        {
+            StartCoroutine(CurrentEffect(5));
+        }
+        else if(isTabaco)
+        {
+            StartCoroutine(CurrentEffect(5));  
+                
+        }        
     }
+
     private IEnumerator CurrentEffect(float delay) 
     {
         effectPanel.SetActive(true);
@@ -209,30 +213,7 @@ public class PlayerController : MonoBehaviour
                 uiSalud.UpdateSalud(1);
                 TakeSalud();
                 //print(currentAdiction);
-            }
-
-           
+            }           
         }
-
-        //if (collision.tag == "Enemy")
-        //{            
-        //    isEnemy = true;
-        //}
-
-        //if (collision.tag == "CheckPoint")
-        //{
-        //    print("cheeeeeeeeeeeeeeck");
-        //    lastPosition = collision.transform.position;
-        //}
-
     }
-    private void OnTriggerExit(Collider other)
-    {
-        //if (other.tag == "Enemy")
-        //{
-        //    isEnemy = false;
-        //}
-       
-    }
-
 }
