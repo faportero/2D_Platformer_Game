@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 public class PlayerMovementNew : MonoBehaviour
 {
-    
+
     public enum MovementMode
     {
         TapMode,
@@ -45,8 +45,9 @@ public class PlayerMovementNew : MonoBehaviour
     [Header("Movement Parameters")]
     public float velocity = 10;
     public float jumpStrength = 5;
+    public float jumpFlappyStrength = 5;
     public float rollVelocity = 20;
-    public float gravityScale ;
+    public float gravityScale;
     public float slowFallGravity = 2;
     public float clickMoveSpeed = 5;
     public float fallingGravity = 1;
@@ -83,10 +84,12 @@ public class PlayerMovementNew : MonoBehaviour
     private Vector2 tapStartPos;
     private float tapTimeThreshold = .3f;
     private float swipeDistanceThreshold = 100;
-    private bool isSlowFalling;
+
 
     public List<GameObject> faillingTargets;
     [SerializeField] LevelManager levelManager;
+    private bool isSlowFalling;
+
     private void Awake()
 
     {
@@ -109,7 +112,7 @@ public class PlayerMovementNew : MonoBehaviour
         capsuleColliderSize = capsuleCollider.size;
         targetPosition = transform.position;
 
-  
+
 
     }
 
@@ -149,7 +152,7 @@ public class PlayerMovementNew : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(movementMode == MovementMode.FlappyMode)
+        if (movementMode == MovementMode.FlappyMode)
         {
 
             transform.rotation = Quaternion.Euler(0, 0, rb.velocity.y * .75f);
@@ -167,7 +170,7 @@ public class PlayerMovementNew : MonoBehaviour
 
             x = Input.GetAxis("Horizontal");
             y = Input.GetAxis("Vertical");
-           
+
             xRaw = Input.GetAxisRaw("Horizontal");
             yRaw = Input.GetAxisRaw("Vertical");
             //direction = new Vector2(x, y);            
@@ -191,7 +194,7 @@ public class PlayerMovementNew : MonoBehaviour
     private void Walk()
     {
         if (canMove)
-        {          
+        {
             rb.velocity = new Vector2(direction.x * velocity, direction.y * rb.velocity.y);
             //rb.velocity = new Vector2(direction.x * velocity,rb.velocity.y);
             GetDirecction();
@@ -200,7 +203,7 @@ public class PlayerMovementNew : MonoBehaviour
 
     private void TapMovement()
     {
-        
+
         rb.gravityScale = gravityScale;
         direction = new Vector2(x, y);
         Walk();
@@ -233,7 +236,7 @@ public class PlayerMovementNew : MonoBehaviour
         else if (!isPC)
         {
 
-
+            #region old Mobiole TapMovement
             //if (Input.touchCount > 0)
             //{
             //    Touch touch = Input.GetTouch(0);
@@ -285,9 +288,8 @@ public class PlayerMovementNew : MonoBehaviour
             //    }
             //}
 
+            #endregion
 
-
-             
 
             if (swipeDetector.TapPerformed == true)
             {
@@ -313,7 +315,7 @@ public class PlayerMovementNew : MonoBehaviour
                 }
             }
             //StopAllCoroutines();
-            StartCoroutine(MovetoTarget());           
+            StartCoroutine(MovetoTarget());
             swipeDetector.TapPerformed = false;
         }
     }
@@ -329,10 +331,10 @@ public class PlayerMovementNew : MonoBehaviour
     {
         rb.gravityScale = gravityScale;
         if (!doingSmash && !doingRoll && !playerController.isCannabis) direction = new Vector2(1.2f, 1);
-        else if(playerController.isCannabis) direction = new Vector2(.75f, 1);
+        else if (playerController.isCannabis) direction = new Vector2(.75f, 1);
         else if (doingSmash) direction = new Vector2(smashVelocity, 0);
-        //if (anim.GetBool("SlowFall")) direction = new Vector2(slowFallGravity, 0);      
-        if (isSlowFalling) direction = new Vector2(slowFallGravity, 0);      
+        if (anim.GetBool("SlowFall")) direction = new Vector2(slowFallGravity, 0);
+        //if (playerController.paracaidas) direction = new Vector2(slowFallGravity, 0);      
 
 
         Walk();
@@ -344,37 +346,34 @@ public class PlayerMovementNew : MonoBehaviour
                 if (isGrounded)
                 {
                     anim.SetBool("Jump", true);
-                    canDoubleJump = true;  
-                    
+                    canDoubleJump = true;
+
                     if (!playerController.isCannabis && !playerController.isAlcohol)
                     {
-                        
                         StartCoroutine(Jump(0));
                     }
                     else
                     {
-                        
                         canSmash = false;
                         canDoubleJump = false;
-                        //anim.SetBool("Jump", true);
-                        //anim.SetBool("Walk", false);
                         StartCoroutine(Jump(.5f));
                     }
-                    
+
                     if (playerController.isAlcohol && !doingRoll)
                     {
                         canDoubleJump = false;
-                        Roll(0, -1);
+                        StartCoroutine(Roll(0, -1, 0));
+                        //Roll(0, -1);
                     }
                 }
-                else
+                else if (playerController.saltoDoble)
                 {
                     if (Input.GetKeyDown(KeyCode.Space) && !playerController.isCocaMetaHero)
                     {
                         if (canDoubleJump)
-                        {    
+                        {
                             StartCoroutine(Jump(0));
-                            canDoubleJump = false;                           
+                            canDoubleJump = false;
                         }
                     }
                 }
@@ -383,9 +382,9 @@ public class PlayerMovementNew : MonoBehaviour
             if (playerController.isCocaMetaHero)
             {
                 if (isGrounded)
-                {  
-                    anim.SetBool("Jump", true);                   
-                    StartCoroutine(Jump(0)); 
+                {
+                    anim.SetBool("Jump", true);
+                    StartCoroutine(Jump(0));
                 }
             }
 
@@ -407,7 +406,7 @@ public class PlayerMovementNew : MonoBehaviour
                 StartCoroutine(HeartbeatShakeSequence());
             }
 
-            if (isSlowFalling)
+            if (playerController.paracaidas)
             {
                 if (Input.GetMouseButtonDown(1))
                 {
@@ -430,27 +429,37 @@ public class PlayerMovementNew : MonoBehaviour
             }
 
 
-            if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)  && !doingRoll)
+            if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S) && !doingRoll)
             {
-                if (!playerController.isAlcohol)
+                if (!playerController.isCannabis)
                 {
-                    //direction = direction * 1.5f;
-                    Roll(0, -1);
+                    if (!playerController.isAlcohol)
+                    {
+                        //direction = direction * 1.5f;
+                        StartCoroutine(Roll(0, -1, 0));
+                        //Roll(0, -1);
+                    }
+                    else
+                    {
+                        if (isGrounded)
+                        {
+                            anim.SetBool("Jump", true);
+                            canDoubleJump = false;
+                            StartCoroutine(Jump(0));
+                        }
+                    }
                 }
                 else
                 {
-                    if (isGrounded)
-                    {
-                        anim.SetBool("Jump", true);
-                        canDoubleJump = false;
-                        StartCoroutine(Jump(0));
-                    }
+                    StartCoroutine(Roll(0, -1, .25f));
+
                 }
+
             }
 
             if (canSmash && Input.GetKeyDown(KeyCode.LeftShift) && !doingSmash)
             {
-                Smash(1, 0);   
+                Smash(1, 0);
             }
 
             if (isGrounded && !tapFloor)
@@ -473,13 +482,13 @@ public class PlayerMovementNew : MonoBehaviour
             else
             {
                 if (velocity == -1)
-                {                   
+                {
                     EndJump();
                 }
             }
         }
-        
-        else if(!isPC)
+
+        else if (!isPC)
         {
             if (Input.touchCount > 0)
             {
@@ -523,10 +532,11 @@ public class PlayerMovementNew : MonoBehaviour
                             if (playerController.isAlcohol && !doingRoll)
                             {
                                 canDoubleJump = false;
-                                Roll(0, -1);
+                                StartCoroutine(Roll(0, -1, 0));
+                                //Roll(0, -1);
                             }
                         }
-                        else
+                        else if (playerController.saltoDoble)
                         {
                             if (swipeDetector.TapPerformed == true && !playerController.isCocaMetaHero)
                             {
@@ -548,31 +558,39 @@ public class PlayerMovementNew : MonoBehaviour
                         if (swipeDetector.swipeDirection == SwipeDirection.Down && !doingRoll)
                         {
                             swipeDetector.TapPerformed = false;
-                            if (!playerController.isAlcohol)
+                            if (!playerController.isCannabis)
                             {
-                                
-                                Roll(0, -1);
+                                if (!playerController.isAlcohol)
+                                {
+                                    StartCoroutine(Roll(0, -1, 0));
+                                    //Roll(0, -1);
+                                }
+                                else
+                                {
+                                    if (isGrounded)
+                                    {
+                                        anim.SetBool("Jump", true);
+                                        canDoubleJump = false;
+                                        StartCoroutine(Jump(0));
+                                    }
+                                }
                             }
                             else
                             {
-                                if (isGrounded)
-                                {
-                                    anim.SetBool("Jump", true);
-                                    canDoubleJump = false;
-                                    StartCoroutine(Jump(0));
-                                }
+                                StartCoroutine(Roll(0, -1, .25f));
                             }
+
 
                             swipeDetector.swipeDirection = SwipeDirection.None;
                         }
-                        
+
                         if (canSmash && swipeDetector.swipeDirection == SwipeDirection.Right && !doingSmash)
                         {
                             Smash(1, 0);
                             swipeDetector.TapPerformed = false;
                             swipeDetector.swipeDirection = SwipeDirection.None;
                         }
-                    } 
+                    }
                 }
             }
 
@@ -603,22 +621,35 @@ public class PlayerMovementNew : MonoBehaviour
                 StartCoroutine(HeartbeatShakeSequence());
             }
 
-            if (!isGrounded && Input.touchCount > 0 && swipeDetector.IsPressing)
+            if (playerController.paracaidas)
             {
-
-               if (!isSlowFalling)
+                if (!isGrounded && Input.touchCount > 0 && swipeDetector.IsPressing)
                 {
+                    if (!isSlowFalling)
+                    {
+                        isSlowFalling = true;
+                        anim.SetBool("Walk", false);
+                        anim.SetBool("SlowFall", true);
+                        rb.velocity = new Vector2(.2f, rb.velocity.y);
+                        rb.gravityScale = slowFallGravity;
 
-                    isSlowFalling = true;
-                    anim.SetBool("Walk", false);
-                    anim.SetBool("SlowFall", true);
-                    rb.velocity = new Vector2(.2f, rb.velocity.y);
-                    rb.gravityScale = slowFallGravity;
+                    }
                 }
+
+
+
+                //if (playerController.paracaidas)
+                // {                                       
+                //     anim.SetBool("Walk", false);
+                //     anim.SetBool("SlowFall", true);
+                //     rb.velocity = new Vector2(.2f, rb.velocity.y);
+                //     rb.gravityScale = slowFallGravity;
+                // }
             }
 
             if (Input.touchCount == 0 && isSlowFalling)
             {
+
                 if (isSlowFalling)
                 {
                     isSlowFalling = false;
@@ -628,7 +659,7 @@ public class PlayerMovementNew : MonoBehaviour
                 }
             }
 
-          
+
 
             if (isGrounded && !tapFloor)
             {
@@ -658,11 +689,6 @@ public class PlayerMovementNew : MonoBehaviour
 
     }
 
-    public void ChangeSlowFalling(bool isSlowFall)
-    {
-        isSlowFalling=isSlowFall;
-        //playerController.uiCoins.UpdateCoins(-2);
-    }
 
     private IEnumerator CameraShake(float tiempo)
     {
@@ -698,14 +724,14 @@ public class PlayerMovementNew : MonoBehaviour
     {
         if (!playerController.isCannabis)
         {
-            
+
             StartCoroutine(SwitchCapsuleColliderSize());
             rb.velocity = new Vector2(rb.velocity.x, 0);
             rb.velocity += Vector2.up * jumpStrength;
         }
         else
         {
-            
+
             anim.SetBool("Walk", true);
             anim.SetBool("Jump", false);
             yield return new WaitForSeconds(delay);
@@ -727,17 +753,29 @@ public class PlayerMovementNew : MonoBehaviour
     }
 
 
-    private void Roll(float x, float y)
+    private IEnumerator Roll(float x, float y, float time)
     {
-        anim.SetBool("Roll", true);
-        // Vector3 playerPosition = Camera.main.WorldToViewportPoint(transform.position);
-        //Camera.main.GetComponent<RippleEffect>().Emit(playerPosition);
-        //StartCoroutine(CameraShake());
+        if (!playerController.isCannabis)
+        {
+            anim.SetBool("Roll", true);
+            // Vector3 playerPosition = Camera.main.WorldToViewportPoint(transform.position);
+            //Camera.main.GetComponent<RippleEffect>().Emit(playerPosition);
+            //StartCoroutine(CameraShake());
+            canRoll = true;
+            rb.velocity += new Vector2(x, y).normalized * rollVelocity;
+            StartCoroutine(SwitchCapsuleColliderSize());
+            StartCoroutine(PreRoll());
+        }
+        else
+        {
+            yield return new WaitForSeconds(time);
+            anim.SetBool("Roll", true);
+            canRoll = true;
+            rb.velocity += new Vector2(x, y).normalized * rollVelocity;
+            StartCoroutine(SwitchCapsuleColliderSize());
+            StartCoroutine(PreRoll());
+        }
 
-        canRoll = true;
-        rb.velocity += new Vector2(x, y).normalized * rollVelocity;
-        StartCoroutine(SwitchCapsuleColliderSize());
-        StartCoroutine(PreRoll());
     }
     private IEnumerator PreRoll()
     {
@@ -775,7 +813,7 @@ public class PlayerMovementNew : MonoBehaviour
     {
         StartCoroutine(FloorSmash());
         rb.gravityScale = 0;
-        doingSmash = true;        
+        doingSmash = true;
 
         yield return new WaitForSeconds(.3f);
         rb.gravityScale = gravityScale;
@@ -806,20 +844,18 @@ public class PlayerMovementNew : MonoBehaviour
         {
 
             StartCoroutine(Diying());
-            print("Murio");          
-
         }
     }
     private IEnumerator Diying()
     {
         anim.Play("Die");
-        yield return new WaitForSeconds(3);        
+        yield return new WaitForSeconds(1);
         playerController.isDie = true;
         playerController.escudo = false;
         playerController.saltoDoble = false;
         playerController.vidaExtra = false;
         playerController.paracaidas = false;
-        
+
         levelManager.GameOver();
         //SceneManager.LoadScene("Test");
 
@@ -860,7 +896,7 @@ public class PlayerMovementNew : MonoBehaviour
         //    transposer.m_FollowOffset.x = 0f;
         //}
 
-        int movimientosIzquierda = 0; 
+        int movimientosIzquierda = 0;
         int movimientosDerecha = 0;
         int maxMovimientos = 2;
 
@@ -901,7 +937,7 @@ public class PlayerMovementNew : MonoBehaviour
 
         //    movementMode = MovementMode.RunnerMode;
         //}
-        else if(!isPC)
+        else if (!isPC)
         {
             float screenWidth = Screen.width;
 
@@ -928,16 +964,16 @@ public class PlayerMovementNew : MonoBehaviour
                     {
                         // Tap
                         //Detactar si el usuario hace tap en la izquierda de la pantalla o en la derecha
-                        if(tapEndPos.x < screenWidth / 2)
+                        if (tapEndPos.x < screenWidth / 2)
                         {
-                            transform.localScale = new Vector3(-1,1,1);
+                            transform.localScale = new Vector3(-1, 1, 1);
                             Mover(Vector3.left);
                             movimientosIzquierda++;
                             movimientosDerecha = Mathf.Max(0, movimientosDerecha - 1);
                         }
                         else
                         {
-                            transform.localScale = new Vector3(1,1,1);
+                            transform.localScale = new Vector3(1, 1, 1);
                             Mover(Vector3.right);
                             movimientosDerecha++;
                             movimientosIzquierda = Mathf.Max(0, movimientosIzquierda - 1);
@@ -945,7 +981,7 @@ public class PlayerMovementNew : MonoBehaviour
 
 
                     }
-                }                
+                }
             }
         }
 
@@ -1089,19 +1125,19 @@ public class PlayerMovementNew : MonoBehaviour
     {
         rb.gravityScale = gravityScale;
         direction = new Vector2(1, 1);
-        Walk();        
+        Walk();
 
         anim.SetBool("Flappy", true);
         if (isPC)
-        {      
+        {
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 rb.velocity = new Vector2(rb.velocity.x, 0);
-                rb.velocity += Vector2.up * jumpStrength;
-                
+                rb.velocity += Vector2.up * jumpFlappyStrength;
+
             }
         }
-        else if(!isPC) 
+        else if (!isPC)
         {
             if (Input.touchCount > 0)
             {
@@ -1126,13 +1162,13 @@ public class PlayerMovementNew : MonoBehaviour
                     {
                         // Esto es un tap
                         rb.velocity = new Vector2(rb.velocity.x, 0);
-                        rb.velocity += Vector2.up * jumpStrength;
+                        rb.velocity += Vector2.up * jumpFlappyStrength;
                     }
                     else
                     {
                         // Esto es un swipe
                         // HandleSwipe(tapStartPos, tapEndPos);
-                        
+
                     }
                 }
             }

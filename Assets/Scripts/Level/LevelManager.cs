@@ -6,37 +6,47 @@ using UnityEngine.SceneManagement;
 public class LevelManager : MonoBehaviour
 {
 
-    private PlayerController playerController;
-    public GameObject UI_Habilidades;
+    public PlayerController playerController;
+    [SerializeField] private GameObject UI_Habilidades;
+    [SerializeField] private GameObject UI_MensajeHabilidades;
+    [SerializeField] private GameObject UI_CurrentEffect;
+    [SerializeField] private UI_Coins uiCoins;
+    [SerializeField] private UI_Lifes uiLifes;
 
     private void Awake()
     {
-        
-    }
+        uiCoins.coinCount = UserData.coins;
+        uiCoins.coinCountText.text = uiCoins.coinCount.ToString();
 
-    void Start()
-    {
-        playerController = FindAnyObjectByType<PlayerController>();
+        playerController.escudo = UserData.escudo;
+        playerController.vidaExtra = UserData.vidaExtra;
+        playerController.saltoDoble = UserData.saltoDoble;
+        playerController.paracaidas = UserData.paracaidas;
     }
-
 
     public void GameOver()
     {
         if (playerController != null)
         {
-            if (playerController.isDie)
+            if (!playerController.isDrugged && playerController.isDie)
             {
                 Time.timeScale = 0;
-                
-                
                 UI_Habilidades.SetActive(true);
             }
+            else if (playerController.isDrugged && playerController.isDie)
+            {
+                Time.timeScale = 0;
+                UI_CurrentEffect.SetActive(false);
+                UI_MensajeHabilidades.SetActive(true);
+
+            }
+
         }
     }
 
     public void ResetLevel()
     {
-        UserData.coins = playerController.coinsAmount;
+        UserData.coins = uiCoins.coinCount;
         UserData.escudo = playerController.escudo;
         UserData.saltoDoble = playerController.saltoDoble;
         UserData.vidaExtra = playerController.vidaExtra;

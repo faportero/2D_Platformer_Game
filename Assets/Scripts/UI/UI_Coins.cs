@@ -3,17 +3,10 @@ using TMPro;
 using UnityEngine;
 
 public class UI_Coins : MonoBehaviour
-{
-    
-    private float maxCoins = 9999999;
+{   
+    private int maxCoins = 9999999;
     public float coinCount = 0;
-    [SerializeField] private TextMeshProUGUI coinCountText;
-
-    private void Start()
-    {
-        
-        coinCountText.text = UserData.coins.ToString();        
-    }
+    public TextMeshProUGUI coinCountText;
 
     public void UpdateCoins(int value)
     {

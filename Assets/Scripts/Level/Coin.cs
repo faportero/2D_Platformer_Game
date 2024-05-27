@@ -5,18 +5,14 @@ using UnityEngine.SocialPlatforms;
 
 public class Coin : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public PlayerController playerController;
+    [SerializeField] private UI_Coins uiCoins;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == ("Player"))
 
-        {
-            //print("Coin" + UserData.coins);
-            //UserData.coins += 1;
-            playerController.coinsAmount += 1;
-            playerController.TakeUICoin(1); 
+        { 
+            uiCoins.UpdateCoins(1);
             CoinDie();
         }
     }

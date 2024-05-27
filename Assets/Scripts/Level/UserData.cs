@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class UserData
 {
-    public static int coins, lifes = 3, health;
+    public static int lifes = 3, health;
+    public static float coins;
     public static bool escudo, saltoDoble, vidaExtra, paracaidas;
    
 }

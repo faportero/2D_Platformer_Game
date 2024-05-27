@@ -13,39 +13,39 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float adictionAmount;
     public float currentAdiction;
     [SerializeField] public int SaludAmount = 0;
-    public int lifesAmount;
     [SerializeField] private UI_AdiccionBar adiccionBar;
-     public UI_Coins uiCoins;
-    public int coinsAmount;
+    public UI_Coins uiCoins;
+
     [SerializeField] private UI_Lifes uiLifes;
     [SerializeField] public UI_Salud uiSalud;
     [SerializeField] public UI_Habilidades uiHabilidades;
-    [HideInInspector] public List <Enemy> enemies;
-    [HideInInspector] public List <Ability> abilities;
-    public GameObject effectPanel;    
+    [HideInInspector] public List<Enemy> enemies;
+    [HideInInspector] public List<Ability> abilities;
+    public GameObject effectPanel;
     private PlayerMovementNew playerMovement;
-    
-   
+
+    private GameObject inmunidad;
 
     public bool isDie = false;
 
     public bool isCannabis, isCocaMetaHero, isPsilo, isAlcohol, isTabaco;
     public bool escudo, saltoDoble, vidaExtra, paracaidas;
-   
+
     private bool isEnemy;
+    public bool isDrugged;
 
     private void Awake()
     {
-        coinsAmount = UserData.coins;
-        uiCoins.coinCount = coinsAmount;
 
-        if (lastPosition != Vector3.zero) 
+        inmunidad = transform.GetChild(0).gameObject;
+        if (lastPosition != Vector3.zero)
         {
             transform.position = lastPosition;
-        } 
-}
+        }
+    }
     private void Start()
     {
+        Time.timeScale = 1;
         currentAdiction = adiccionBar.currentAdiccion;
 
         enemies = new List<Enemy>();
@@ -53,17 +53,25 @@ public class PlayerController : MonoBehaviour
         playerMovement = GetComponent<PlayerMovementNew>();
         FindEnemies();
         FindAbilities();
+
+        print("escudo" + UserData.escudo);
+        print("salto doble" + UserData.saltoDoble);
+        print("Vida extra" + UserData.vidaExtra);
+        print("paracaidas" + UserData.paracaidas);
+
+        if (escudo) inmunidad.SetActive(true);
+
     }
 
     private void FindEnemies()
     {
-        GameObject[] foundEnemies = GameObject.FindGameObjectsWithTag("Enemy");  
+        GameObject[] foundEnemies = GameObject.FindGameObjectsWithTag("Enemy");
         enemies.Clear();
 
         foreach (GameObject enemyObject in foundEnemies)
         {
             Enemy enemy = enemyObject.GetComponent<Enemy>();
-            if(enemy != null)
+            if (enemy != null)
             {
                 enemies.Add(enemy);
 
@@ -89,30 +97,26 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-       EnemyEffect();
+        EnemyEffect();
     }
 
     public void TakeAdiccion(Enemy enemy)
     {
-        if(enemy.isAdict)
+        if (enemy.isAdict)
         {
             adiccionBar.UpdateAdiccion(adictionAmount);
             enemy.Effect();
             enemy.EnemyDie();
-            currentAdiction = adiccionBar.currentAdiccion;  
+            currentAdiction = adiccionBar.currentAdiccion;
         }
-       
+
     }
     public void TakeAbility(Ability ability)
-    {     
+    {
         adiccionBar.UpdateAdiccion(adictionAmount);
         ability.NewAbility();
         ability.AbilityDie();
         currentAdiction = adiccionBar.currentAdiccion;
-    }
-    public void TakeUICoin(int value)
-    {
-       uiCoins.UpdateCoins(value);
     }
 
     public void TakeSalud()
@@ -125,7 +129,8 @@ public class PlayerController : MonoBehaviour
         {
             playerMovement.canSmash = true;
         }
-        else        {
+        else
+        {
             playerMovement.canSmash = false;
         }
 
@@ -140,57 +145,68 @@ public class PlayerController : MonoBehaviour
     }
     public void LoseLife()
     {
-        if (lifesAmount > 0)
+        if (uiLifes.lifesCount > 1)
         {
-            lifesAmount -= 1;
-            lifesAmount -= 1;          
-            uiLifes.UpdateLife(); 
+            uiLifes.UpdateLife();
         }
         else
         {
             playerMovement.canMove = false;
             uiHabilidades.CheckAvailable();
-            playerMovement.Die();            
+            playerMovement.Die();
         }
     }
 
 
     private void EnemyEffect()
-    {     
-        if(isCannabis)
+    {
+        if (isCannabis)
         {
-            StartCoroutine(CurrentEffect(5));       
+            isDrugged = true;
+            StartCoroutine(CurrentEffect(5));
         }
-        else if(isCocaMetaHero)
+        else if (isCocaMetaHero)
         {
-            StartCoroutine(CurrentEffect(5));            
+            isDrugged = true;
+            StartCoroutine(CurrentEffect(5));
         }
-        else if(isAlcohol)
+        else if (isAlcohol)
         {
-            StartCoroutine(CurrentEffect(5));            
+            isDrugged = true;
+            StartCoroutine(CurrentEffect(5));
         }
         else if (isPsilo)
         {
+            isDrugged = true;
             StartCoroutine(CurrentEffect(5));
         }
-        else if(isTabaco)
+        else if (isTabaco)
         {
-            StartCoroutine(CurrentEffect(5));  
-                
-        }        
+            isDrugged = true;
+            StartCoroutine(CurrentEffect(5));
+
+        }
     }
 
-    private IEnumerator CurrentEffect(float delay) 
+    private IEnumerator CurrentEffect(float delay)
     {
-        effectPanel.SetActive(true);
-        yield return new WaitForSecondsRealtime(delay);
-        StopAllCoroutines();
-        effectPanel.SetActive(false);
-        isCannabis = false;
-        isCocaMetaHero = false;
-        isPsilo = false;
-        isAlcohol = false;
-        isTabaco = false;
+
+
+        if (!isDie)
+        {
+            effectPanel.SetActive(true);
+            yield return new WaitForSecondsRealtime(delay);
+            StopAllCoroutines();
+            effectPanel.SetActive(false);
+            isCannabis = false;
+            isCocaMetaHero = false;
+            isPsilo = false;
+            isAlcohol = false;
+            isTabaco = false;
+            isDrugged = false;
+       }
+
+
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -200,20 +216,20 @@ public class PlayerController : MonoBehaviour
             LoseLife();
 
         }
-        if(collision.tag == "Salud")
+        if (collision.tag == "Salud")
         {
-            if(currentAdiction != 0)
+            if (currentAdiction != 0)
             {
                 currentAdiction -= adictionAmount;
                 adiccionBar.UpdateAdiccion(-adictionAmount);
-               // print(adiccionBar.adiccionFillBar.fillAmount);
+                // print(adiccionBar.adiccionFillBar.fillAmount);
             }
             if (currentAdiction <= 0)
             {
                 uiSalud.UpdateSalud(1);
                 TakeSalud();
                 //print(currentAdiction);
-            }           
+            }
         }
     }
 }
