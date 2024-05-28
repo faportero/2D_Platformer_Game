@@ -82,8 +82,8 @@ public class PlayerMovementNew : MonoBehaviour
     private bool tapDetected;
     private float tapStartTime;
     private Vector2 tapStartPos;
-    private float tapTimeThreshold = .3f;
-    private float swipeDistanceThreshold = 100;
+    private float tapTimeThreshold = .5f;
+    private float swipeDistanceThreshold = 150;
 
 
     public List<GameObject> faillingTargets;
@@ -525,7 +525,7 @@ public class PlayerMovementNew : MonoBehaviour
                             {
                                 StartCoroutine(Jump(0));
                             }
-                            else
+                            else if (tapDuration < tapTimeThreshold && swipeDistance < swipeDistanceThreshold)
                             {
                                 canSmash = false;
                                 canDoubleJump = false;
