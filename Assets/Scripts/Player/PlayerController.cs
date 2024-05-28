@@ -42,10 +42,11 @@ public class PlayerController : MonoBehaviour
         {
             transform.position = lastPosition;
         }
+        if (escudo) inmunidad.SetActive(true);
     }
     private void Start()
     {
-        Time.timeScale = 1;
+        
         currentAdiction = adiccionBar.currentAdiccion;
 
         enemies = new List<Enemy>();
@@ -59,7 +60,7 @@ public class PlayerController : MonoBehaviour
         print("Vida extra" + UserData.vidaExtra);
         print("paracaidas" + UserData.paracaidas);
 
-        if (escudo) inmunidad.SetActive(true);
+       
 
     }
 

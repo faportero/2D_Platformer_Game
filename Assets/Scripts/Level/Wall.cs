@@ -22,21 +22,31 @@ public class Wall : MonoBehaviour
     //        }
     //    }
     //}
+    private PlayerMovementNew playerMovement;
+    private PlayerController playerController;
+    private void Start()
+    {
+        playerMovement = FindObjectOfType<PlayerMovementNew>();
+        playerController = FindObjectOfType<PlayerController>();
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player")
         {
-            if (collision.gameObject.GetComponent<PlayerMovementNew>().doingSmash == true)
+            if (!playerMovement.doingSmash && !playerController.escudo)
             {
-                //print(collision.gameObject.GetComponent<PlayerMovementNew>().doingSmash);
-                //GetComponent<Collider2D>().enabled = false;
+                collision.gameObject.GetComponent<PlayerController>().LoseLife();
             }
             else
             {
-                //collision.gameObject.GetComponent<PlayerMovementNew>().canMove = false;
-                collision.gameObject.GetComponent<PlayerController>().LoseLife();
-                //collision.gameObject.GetComponent<PlayerMovementNew>().Die();
+                WallDie();
             }
         }
+    }
+
+    private void WallDie()
+    {
+        gameObject.GetComponent<BoxCollider2D>().enabled = false;
+        gameObject.SetActive(false);
     }
 }

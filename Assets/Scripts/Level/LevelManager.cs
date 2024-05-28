@@ -23,24 +23,24 @@ public class LevelManager : MonoBehaviour
         playerController.saltoDoble = UserData.saltoDoble;
         playerController.paracaidas = UserData.paracaidas;
     }
-
+    private void Start()
+    {
+        Time.timeScale = 1;
+    }
     public void GameOver()
     {
+        Time.timeScale = 0;
+
         if (playerController != null)
         {
             if (!playerController.isDrugged && playerController.isDie)
-            {
-                Time.timeScale = 0;
+            {                
                 UI_Habilidades.SetActive(true);
             }
             else if (playerController.isDrugged && playerController.isDie)
-            {
-                Time.timeScale = 0;
-                UI_CurrentEffect.SetActive(false);
+            {  
                 UI_MensajeHabilidades.SetActive(true);
-
             }
-
         }
     }
 

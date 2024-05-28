@@ -20,9 +20,9 @@ public class PlayerMovementNew : MonoBehaviour
     }
     [Header("Movement Mode")]
     public MovementMode movementMode;
-
+    
     [Header("Components Reference")]
-    private Rigidbody2D rb;
+    [HideInInspector] public Rigidbody2D rb;
     private CapsuleCollider2D capsuleCollider;
     private Animator anim;
     private CinemachineVirtualCamera cm;
@@ -128,26 +128,29 @@ public class PlayerMovementNew : MonoBehaviour
     }
     private void Update()
     {
-
-        switch (movementMode)
+        if(canMove)
         {
-            case MovementMode.TapMode:
-                TapMovement();
-                break;
-            case MovementMode.RunnerMode:
-                RunnerMovement();
-                CheckGround();
-                break;
-            case MovementMode.FallingMode:
-                GetInputDirection();
-                GetDirecction();
-                CheckGround();
-                FallingMovement();
-                break;
-            case MovementMode.FlappyMode:
-                FlappyMovement();
-                break;
+            switch (movementMode)
+            {
+                case MovementMode.TapMode:
+                    TapMovement();
+                    break;
+                case MovementMode.RunnerMode:
+                    RunnerMovement();
+                    CheckGround();
+                    break;
+                case MovementMode.FallingMode:
+                    GetInputDirection();
+                    GetDirecction();
+                    CheckGround();
+                    FallingMovement();
+                    break;
+                case MovementMode.FlappyMode:
+                    FlappyMovement();
+                    break;
+            }
         }
+
     }
 
     private void FixedUpdate()
@@ -855,7 +858,7 @@ public class PlayerMovementNew : MonoBehaviour
         playerController.saltoDoble = false;
         playerController.vidaExtra = false;
         playerController.paracaidas = false;
-
+        canMove = false;
         levelManager.GameOver();
         //SceneManager.LoadScene("Test");
 

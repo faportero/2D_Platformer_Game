@@ -28,6 +28,10 @@ public class UI_Habilidades : MonoBehaviour
     {
 
     }
+    private void UpdateCoinsText()
+    {
+        txCoins.text = uiCoins.coinCount.ToString();
+    }
     public void CheckAvailable()
     {
         if (valorEscudo <= uiCoins.coinCount) escudo.GetComponent<UnityEngine.UI.Button>().interactable = true;
@@ -40,24 +44,36 @@ public class UI_Habilidades : MonoBehaviour
     {
         uiCoins.UpdateCoins(-valorEscudo);
         playerController.escudo = true;
-        levelManager.ResetLevel();
+        uiCoins.coinCountText.text = uiCoins.coinCount.ToString();
+        UpdateCoinsText();
+        escudo.GetComponent<UnityEngine.UI.Button>().interactable = false;
+        //levelManager.ResetLevel();
     }
     public void BuySaltoDoble()
     {
         uiCoins.UpdateCoins(-valorSaltoDoble);
         playerController.saltoDoble = true;
-        levelManager.ResetLevel();
+        uiCoins.coinCountText.text = uiCoins.coinCount.ToString();
+        UpdateCoinsText();
+        saltoDoble.GetComponent<UnityEngine.UI.Button>().interactable = false;
+        //levelManager.ResetLevel();
     }
     public void BuyVidaExtra()
     {
         uiCoins.UpdateCoins(-valorVidaExtra);
         playerController.vidaExtra = true;
-        levelManager.ResetLevel();
+        uiCoins.coinCountText.text = uiCoins.coinCount.ToString();
+        UpdateCoinsText();  
+        vidaExtra.GetComponent<UnityEngine.UI.Button>().interactable = false;
+       // levelManager.ResetLevel();
     }
     public void BuyParacaidas()
     {
         uiCoins.UpdateCoins(-valorParacaidas);
         playerController.paracaidas = true;
-        levelManager.ResetLevel();
+        uiCoins.coinCountText.text = uiCoins.coinCount.ToString();
+        UpdateCoinsText();
+        paracaidas.GetComponent<UnityEngine.UI.Button>().interactable = false;
+        //levelManager.ResetLevel();
     }
 }
