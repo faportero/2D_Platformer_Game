@@ -57,6 +57,7 @@ public class PlayerMovementNew : MonoBehaviour
 
     [Header("Input Parameters")]
     private Vector2 capsuleColliderSize;
+    private Vector2 capsuleColliderOffset;
     private Vector3 screenPosition;
     private Vector3 targetPosition;
     private float x, y;
@@ -82,7 +83,7 @@ public class PlayerMovementNew : MonoBehaviour
     private bool tapDetected;
     private float tapStartTime;
     private Vector2 tapStartPos;
-    private float tapTimeThreshold = .5f;
+    private float tapTimeThreshold = .3f;
     private float swipeDistanceThreshold = 150;
 
 
@@ -110,6 +111,7 @@ public class PlayerMovementNew : MonoBehaviour
     {
         isPC = InputManager.isPC;
         capsuleColliderSize = capsuleCollider.size;
+        capsuleColliderOffset = capsuleCollider.offset;
         targetPosition = transform.position;
 
 
@@ -525,7 +527,7 @@ public class PlayerMovementNew : MonoBehaviour
                             {
                                 StartCoroutine(Jump(0));
                             }
-                            else if (tapDuration < tapTimeThreshold && swipeDistance < swipeDistanceThreshold)
+                            else
                             {
                                 canSmash = false;
                                 canDoubleJump = false;
@@ -541,7 +543,7 @@ public class PlayerMovementNew : MonoBehaviour
                         }
                         else if (playerController.saltoDoble)
                         {
-                            if (swipeDetector.TapPerformed == true && !playerController.isCocaMetaHero)
+                            if (!isGrounded && swipeDetector.TapPerformed == true && !playerController.isCocaMetaHero)
                             {
                                 if (canDoubleJump)
                                 {
@@ -718,9 +720,11 @@ public class PlayerMovementNew : MonoBehaviour
     private IEnumerator SwitchCapsuleColliderSize()
     {
         yield return new WaitForSeconds(.1f);
-        capsuleCollider.size = capsuleColliderSize * new Vector2(1, 0.5f);
+        capsuleCollider.size = capsuleColliderSize * new Vector2(1, 0.05f);
+        //if (doingRoll) capsuleCollider.offset = new Vector2(capsuleCollider.offset.x, capsuleCollider.offset.y -.5f);
         yield return new WaitForSeconds(.3f);
         capsuleCollider.size = capsuleColliderSize;
+       // capsuleCollider.offset = capsuleColliderOffset;
     }
 
     private IEnumerator Jump(float delay)
