@@ -36,12 +36,13 @@ public class Wall : MonoBehaviour
             if (!playerMovement.doingSmash && !playerController.escudo)
             {
                 collision.gameObject.GetComponent<PlayerController>().LoseLife();
+                return;
             }
             else
             {
                 WallDie();
             }
-        }
+        }  
     }
 
     private void WallDie()

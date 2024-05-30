@@ -36,6 +36,7 @@ public class UI_Lifes : MonoBehaviour
             lastChild.GetComponent<Image>().color = Color.black;
             lifes.Remove(lastChild);
             lifesCount = lifes.Count;
+            print(lifesCount);
         }   
     }
 }

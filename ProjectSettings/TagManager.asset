@@ -11,6 +11,8 @@ TagManager:
   - Salud
   - Wall
   - CheckPoint
+  - BadFloor
+  - Resorte
   layers:
   - Default
   - TransparentFX

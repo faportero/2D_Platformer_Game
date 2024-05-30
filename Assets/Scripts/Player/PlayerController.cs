@@ -211,11 +211,12 @@ public class PlayerController : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == 7)
+        //if (collision.gameObject.layer == 7)
+        if (collision.tag == "BadFloor")
         {
             print("badlayer" + collision.gameObject.name);
             LoseLife();
-
+            return;
         }
         if (collision.tag == "Salud")
         {

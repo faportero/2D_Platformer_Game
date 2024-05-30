@@ -7,6 +7,7 @@ using static Enemy;
 using System;
 
 using System.Collections.Generic;
+using UnityEditor.Animations;
 
 public class PlayerMovementNew : MonoBehaviour
 {
@@ -98,12 +99,10 @@ public class PlayerMovementNew : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         cm = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
-        camOffset = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineCameraOffset>();
+        //camOffset = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineCameraOffset>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         playerController = GetComponent<PlayerController>();
-
-
 
     }
 
@@ -338,6 +337,7 @@ public class PlayerMovementNew : MonoBehaviour
         if (!doingSmash && !doingRoll && !playerController.isCannabis) direction = new Vector2(1.2f, 1);
         else if (playerController.isCannabis) direction = new Vector2(.75f, 1);
         else if (doingSmash) direction = new Vector2(smashVelocity, 0);
+        else if (doingRoll && isGrounded) direction = new Vector2(2.5f, 0);
         if (anim.GetBool("SlowFall")) direction = new Vector2(slowFallGravity, 0);
         //if (playerController.paracaidas) direction = new Vector2(slowFallGravity, 0);      
 
@@ -720,11 +720,12 @@ public class PlayerMovementNew : MonoBehaviour
     private IEnumerator SwitchCapsuleColliderSize()
     {
         yield return new WaitForSeconds(.1f);
-        capsuleCollider.size = capsuleColliderSize * new Vector2(1, 0.05f);
-        //if (doingRoll) capsuleCollider.offset = new Vector2(capsuleCollider.offset.x, capsuleCollider.offset.y -.5f);
+       // capsuleCollider.size = capsuleColliderSize * new Vector2(1, 0.05f);
+        capsuleCollider.size = new Vector2(.79f, 0.0001f);
+        if (doingRoll) capsuleCollider.offset = new Vector2(0,-.34f);
         yield return new WaitForSeconds(.3f);
         capsuleCollider.size = capsuleColliderSize;
-       // capsuleCollider.offset = capsuleColliderOffset;
+        capsuleCollider.offset = capsuleColliderOffset;
     }
 
     private IEnumerator Jump(float delay)
@@ -1181,4 +1182,6 @@ public class PlayerMovementNew : MonoBehaviour
             }
         }
     }
+
+  
 }
