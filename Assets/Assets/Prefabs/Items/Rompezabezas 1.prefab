@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8325588282049524968}
   - component: {fileID: 7847341251942061439}
   - component: {fileID: 693386287854736072}
+  - component: {fileID: 3746966541064614982}
   m_Layer: 0
   m_Name: Rompezabezas 1
   m_TagString: Untagged
@@ -130,3 +131,21 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3.930832, y: 3.930832}
   m_EdgeRadius: 0
+--- !u!114 &3746966541064614982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 300951820776036110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad51a6787599cd247bcdddacafc8772b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rompecabezasType: 0
+  spriteRenderers:
+  - {fileID: 1979492927, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
+  - {fileID: -1915337497, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
+  - {fileID: -496204927, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
+  - {fileID: -392455373, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}

@@ -7,7 +7,8 @@ using static Enemy;
 using System;
 
 using System.Collections.Generic;
-using UnityEditor.Animations;
+
+using DG.Tweening;
 
 public class PlayerMovementNew : MonoBehaviour
 {
@@ -55,6 +56,7 @@ public class PlayerMovementNew : MonoBehaviour
     public float fallingVelocity = 20;
     public float smashVelocity = 20;
     public float rotationFallingSpeed = 10;
+    public float fallingModeMovementAmmount;
 
     [Header("Input Parameters")]
     private Vector2 capsuleColliderSize;
@@ -343,7 +345,8 @@ public class PlayerMovementNew : MonoBehaviour
 
 
         Walk();
-        anim.SetBool("Walk", true);
+        if (isGrounded) anim.SetBool("Walk", true);
+        else anim.SetBool("Jump", true);
         if (isPC)
         {
             if (Input.GetKeyDown(KeyCode.Space) && !playerController.isCocaMetaHero)
@@ -883,13 +886,18 @@ public class PlayerMovementNew : MonoBehaviour
     }
     void Mover(Vector2 direccion)
     {
+
         // Calcula la nueva posición del objeto
         //rb.position = faillingTargets[2].transform.position;
-        Vector2 nuevaPosicion = rb.position + direccion * 5;
+       // Vector2 nuevaPosicion = rb.position + direccion.normalized * fallingModeMovementAmmount;
+        Vector3 nuevaPosicion = transform.position + new Vector3(direccion.x, direccion.y,0).normalized * fallingModeMovementAmmount;
 
 
         // Mueve el Rigidbody a la nueva posición
-        rb.MovePosition(nuevaPosicion);
+       // rb.MovePosition(nuevaPosicion);
+        //rb.MovePosition(nuevaPosicion);
+       // rb.DOMove(nuevaPosicion, .2f);
+        transform.DOMove(nuevaPosicion, .2f);
         //rb.MovePosition(Vector2.MoveTowards(rb.position, nuevaPosicion, 2 * Time.deltaTime));
     }
     private void FallingMovement()
@@ -910,87 +918,89 @@ public class PlayerMovementNew : MonoBehaviour
 
         if (!isGrounded)
         {
-
+            anim.SetBool("Jump", true);
+            anim.SetBool("Walk", false);
             if (isPC)
             {
 
-                if (Input.GetKeyDown(KeyCode.LeftArrow))
+                if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
                 {
 
                     if (movimientosIzquierda < maxMovimientos)
                     {
-                        Mover(Vector3.left);
+                        Mover(Vector3.left + new Vector3 (0,-.25f,0));
                         movimientosIzquierda++;
                         movimientosDerecha = Mathf.Max(0, movimientosDerecha - 1);
                     }
                 }
 
 
-                if (Input.GetKeyDown(KeyCode.RightArrow))
+                if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
                 {
 
                     if (movimientosDerecha < maxMovimientos)
                     {
-                        Mover(Vector3.right);
+                        Mover(Vector3.right + new Vector3(0, -.25f, 0));
                         movimientosDerecha++;
                         movimientosIzquierda = Mathf.Max(0, movimientosIzquierda - 1);
                     }
                 }
 
             }
-
-        }
-        //else
-        //{
-
-        //    movementMode = MovementMode.RunnerMode;
-        //}
-        else if (!isPC)
-        {
-            float screenWidth = Screen.width;
-
-            if (Input.touchCount > 0)
+            else if (!isPC)
             {
-                Touch touch = Input.GetTouch(0);
+                float screenWidth = Screen.width;
 
-                if (touch.phase == TouchPhase.Began)
+                if (Input.touchCount > 0)
                 {
-                    tapDetected = true;
-                    tapStartTime = Time.time;
-                    tapStartPos = touch.position;
-                }
-                // Detectar el final del toque
-                else if (touch.phase == TouchPhase.Ended && tapDetected)
-                {
-                    tapDetected = false;
-                    float tapEndTime = Time.time;
-                    Vector2 tapEndPos = touch.position;
-                    float tapDuration = tapEndTime - tapStartTime;
-                    float swipeDistance = Vector2.Distance(tapStartPos, tapEndPos);
+                    Touch touch = Input.GetTouch(0);
 
-                    if (tapDuration < tapTimeThreshold && swipeDistance < swipeDistanceThreshold && !playerController.isCocaMetaHero)
+                    if (touch.phase == TouchPhase.Began)
                     {
-                        // Tap
-                        //Detactar si el usuario hace tap en la izquierda de la pantalla o en la derecha
-                        if (tapEndPos.x < screenWidth / 2)
+                        tapDetected = true;
+                        tapStartTime = Time.time;
+                        tapStartPos = touch.position;
+                    }
+                    // Detectar el final del toque
+                    else if (touch.phase == TouchPhase.Ended && tapDetected)
+                    {
+                        tapDetected = false;
+                        float tapEndTime = Time.time;
+                        Vector2 tapEndPos = touch.position;
+                        float tapDuration = tapEndTime - tapStartTime;
+                        float swipeDistance = Vector2.Distance(tapStartPos, tapEndPos);
+
+                        if (tapDuration < tapTimeThreshold && swipeDistance < swipeDistanceThreshold && !playerController.isCocaMetaHero)
                         {
-                            transform.localScale = new Vector3(-1, 1, 1);
-                            Mover(Vector3.left);
-                            movimientosIzquierda++;
-                            movimientosDerecha = Mathf.Max(0, movimientosDerecha - 1);
-                        }
-                        else
-                        {
-                            transform.localScale = new Vector3(1, 1, 1);
-                            Mover(Vector3.right);
-                            movimientosDerecha++;
-                            movimientosIzquierda = Mathf.Max(0, movimientosIzquierda - 1);
-                        }
+                            // Tap
+                            //Detactar si el usuario hace tap en la izquierda de la pantalla o en la derecha
+                            if (tapEndPos.x < screenWidth / 2)
+                            {
+                                transform.localScale = new Vector3(-2, 2, 2);
+                                Mover(Vector3.left + new Vector3(0, -.25f, 0));
+                                movimientosIzquierda++;
+                                movimientosDerecha = Mathf.Max(0, movimientosDerecha - 1);
+                            }
+                            else
+                            {
+                                transform.localScale = new Vector3(2, 2, 2);
+                                Mover(Vector3.right + new Vector3(0, -.25f, 0));
+                                movimientosDerecha++;
+                                movimientosIzquierda = Mathf.Max(0, movimientosIzquierda - 1);
+                            }
 
 
+                        }
                     }
                 }
+
             }
+            else
+            {
+
+                movementMode = MovementMode.RunnerMode;
+            }
+
         }
 
         #region oldFailling
