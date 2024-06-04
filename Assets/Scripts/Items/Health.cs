@@ -1,6 +1,11 @@
-using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+using System.Collections.Generic;
 
+[ExecuteAlways]
+[RequireComponent(typeof(SpriteRenderer))]
 public class Health : MonoBehaviour
 {
     private enum HealthType
@@ -16,19 +21,70 @@ public class Health : MonoBehaviour
         Pescado
     }
     [SerializeField] private HealthType healthType;
-    [SerializeField] private List<Sprite> spriteRenderers = new List<Sprite>();
+    [SerializeField] private bool isRandom;
+    public List<Sprite> spriteRenderers = new List<Sprite>();
+    private SpriteRenderer spriteRenderer;
+    private Vector3 lastPosition;
 
-    private void Awake()
+
+    void Awake()
     {
-        AssignSprite();
-
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
-    private void OnValidate()
+
+#if UNITY_EDITOR
+    void OnEnable()
     {
-        AssignSprite();
+       
+        if (isRandom) 
+            EditorApplication.update += OnEditorUpdate;
     }
 
-  
+    void OnDisable()
+    {
+        if (isRandom) 
+            EditorApplication.update -= OnEditorUpdate;
+    }
+
+    void OnEditorUpdate()
+    {
+        if (!Application.isPlaying && transform.position != lastPosition)
+        {
+            UpdateSprite();
+            lastPosition = transform.position;
+        }
+    }
+#endif
+
+    void OnValidate()
+    {     
+        if(!isRandom) AssignSprite();
+    }
+
+    private void UpdateSprite()
+    {
+        if (spriteRenderers.Count == 0)
+        {
+            Debug.LogWarning("La lista de sprites está vacía.");
+            return;
+        }
+
+        if (transform.position != Vector3.zero)
+        {
+            int randomIndex = Random.Range(0, spriteRenderers.Count);
+            spriteRenderer.sprite = spriteRenderers[randomIndex];
+        }
+        else
+        {
+            spriteRenderer.sprite = spriteRenderers[0];
+        }
+
+#if UNITY_EDITOR
+        // Marcar el objeto como modificado para asegurarse de que los cambios se reflejen en el editor
+        EditorUtility.SetDirty(spriteRenderer);
+#endif
+    }
+
     private void AssignSprite()
     {
         switch (healthType)
@@ -36,7 +92,6 @@ public class Health : MonoBehaviour
             case HealthType.Futbol:
                 gameObject.GetComponent<SpriteRenderer>().sprite = spriteRenderers[0];
                 break;
-
             case HealthType.Gym:
                 gameObject.GetComponent<SpriteRenderer>().sprite = spriteRenderers[1];
                 break;
@@ -61,6 +116,19 @@ public class Health : MonoBehaviour
             case HealthType.Pescado:
                 gameObject.GetComponent<SpriteRenderer>().sprite = spriteRenderers[8];
                 break;
+        }
+    }
+
+    private void HealthDie()
+    {
+        Destroy(gameObject, .2f);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision != null && collision.tag == "Player")
+        {
+            HealthDie();
         }
     }
 }

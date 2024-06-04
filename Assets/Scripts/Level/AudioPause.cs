@@ -11,12 +11,12 @@ public class AudioPause : MonoBehaviour
         if (pause)
         {
             Time.timeScale = 0;
-            panelPause.SetActive(true);
+           // panelPause.SetActive(true);
         }
         else
         {
             Time.timeScale = 1;
-            panelPause.SetActive(false);
+            //panelPause.SetActive(false);
         }
     }
 }

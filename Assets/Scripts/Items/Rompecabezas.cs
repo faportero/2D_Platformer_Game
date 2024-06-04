@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,7 +25,6 @@ public class Rompecabezas : MonoBehaviour
         AssignSprite();
     }
 
-
     private void AssignSprite()
     {
         switch (rompecabezasType)
@@ -43,5 +43,19 @@ public class Rompecabezas : MonoBehaviour
                 gameObject.GetComponent<SpriteRenderer>().sprite = spriteRenderers[3];
                 break;
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision != null && collision.tag == "Player")
+        {
+            RompecabezasDie();       
+        }
+    }
+
+    private void RompecabezasDie()
+    {
+        gameObject.SetActive(false);
+        gameObject.GetComponent<BoxCollider2D>().enabled = false;   
     }
 }

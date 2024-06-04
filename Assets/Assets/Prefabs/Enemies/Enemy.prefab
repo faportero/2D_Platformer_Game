@@ -110,6 +110,7 @@ MonoBehaviour:
   - {fileID: -1542685175, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
   - {fileID: 545440941, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
   - {fileID: 1957117115, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
+  isRandom: 0
   sustanceType: 3
 --- !u!61 &4696492953407014338
 BoxCollider2D:
@@ -154,5 +155,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.5924411, y: 1.4995382}
+  m_Size: {x: 1.1769872, y: 1.1371431}
   m_EdgeRadius: 0

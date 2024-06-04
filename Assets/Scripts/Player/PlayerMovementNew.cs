@@ -22,7 +22,7 @@ public class PlayerMovementNew : MonoBehaviour
     }
     [Header("Movement Mode")]
     public MovementMode movementMode;
-    
+
     [Header("Components Reference")]
     [HideInInspector] public Rigidbody2D rb;
     private CapsuleCollider2D capsuleCollider;
@@ -58,8 +58,10 @@ public class PlayerMovementNew : MonoBehaviour
     public float rotationFallingSpeed = 10;
     public float fallingModeMovementAmmount;
 
-    private float coyoteTime = .2f;
+    private float coyoteTime = .4f;
     private float coyoteTimeCounter;
+    private float jumpBufferTime = .4f;
+    private float jumpBufferCounter;
 
 
     [Header("Input Parameters")]
@@ -90,7 +92,7 @@ public class PlayerMovementNew : MonoBehaviour
     private bool tapDetected;
     private float tapStartTime;
     private Vector2 tapStartPos;
-    private float tapTimeThreshold = .3f;
+    private float tapTimeThreshold = .2f;
     private float swipeDistanceThreshold = 150;
 
 
@@ -136,7 +138,7 @@ public class PlayerMovementNew : MonoBehaviour
     }
     private void Update()
     {
-        if(canMove)
+        if (canMove)
         {
             switch (movementMode)
             {
@@ -361,15 +363,24 @@ public class PlayerMovementNew : MonoBehaviour
         {
             coyoteTimeCounter -= Time.deltaTime;
         }
-        //if (!swipeDetector.IsPressing)
-        //{
-        //    coyoteTimeCounter = 0;
-        //}
+
+       
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            jumpBufferCounter = jumpBufferTime;
+        }
+        else
+        {
+            jumpBufferCounter -= Time.deltaTime;    
+        }
+       
+
 
         if (isPC)
         {
 
-            if (Input.GetKeyDown(KeyCode.Space) && !playerController.isCocaMetaHero)
+            //if (Input.GetKeyDown(KeyCode.Space) && !playerController.isCocaMetaHero)
+            if (jumpBufferCounter > 0 && !playerController.isCocaMetaHero)
             {
               
                 if (coyoteTimeCounter > 0)
@@ -382,6 +393,7 @@ public class PlayerMovementNew : MonoBehaviour
                     {
                         
                         StartCoroutine(Jump(0));
+                        jumpBufferCounter = 0;
                     }
                     else
                     {
@@ -399,7 +411,7 @@ public class PlayerMovementNew : MonoBehaviour
                 }
                 else if (playerController.saltoDoble)
                 {
-                    if (Input.GetKeyDown(KeyCode.Space) && !playerController.isCocaMetaHero)
+                    if (jumpBufferCounter > 0 && !playerController.isCocaMetaHero)
                     {
                         if (canDoubleJump)
                         {
@@ -445,7 +457,6 @@ public class PlayerMovementNew : MonoBehaviour
                 {
                     if (!isGrounded)
                     {
-
                         anim.SetBool("Walk", false);
                         anim.SetBool("SlowFall", true);
                         rb.velocity = new Vector2(.2f, rb.velocity.y);
@@ -523,9 +534,22 @@ public class PlayerMovementNew : MonoBehaviour
 
         else if (!isPC)
         {
+
+
             if (Input.touchCount > 0)
             {
+
                 Touch touch = Input.GetTouch(0);
+
+                if (touch.phase == TouchPhase.Began)
+                {
+                    jumpBufferCounter = jumpBufferTime;
+                }
+                else 
+                {
+                    jumpBufferCounter -= Time.deltaTime;
+                }
+
 
                 if (touch.phase == TouchPhase.Began)
                 {
@@ -544,12 +568,12 @@ public class PlayerMovementNew : MonoBehaviour
                     float tapDuration = tapEndTime - tapStartTime;
                     float swipeDistance = Vector2.Distance(tapStartPos, tapEndPos);
 
-                    
+
                     if (tapDuration < tapTimeThreshold && swipeDistance < swipeDistanceThreshold && !playerController.isCocaMetaHero)
                     {
                         // Esto es un tap
-                        //if (coyoteTimeCounter > 0)
-                        if (isGrounded)
+                        if (coyoteTimeCounter > 0 && jumpBufferCounter > 0)
+                        //if (isGrounded)
                         {
                             swipeDetector.TapPerformed = false;
                             anim.SetBool("Jump", true);
@@ -557,6 +581,7 @@ public class PlayerMovementNew : MonoBehaviour
                             if (!playerController.isCannabis && !playerController.isAlcohol)
                             {
                                 StartCoroutine(Jump(0));
+                                jumpBufferCounter = 0;
                             }
                             else
                             {
@@ -572,6 +597,7 @@ public class PlayerMovementNew : MonoBehaviour
                                 //Roll(0, -1);
                             }
                         }
+
                         else if (playerController.saltoDoble)
                         {
                             if (!isGrounded && swipeDetector.TapPerformed == true && !playerController.isCocaMetaHero)
@@ -583,6 +609,7 @@ public class PlayerMovementNew : MonoBehaviour
                                     canDoubleJump = false;
                                 }
                             }
+                        if (touch.phase == TouchPhase.Ended) coyoteTimeCounter = 0;
                         }
                     }
 
@@ -659,6 +686,7 @@ public class PlayerMovementNew : MonoBehaviour
 
             if (playerController.paracaidas)
             {
+                Touch touch2 = Input.GetTouch(0);
                 if (!isGrounded && Input.touchCount > 0 && swipeDetector.IsPressing)
                 {
                     if (!isSlowFalling)
@@ -932,7 +960,10 @@ public class PlayerMovementNew : MonoBehaviour
     private void FallingMovement()
     {
         //camOffset.m_Offset = new Vector3(0, 0, -15);
-        direction = new Vector2(x, 0);
+        //if (direction != new Vector2(1,0)) 
+            direction = new Vector2(x, 0);
+        //else print("se jodio la direccion");
+
         //CinemachineTransposer transposer = cm.GetCinemachineComponent<CinemachineTransposer>();
 
         //if (transposer != null)

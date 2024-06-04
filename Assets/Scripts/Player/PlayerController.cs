@@ -142,7 +142,7 @@ public class PlayerController : MonoBehaviour
             playerMovement.canSmash = false;
         }
 
-        StopAllCoroutines();
+        //StopAllCoroutines();
         effectPanel.SetActive(false);
         isCannabis = false;
         isCocaMetaHero = false;
@@ -221,8 +221,13 @@ public class PlayerController : MonoBehaviour
 
     public void StartBlinking()
     {
-        if (blinkCoroutine == null)
+        if (!isAttack)
         {
+            if (blinkCoroutine != null)
+            {
+                StopCoroutine(blinkCoroutine);
+            }
+
             blinkCoroutine = StartCoroutine(BlinkAlpha());
         }
     }
@@ -245,8 +250,8 @@ public class PlayerController : MonoBehaviour
 
         // Asegúrate de que el sprite esté completamente visible al final
         //capsuleCollider.enabled = false;
-        isAttack = false;
         SetAlpha(1.0f);
+        isAttack = false;
         blinkCoroutine = null;
     }
 
@@ -265,9 +270,9 @@ public class PlayerController : MonoBehaviour
         if (collision.tag == "BadFloor" && !isAttack)
         {
             StartBlinking();
-            print("badlayer" + collision.gameObject.name);
+            //print("badlayer" + collision.gameObject.name);
             LoseLife();
-            return;
+           // return;
         }
         if (collision.tag == "Salud")
         {
@@ -281,6 +286,7 @@ public class PlayerController : MonoBehaviour
             {
                 uiSalud.UpdateSalud(1);
                 TakeSalud();
+               
                 //print(currentAdiction);
             }
         }

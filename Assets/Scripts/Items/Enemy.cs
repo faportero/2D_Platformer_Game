@@ -20,6 +20,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private List <Sprite> spriteRenderers = new List<Sprite>();
     private PlayerController playerController;
     private PlayerMovementNew playerMovement;
+    [SerializeField] private bool isRandom;
 
     public enum SustanceType
     {
@@ -34,14 +35,21 @@ public class Enemy : MonoBehaviour
     }
     public SustanceType sustanceType;
 
+
+
     private void Awake()
     {
-        AssignSprite();
+
+            AssignSprite();
+    
 
     }
     private void OnValidate()
     {
-        AssignSprite();
+ 
+            AssignSprite();
+     
+
     }
     private void Start()
     {
@@ -49,10 +57,12 @@ public class Enemy : MonoBehaviour
         effectText = effectPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         effectTextMensajeTitulo = effectPanelMensaje.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         effectTextMensajeDesc = effectPanelMensaje.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+
+
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == ("Player") && !playerController.isAttack)
+        if (collision !=null && collision.tag == ("Player"))
         {
             if (e.Count == 0) e = collision.GetComponent<PlayerController>().enemies;
             playerController = collision.GetComponent<PlayerController>();
@@ -60,7 +70,7 @@ public class Enemy : MonoBehaviour
             isAdict = true;
             foreach (Enemy enemy in e)
             {
-                if (enemy.sustanceType == sustanceType)
+                if (enemy.sustanceType == sustanceType && !playerController.isAttack)
                 {
                     if (!playerMovement.doingSmash && !playerController.escudo)
                     {
@@ -72,6 +82,7 @@ public class Enemy : MonoBehaviour
                         collision.GetComponent<PlayerController>().uiSalud.UpdateSalud(0);
                         collision.GetComponent<PlayerController>().LoseLife();
                         Effect();
+                        EnemyDie();
                     }
                     else
                     {
@@ -204,11 +215,9 @@ public class Enemy : MonoBehaviour
 
             case SustanceType.Alcohol:
                 gameObject.GetComponent<SpriteRenderer>().sprite = spriteRenderers[6];
-
                 break;
             case SustanceType.Tabaco:
                 gameObject.GetComponent<SpriteRenderer>().sprite = spriteRenderers[7];
-
                 break;
 
         }
