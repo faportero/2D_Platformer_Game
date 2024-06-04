@@ -13,7 +13,7 @@ public class Coin : MonoBehaviour
 
         { 
             uiCoins.UpdateCoins(1);
-            //CoinDie();
+            CoinDie();
         }
     }
 

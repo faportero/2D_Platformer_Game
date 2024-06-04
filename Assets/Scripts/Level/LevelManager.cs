@@ -18,10 +18,10 @@ public class LevelManager : MonoBehaviour
         uiCoins.coinCount = UserData.coins;
         uiCoins.coinCountText.text = uiCoins.coinCount.ToString();
 
-        //playerController.escudo = UserData.escudo;
-        //playerController.vidaExtra = UserData.vidaExtra;
-        //playerController.saltoDoble = UserData.saltoDoble;
-        //playerController.paracaidas = UserData.paracaidas;
+        playerController.escudo = UserData.escudo;
+        playerController.vidaExtra = UserData.vidaExtra;
+        playerController.saltoDoble = UserData.saltoDoble;
+        playerController.paracaidas = UserData.paracaidas;
     }
     private void Start()
     {
@@ -51,7 +51,7 @@ public class LevelManager : MonoBehaviour
         UserData.saltoDoble = playerController.saltoDoble;
         UserData.vidaExtra = playerController.vidaExtra;
         UserData.paracaidas = playerController.paracaidas;
-        SceneManager.LoadScene("Test");
+        SceneManager.LoadScene("Nivel_1");
     }
 
 }

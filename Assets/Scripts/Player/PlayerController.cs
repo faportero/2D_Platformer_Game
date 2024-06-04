@@ -34,6 +34,11 @@ public class PlayerController : MonoBehaviour
     private bool isEnemy;
     public bool isDrugged;
 
+    private SpriteRenderer spriteRenderer;
+    private Coroutine blinkCoroutine;
+    private CapsuleCollider2D capsuleCollider;
+    public bool isAttack = true;
+
     private void Awake()
     {
 
@@ -55,12 +60,14 @@ public class PlayerController : MonoBehaviour
         FindEnemies();
         FindAbilities();
 
-        print("escudo" + UserData.escudo);
-        print("salto doble" + UserData.saltoDoble);
-        print("Vida extra" + UserData.vidaExtra);
-        print("paracaidas" + UserData.paracaidas);
+        //print("escudo" + UserData.escudo);
+        //print("salto doble" + UserData.saltoDoble);
+        //print("Vida extra" + UserData.vidaExtra);
+        //print("paracaidas" + UserData.paracaidas);
 
-       
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        capsuleCollider = GetComponent<CapsuleCollider2D>();
+
 
     }
 
@@ -209,11 +216,55 @@ public class PlayerController : MonoBehaviour
 
 
     }
+
+    #region Parpadeo
+
+    public void StartBlinking()
+    {
+        if (blinkCoroutine == null)
+        {
+            blinkCoroutine = StartCoroutine(BlinkAlpha());
+        }
+    }
+
+    private IEnumerator BlinkAlpha()
+    {
+        //capsuleCollider.enabled = false;
+        isAttack = true;
+        float blinkDuration = 1.0f; // Duración total de 3 segundos
+        float blinkSpeed = 6.0f; // Velocidad del parpadeo
+        float elapsedTime = 0.0f;
+
+        while (elapsedTime < blinkDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            float alpha = Mathf.PingPong(elapsedTime * blinkSpeed, 1.0f);
+            SetAlpha(alpha);
+            yield return null;
+        }
+
+        // Asegúrate de que el sprite esté completamente visible al final
+        //capsuleCollider.enabled = false;
+        isAttack = false;
+        SetAlpha(1.0f);
+        blinkCoroutine = null;
+    }
+
+    private void SetAlpha(float alpha)
+    {
+        Color color = spriteRenderer.color;
+        color.a = alpha;
+        spriteRenderer.color = color;
+    }
+
+    #endregion
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //if (collision.gameObject.layer == 7)
-        if (collision.tag == "BadFloor")
+        if (collision.tag == "BadFloor" && !isAttack)
         {
+            StartBlinking();
             print("badlayer" + collision.gameObject.name);
             LoseLife();
             return;

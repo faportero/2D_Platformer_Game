@@ -31,10 +31,11 @@ public class Wall : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.tag == "Player" && !playerController.isAttack)
         {
             if (!playerMovement.doingSmash && !playerController.escudo)
             {
+                playerController.StartBlinking();
                 collision.gameObject.GetComponent<PlayerController>().LoseLife();
                 return;
             }

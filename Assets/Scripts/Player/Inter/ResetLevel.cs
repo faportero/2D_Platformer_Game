@@ -8,6 +8,7 @@ public class ResetLevel : MonoBehaviour
 {
     [SerializeField] private GameObject[] gameObjectsToActive; 
     [SerializeField] private GameObject[] gameObjectsToHide;
+    [SerializeField] private string levelName;
     public static bool isResetLevel;
     private void Start()
     {
@@ -31,7 +32,7 @@ public class ResetLevel : MonoBehaviour
         if (collision.tag == "Player")
         {
             isResetLevel = true;
-            SceneManager.LoadScene("Test");
+            SceneManager.LoadScene(levelName.ToString());
         }
     }
 }

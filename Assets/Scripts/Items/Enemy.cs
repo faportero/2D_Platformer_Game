@@ -52,7 +52,7 @@ public class Enemy : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == ("Player"))
+        if (collision.tag == ("Player") && !playerController.isAttack)
         {
             if (e.Count == 0) e = collision.GetComponent<PlayerController>().enemies;
             playerController = collision.GetComponent<PlayerController>();
@@ -64,6 +64,7 @@ public class Enemy : MonoBehaviour
                 {
                     if (!playerMovement.doingSmash && !playerController.escudo)
                     {
+                        playerController.StartBlinking();
                         collision.GetComponent<PlayerController>().TakeAdiccion(enemy);
                         collision.GetComponent<PlayerController>().SaludAmount = 0;
                         collision.GetComponent<PlayerController>().uiSalud.saludCount = 0;

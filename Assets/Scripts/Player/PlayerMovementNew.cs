@@ -58,6 +58,10 @@ public class PlayerMovementNew : MonoBehaviour
     public float rotationFallingSpeed = 10;
     public float fallingModeMovementAmmount;
 
+    private float coyoteTime = .2f;
+    private float coyoteTimeCounter;
+
+
     [Header("Input Parameters")]
     private Vector2 capsuleColliderSize;
     private Vector2 capsuleColliderOffset;
@@ -93,6 +97,7 @@ public class PlayerMovementNew : MonoBehaviour
     public List<GameObject> faillingTargets;
     [SerializeField] LevelManager levelManager;
     private bool isSlowFalling;
+    public bool isFallingMode;
 
     private void Awake()
 
@@ -347,17 +352,35 @@ public class PlayerMovementNew : MonoBehaviour
         Walk();
         if (isGrounded) anim.SetBool("Walk", true);
         else anim.SetBool("Jump", true);
+
+        if (isGrounded)
+        {
+            coyoteTimeCounter = coyoteTime;
+        }
+        else
+        {
+            coyoteTimeCounter -= Time.deltaTime;
+        }
+        //if (!swipeDetector.IsPressing)
+        //{
+        //    coyoteTimeCounter = 0;
+        //}
+
         if (isPC)
         {
+
             if (Input.GetKeyDown(KeyCode.Space) && !playerController.isCocaMetaHero)
             {
-                if (isGrounded)
+              
+                if (coyoteTimeCounter > 0)
+                //if (isGrounded)
                 {
                     anim.SetBool("Jump", true);
                     canDoubleJump = true;
 
                     if (!playerController.isCannabis && !playerController.isAlcohol)
                     {
+                        
                         StartCoroutine(Jump(0));
                     }
                     else
@@ -387,6 +410,8 @@ public class PlayerMovementNew : MonoBehaviour
                 }
 
             }
+            if (Input.GetKeyUp(KeyCode.Space)) coyoteTimeCounter = 0;
+
             if (playerController.isCocaMetaHero)
             {
                 if (isGrounded)
@@ -511,16 +536,19 @@ public class PlayerMovementNew : MonoBehaviour
                 // Detectar el final del toque
                 else if (touch.phase == TouchPhase.Ended && tapDetected)
                 {
+                    //coyoteTimeCounter = 0;
+
                     tapDetected = false;
                     float tapEndTime = Time.time;
                     Vector2 tapEndPos = touch.position;
                     float tapDuration = tapEndTime - tapStartTime;
                     float swipeDistance = Vector2.Distance(tapStartPos, tapEndPos);
 
+                    
                     if (tapDuration < tapTimeThreshold && swipeDistance < swipeDistanceThreshold && !playerController.isCocaMetaHero)
                     {
                         // Esto es un tap
-
+                        //if (coyoteTimeCounter > 0)
                         if (isGrounded)
                         {
                             swipeDetector.TapPerformed = false;
@@ -766,6 +794,7 @@ public class PlayerMovementNew : MonoBehaviour
 
     private IEnumerator Roll(float x, float y, float time)
     {
+
         if (!playerController.isCannabis)
         {
             anim.SetBool("Roll", true);
@@ -897,7 +926,7 @@ public class PlayerMovementNew : MonoBehaviour
        // rb.MovePosition(nuevaPosicion);
         //rb.MovePosition(nuevaPosicion);
        // rb.DOMove(nuevaPosicion, .2f);
-        transform.DOMove(nuevaPosicion, .2f);
+        transform.DOMove(nuevaPosicion, .1f);
         //rb.MovePosition(Vector2.MoveTowards(rb.position, nuevaPosicion, 2 * Time.deltaTime));
     }
     private void FallingMovement()
