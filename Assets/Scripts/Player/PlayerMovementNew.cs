@@ -58,7 +58,7 @@ public class PlayerMovementNew : MonoBehaviour
     public float rotationFallingSpeed = 10;
     public float fallingModeMovementAmmount;
 
-    private float coyoteTime = .4f;
+    private float coyoteTime = .2f;
     private float coyoteTimeCounter;
     private float jumpBufferTime = .4f;
     private float jumpBufferCounter;
@@ -92,8 +92,11 @@ public class PlayerMovementNew : MonoBehaviour
     private bool tapDetected;
     private float tapStartTime;
     private Vector2 tapStartPos;
-    private float tapTimeThreshold = .2f;
+    private float tapDuration;
+    private float tapTimeThreshold = .4f;
     private float swipeDistanceThreshold = 150;
+    private Touch touch;
+    private Touch touch1;
 
 
     public List<GameObject> faillingTargets;
@@ -138,6 +141,13 @@ public class PlayerMovementNew : MonoBehaviour
     }
     private void Update()
     {
+        //for (int i = 0; i < Input.touchCount; i++)
+        //{
+        //    Vector3 touchPosition = Camera.main.ScreenToWorldPoint(Input.touches[i].position);
+        //    Debug.DrawLine(Vector3.zero, touchPosition, Color.red);
+        //}
+
+
         if (canMove)
         {
             switch (movementMode)
@@ -363,21 +373,19 @@ public class PlayerMovementNew : MonoBehaviour
         {
             coyoteTimeCounter -= Time.deltaTime;
         }
-
-       
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            jumpBufferCounter = jumpBufferTime;
-        }
-        else
-        {
-            jumpBufferCounter -= Time.deltaTime;    
-        }
-       
-
+           
 
         if (isPC)
         {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                jumpBufferCounter = jumpBufferTime;
+            }
+            else
+            {
+                jumpBufferCounter -= Time.deltaTime;
+            }
+
 
             //if (Input.GetKeyDown(KeyCode.Space) && !playerController.isCocaMetaHero)
             if (jumpBufferCounter > 0 && !playerController.isCocaMetaHero)
@@ -468,7 +476,7 @@ public class PlayerMovementNew : MonoBehaviour
                 {
                     anim.SetBool("SlowFall", false);
                     anim.SetBool("Walk", true);
-                    rb.gravityScale = 10;
+                    rb.gravityScale = gravityScale;
                 }
             }
 
@@ -535,11 +543,10 @@ public class PlayerMovementNew : MonoBehaviour
         else if (!isPC)
         {
 
-
             if (Input.touchCount > 0)
             {
-
-                Touch touch = Input.GetTouch(0);
+                touch = Input.GetTouch(0);
+                
 
                 if (touch.phase == TouchPhase.Began)
                 {
@@ -565,15 +572,15 @@ public class PlayerMovementNew : MonoBehaviour
                     tapDetected = false;
                     float tapEndTime = Time.time;
                     Vector2 tapEndPos = touch.position;
-                    float tapDuration = tapEndTime - tapStartTime;
+                    tapDuration = tapEndTime - tapStartTime;
                     float swipeDistance = Vector2.Distance(tapStartPos, tapEndPos);
 
 
-                    if (tapDuration < tapTimeThreshold && swipeDistance < swipeDistanceThreshold && !playerController.isCocaMetaHero)
+                    if (jumpBufferCounter > 0 && tapDuration < tapTimeThreshold && swipeDistance < swipeDistanceThreshold && !playerController.isCocaMetaHero)
                     {
-                        // Esto es un tap
-                        if (coyoteTimeCounter > 0 && jumpBufferCounter > 0)
-                        //if (isGrounded)
+                      // Esto es un tap
+                      //if (isGrounded)
+                        if (coyoteTimeCounter > 0 )
                         {
                             swipeDetector.TapPerformed = false;
                             anim.SetBool("Jump", true);
@@ -600,59 +607,75 @@ public class PlayerMovementNew : MonoBehaviour
 
                         else if (playerController.saltoDoble)
                         {
-                            if (!isGrounded && swipeDetector.TapPerformed == true && !playerController.isCocaMetaHero)
+                            if (jumpBufferCounter > 0 && !playerController.isCocaMetaHero)
                             {
                                 if (canDoubleJump)
                                 {
-                                    swipeDetector.TapPerformed = false;
+                                    //swipeDetector.TapPerformed = false;
                                     StartCoroutine(Jump(0));
                                     canDoubleJump = false;
                                 }
                             }
-                        if (touch.phase == TouchPhase.Ended) coyoteTimeCounter = 0;
                         }
                     }
-
-
                     else
                     {
                         // Esto es un swipe
+                     
+                    //    if (swipeDetector.swipeDirection == SwipeDirection.Down && !doingRoll)
+                    //    {
+                    //        swipeDetector.TapPerformed = false;
+                    //        if (!playerController.isCannabis)
+                    //        {
+                    //            if (!playerController.isAlcohol)
+                    //            {
+                    //                StartCoroutine(Roll(0, -1, 0));
+                    //                //Roll(0, -1);
+                    //            }
+                    //            else
+                    //            {
+                    //                if (isGrounded)
+                    //                {
+                    //                    anim.SetBool("Jump", true);
+                    //                    canDoubleJump = false;
+                    //                    StartCoroutine(Jump(0));
+                    //                }
+                    //            }
+                    //        }
+                    //        else
+                    //        {
+                    //            StartCoroutine(Roll(0, -1, .25f));
+                    //        }
 
-                        if (swipeDetector.swipeDirection == SwipeDirection.Down && !doingRoll)
-                        {
-                            swipeDetector.TapPerformed = false;
-                            if (!playerController.isCannabis)
-                            {
-                                if (!playerController.isAlcohol)
-                                {
-                                    StartCoroutine(Roll(0, -1, 0));
-                                    //Roll(0, -1);
-                                }
-                                else
-                                {
-                                    if (isGrounded)
-                                    {
-                                        anim.SetBool("Jump", true);
-                                        canDoubleJump = false;
-                                        StartCoroutine(Jump(0));
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                StartCoroutine(Roll(0, -1, .25f));
-                            }
 
+                            //        swipeDetector.swipeDirection = SwipeDirection.None;
+                            //    }
 
-                            swipeDetector.swipeDirection = SwipeDirection.None;
-                        }
+                            //    if (canSmash && swipeDetector.swipeDirection == SwipeDirection.Right && !doingSmash)
+                            //    {
+                            //        Smash(1, 0);
+                            //        swipeDetector.TapPerformed = false;
+                            //        swipeDetector.swipeDirection = SwipeDirection.None;
+                            //    }
+                    }
+                    if (!swipeDetector.IsPressing) coyoteTimeCounter = 0;
+                }
 
-                        if (canSmash && swipeDetector.swipeDirection == SwipeDirection.Right && !doingSmash)
-                        {
-                            Smash(1, 0);
-                            swipeDetector.TapPerformed = false;
-                            swipeDetector.swipeDirection = SwipeDirection.None;
-                        }
+                if (playerController.paracaidas && !isGrounded)
+                {
+
+                    if (touch.phase == TouchPhase.Began && tapDuration + .05f  < tapTimeThreshold )
+                    {
+                        anim.SetBool("Walk", false);
+                        anim.SetBool("SlowFall", true);
+                        rb.velocity = new Vector2(.2f, rb.velocity.y);
+                        rb.gravityScale = slowFallGravity;
+                    }
+                    if (touch.phase == TouchPhase.Ended)
+                    {
+                        anim.SetBool("SlowFall", false);
+                        anim.SetBool("Walk", true);
+                        rb.gravityScale = gravityScale;
                     }
                 }
             }
@@ -684,44 +707,44 @@ public class PlayerMovementNew : MonoBehaviour
                 StartCoroutine(HeartbeatShakeSequence());
             }
 
-            if (playerController.paracaidas)
-            {
-                Touch touch2 = Input.GetTouch(0);
-                if (!isGrounded && Input.touchCount > 0 && swipeDetector.IsPressing)
-                {
-                    if (!isSlowFalling)
-                    {
-                        isSlowFalling = true;
-                        anim.SetBool("Walk", false);
-                        anim.SetBool("SlowFall", true);
-                        rb.velocity = new Vector2(.2f, rb.velocity.y);
-                        rb.gravityScale = slowFallGravity;
+            //if (playerController.paracaidas)
+            //{
+            //    Touch touch2 = Input.GetTouch(1);
+            //    if (!isGrounded && Input.touchCount > 0 && swipeDetector.IsPressing)
+            //    {
+            //        if (!isSlowFalling)
+            //        {
+            //            isSlowFalling = true;
+            //            anim.SetBool("Walk", false);
+            //            anim.SetBool("SlowFall", true);
+            //            rb.velocity = new Vector2(.2f, rb.velocity.y);
+            //            rb.gravityScale = slowFallGravity;
 
-                    }
-                }
+            //        }
+            //    }
 
 
 
-                //if (playerController.paracaidas)
-                // {                                       
-                //     anim.SetBool("Walk", false);
-                //     anim.SetBool("SlowFall", true);
-                //     rb.velocity = new Vector2(.2f, rb.velocity.y);
-                //     rb.gravityScale = slowFallGravity;
-                // }
-            }
+            //    //if (playerController.paracaidas)
+            //    // {                                       
+            //    //     anim.SetBool("Walk", false);
+            //    //     anim.SetBool("SlowFall", true);
+            //    //     rb.velocity = new Vector2(.2f, rb.velocity.y);
+            //    //     rb.gravityScale = slowFallGravity;
+            //    // }
+            //}
 
-            if (Input.touchCount == 0 && isSlowFalling)
-            {
+            //if (Input.touchCount == 0 && isSlowFalling)
+            //{
 
-                if (isSlowFalling)
-                {
-                    isSlowFalling = false;
-                    anim.SetBool("SlowFall", false);
-                    anim.SetBool("Walk", true);
-                    rb.gravityScale = 10;
-                }
-            }
+            //    if (isSlowFalling)
+            //    {
+            //        isSlowFalling = false;
+            //        anim.SetBool("SlowFall", false);
+            //        anim.SetBool("Walk", true);
+            //        rb.gravityScale = 10;
+            //    }
+            //}
 
 
 
@@ -748,9 +771,7 @@ public class PlayerMovementNew : MonoBehaviour
                     EndJump();
                 }
             }
-
         }
-
     }
 
 
