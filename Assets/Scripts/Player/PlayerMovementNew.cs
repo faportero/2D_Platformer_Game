@@ -1,18 +1,13 @@
 using System.Collections;
 using UnityEngine;
 using Cinemachine;
-using UnityEngine.SceneManagement;
 using static SwipeDetector;
-using static Enemy;
-using System;
-
 using System.Collections.Generic;
-
 using DG.Tweening;
 
 public class PlayerMovementNew : MonoBehaviour
 {
-
+    #region Variables
     public enum MovementMode
     {
         TapMode,
@@ -25,58 +20,64 @@ public class PlayerMovementNew : MonoBehaviour
 
     [Header("Components Reference")]
     [HideInInspector] public Rigidbody2D rb;
+    [SerializeField] private LevelManager levelManager;
     private CapsuleCollider2D capsuleCollider;
     private Animator anim;
     private CinemachineVirtualCamera cm;
-    private CinemachineCameraOffset camOffset;
     private SpriteRenderer spriteRenderer;
     private PlayerController playerController;
 
     [Header("Level Colisions")]
-    public GameObject flappyCollider;
-    public GameObject faillingCollider;
-    public Vector2 down;
-    public float collisionRatio;
-    public LayerMask layerFloor;
+    [SerializeField] private List<FallingLevelColliders> fallingColliders;
+    [SerializeField] private GameObject flappyCollider;
+    [SerializeField] private GameObject faillingCollider;
+    [SerializeField] private Vector2 down;
+    [SerializeField] private float collisionRatio;
+    [SerializeField] private LayerMask layerFloor;
 
     [Header("Input")]
     public SwipeDetector swipeDetector;
     private Vector2 direction;
-    private Touch theTouch;
+    
 
     [Header("Movement Parameters")]
-    public float velocity = 10;
-    public float jumpStrength = 5;
-    public float jumpFlappyStrength = 5;
-    public float rollVelocity = 20;
-    public float gravityScale;
-    public float slowFallGravity = 2;
-    public float clickMoveSpeed = 5;
-    public float fallingGravity = 1;
+    [SerializeField] private float gravityScale;
+    [SerializeField] private float velocity = 10;
+    [SerializeField] private float jumpStrength = 5;
+    [SerializeField] private float jumpFlappyStrength = 5;
+    [SerializeField] private float rollVelocity = 20;
+    [SerializeField] private float smashVelocity = 20;
+    [SerializeField] private float slowFallGravity = 2;
+    [SerializeField] private float fallingGravity = 1;
+    [SerializeField] private float fallingModeMovementAmmount;
     public float fallingVelocity = 20;
-    public float smashVelocity = 20;
-    public float rotationFallingSpeed = 10;
-    public float fallingModeMovementAmmount;
-
-    private float coyoteTime = .2f;
+    [SerializeField] private float clickMoveSpeed = 5;
+    [SerializeField] private float rotationFallingSpeed = 10;
+    [SerializeField] private float coyoteTime = .2f;
+    [SerializeField] private float jumpBufferTime = .4f;
     private float coyoteTimeCounter;
-    private float jumpBufferTime = .4f;
     private float jumpBufferCounter;
 
-
     [Header("Input Parameters")]
+    [SerializeField] private float tapTimeThreshold = .3f;
+    [SerializeField] private float swipeDistanceThreshold = 150;
     private Vector2 capsuleColliderSize;
     private Vector2 capsuleColliderOffset;
     private Vector3 screenPosition;
     private Vector3 targetPosition;
     private float x, y;
     private float xRaw, yRaw;
+    private float tapStartTime;
+    private float tapDuration;
+    private Vector2 tapStartPos;
+    private Touch touch;
 
 
     [Header("Bools")]
+    public bool isPC;
+    public bool inputsEnabled = true;
     public bool canMove = true;
     public bool isGrounded;
-    private bool canDoubleJump;
     public bool canRoll;
     public bool doingRoll;
     public bool canSmash;
@@ -86,28 +87,16 @@ public class PlayerMovementNew : MonoBehaviour
     public bool doingJump;
     public bool mouseWalk;
     public bool flappyMode;
-
-    public bool isPC;
-    private bool canJump = true;
-    private bool tapDetected;
-    private float tapStartTime;
-    private Vector2 tapStartPos;
-    private float tapDuration;
-    private float tapTimeThreshold = .4f;
-    private float swipeDistanceThreshold = 150;
-    private Touch touch;
-    private Touch touch1;
-
-
-    public List<GameObject> faillingTargets;
-    [SerializeField] LevelManager levelManager;
-    private bool isSlowFalling;
     public bool isFallingMode;
-
+    private bool tapDetected;
+    private bool twoFingerTapDetected;
+    private bool canDoubleJump;
+    
+    #endregion
+    #region Unity Callbacks
     private void Awake()
 
     {
-
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         cm = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
@@ -115,7 +104,6 @@ public class PlayerMovementNew : MonoBehaviour
         capsuleCollider = GetComponent<CapsuleCollider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         playerController = GetComponent<PlayerController>();
-
     }
 
     void Start()
@@ -124,9 +112,6 @@ public class PlayerMovementNew : MonoBehaviour
         capsuleColliderSize = capsuleCollider.size;
         capsuleColliderOffset = capsuleCollider.offset;
         targetPosition = transform.position;
-
-
-
     }
 
     private IEnumerator MovetoTargetFalling(Vector2 direccion)
@@ -141,12 +126,6 @@ public class PlayerMovementNew : MonoBehaviour
     }
     private void Update()
     {
-        //for (int i = 0; i < Input.touchCount; i++)
-        //{
-        //    Vector3 touchPosition = Camera.main.ScreenToWorldPoint(Input.touches[i].position);
-        //    Debug.DrawLine(Vector3.zero, touchPosition, Color.red);
-        //}
-
 
         if (canMove)
         {
@@ -154,6 +133,7 @@ public class PlayerMovementNew : MonoBehaviour
             {
                 case MovementMode.TapMode:
                     TapMovement();
+                    //CheckGround();
                     break;
                 case MovementMode.RunnerMode:
                     RunnerMovement();
@@ -161,7 +141,7 @@ public class PlayerMovementNew : MonoBehaviour
                     break;
                 case MovementMode.FallingMode:
                     GetInputDirection();
-                    GetDirecction();
+                    if(inputsEnabled)GetDirecction();
                     CheckGround();
                     FallingMovement();
                     break;
@@ -181,11 +161,12 @@ public class PlayerMovementNew : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, 0, rb.velocity.y * .75f);
         }
     }
+    #endregion
+    #region InputGroundChecksWalk
     private void CheckGround()
     {
         isGrounded = Physics2D.OverlapCircle(((Vector2)transform.position) + down, collisionRatio, layerFloor);
     }
-
     private void GetInputDirection()
     {
         if (isPC)
@@ -200,7 +181,6 @@ public class PlayerMovementNew : MonoBehaviour
         }
 
     }
-
     private void GetDirecction()
     {
         if (direction.x < 0 && transform.localScale.x > 0)
@@ -213,7 +193,6 @@ public class PlayerMovementNew : MonoBehaviour
 
         }
     }
-
     private void Walk()
     {
         if (canMove)
@@ -223,7 +202,8 @@ public class PlayerMovementNew : MonoBehaviour
             GetDirecction();
         }
     }
-
+    #endregion
+    #region TapMode
     private void TapMovement()
     {
 
@@ -257,63 +237,7 @@ public class PlayerMovementNew : MonoBehaviour
             StartCoroutine(MovetoTarget());
         }
         else if (!isPC)
-        {
-
-            #region old Mobiole TapMovement
-            //if (Input.touchCount > 0)
-            //{
-            //    Touch touch = Input.GetTouch(0);
-
-            //    if (touch.phase == TouchPhase.Began)
-            //    {
-            //        tapDetected = true;
-            //        tapStartTime = Time.time;
-            //        tapStartPos = touch.position;
-            //    }
-            //    // Detectar el final del toque
-            //    else if (touch.phase == TouchPhase.Ended && tapDetected)
-            //    {
-            //        tapDetected = false;
-            //        float tapEndTime = Time.time;
-            //        Vector2 tapEndPos = touch.position;
-            //        float tapDuration = tapEndTime - tapStartTime;
-            //        float swipeDistance = Vector2.Distance(tapStartPos, tapEndPos);
-
-            //        if (tapDuration < tapTimeThreshold && swipeDistance < swipeDistanceThreshold)
-            //        {
-            //            // Esto es un tap
-            //            //screenPosition = Input.mousePosition;
-            //            //screenPosition.z = Camera.main.nearClipPlane + 25;
-            //            Vector3 screenPosition = new Vector3(tapEndPos.x, tapEndPos.y, Camera.main.nearClipPlane + 25);
-            //            targetPosition = Camera.main.ScreenToWorldPoint(screenPosition);
-
-            //            targetPosition.y = transform.position.y;
-            //            targetPosition.z = transform.position.z;
-
-            //            //float clicDirection = targetPosition.x;
-            //            float clicDirection = targetPosition.x - transform.position.x;
-
-            //            clicDirection = clicDirection - transform.position.x;
-            //            print("screenPosAux = " + clicDirection);
-
-            //            if (clicDirection < 0 && transform.localScale.x > 0)
-            //            {
-            //                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-            //            }
-            //            else if (clicDirection > 0 && transform.localScale.x < 0)
-            //            {
-            //                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-            //            }
-            //            // Iniciar la corrutina de movimiento
-            //            StopCoroutine(MovetoTarget()); // Detener la corrutina anterior si está corriendo
-            //            StartCoroutine(MovetoTarget());
-            //        }
-            //    }
-            //}
-
-            #endregion
-
-
+        {  
             if (swipeDetector.TapPerformed == true)
             {
                 Touch touch = Input.GetTouch(0);
@@ -344,12 +268,14 @@ public class PlayerMovementNew : MonoBehaviour
     }
     private IEnumerator MovetoTarget()
     {
-        anim.SetBool("Walk", false);
+        //anim.SetBool("Walk", false);
+        anim.SetBool("SlowWalk", false);
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, clickMoveSpeed * Time.deltaTime);
         yield return new WaitWhile(() => transform.position.x == targetPosition.x);
-        anim.SetBool("Walk", true);
+        anim.SetBool("SlowWalk", true);
     }
-
+    #endregion
+    #region RunnerMode
     private void RunnerMovement()
     {
         rb.gravityScale = gravityScale;
@@ -377,7 +303,7 @@ public class PlayerMovementNew : MonoBehaviour
 
         if (isPC)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space) && inputsEnabled)
             {
                 jumpBufferCounter = jumpBufferTime;
             }
@@ -408,6 +334,7 @@ public class PlayerMovementNew : MonoBehaviour
                         canSmash = false;
                         canDoubleJump = false;
                         StartCoroutine(Jump(.5f));
+                        jumpBufferCounter = 0;
                     }
 
                     if (playerController.isAlcohol && !doingRoll)
@@ -545,138 +472,164 @@ public class PlayerMovementNew : MonoBehaviour
 
             if (Input.touchCount > 0)
             {
-                touch = Input.GetTouch(0);
-                
-
-                if (touch.phase == TouchPhase.Began)
+                if (Input.touchCount == 1)
                 {
-                    jumpBufferCounter = jumpBufferTime;
-                }
-                else 
-                {
-                    jumpBufferCounter -= Time.deltaTime;
-                }
+                    touch = Input.GetTouch(0);
 
 
-                if (touch.phase == TouchPhase.Began)
-                {
-                    tapDetected = true;
-                    tapStartTime = Time.time;
-                    tapStartPos = touch.position;
-                }
-                // Detectar el final del toque
-                else if (touch.phase == TouchPhase.Ended && tapDetected)
-                {
-                    //coyoteTimeCounter = 0;
-
-                    tapDetected = false;
-                    float tapEndTime = Time.time;
-                    Vector2 tapEndPos = touch.position;
-                    tapDuration = tapEndTime - tapStartTime;
-                    float swipeDistance = Vector2.Distance(tapStartPos, tapEndPos);
-
-
-                    if (jumpBufferCounter > 0 && tapDuration < tapTimeThreshold && swipeDistance < swipeDistanceThreshold && !playerController.isCocaMetaHero)
+                    if (touch.phase == TouchPhase.Began)
                     {
-                      // Esto es un tap
-                      //if (isGrounded)
-                        if (coyoteTimeCounter > 0 )
-                        {
-                            swipeDetector.TapPerformed = false;
-                            anim.SetBool("Jump", true);
-                            canDoubleJump = true;
-                            if (!playerController.isCannabis && !playerController.isAlcohol)
-                            {
-                                StartCoroutine(Jump(0));
-                                jumpBufferCounter = 0;
-                            }
-                            else
-                            {
-                                canSmash = false;
-                                canDoubleJump = false;
-                                StartCoroutine(Jump(.5f));
-                            }
-
-                            if (playerController.isAlcohol && !doingRoll)
-                            {
-                                canDoubleJump = false;
-                                StartCoroutine(Roll(0, -1, 0));
-                                //Roll(0, -1);
-                            }
-                        }
-
-                        else if (playerController.saltoDoble)
-                        {
-                            if (jumpBufferCounter > 0 && !playerController.isCocaMetaHero)
-                            {
-                                if (canDoubleJump)
-                                {
-                                    //swipeDetector.TapPerformed = false;
-                                    StartCoroutine(Jump(0));
-                                    canDoubleJump = false;
-                                }
-                            }
-                        }
+                        jumpBufferCounter = jumpBufferTime;
                     }
                     else
                     {
-                        // Esto es un swipe
-                     
-                    //    if (swipeDetector.swipeDirection == SwipeDirection.Down && !doingRoll)
-                    //    {
-                    //        swipeDetector.TapPerformed = false;
-                    //        if (!playerController.isCannabis)
-                    //        {
-                    //            if (!playerController.isAlcohol)
-                    //            {
-                    //                StartCoroutine(Roll(0, -1, 0));
-                    //                //Roll(0, -1);
-                    //            }
-                    //            else
-                    //            {
-                    //                if (isGrounded)
-                    //                {
-                    //                    anim.SetBool("Jump", true);
-                    //                    canDoubleJump = false;
-                    //                    StartCoroutine(Jump(0));
-                    //                }
-                    //            }
-                    //        }
-                    //        else
-                    //        {
-                    //            StartCoroutine(Roll(0, -1, .25f));
-                    //        }
-
-
-                            //        swipeDetector.swipeDirection = SwipeDirection.None;
-                            //    }
-
-                            //    if (canSmash && swipeDetector.swipeDirection == SwipeDirection.Right && !doingSmash)
-                            //    {
-                            //        Smash(1, 0);
-                            //        swipeDetector.TapPerformed = false;
-                            //        swipeDetector.swipeDirection = SwipeDirection.None;
-                            //    }
+                        jumpBufferCounter -= Time.deltaTime;
                     }
-                    if (!swipeDetector.IsPressing) coyoteTimeCounter = 0;
+
+
+                    if (touch.phase == TouchPhase.Began)
+                    {
+                        tapDetected = true;
+                        tapStartTime = Time.time;
+                        tapStartPos = touch.position;
+
+
+                    }
+                    // Detectar el final del toque
+                    else if (touch.phase == TouchPhase.Ended && tapDetected)
+                    {
+                        //coyoteTimeCounter = 0;
+
+                        tapDetected = false;
+                        float tapEndTime = Time.time;
+                        Vector2 tapEndPos = touch.position;
+                        tapDuration = tapEndTime - tapStartTime;
+                        float swipeDistance = Vector2.Distance(tapStartPos, tapEndPos);
+
+
+                        if (jumpBufferCounter > 0 && tapDuration < tapTimeThreshold && swipeDistance < swipeDistanceThreshold && !playerController.isCocaMetaHero)
+                        {
+                            // Esto es un tap
+                            //if (isGrounded)
+                            if (coyoteTimeCounter > 0)
+                            {
+                                swipeDetector.TapPerformed = false;
+                                anim.SetBool("Jump", true);
+                                canDoubleJump = true;
+                                if (!playerController.isCannabis && !playerController.isAlcohol)
+                                {
+                                    StartCoroutine(Jump(0));
+                                    jumpBufferCounter = 0;
+                                }
+                                else
+                                {
+                                    canSmash = false;
+                                    canDoubleJump = false;
+                                    StartCoroutine(Jump(.5f));
+                                }
+
+                                if (playerController.isAlcohol && !doingRoll)
+                                {
+                                    canDoubleJump = false;
+                                    StartCoroutine(Roll(0, -1, 0));
+                                    //Roll(0, -1);
+                                }
+                            }
+
+                            else if (playerController.saltoDoble)
+                            {
+                                if (jumpBufferCounter > 0 && !playerController.isCocaMetaHero)
+                                {
+                                    if (canDoubleJump)
+                                    {
+                                        //swipeDetector.TapPerformed = false;
+                                        StartCoroutine(Jump(0));
+                                        canDoubleJump = false;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // Esto es un swipe
+
+                            if (swipeDetector.swipeDirection == SwipeDirection.Down && !doingRoll)
+                            {
+                                swipeDetector.TapPerformed = false;
+                                if (!playerController.isCannabis)
+                                {
+                                    if (!playerController.isAlcohol)
+                                    {
+                                        StartCoroutine(Roll(0, -1, 0));
+                                        //Roll(0, -1);
+                                    }
+                                    else
+                                    {
+                                        if (isGrounded)
+                                        {
+                                            anim.SetBool("Jump", true);
+                                            canDoubleJump = false;
+                                            StartCoroutine(Jump(0));
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    StartCoroutine(Roll(0, -1, .25f));
+                                }
+
+
+                                swipeDetector.swipeDirection = SwipeDirection.None;
+                            }
+
+                            if (canSmash && swipeDetector.swipeDirection == SwipeDirection.Right && !doingSmash)
+                            {
+                                Smash(1, 0);
+                                swipeDetector.TapPerformed = false;
+                                swipeDetector.swipeDirection = SwipeDirection.None;
+                            }
+                        }
+                        if (!swipeDetector.IsPressing) coyoteTimeCounter = 0;
+                    }
                 }
 
-                if (playerController.paracaidas && !isGrounded)
+                else if (Input.touchCount == 2)
                 {
+                    Touch touch0 = Input.GetTouch(0);
+                    Touch touch1 = Input.GetTouch(1);
 
-                    if (touch.phase == TouchPhase.Began && tapDuration + .05f  < tapTimeThreshold )
+                    if (touch0.phase == TouchPhase.Began || touch1.phase == TouchPhase.Began)
                     {
-                        anim.SetBool("Walk", false);
-                        anim.SetBool("SlowFall", true);
-                        rb.velocity = new Vector2(.2f, rb.velocity.y);
-                        rb.gravityScale = slowFallGravity;
+                        twoFingerTapDetected = true;
                     }
-                    if (touch.phase == TouchPhase.Ended)
+                    else if (touch0.phase == TouchPhase.Ended || touch1.phase == TouchPhase.Ended)
                     {
+                        twoFingerTapDetected = false;
+                        // ExecuteTwoFingerTapEnd();
                         anim.SetBool("SlowFall", false);
                         anim.SetBool("Walk", true);
                         rb.gravityScale = gravityScale;
                     }
+
+                    if (twoFingerTapDetected && (touch0.phase == TouchPhase.Stationary || touch0.phase == TouchPhase.Moved) && (touch1.phase == TouchPhase.Stationary || touch1.phase == TouchPhase.Moved))
+                    {
+                        // ExecuteTwoFingerTap();
+                        if (playerController.paracaidas)
+                        {
+                            if (!isGrounded)
+                            {
+                                anim.SetBool("Walk", false);
+                                anim.SetBool("SlowFall", true);
+                                //rb.velocity = new Vector2(.2f, rb.velocity.y);
+                                rb.gravityScale = slowFallGravity;
+                            }
+                        }
+                    }
+                }
+
+                else
+                {
+                    twoFingerTapDetected = false;
                 }
             }
 
@@ -707,46 +660,6 @@ public class PlayerMovementNew : MonoBehaviour
                 StartCoroutine(HeartbeatShakeSequence());
             }
 
-            //if (playerController.paracaidas)
-            //{
-            //    Touch touch2 = Input.GetTouch(1);
-            //    if (!isGrounded && Input.touchCount > 0 && swipeDetector.IsPressing)
-            //    {
-            //        if (!isSlowFalling)
-            //        {
-            //            isSlowFalling = true;
-            //            anim.SetBool("Walk", false);
-            //            anim.SetBool("SlowFall", true);
-            //            rb.velocity = new Vector2(.2f, rb.velocity.y);
-            //            rb.gravityScale = slowFallGravity;
-
-            //        }
-            //    }
-
-
-
-            //    //if (playerController.paracaidas)
-            //    // {                                       
-            //    //     anim.SetBool("Walk", false);
-            //    //     anim.SetBool("SlowFall", true);
-            //    //     rb.velocity = new Vector2(.2f, rb.velocity.y);
-            //    //     rb.gravityScale = slowFallGravity;
-            //    // }
-            //}
-
-            //if (Input.touchCount == 0 && isSlowFalling)
-            //{
-
-            //    if (isSlowFalling)
-            //    {
-            //        isSlowFalling = false;
-            //        anim.SetBool("SlowFall", false);
-            //        anim.SetBool("Walk", true);
-            //        rb.gravityScale = 10;
-            //    }
-            //}
-
-
 
             if (isGrounded && !tapFloor)
             {
@@ -773,41 +686,8 @@ public class PlayerMovementNew : MonoBehaviour
             }
         }
     }
-
-
-    private IEnumerator CameraShake(float tiempo)
-    {
-        //doingShake = true;
-        CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin = cm.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-        cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 15;
-
-        yield return new WaitForSeconds(tiempo);
-        cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0;
-        //doingShake = false;
-    }
-    private IEnumerator HeartbeatShakeSequence()
-    {
-        // Tres latidos
-        doingShake = true;
-        for (int i = 0; i < 3; i++)
-        {
-            yield return StartCoroutine(CameraShake(.1f)); // Temblor por 1 segundo
-            yield return new WaitForSeconds(.3f); // Pausa por 1 segundo
-        }
-        doingShake = false;
-    }
-
-    private IEnumerator SwitchCapsuleColliderSize()
-    {
-        yield return new WaitForSeconds(.1f);
-       // capsuleCollider.size = capsuleColliderSize * new Vector2(1, 0.05f);
-        capsuleCollider.size = new Vector2(.79f, 0.0001f);
-        if (doingRoll) capsuleCollider.offset = new Vector2(0,-.34f);
-        yield return new WaitForSeconds(.3f);
-        capsuleCollider.size = capsuleColliderSize;
-        capsuleCollider.offset = capsuleColliderOffset;
-    }
-
+    #endregion
+    #region RunnerMethods
     private IEnumerator Jump(float delay)
     {
         if (!playerController.isCannabis)
@@ -839,8 +719,6 @@ public class PlayerMovementNew : MonoBehaviour
     {
         anim.SetBool("Jump", false);
     }
-
-
     private IEnumerator Roll(float x, float y, float time)
     {
 
@@ -877,6 +755,10 @@ public class PlayerMovementNew : MonoBehaviour
         doingRoll = false;
         EndRoll();
     }
+    public void EndRoll()
+    {
+        anim.SetBool("Roll", false);
+    }
     private IEnumerator FloorRoll()
     {
         yield return new WaitForSeconds(0.15f);
@@ -885,11 +767,16 @@ public class PlayerMovementNew : MonoBehaviour
             canRoll = false;
         }
     }
-    public void EndRoll()
+    private IEnumerator SwitchCapsuleColliderSize()
     {
-        anim.SetBool("Roll", false);
+        yield return new WaitForSeconds(.1f);
+       // capsuleCollider.size = capsuleColliderSize * new Vector2(1, 0.05f);
+        capsuleCollider.size = new Vector2(.79f, 0.0001f);
+        if (doingRoll) capsuleCollider.offset = new Vector2(0,-.34f);
+        yield return new WaitForSeconds(.3f);
+        capsuleCollider.size = capsuleColliderSize;
+        capsuleCollider.offset = capsuleColliderOffset;
     }
-
     private void Smash(float x, float y)
     {
         spriteRenderer.color = Color.red;
@@ -926,72 +813,33 @@ public class PlayerMovementNew : MonoBehaviour
         spriteRenderer.color = Color.white;
         anim.SetBool("Smash", false);
     }
-
-    public void Die()
+    private IEnumerator CameraShake(float tiempo)
     {
-        if (!canMove)
+        //doingShake = true;
+        CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin = cm.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 15;
+
+        yield return new WaitForSeconds(tiempo);
+        cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0;
+        //doingShake = false;
+    }
+    private IEnumerator HeartbeatShakeSequence()
+    {
+        // Tres latidos
+        doingShake = true;
+        for (int i = 0; i < 3; i++)
         {
-
-            StartCoroutine(Diying());
+            yield return StartCoroutine(CameraShake(.1f)); // Temblor por 1 segundo
+            yield return new WaitForSeconds(.3f); // Pausa por 1 segundo
         }
+        doingShake = false;
     }
-    private IEnumerator Diying()
-    {
-        anim.Play("Die");
-        yield return new WaitForSeconds(1);
-        playerController.isDie = true;
-        playerController.escudo = false;
-        playerController.saltoDoble = false;
-        playerController.vidaExtra = false;
-        playerController.paracaidas = false;
-        canMove = false;
-        levelManager.GameOver();
-        //SceneManager.LoadScene("Test");
-
-    }
-
-    private IEnumerator FaillingMoveToTarget(float moveAmount)
-    {
-        //isFaillingMove = true;
-        anim.SetBool("Walk", false);
-        anim.SetBool("Jump", true);
-
-        Vector3 targetPosition = new Vector3(transform.position.x + moveAmount, transform.position.y, transform.position.z);
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, 5 * Time.deltaTime);
-        yield return new WaitWhile(() => transform.position.x == targetPosition.x);
-        anim.SetBool("Jump", false);
-        //isFaillingMove = false;
-    }
-    void Mover(Vector2 direccion)
-    {
-
-        // Calcula la nueva posición del objeto
-        //rb.position = faillingTargets[2].transform.position;
-       // Vector2 nuevaPosicion = rb.position + direccion.normalized * fallingModeMovementAmmount;
-        Vector3 nuevaPosicion = transform.position + new Vector3(direccion.x, direccion.y,0).normalized * fallingModeMovementAmmount;
-
-
-        // Mueve el Rigidbody a la nueva posición
-       // rb.MovePosition(nuevaPosicion);
-        //rb.MovePosition(nuevaPosicion);
-       // rb.DOMove(nuevaPosicion, .2f);
-        transform.DOMove(nuevaPosicion, .1f);
-        //rb.MovePosition(Vector2.MoveTowards(rb.position, nuevaPosicion, 2 * Time.deltaTime));
-    }
+    #endregion
+    #region FallingMde
     private void FallingMovement()
     {
-        //camOffset.m_Offset = new Vector3(0, 0, -15);
-        //if (direction != new Vector2(1,0)) 
-            direction = new Vector2(x, 0);
-        //else print("se jodio la direccion");
 
-        //CinemachineTransposer transposer = cm.GetCinemachineComponent<CinemachineTransposer>();
-
-        //if (transposer != null)
-        //{
-        //    // Deshabilitar el seguimiento en el eje X
-        //    transposer.m_FollowOffset.x = 0f;
-        //}
+        direction = new Vector2(x, 0);
 
         int movimientosIzquierda = 0;
         int movimientosDerecha = 0;
@@ -1003,223 +851,104 @@ public class PlayerMovementNew : MonoBehaviour
             anim.SetBool("Walk", false);
             if (isPC)
             {
-
-                if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+                if (inputsEnabled)
                 {
-
-                    if (movimientosIzquierda < maxMovimientos)
+                    if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
                     {
-                        Mover(Vector3.left + new Vector3 (0,-.25f,0));
-                        movimientosIzquierda++;
-                        movimientosDerecha = Mathf.Max(0, movimientosDerecha - 1);
-                    }
-                }
-
-
-                if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
-                {
-
-                    if (movimientosDerecha < maxMovimientos)
-                    {
-                        Mover(Vector3.right + new Vector3(0, -.25f, 0));
-                        movimientosDerecha++;
-                        movimientosIzquierda = Mathf.Max(0, movimientosIzquierda - 1);
-                    }
-                }
-
-            }
-            else if (!isPC)
-            {
-                float screenWidth = Screen.width;
-
-                if (Input.touchCount > 0)
-                {
-                    Touch touch = Input.GetTouch(0);
-
-                    if (touch.phase == TouchPhase.Began)
-                    {
-                        tapDetected = true;
-                        tapStartTime = Time.time;
-                        tapStartPos = touch.position;
-                    }
-                    // Detectar el final del toque
-                    else if (touch.phase == TouchPhase.Ended && tapDetected)
-                    {
-                        tapDetected = false;
-                        float tapEndTime = Time.time;
-                        Vector2 tapEndPos = touch.position;
-                        float tapDuration = tapEndTime - tapStartTime;
-                        float swipeDistance = Vector2.Distance(tapStartPos, tapEndPos);
-
-                        if (tapDuration < tapTimeThreshold && swipeDistance < swipeDistanceThreshold && !playerController.isCocaMetaHero)
+                        if (movimientosIzquierda < maxMovimientos)
                         {
-                            // Tap
-                            //Detactar si el usuario hace tap en la izquierda de la pantalla o en la derecha
-                            if (tapEndPos.x < screenWidth / 2)
+                            foreach (FallingLevelColliders collider in fallingColliders)
                             {
-                                transform.localScale = new Vector3(-2, 2, 2);
-                                Mover(Vector3.left + new Vector3(0, -.25f, 0));
-                                movimientosIzquierda++;
-                                movimientosDerecha = Mathf.Max(0, movimientosDerecha - 1);
+                                if (!collider.isFallColliding)
+                                {
+                                    Mover(Vector3.left + new Vector3(0, -.25f, 0));
+                                }
                             }
-                            else
+                            movimientosIzquierda++;
+                            movimientosDerecha = Mathf.Max(0, movimientosDerecha - 1);
+                        }
+                    }
+                    if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+                    {
+
+                        if (movimientosDerecha < maxMovimientos)
+                        {
+                            foreach (FallingLevelColliders collider in fallingColliders)
                             {
-                                transform.localScale = new Vector3(2, 2, 2);
-                                Mover(Vector3.right + new Vector3(0, -.25f, 0));
-                                movimientosDerecha++;
-                                movimientosIzquierda = Mathf.Max(0, movimientosIzquierda - 1);
-                            }
-
-
+                                if (!collider.isFallColliding)
+                                {
+                                    Mover(Vector3.right + new Vector3(0, -.25f, 0));
+                                }
+                            }                            
+                            movimientosDerecha++;
+                            movimientosIzquierda = Mathf.Max(0, movimientosIzquierda - 1);
                         }
                     }
                 }
+            }
+            else if (!isPC)
+            {
+                if (inputsEnabled)
+                {
+                    float screenWidth = Screen.width;
+                    if (Input.touchCount > 0)
+                    {
+                        Touch touch = Input.GetTouch(0);
 
+                        if (touch.phase == TouchPhase.Began)
+                        {
+                            tapDetected = true;
+                            tapStartTime = Time.time;
+                            tapStartPos = touch.position;
+                        }
+                        // Detectar el final del toque
+                        else if (touch.phase == TouchPhase.Ended && tapDetected)
+                        {
+                            tapDetected = false;
+                            float tapEndTime = Time.time;
+                            Vector2 tapEndPos = touch.position;
+                            float tapDuration = tapEndTime - tapStartTime;
+                            float swipeDistance = Vector2.Distance(tapStartPos, tapEndPos);
+
+                            if (tapDuration < tapTimeThreshold && swipeDistance < swipeDistanceThreshold && !playerController.isCocaMetaHero)
+                            {
+                                // Tap
+                                //Detactar si el usuario hace tap en la izquierda de la pantalla o en la derecha
+                                if (tapEndPos.x < screenWidth / 2)
+                                {
+                                    transform.localScale = new Vector3(-2, 2, 2);
+                                    Mover(Vector3.left + new Vector3(0, -.25f, 0));
+                                    movimientosIzquierda++;
+                                    movimientosDerecha = Mathf.Max(0, movimientosDerecha - 1);
+                                }
+                                else
+                                {
+                                    transform.localScale = new Vector3(2, 2, 2);
+                                    Mover(Vector3.right + new Vector3(0, -.25f, 0));
+                                    movimientosDerecha++;
+                                    movimientosIzquierda = Mathf.Max(0, movimientosIzquierda - 1);
+                                }
+                            }
+                        }
+                    }
+                }
             }
             else
             {
 
                 movementMode = MovementMode.RunnerMode;
             }
-
         }
-
-        #region oldFailling
-        //rb.gravityScale = gravityScale;
-        //direction = new Vector2(x, .8f);
-        //Walk();
-        //if (isPC)
-        //{
-        //    if (Input.GetMouseButtonDown(0))
-        //    {
-
-        //        screenPosition = Input.mousePosition;
-        //        screenPosition.z = Camera.main.nearClipPlane + 25;
-        //        targetPosition = Camera.main.ScreenToWorldPoint(screenPosition);
-
-        //        //targetPosition.y = 20 * Time.deltaTime;
-        //        targetPosition.z = transform.position.z;
-
-        //        float clicDirection = targetPosition.x;
-        //        clicDirection = clicDirection - transform.position.x;
-
-        //        if (clicDirection < 0 && transform.localScale.x > 0)
-        //        {
-        //            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-        //        }
-        //        else if (clicDirection > 0 && transform.localScale.x < 0)
-        //        {
-        //            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-        //        }
-        //    }
-        //    StartCoroutine(MovetoTarget());
-        //}
-
-
-        //// rb.gravityScale = 0;
-        //direction = new Vector2(xRaw,fallingGravity);
-        //Walk();
-
-
-        //if (Input.GetKeyDown(KeyCode.LeftArrow) && !isFaillingMove)
-        //{
-        //    Vector2 targetPosition = new Vector2(rb.position.x + 30000, rb.position.y);
-        //    rb.position = Vector3.MoveTowards(rb.position, targetPosition, 5 * Time.deltaTime);
-        //   // StartCoroutine(FaillingTarget(-200));
-        //}
-
-        //if (Input.GetKeyDown(KeyCode.RightArrow) && !isFaillingMove)
-        //{
-        //    //StartCoroutine(FaillingTarget(200));
-        //}
-
-        //if (isPC)
-        //{
-        //    if (!isGrounded)
-        //    {
-
-
-        //    }
-        //    else
-        //    {
-        //        movementMode = MovementMode.RunnerMode;
-
-        //    }
-        //}
-
-
-
-
-
-        //if(isPC)
-        //{
-
-
-        //    if (!isGrounded)
-        //    {
-        //        anim.SetBool("Jump", true);
-        //        anim.SetBool("Walk", false);
-        //        direction = new Vector2(0, y);    
-        //        rb.gravityScale = fallingGravity;        
-        //        rb.velocity += new Vector2(x, y).normalized * fallingVelocity;
-
-        //        if (x < 0 && transform.localScale.x > 0)
-        //        {
-        //            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-        //        }
-        //        else if (x > 0 && transform.localScale.x < 0)
-        //        {                  
-        //            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-        //        }
-
-        //    }
-        //    else if (isGrounded) 
-        //    {  
-        //        movementMode = MovementMode.RunnerMode;
-        //    }
-        //}
-        //else if (!isPC)
-        //{
-        //    if (!isGrounded)
-        //    {
-        //        screenPosition = Input.mousePosition;
-        //        screenPosition.z = Camera.main.nearClipPlane + 25;
-        //        targetPosition = Camera.main.ScreenToWorldPoint(screenPosition);
-
-        //        targetPosition.y = transform.position.y;
-        //        targetPosition.z = transform.position.z;
-
-        //        float clicDirection = targetPosition.x;
-        //        clicDirection = clicDirection - transform.position.x;
-
-        //        anim.SetBool("Jump", true);
-        //        anim.SetBool("Walk", false);;
-        //        direction = new Vector2(0, y);
-        //        rb.gravityScale = fallingGravity;
-        //        rb.velocity += new Vector2(clicDirection, y).normalized * fallingVelocity;
-
-        //        if (swipeDetector.TapPerformed == true)
-        //        {     
-        //            if (clicDirection < 0 && transform.localScale.x > 0)
-        //            {
-        //                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-        //            }
-        //            else if (clicDirection > 0 && transform.localScale.x < 0)
-        //            {
-        //                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-        //            }                    
-
-        //        print(clicDirection);
-        //        }
-        //    }
-        //    else if (isGrounded)
-        //    {
-        //        movementMode = MovementMode.RunnerMode;
-        //    }
-        //}
-        #endregion
     }
-
+    private void Mover(Vector2 direccion)
+    {
+        
+        //Vector3 nuevaPosicion = transform.position + new Vector3(direccion.x, direccion.y,0).normalized * fallingModeMovementAmmount;
+        Vector3 nuevaPosicion = new Vector3(rb.position.x, rb.position.y,0) + new Vector3(direccion.x, direccion.y,0).normalized * fallingModeMovementAmmount;
+        rb.DOMove(nuevaPosicion, .1f);
+    }
+    #endregion
+    #region FlappyMode
     private void FlappyMovement()
     {
         rb.gravityScale = gravityScale;
@@ -1273,6 +1002,29 @@ public class PlayerMovementNew : MonoBehaviour
             }
         }
     }
+    #endregion
+    #region Die
+    public void Die()
+    {
+        if (!canMove)
+        {
 
-  
+            StartCoroutine(Diying());
+        }
+    }
+    private IEnumerator Diying()
+    {
+        anim.Play("Die");
+        yield return new WaitForSeconds(1);
+        playerController.isDie = true;
+        playerController.escudo = false;
+        playerController.saltoDoble = false;
+        playerController.vidaExtra = false;
+        playerController.paracaidas = false;
+        canMove = false;
+        levelManager.GameOver();
+        //SceneManager.LoadScene("Test");
+
+    }
+    #endregion
 }

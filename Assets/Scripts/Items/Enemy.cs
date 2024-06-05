@@ -40,15 +40,15 @@ public class Enemy : MonoBehaviour
     private void Awake()
     {
 
-            AssignSprite();
+        AssignSprite();
+        //Effect();
     
 
     }
     private void OnValidate()
     {
  
-            AssignSprite();
-     
+       AssignSprite();     
 
     }
     private void Start()
@@ -67,6 +67,8 @@ public class Enemy : MonoBehaviour
             if (e.Count == 0) e = collision.GetComponent<PlayerController>().enemies;
             playerController = collision.GetComponent<PlayerController>();
             playerMovement = collision.GetComponent<PlayerMovementNew>();
+           
+
             isAdict = true;
             foreach (Enemy enemy in e)
             {
@@ -112,7 +114,7 @@ public class Enemy : MonoBehaviour
         switch (sustanceType)
         {
             case SustanceType.Cannabis:
-                print("cannabisssss");
+                //print("cannabisssss");
                 playerController.isCannabis = true;
                 effectPanel.GetComponent<Image>().color = new Color(0, 1, 0, .25f);
                 effectText.text = "Cannabis";
@@ -121,7 +123,7 @@ public class Enemy : MonoBehaviour
                 break;
 
             case SustanceType.Cocaina:
-                print("Cocaa");
+                //print("Cocaa");
                 playerController.isCocaMetaHero = true;
                 effectPanel.GetComponent<Image>().color = new Color(1, 1, 1, .25f);
                 effectText.text = "Cocaina";
@@ -129,7 +131,7 @@ public class Enemy : MonoBehaviour
                 effectTextMensajeDesc.text = "La cocaina te hace saltar como loco";
                 break;
             case SustanceType.Extasis:
-                print("Exta");
+                //print("Exta");
                 playerController.isCocaMetaHero = true;
                 effectPanel.GetComponent<Image>().color = new Color(1, 1, 1, .25f);
                 effectText.text = "Éxtasis";
@@ -137,7 +139,7 @@ public class Enemy : MonoBehaviour
                 effectTextMensajeDesc.text = "El extasis te hace saltar como loco";
                 break;
             case SustanceType.Metanfetamina:
-                print("Metanfetamina");
+                //print("Metanfetamina");
                 playerController.isCocaMetaHero = true;
                 effectPanel.GetComponent<Image>().color = new Color(1, 1, 1, .25f);
                 effectText.text = "Metanfetamina";
@@ -145,7 +147,7 @@ public class Enemy : MonoBehaviour
                 effectTextMensajeDesc.text = "La metanfetamina te hace saltar como loco";
                 break;
             case SustanceType.Heroina:
-                print("Heroinaaaa");
+               // print("Heroinaaaa");
                 playerController.isCocaMetaHero = true;
                 effectPanel.GetComponent<Image>().color = new Color(1, 1, 1, .25f);
                 effectText.text = "Heroina";
@@ -154,7 +156,7 @@ public class Enemy : MonoBehaviour
                 break;
 
             case SustanceType.Psilocibina:
-                print("Psilocibinaaaa");
+                //print("Psilocibinaaaa");
                 playerController.isPsilo = true;
                 effectPanel.GetComponent<Image>().color = new Color(.5f, 0, .75f, .25f);
                 effectText.text = "Psilocibina";
@@ -163,7 +165,7 @@ public class Enemy : MonoBehaviour
                 break;
 
             case SustanceType.Alcohol:
-                print("Alcoholllll");
+                //print("Alcoholllll");
                 playerController.isAlcohol = true;
                 effectPanel.GetComponent<Image>().color = new Color(1, 1, 0, .25f);
                 effectText.text = "Alcohol";
@@ -171,7 +173,7 @@ public class Enemy : MonoBehaviour
                 effectTextMensajeDesc.text = "El alcohol te vuelve torpe";
                 break;
             case SustanceType.Tabaco:
-                print("Tabacooooo");
+                //print("Tabacooooo");
                 playerController.isTabaco = true;
                 effectPanel.GetComponent<Image>().color = new Color(0, 0, 1, .25f);
                 effectText.text = "Tabaco";

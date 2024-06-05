@@ -38,6 +38,8 @@ public class PlayerController : MonoBehaviour
     private Coroutine blinkCoroutine;
     private CapsuleCollider2D capsuleCollider;
     public bool isAttack = true;
+    public bool isEnemyAttack;
+    private float attackkDuration = 1;
 
     private void Awake()
     {
@@ -171,40 +173,43 @@ public class PlayerController : MonoBehaviour
         if (isCannabis)
         {
             isDrugged = true;
-            StartCoroutine(CurrentEffect(5));
+            playerMovement.inputsEnabled = false;
+            StartCoroutine(CurrentEffect(2.5f));
         }
         else if (isCocaMetaHero)
         {
             isDrugged = true;
-            StartCoroutine(CurrentEffect(5));
+            playerMovement.inputsEnabled = false;
+            StartCoroutine(CurrentEffect(2.5f));
         }
         else if (isAlcohol)
         {
             isDrugged = true;
-            StartCoroutine(CurrentEffect(5));
+            playerMovement.inputsEnabled = false;
+            StartCoroutine(CurrentEffect(2.5f));
         }
         else if (isPsilo)
         {
             isDrugged = true;
-            StartCoroutine(CurrentEffect(5));
+            playerMovement.inputsEnabled = false;
+            StartCoroutine(CurrentEffect(2.5f));
         }
         else if (isTabaco)
         {
             isDrugged = true;
-            StartCoroutine(CurrentEffect(5));
+            playerMovement.inputsEnabled = false;
+            StartCoroutine(CurrentEffect(2.5f));
 
         }
     }
 
     private IEnumerator CurrentEffect(float delay)
     {
-
-
         if (!isDie)
         {
             effectPanel.SetActive(true);
             yield return new WaitForSecondsRealtime(delay);
-            StopAllCoroutines();
+            //StopAllCoroutines();
             effectPanel.SetActive(false);
             isCannabis = false;
             isCocaMetaHero = false;
@@ -212,15 +217,17 @@ public class PlayerController : MonoBehaviour
             isAlcohol = false;
             isTabaco = false;
             isDrugged = false;
-       }
-
-
+            playerMovement.inputsEnabled = true;
+        }
     }
 
     #region Parpadeo
 
     public void StartBlinking()
     {
+        
+        //if(isDrugged) playerMovement.inputsEnabled = false;
+        
         if (!isAttack)
         {
             if (blinkCoroutine != null)
@@ -235,12 +242,11 @@ public class PlayerController : MonoBehaviour
     private IEnumerator BlinkAlpha()
     {
         //capsuleCollider.enabled = false;
-        isAttack = true;
-        float blinkDuration = 1.0f; // Duración total de 3 segundos
+        isAttack = true;       
         float blinkSpeed = 6.0f; // Velocidad del parpadeo
         float elapsedTime = 0.0f;
 
-        while (elapsedTime < blinkDuration)
+        while (elapsedTime < attackkDuration)
         {
             elapsedTime += Time.deltaTime;
             float alpha = Mathf.PingPong(elapsedTime * blinkSpeed, 1.0f);
@@ -252,6 +258,7 @@ public class PlayerController : MonoBehaviour
         //capsuleCollider.enabled = false;
         SetAlpha(1.0f);
         isAttack = false;
+        //if (!isDrugged) playerMovement.inputsEnabled = true;
         blinkCoroutine = null;
     }
 
@@ -264,6 +271,23 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+    public void StarEnemyAttack()
+    {
+        StartCoroutine(EnemyAttack());
+    }
+    private IEnumerator EnemyAttack()
+    {
+        isEnemyAttack = true;         
+        float elapsedTime = 0.0f;
+        while (elapsedTime < attackkDuration)
+        {
+            elapsedTime += Time.deltaTime;  
+            yield return null;
+        }
+        isEnemyAttack = false;
+    }
+
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //if (collision.gameObject.layer == 7)
@@ -274,6 +298,10 @@ public class PlayerController : MonoBehaviour
             LoseLife();
            // return;
         }
+        //if(collision.tag == "Enemy")
+        //{
+        //    StarEnemyAttack();
+        //}
         if (collision.tag == "Salud")
         {
             if (currentAdiction != 0)
