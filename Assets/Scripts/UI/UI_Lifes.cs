@@ -9,10 +9,12 @@ public class UI_Lifes : MonoBehaviour
     [HideInInspector] public List<GameObject> lifes = new List<GameObject>();
     [SerializeField] private UI_Habilidades uiHabilidades;
     private PlayerController playerController;
+    private PlayerMovementNew playerMovement;
     public int lifesCount;
     private void Start()
     {
         playerController = FindAnyObjectByType<PlayerController>();
+        playerMovement = FindAnyObjectByType<PlayerMovementNew>();
 
         lifes.Clear();
         
@@ -37,6 +39,7 @@ public class UI_Lifes : MonoBehaviour
             lifes.Remove(lastChild);
             lifesCount = lifes.Count;
             //print(lifesCount);
-        }   
+        }
+        //if(lifes.Count == 1) playerMovement.canMove = false;
     }
 }

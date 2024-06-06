@@ -35,7 +35,7 @@ public class Wall : MonoBehaviour
         {
             if (!playerMovement.doingSmash && !playerController.escudo)
             {
-                playerController.StartBlinking();
+                if (playerMovement.canMove) playerController.StartBlinking();
                 collision.gameObject.GetComponent<PlayerController>().LoseLife();
                 return;
             }

@@ -34,13 +34,14 @@ public class PlayerController : MonoBehaviour
     private bool isEnemy;
     public bool isDrugged;
 
-    private SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRenderer;
     private Coroutine blinkCoroutine;
     private CapsuleCollider2D capsuleCollider;
     public bool isAttack = true;
     public bool isEnemyAttack;
     private float attackkDuration = 1;
 
+    GhostController ghostController;
     private void Awake()
     {
 
@@ -53,7 +54,8 @@ public class PlayerController : MonoBehaviour
     }
     private void Start()
     {
-        
+        ghostController = GetComponent<GhostController>();
+       // ghostController.enabled = false;
         currentAdiction = adiccionBar.currentAdiccion;
 
         enemies = new List<Enemy>();
@@ -163,7 +165,8 @@ public class PlayerController : MonoBehaviour
         {
             playerMovement.canMove = false;
             uiHabilidades.CheckAvailable();
-            playerMovement.Die();
+            //playerMovement.Die();
+            playerMovement.DieMaterialAnim();
         }
     }
 
@@ -205,7 +208,7 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator CurrentEffect(float delay)
     {
-        if (!isDie)
+        if (!isDie && playerMovement.canMove)
         {
             effectPanel.SetActive(true);
             yield return new WaitForSecondsRealtime(delay);
@@ -225,18 +228,21 @@ public class PlayerController : MonoBehaviour
 
     public void StartBlinking()
     {
-        
-        //if(isDrugged) playerMovement.inputsEnabled = false;
-        
-        if (!isAttack)
-        {
-            if (blinkCoroutine != null)
-            {
-                StopCoroutine(blinkCoroutine);
-            }
 
-            blinkCoroutine = StartCoroutine(BlinkAlpha());
-        }
+        //if(isDrugged) playerMovement.inputsEnabled = false;
+        if (playerMovement.canMove)
+        {
+
+            if (!isAttack)
+            {
+                if (blinkCoroutine != null)
+                {
+                    StopCoroutine(blinkCoroutine);
+                }
+
+                blinkCoroutine = StartCoroutine(BlinkAlpha());
+            }
+        } 
     }
 
     private IEnumerator BlinkAlpha()
@@ -293,7 +299,7 @@ public class PlayerController : MonoBehaviour
         //if (collision.gameObject.layer == 7)
         if (collision.tag == "BadFloor" && !isAttack)
         {
-            StartBlinking();
+            if (playerMovement.canMove) StartBlinking();
             //print("badlayer" + collision.gameObject.name);
             LoseLife();
            // return;

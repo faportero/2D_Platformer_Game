@@ -57,6 +57,7 @@ public class PlayerMovementNew : MonoBehaviour
     [SerializeField] private float jumpBufferTime = .4f;
     private float coyoteTimeCounter;
     private float jumpBufferCounter;
+    private Material material;
 
     [Header("Input Parameters")]
     [SerializeField] private float tapTimeThreshold = .3f;
@@ -91,7 +92,8 @@ public class PlayerMovementNew : MonoBehaviour
     private bool tapDetected;
     private bool twoFingerTapDetected;
     private bool canDoubleJump;
-    
+    private float dissolveAmount;
+    private bool isAnimating;
     #endregion
     #region Unity Callbacks
     private void Awake()
@@ -112,21 +114,25 @@ public class PlayerMovementNew : MonoBehaviour
         capsuleColliderSize = capsuleCollider.size;
         capsuleColliderOffset = capsuleCollider.offset;
         targetPosition = transform.position;
+        material = spriteRenderer.material;
+        //material.SetFloat("_DissolveAmmount", Mathf.Lerp(0, 1, Time.deltaTime * 5f));
+        //material.DOFloat(1.0f, "_DissolveAmount", 1).From(0.0f).SetEase(Ease.InOutSine);
+        //StartCoroutine(AnimateDissolveCoroutine());
+        // Asegúrate de que el parámetro comienza en 0
+        //material.SetFloat("_DissolveAmount", 0.0f);
+        // Asegúrate de que el parámetro comienza en 0
+
+
+        // Iniciar la animación del parámetro _DissolveAmount de 0 a 1 usando DoTween
+        
+
     }
 
-    private IEnumerator MovetoTargetFalling(Vector2 direccion)
-    {
-        //isFaillingMove = true;
-        targetPosition = rb.position + direccion * 10;
-        //anim.SetBool("Walk", false);
-        rb.position = Vector3.MoveTowards(rb.position, targetPosition, 1 * Time.deltaTime);
-        yield return new WaitWhile(() => rb.position.x == targetPosition.x);
-        //isFaillingMove = false;
-        //anim.SetBool("Walk", true);
-    }
     private void Update()
     {
+       // StartCoroutine(DieAnimation());
 
+        //print(material.GetFloat("_DissolveAmmount"));
         if (canMove)
         {
             switch (movementMode)
@@ -161,6 +167,8 @@ public class PlayerMovementNew : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, 0, rb.velocity.y * .75f);
         }
     }
+
+
     #endregion
     #region InputGroundChecksWalk
     private void CheckGround()
@@ -206,7 +214,7 @@ public class PlayerMovementNew : MonoBehaviour
     #region TapMode
     private void TapMovement()
     {
-
+        
         rb.gravityScale = gravityScale;
         direction = new Vector2(x, y);
         Walk();
@@ -708,6 +716,7 @@ public class PlayerMovementNew : MonoBehaviour
             StartCoroutine(SwitchCapsuleColliderSize());
             rb.velocity = new Vector2(rb.velocity.x, 0);
             rb.velocity += Vector2.up * jumpStrength;
+            //if(canDoubleJump) canDoubleJump = false;
         }
 
     }
@@ -1006,25 +1015,53 @@ public class PlayerMovementNew : MonoBehaviour
     #region Die
     public void Die()
     {
-        if (!canMove)
-        {
+        StartCoroutine(Diying());
+        //if (!canMove)
+        //{
 
-            StartCoroutine(Diying());
-        }
+        //    StartCoroutine(Diying());
+        //}
     }
     private IEnumerator Diying()
     {
-        anim.Play("Die");
-        yield return new WaitForSeconds(1);
+        //float startValue = material.GetFloat("_DissolveAmmount");
+        //anim.Play("Die");
+       // material.SetFloat("_DissolveAmmount", Mathf.Lerp(0, 1, Time.deltaTime * .5f));
+        yield return new WaitForSeconds(.05f);
         playerController.isDie = true;
         playerController.escudo = false;
         playerController.saltoDoble = false;
         playerController.vidaExtra = false;
         playerController.paracaidas = false;
-        canMove = false;
+        //canMove = false;
         levelManager.GameOver();
         //SceneManager.LoadScene("Test");
 
+    }
+    public void DieMaterialAnim()
+    {
+        StartCoroutine(DieAnim2());
+    }
+    private IEnumerator DieAnimation()
+    {
+        dissolveAmount += .01f;
+        material.SetFloat("_DissolveAmmount", dissolveAmount);
+        yield return new WaitWhile(() => material.GetFloat("_DissolveAmmount") < 1);
+        material.SetFloat("_DissolveAmmount", 1);
+        print("simon");
+
+    }
+    private IEnumerator DieAnim2()
+    {
+        dissolveAmount = 0;
+        while (dissolveAmount<1)
+        {
+            dissolveAmount += .1f;
+            material.SetFloat("_DissolveAmmount", dissolveAmount);
+             yield return new WaitForSeconds(.05f);
+           // yield return null;
+        }
+        Die();
     }
     #endregion
 }

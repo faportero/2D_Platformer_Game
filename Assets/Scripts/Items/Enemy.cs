@@ -76,7 +76,7 @@ public class Enemy : MonoBehaviour
                 {
                     if (!playerMovement.doingSmash && !playerController.escudo)
                     {
-                        playerController.StartBlinking();
+                        if (playerMovement.canMove) playerController.StartBlinking();
                         collision.GetComponent<PlayerController>().TakeAdiccion(enemy);
                         collision.GetComponent<PlayerController>().SaludAmount = 0;
                         collision.GetComponent<PlayerController>().uiSalud.saludCount = 0;
