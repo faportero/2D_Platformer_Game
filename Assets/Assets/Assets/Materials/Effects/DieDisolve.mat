@@ -64,10 +64,10 @@ Material:
     m_Floats:
     - _DissolveAmmount: 0
     - _NoiseScale: 1
-    - _OutlineTickness: 0.028
+    - _OutlineTickness: 0.041
     - _QueueControl: 0
     - _QueueOffset: 0
     - _SpiralStrength: 4.2
     m_Colors:
-    - _Color: {r: 0, g: 0.8881698, b: 1, a: 0}
+    - _Color: {r: 1, g: 0.48776123, b: 0, a: 0}
   m_BuildTextureStacks: []

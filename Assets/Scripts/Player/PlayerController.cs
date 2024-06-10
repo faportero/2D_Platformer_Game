@@ -42,18 +42,16 @@ public class PlayerController : MonoBehaviour
     private float attackkDuration = 1;
 
     GhostController ghostController;
-    private void Awake()
-    {
 
+    private void Start()
+    {
         inmunidad = transform.GetChild(0).gameObject;
         if (lastPosition != Vector3.zero)
         {
             transform.position = lastPosition;
         }
         if (escudo) inmunidad.SetActive(true);
-    }
-    private void Start()
-    {
+
         ghostController = GetComponent<GhostController>();
        // ghostController.enabled = false;
         currentAdiction = adiccionBar.currentAdiccion;
@@ -165,7 +163,7 @@ public class PlayerController : MonoBehaviour
         {
             playerMovement.canMove = false;
             uiHabilidades.CheckAvailable();
-            //playerMovement.Die();
+            playerMovement.Die();
             playerMovement.DieMaterialAnim();
         }
     }

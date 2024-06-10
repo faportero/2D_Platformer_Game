@@ -26,6 +26,7 @@ public class PlayerMovementNew : MonoBehaviour
     private CinemachineVirtualCamera cm;
     private SpriteRenderer spriteRenderer;
     private PlayerController playerController;
+    private GhostController ghostController;
 
     [Header("Level Colisions")]
     [SerializeField] private List<FallingLevelColliders> fallingColliders;
@@ -106,6 +107,7 @@ public class PlayerMovementNew : MonoBehaviour
         capsuleCollider = GetComponent<CapsuleCollider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         playerController = GetComponent<PlayerController>();
+        ghostController = GetComponent<GhostController>();
     }
 
     void Start()
@@ -396,18 +398,23 @@ public class PlayerMovementNew : MonoBehaviour
 
             if (playerController.paracaidas)
             {
-                if (Input.GetMouseButtonDown(1))
+                if (!isGrounded)
                 {
-                    if (!isGrounded)
+                    if (Input.GetMouseButtonDown(1))
                     {
                         anim.SetBool("Walk", false);
                         anim.SetBool("SlowFall", true);
                         rb.velocity = new Vector2(.2f, rb.velocity.y);
                         rb.gravityScale = slowFallGravity;
                     }
-
+                    if (Input.GetMouseButtonUp(1))
+                    {
+                        anim.SetBool("SlowFall", false);
+                        anim.SetBool("Walk", true);
+                        rb.gravityScale = gravityScale;
+                    }
                 }
-                else if (Input.GetMouseButtonUp(1))
+                else
                 {
                     anim.SetBool("SlowFall", false);
                     anim.SetBool("Walk", true);
@@ -605,36 +612,44 @@ public class PlayerMovementNew : MonoBehaviour
                 {
                     Touch touch0 = Input.GetTouch(0);
                     Touch touch1 = Input.GetTouch(1);
+                    if (!isGrounded)
+                    {
 
-                    if (touch0.phase == TouchPhase.Began || touch1.phase == TouchPhase.Began)
-                    {
-                        twoFingerTapDetected = true;
+                        if (touch0.phase == TouchPhase.Began || touch1.phase == TouchPhase.Began)
+                        {
+                            twoFingerTapDetected = true;
+                        }
+                        else if (touch0.phase == TouchPhase.Ended || touch1.phase == TouchPhase.Ended)
+                        {
+                            twoFingerTapDetected = false;
+                            // ExecuteTwoFingerTapEnd();
+                            anim.SetBool("SlowFall", false);
+                            anim.SetBool("Walk", true);
+                            rb.gravityScale = gravityScale;
+                        }
+
+                        if (twoFingerTapDetected && (touch0.phase == TouchPhase.Stationary || touch0.phase == TouchPhase.Moved) && (touch1.phase == TouchPhase.Stationary || touch1.phase == TouchPhase.Moved))
+                        {
+                            // ExecuteTwoFingerTap();
+                            if (playerController.paracaidas)
+                            {
+                                if (!isGrounded)
+                                {
+                                    anim.SetBool("Walk", false);
+                                    anim.SetBool("SlowFall", true);
+                                    //rb.velocity = new Vector2(.2f, rb.velocity.y);
+                                    rb.gravityScale = slowFallGravity;
+                                }
+                            }
+                        }
                     }
-                    else if (touch0.phase == TouchPhase.Ended || touch1.phase == TouchPhase.Ended)
+                    else
                     {
-                        twoFingerTapDetected = false;
-                        // ExecuteTwoFingerTapEnd();
                         anim.SetBool("SlowFall", false);
                         anim.SetBool("Walk", true);
                         rb.gravityScale = gravityScale;
                     }
-
-                    if (twoFingerTapDetected && (touch0.phase == TouchPhase.Stationary || touch0.phase == TouchPhase.Moved) && (touch1.phase == TouchPhase.Stationary || touch1.phase == TouchPhase.Moved))
-                    {
-                        // ExecuteTwoFingerTap();
-                        if (playerController.paracaidas)
-                        {
-                            if (!isGrounded)
-                            {
-                                anim.SetBool("Walk", false);
-                                anim.SetBool("SlowFall", true);
-                                //rb.velocity = new Vector2(.2f, rb.velocity.y);
-                                rb.gravityScale = slowFallGravity;
-                            }
-                        }
-                    }
                 }
-
                 else
                 {
                     twoFingerTapDetected = false;
@@ -788,7 +803,8 @@ public class PlayerMovementNew : MonoBehaviour
     }
     private void Smash(float x, float y)
     {
-        spriteRenderer.color = Color.red;
+        ghostController.enabled = true;
+       // spriteRenderer.color = Color.red;
         anim.SetBool("Smash", true);
         canSmash = true;
         rb.velocity = Vector2.zero;
@@ -819,8 +835,9 @@ public class PlayerMovementNew : MonoBehaviour
         gameObject.GetComponent<PlayerController>().SaludAmount = 0;
         gameObject.GetComponent<PlayerController>().uiSalud.saludCount = 0;
         gameObject.GetComponent<PlayerController>().uiSalud.UpdateSalud(0);
-        spriteRenderer.color = Color.white;
+        //spriteRenderer.color = Color.white;
         anim.SetBool("Smash", false);
+        ghostController.enabled = false;
     }
     private IEnumerator CameraShake(float tiempo)
     {
@@ -1027,19 +1044,22 @@ public class PlayerMovementNew : MonoBehaviour
         //float startValue = material.GetFloat("_DissolveAmmount");
         //anim.Play("Die");
        // material.SetFloat("_DissolveAmmount", Mathf.Lerp(0, 1, Time.deltaTime * .5f));
-        yield return new WaitForSeconds(.05f);
+        direction = Vector2.zero;
         playerController.isDie = true;
         playerController.escudo = false;
         playerController.saltoDoble = false;
         playerController.vidaExtra = false;
         playerController.paracaidas = false;
-        //canMove = false;
+        yield return new WaitForSeconds(1);
         levelManager.GameOver();
+        //canMove = false;
         //SceneManager.LoadScene("Test");
 
     }
     public void DieMaterialAnim()
     {
+        Time.timeScale = .5f;
+        rb.simulated = false;
         StartCoroutine(DieAnim2());
     }
     private IEnumerator DieAnimation()
