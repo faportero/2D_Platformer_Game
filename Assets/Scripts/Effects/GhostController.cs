@@ -34,12 +34,12 @@ public class GhostController : MonoBehaviour
         ghostObj.transform.localScale = player.transform.localScale;
         Destroy(ghostObj, destroyTime);
 
-        //spriteRenderer = ghostObj.GetComponent<SpriteRenderer>();
-        //spriteRenderer.sprite = player.spriteRenderer.sprite;
-        //spriteRenderer.color = color;
-        //spriteRenderer.sortingOrder = player.spriteRenderer.sortingOrder;
-        //if (material != null) spriteRenderer.material = material;
-        //spriteRenderer.sortingOrder = player.spriteRenderer.sortingOrder - 1;
+        spriteRenderer = ghostObj.GetComponent<SpriteRenderer>();
+        spriteRenderer.sprite = player.spriteRenderer.sprite;
+        spriteRenderer.color = color;
+        spriteRenderer.sortingOrder = player.spriteRenderer.sortingOrder;
+        if (material != null) spriteRenderer.material = material;
+        spriteRenderer.sortingOrder = player.spriteRenderer.sortingOrder - 1;
 
     }
 }
