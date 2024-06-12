@@ -57,7 +57,7 @@ public class SwitchModeCollider : MonoBehaviour
                     collision.GetComponent<PlayerMovementNew>().movementMode = MovementMode.RunnerMode;                                      
                     break;
                 case PlayerMovementMode.FallingMode:
-                    camOffset.m_Offset = new Vector3(initialCamOffset.x, -5, initialCamOffset.z);
+                    //camOffset.m_Offset = new Vector3(initialCamOffset.x, -5, initialCamOffset.z);
 
                     //startPosition = rbPlayer.position;
                     //startPosition = player.transform.position;
