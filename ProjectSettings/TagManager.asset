@@ -13,6 +13,7 @@ TagManager:
   - CheckPoint
   - BadFloor
   - Resorte
+  - FeedbackHealth
   layers:
   - Default
   - TransparentFX

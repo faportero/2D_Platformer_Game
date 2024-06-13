@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -27,9 +29,15 @@ public class Health : MonoBehaviour
     private Vector3 lastPosition;
 
 
+
+
     void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+    private void Start()
+    {
+        //panelFeedback = GameObject.FindGameObjectWithTag("FeedbackHealth");
     }
 
 #if UNITY_EDITOR
@@ -119,16 +127,17 @@ public class Health : MonoBehaviour
         }
     }
 
-    private void HealthDie()
+    public void HealthDie()
     {
         Destroy(gameObject, .2f);
     }
-
+ 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision != null && collision.tag == "Player")
         {
-            HealthDie();
+            //HealthDie();
+            //StartCoroutine(Feedback());
         }
     }
 }

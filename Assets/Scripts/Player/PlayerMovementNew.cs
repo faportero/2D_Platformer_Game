@@ -27,6 +27,8 @@ public class PlayerMovementNew : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private PlayerController playerController;
     private GhostController ghostController;
+    private CameraFollowObject cameraFollowObject;
+    public GameObject cameraFollowGo;
 
     [Header("Level Colisions")]
     [SerializeField] private List<FallingLevelColliders> fallingColliders;
@@ -59,6 +61,8 @@ public class PlayerMovementNew : MonoBehaviour
     private float coyoteTimeCounter;
     private float jumpBufferCounter;
     private Material material;
+
+    private float fallSpeedYDampingChangeThreshold;
 
     [Header("Input Parameters")]
     [SerializeField] private float tapTimeThreshold = .3f;
@@ -95,6 +99,8 @@ public class PlayerMovementNew : MonoBehaviour
     private bool canDoubleJump;
     private float dissolveAmount;
     private bool isAnimating;
+    private float clicDirection;
+    public bool isFacingRight = true;
     #endregion
     #region Unity Callbacks
     private void Awake()
@@ -108,6 +114,7 @@ public class PlayerMovementNew : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         playerController = GetComponent<PlayerController>();
         ghostController = GetComponent<GhostController>();
+        cameraFollowObject = cameraFollowGo.GetComponent<CameraFollowObject>();
     }
 
     void Start()
@@ -117,22 +124,29 @@ public class PlayerMovementNew : MonoBehaviour
         capsuleColliderOffset = capsuleCollider.offset;
         targetPosition = transform.position;
         material = spriteRenderer.material;
-        //material.SetFloat("_DissolveAmmount", Mathf.Lerp(0, 1, Time.deltaTime * 5f));
-        //material.DOFloat(1.0f, "_DissolveAmount", 1).From(0.0f).SetEase(Ease.InOutSine);
-        //StartCoroutine(AnimateDissolveCoroutine());
-        // Asegúrate de que el parámetro comienza en 0
-        //material.SetFloat("_DissolveAmount", 0.0f);
-        // Asegúrate de que el parámetro comienza en 0
 
+        fallSpeedYDampingChangeThreshold = CameraManager.instance.fallSpeedYDampingChangeThreshold;
 
-        // Iniciar la animación del parámetro _DissolveAmount de 0 a 1 usando DoTween
-        
+    }
 
+    private void LerpYDamping()
+    {
+        if (rb.velocity.y < fallSpeedYDampingChangeThreshold && !CameraManager.instance.isLerpingYDamping && !CameraManager.instance.LerpedFromPlayerFalling)
+        {
+            CameraManager.instance.LerpYDamping(true);
+        }
+
+        if (rb.velocity.y >= 0 && !CameraManager.instance.isLerpingYDamping && CameraManager.instance.LerpedFromPlayerFalling)
+        {
+            CameraManager.instance.LerpedFromPlayerFalling = false;
+            CameraManager.instance.LerpYDamping(false);
+        }
     }
 
     private void Update()
     {
-       // StartCoroutine(DieAnimation());
+
+        // StartCoroutine(DieAnimation());
 
         //print(material.GetFloat("_DissolveAmmount"));
         if (canMove)
@@ -140,16 +154,19 @@ public class PlayerMovementNew : MonoBehaviour
             switch (movementMode)
             {
                 case MovementMode.TapMode:
+                    LerpYDamping();
                     TapMovement();
                     //CheckGround();
                     break;
                 case MovementMode.RunnerMode:
+                    LerpYDamping();
                     RunnerMovement();
                     CheckGround();
                     break;
                 case MovementMode.FallingMode:
                     GetInputDirection();
                     if(inputsEnabled)GetDirecction();
+                    //if(inputsEnabled)TurnCheck();
                     CheckGround();
                     FallingMovement();
                     break;
@@ -191,7 +208,7 @@ public class PlayerMovementNew : MonoBehaviour
         }
 
     }
-    private void GetDirecction()
+    private  void GetDirecction()
     {
         if (direction.x < 0 && transform.localScale.x > 0)
         {
@@ -200,8 +217,41 @@ public class PlayerMovementNew : MonoBehaviour
         else if (direction.x > 0 && transform.localScale.x < 0)
         {
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-
         }
+
+        if (isPC)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                screenPosition = Input.mousePosition;
+                screenPosition.z = Camera.main.nearClipPlane + 25;
+                targetPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+
+                targetPosition.y = transform.position.y;
+                targetPosition.z = transform.position.z;
+
+                clicDirection = targetPosition.x;
+                clicDirection = clicDirection - transform.position.x;
+            }
+        }
+        else if (!isPC)
+        {
+            if (swipeDetector.TapPerformed == true)
+            {
+                Touch touch = Input.GetTouch(0);
+                screenPosition = touch.position;
+                screenPosition.z = Camera.main.nearClipPlane + 25;
+                targetPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+
+                targetPosition.y = transform.position.y;
+                targetPosition.z = transform.position.z;
+
+                clicDirection = targetPosition.x;
+                clicDirection = clicDirection - transform.position.x;
+            }
+            swipeDetector.TapPerformed = false;
+        }   
+        
     }
     private void Walk()
     {
@@ -214,74 +264,50 @@ public class PlayerMovementNew : MonoBehaviour
     }
     #endregion
     #region TapMode
-    private void TapMovement()
+    private void Turn()
     {
-        
+        if (isFacingRight)
+        {
+            Vector3 rotator = new Vector3(transform.rotation.x, 180f, transform.rotation.z);
+            transform.rotation = Quaternion.Euler(rotator);
+            isFacingRight = !isFacingRight;
+
+            cameraFollowObject.CallTurn();
+        }
+        else
+        {
+            Vector3 rotator = new Vector3(transform.rotation.x, 0, transform.rotation.z);
+            transform.rotation = Quaternion.Euler(rotator);
+            isFacingRight = !isFacingRight;
+
+            cameraFollowObject.CallTurn();
+        }
+    }
+    private void TurnCheck()
+    {
+        GetDirecction();
+        if (clicDirection > 0 && !isFacingRight)
+        {
+            Turn();
+        }
+        else if (clicDirection < 0 && isFacingRight)
+        {
+            Turn();
+        }
+    }
+    private void TapMovement()
+    {        
         rb.gravityScale = gravityScale;
         direction = new Vector2(x, y);
-        Walk();
-        if (isPC)
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-
-                screenPosition = Input.mousePosition;
-                screenPosition.z = Camera.main.nearClipPlane + 25;
-                targetPosition = Camera.main.ScreenToWorldPoint(screenPosition);
-
-                targetPosition.y = transform.position.y;
-                targetPosition.z = transform.position.z;
-
-                float clicDirection = targetPosition.x;
-                clicDirection = clicDirection - transform.position.x;
-
-                if (clicDirection < 0 && transform.localScale.x > 0)
-                {
-                    transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-                }
-                else if (clicDirection > 0 && transform.localScale.x < 0)
-                {
-                    transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-                }
-            }
-            StartCoroutine(MovetoTarget());
-        }
-        else if (!isPC)
-        {  
-            if (swipeDetector.TapPerformed == true)
-            {
-                Touch touch = Input.GetTouch(0);
-                screenPosition = touch.position;
-                screenPosition.z = Camera.main.nearClipPlane + 25;
-                targetPosition = Camera.main.ScreenToWorldPoint(screenPosition);
-
-                targetPosition.y = transform.position.y;
-                targetPosition.z = transform.position.z;
-
-                float clicDirection = targetPosition.x;
-                clicDirection = clicDirection - transform.position.x;
-                print("screenPosAux = " + clicDirection);
-
-                if (clicDirection < 0 && transform.localScale.x > 0)
-                {
-                    transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-                }
-                else if (clicDirection > 0 && transform.localScale.x < 0)
-                {
-                    transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-                }
-            }
-            //StopAllCoroutines();
-            StartCoroutine(MovetoTarget());
-            swipeDetector.TapPerformed = false;
-        }
+        TurnCheck();           
+        StartCoroutine(MovetoTarget());
     }
     private IEnumerator MovetoTarget()
     {
         //anim.SetBool("Walk", false);
         anim.SetBool("SlowWalk", false);
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, clickMoveSpeed * Time.deltaTime);
-        yield return new WaitWhile(() => transform.position.x == targetPosition.x);
+        rb.position = Vector3.MoveTowards(rb.position, targetPosition, clickMoveSpeed * Time.deltaTime);
+        yield return new WaitWhile(() => rb.position.x == targetPosition.x);
         anim.SetBool("SlowWalk", true);
     }
     #endregion
@@ -864,7 +890,7 @@ public class PlayerMovementNew : MonoBehaviour
     #region FallingMde
     private void FallingMovement()
     {
-
+        
         direction = new Vector2(x, 0);
 
         int movimientosIzquierda = 0;
@@ -1085,3 +1111,4 @@ public class PlayerMovementNew : MonoBehaviour
     }
     #endregion
 }
+
