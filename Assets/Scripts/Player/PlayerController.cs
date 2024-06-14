@@ -41,6 +41,8 @@ public class PlayerController : MonoBehaviour
     public bool isEnemyAttack;
     private float attackkDuration = 1;
 
+    private DistanceTracker distanceTracker;
+
     GhostController ghostController;
     [SerializeField]private GameObject panelFeedback;
     private void Start()
@@ -69,7 +71,7 @@ public class PlayerController : MonoBehaviour
 
         spriteRenderer = GetComponent<SpriteRenderer>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
-
+        distanceTracker = FindAnyObjectByType<DistanceTracker>();
 
     }
 
@@ -328,6 +330,11 @@ public class PlayerController : MonoBehaviour
                
                 //print(currentAdiction);
             }
+            
         }
+        //if (collision.CompareTag("SegmentTrigger"))
+        //{
+        //    distanceTracker.currentSegmentIndex++; // Avanzar al siguiente segmento
+        //}
     }
 }

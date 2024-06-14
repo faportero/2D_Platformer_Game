@@ -149,8 +149,9 @@ public class CameraManager : MonoBehaviour
 
     public void SwapCamera(CinemachineVirtualCamera cameraFromLeft, CinemachineVirtualCamera cameraFromRight, Vector2 triggerExitDirection)
     {
-        
-        if (currentCamera == cameraFromLeft && triggerExitDirection.y < 0)
+        print(triggerExitDirection);
+        print(currentCamera);
+        if (currentCamera == cameraFromLeft && triggerExitDirection.y < 0 && triggerExitDirection.x < 0)
         {
             cameraFromLeft.enabled = false;
             cameraFromRight.enabled = true;
@@ -168,7 +169,7 @@ public class CameraManager : MonoBehaviour
             framingTransposer = currentCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
         }
 
-        if (currentCamera == cameraFromLeft && triggerExitDirection.x > 0 && triggerExitDirection.y == 0)
+        else if (currentCamera == cameraFromLeft && triggerExitDirection.x > 0 && triggerExitDirection.y < 0)
         {
             cameraFromLeft.enabled = false;
             cameraFromRight.enabled = true;
@@ -177,7 +178,7 @@ public class CameraManager : MonoBehaviour
             framingTransposer = currentCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
         }
 
-        else if (currentCamera == cameraFromRight && triggerExitDirection.x < 0 && triggerExitDirection.y == 0) 
+        else if (currentCamera == cameraFromRight && triggerExitDirection.x < 0) 
         {
             cameraFromLeft.enabled = true;
             cameraFromRight.enabled = false;
