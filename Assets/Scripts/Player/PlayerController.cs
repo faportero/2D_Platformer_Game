@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
     private DistanceTracker distanceTracker;
 
     GhostController ghostController;
-    [SerializeField]private GameObject panelFeedback;
+
     private void Start()
     {
         inmunidad = transform.GetChild(0).gameObject;
@@ -293,13 +293,7 @@ public class PlayerController : MonoBehaviour
         isEnemyAttack = false;
     }
 
-    private IEnumerator Feedback()
-    {
-        panelFeedback.SetActive(true);
-        yield return new WaitForSeconds(.2f);
-        panelFeedback.SetActive(false);
-        
-    }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

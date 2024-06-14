@@ -24,6 +24,7 @@ public class Health : MonoBehaviour
     }
     [SerializeField] private HealthType healthType;
     [SerializeField] private bool isRandom;
+    [SerializeField] private GameObject panelFeedback;
     public List<Sprite> spriteRenderers = new List<Sprite>();
     private SpriteRenderer spriteRenderer;
     private Vector3 lastPosition;
@@ -131,13 +132,20 @@ public class Health : MonoBehaviour
     {
         Destroy(gameObject, .2f);
     }
- 
+    private IEnumerator Feedback()
+    {
+        panelFeedback.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        panelFeedback.SetActive(false);
+        HealthDie();
+
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision != null && collision.tag == "Player")
         {
             //HealthDie();
-            //StartCoroutine(Feedback());
+            StartCoroutine(Feedback());
         }
     }
 }
