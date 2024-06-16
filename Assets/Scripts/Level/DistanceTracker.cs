@@ -22,7 +22,7 @@ public class DistanceTracker : MonoBehaviour
     private void Update()
     {
         CalculatePlayerProgress();
-        Debug.Log("Progreso: " + playerProgress);
+       // Debug.Log("Progreso: " + playerProgress);
     }
 
     void OnDrawGizmos()

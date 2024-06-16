@@ -41,10 +41,11 @@ public class PlayerController : MonoBehaviour
     public bool isAttack = true;
     public bool isEnemyAttack;
     private float attackkDuration = 1;
-
+    private int spritePanelIndex;
     private DistanceTracker distanceTracker;
 
     GhostController ghostController;
+    [SerializeField] private UI_FeedbackSalud ui_feedback;
 
     private void Start()
     {
@@ -323,7 +324,11 @@ public class PlayerController : MonoBehaviour
         isEnemyAttack = false;
     }
 
-
+    private IEnumerator ShowFeedbackPanel()
+    {
+        
+        yield return new WaitForSeconds(2);
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -341,20 +346,31 @@ public class PlayerController : MonoBehaviour
         //}
         if (collision.tag == "Salud")
         {
-            if (currentAdiction != 0)
-            {
-                currentAdiction -= adictionAmount;
-                adiccionBar.UpdateAdiccion(-adictionAmount);
-                // print(adiccionBar.adiccionFillBar.fillAmount);
-            }
-            if (currentAdiction <= 0)
-            {
-                uiSalud.UpdateSalud(1);
-                TakeSalud();
-               
-                //print(currentAdiction);
-            }
-            
+           print(collision.GetComponent<Health>().spriteIndex);
+            spritePanelIndex = collision.GetComponent<Health>().spriteIndex;
+            ui_feedback.image.sprite = ui_feedback.feedbackSprites[spritePanelIndex];
+           // StartCoroutine(ShowFeedbackPanel());
+
+
+
+
+
+
+            //if (currentAdiction != 0)
+            //{
+            //    currentAdiction -= adictionAmount;
+            //    adiccionBar.UpdateAdiccion(-adictionAmount);
+            //    // print(adiccionBar.adiccionFillBar.fillAmount);
+            //}
+            //if (currentAdiction <= 0)
+            //{
+            //    uiSalud.UpdateSalud(1);
+            //    TakeSalud();
+
+            //    //print(currentAdiction);
+            //}
+
+
         }
         //if (collision.CompareTag("SegmentTrigger"))
         //{

@@ -35,43 +35,36 @@ public class Health : MonoBehaviour
     [SerializeField]private Image panelSpriteRenderer;
 
     private Vector3 lastPosition;
-    private bool isShowPanel;
+    public bool isShowPanel;
     private Coroutine coroutineFeedback;
 
     [SerializeField] private GameObject panelFeedback;
     private PlayerController playerController;
     private List<Health> h;
     [SerializeField]private GameObject imagePanelFeedback;
-    [SerializeField]private UI_FeedbackSalud ui_feedback;
 
-    //[SerializeField] private List<UnityEngine.UI.Image> imageFeedbackPanel;
+   // [SerializeField] private UI_FeedbackSalud ui_feedback;
+
     [SerializeField] private List<Sprite> imageFeedbackPanel = new List<Sprite>();
-    private int spriteIndex;
+    public int spriteIndex;
+    private int randomIndex;
 
     void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        ui_feedback = GetComponent<UI_FeedbackSalud>();
-       // panelSpriteRenderer = ui_feedback.GetComponent<SpriteRenderer>();
-       // panelSpriteRenderer = imagePanelFeedback.GetComponent<SpriteRenderer>();
+        
    
-       // imagePanelFeedback = GameObject.FindGameObjectWithTag("FeedbackHealth");
     }
     private void Start()
     {
         h = new List<Health>();
-        //panelFeedback = GameObject.FindGameObjectWithTag("FeedbackHealth");
-        //panelFeedback = transform.GetChild(0).gameObject;
-        //print(panelFeedback);
-        //coroutineFeedback = StartCoroutine(Feedback());
-        //imagePanelFeedback = GameObject.FindGameObjectWithTag("FeedbackHealth");
-        //imagePanelFeedback = panelFeedback.transform.GetChild(0).gameObject;
+        //spriteIndex = randomIndex;
     }
 
 #if UNITY_EDITOR
     void OnEnable()
     {
-       
+        
         if (isRandom) 
             EditorApplication.update += OnEditorUpdate;
     }
@@ -84,8 +77,7 @@ public class Health : MonoBehaviour
 
     void OnEditorUpdate()
     {
-        //imagePanelFeedback = panelFeedback.transform.GetChild(0).gameObject;
-        //imagePanelFeedback = GameObject.FindGameObjectWithTag("FeedbackHealth");
+       
         if (!Application.isPlaying && transform.position != lastPosition)
         {
             UpdateSprite();
@@ -97,10 +89,10 @@ public class Health : MonoBehaviour
 
     void OnValidate()
     {
-        //imagePanelFeedback = panelFeedback.transform.GetChild(0).gameObject;
-        //imagePanelFeedback = GameObject.FindGameObjectWithTag("FeedbackHealth");
-       // AssignPanelSprite();
+        
 
+       
+       
         if (!isRandom) AssignSprite();
     }
 
@@ -114,83 +106,69 @@ public class Health : MonoBehaviour
 
         if (transform.position != Vector3.zero)
         {
-            int randomIndex = Random.Range(0, spriteRenderers.Count);
+          
+             randomIndex = Random.Range(0, spriteRenderers.Count);
+            
+          
             spriteRenderer.sprite = spriteRenderers[randomIndex];
-
-           // panelSpriteRenderer.sprite = spriteRenderers[randomIndex];
+          
+            // panelSpriteRenderer.sprite = spriteRenderers[randomIndex];
         }
         else
         {
             spriteRenderer.sprite = spriteRenderers[0];
             //panelSpriteRenderer.sprite = spriteRenderers[0];
         }
+        
 
 #if UNITY_EDITOR
         // Marcar el objeto como modificado para asegurarse de que los cambios se reflejen en el editor
+        //spriteIndex = randomIndex;
         EditorUtility.SetDirty(spriteRenderer);
+       
 #endif
     }
-
+    
     public void AssignSprite()
     {
         switch (healthType)
         {
-            case HealthType.Futbol:
-               // ui_feedback.AssignFeedbackSprite();
+            case HealthType.Futbol:               
                 gameObject.GetComponent<SpriteRenderer>().sprite = spriteRenderers[0];
-                spriteIndex = 0;
-
-                //imagePanelFeedback = GameObject.FindGameObjectWithTag("FeedbackHealth");
-                // imagePanelFeedback.GetComponent<Image>().sprite = imageFeedbackPanel[0];
+               spriteIndex = 0;
                 break;
-            case HealthType.Gym:
-                //ui_feedback.AssignFeedbackSprite();
+            case HealthType.Gym:               
                 gameObject.GetComponent<SpriteRenderer>().sprite = spriteRenderers[1];
-                spriteIndex = 1;
-                //imagePanelFeedback = GameObject.FindGameObjectWithTag("FeedbackHealth");
-                // imagePanelFeedback.GetComponent<Image>().sprite = imageFeedbackPanel[1];
+               spriteIndex = 1;
                 break;
             case HealthType.Trotar:
-                //ui_feedback.AssignFeedbackSprite();
+             
                 gameObject.GetComponent<SpriteRenderer>().sprite = spriteRenderers[2];
-                spriteIndex = 2;
-                //  imagePanelFeedback.GetComponent<Image>().sprite = imageFeedbackPanel[2];
+               spriteIndex = 2;
                 break;
-            case HealthType.No:
-                //ui_feedback.AssignFeedbackSprite();
+            case HealthType.No:               
+               spriteIndex = 3;
                 gameObject.GetComponent<SpriteRenderer>().sprite = spriteRenderers[3];
-                spriteIndex = 3;
-                //  imagePanelFeedback.GetComponent<Image>().sprite = imageFeedbackPanel[3];
                 break;
-            case HealthType.SoloHoy:
-                //ui_feedback.AssignFeedbackSprite();
+            case HealthType.SoloHoy:                
+               spriteIndex = 4;
                 gameObject.GetComponent<SpriteRenderer>().sprite = spriteRenderers[4];
-                spriteIndex = 4;
-                //  imagePanelFeedback.GetComponent<Image>().sprite = imageFeedbackPanel[4];
                 break;
-            case HealthType.Meditacion:
-                //ui_feedback.AssignFeedbackSprite();
+            case HealthType.Meditacion:                
+             spriteIndex = 5;
                 gameObject.GetComponent<SpriteRenderer>().sprite = spriteRenderers[5];
-                spriteIndex = 5;
-                //  imagePanelFeedback.GetComponent<Image>().sprite = imageFeedbackPanel[5];
                 break;
-            case HealthType.Agua:
-                //ui_feedback.AssignFeedbackSprite();
+            case HealthType.Agua:               
+            spriteIndex = 6;
                 gameObject.GetComponent<SpriteRenderer>().sprite = spriteRenderers[6];
-                spriteIndex = 6;
-                //  imagePanelFeedback.GetComponent<Image>().sprite = imageFeedbackPanel[6];
                 break;
-            case HealthType.Manzana:
-                //ui_feedback.AssignFeedbackSprite();
+            case HealthType.Manzana:               
+              spriteIndex = 7;
                 gameObject.GetComponent<SpriteRenderer>().sprite = spriteRenderers[7];
-                spriteIndex = 7;
-                //  imagePanelFeedback.GetComponent<Image>().sprite = imageFeedbackPanel[7];
                 break;
-            case HealthType.Pescado:
-                //ui_feedback.AssignFeedbackSprite();
+            case HealthType.Pescado:               
+              spriteIndex = 8;
                 gameObject.GetComponent<SpriteRenderer>().sprite = spriteRenderers[8];
-                spriteIndex = 8;
-                // imagePanelFeedback.GetComponent<Image>().sprite = imageFeedbackPanel[8];
                 break;
         }
     }
@@ -271,22 +249,24 @@ public class Health : MonoBehaviour
     {
         if (collision != null && collision.tag == ("Player"))
         {
+            ShowFeedback();
+       // print("Spritee"+ spriteIndex);
 
-            if (h.Count == 0) h = collision.GetComponent<PlayerController>().healhts;
-            playerController = collision.GetComponent<PlayerController>();
-            foreach (Health health in h)
-            {
-                if (health.healthType == healthType)
-                {
-                    // ui_feedback.image.sprite
-                    // collision.GetComponent<PlayerController>().TakeHealth(health);
-                    // AssignPanelSprite();
-                    // HealthDie();
-                    // ShowFeedback();
-                    //AssignPanelSprite();
+        //    if (h.Count == 0) h = collision.GetComponent<PlayerController>().healhts;
+        //    playerController = collision.GetComponent<PlayerController>();
+        //    foreach (Health health in h)
+        //    {
+        //        if (health.healthType == healthType)
+        //        {
+        //            // ui_feedback.image.sprite
+        //            // collision.GetComponent<PlayerController>().TakeHealth(health);
+        //            // AssignPanelSprite();
+        //            // HealthDie();
+        //            // ShowFeedback();
+        //            //AssignPanelSprite();
 
-                }
-            }
+        //        }
+        //    }
 
         }
 

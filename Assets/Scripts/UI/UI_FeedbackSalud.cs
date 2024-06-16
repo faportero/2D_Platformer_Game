@@ -6,7 +6,7 @@ using static Health;
 
 public class UI_FeedbackSalud : MonoBehaviour
 {
-    [SerializeField] private List<Sprite> feedbackSprites = new List<Sprite>();
+    public List<Sprite> feedbackSprites = new List<Sprite>();
     private Health health;
     public Image image; 
 
