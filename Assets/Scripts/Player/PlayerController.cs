@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public UI_Salud uiSalud;
     [SerializeField] public UI_Habilidades uiHabilidades;
     [HideInInspector] public List<Enemy> enemies;
+    [HideInInspector] public List<Health> healhts;
     [HideInInspector] public List<Ability> abilities;
     public GameObject effectPanel;
     private PlayerMovementNew playerMovement;
@@ -59,10 +60,12 @@ public class PlayerController : MonoBehaviour
         currentAdiction = adiccionBar.currentAdiccion;
 
         enemies = new List<Enemy>();
+        healhts = new List<Health>();
         abilities = new List<Ability>();
         playerMovement = GetComponent<PlayerMovementNew>();
         FindEnemies();
         FindAbilities();
+        FindHealth();
 
         //print("escudo" + UserData.escudo);
         //print("salto doble" + UserData.saltoDoble);
@@ -89,6 +92,23 @@ public class PlayerController : MonoBehaviour
 
             }
         }
+    }
+
+    private void FindHealth()
+    {
+        GameObject[] foundHealth = GameObject.FindGameObjectsWithTag("Salud");
+        healhts.Clear();
+
+        foreach (GameObject healthObject in foundHealth)
+        {
+            Health health = healthObject.GetComponent<Health>();
+            if (health != null)
+            {
+                healhts.Add(health);
+
+            }
+        }
+       // print(healhts);
     }
 
     private void FindAbilities()
@@ -129,6 +149,16 @@ public class PlayerController : MonoBehaviour
         ability.NewAbility();
         ability.AbilityDie();
         currentAdiction = adiccionBar.currentAdiccion;
+    }
+
+    public void TakeHealth(Health health)
+    {
+        health.AssignPanelSprite();
+        health.ShowFeedback();
+        //adiccionBar.UpdateAdiccion(adictionAmount);
+        //ability.NewAbility();
+        //ability.AbilityDie();
+        //currentAdiction = adiccionBar.currentAdiccion;
     }
 
     public void TakeSalud()
