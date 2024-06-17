@@ -24,9 +24,12 @@ public class UI_Habilidades : MonoBehaviour
 
     }
 
-    private void Start()
+    private void Update()
     {
-
+        if (valorEscudo > uiCoins.coinCount) escudo.GetComponent<UnityEngine.UI.Button>().interactable = false;
+        if (valorSaltoDoble > uiCoins.coinCount) saltoDoble.GetComponent<UnityEngine.UI.Button>().interactable = false;
+        if (valorVidaExtra > uiCoins.coinCount) vidaExtra.GetComponent<UnityEngine.UI.Button>().interactable = false;
+        if (valorParacaidas > uiCoins.coinCount) paracaidas.GetComponent<UnityEngine.UI.Button>().interactable = false;
     }
     private void UpdateCoinsText()
     {
@@ -42,6 +45,7 @@ public class UI_Habilidades : MonoBehaviour
 
     public void BuyEscudo()
     {
+        //uiCoins.coinCount = 0;  
         uiCoins.UpdateCoins(-valorEscudo);
         playerController.escudo = true;
         uiCoins.coinCountText.text = uiCoins.coinCount.ToString();

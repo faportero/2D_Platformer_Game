@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEditor;
 
-
+[ExecuteInEditMode]
 public class DistanceTracker : MonoBehaviour
 {
     public List<Transform> points = new List<Transform>(); // Lista de puntos
@@ -10,19 +10,16 @@ public class DistanceTracker : MonoBehaviour
     public Color lineColor = Color.red; // Color de la línea
     public float totalDistance { get; private set; }
     public float playerProgress { get; private set; } // Valor entre 0 y 1
-    private int currentSegmentIndex = 0; // Índice del segmento actual
-    private Vector3 previousDirection;
 
     private void Start()
     {
         CalculateTotalDistance();
-        previousDirection = (points[1].position - points[0].position).normalized; // Dirección inicial
     }
 
     private void Update()
     {
         CalculatePlayerProgress();
-       // Debug.Log("Progreso: " + playerProgress);
+        Debug.Log("Progreso: " + playerProgress);
     }
 
     void OnDrawGizmos()
@@ -45,7 +42,7 @@ public class DistanceTracker : MonoBehaviour
         if (transform.position != null)
         {
             Gizmos.DrawCube(transform.position, Vector3.one * 0.1f); // Pequeño marcador en el GameObject
-            Handles.Label(transform.position, "Total Distance: " + totalDistance.ToString("F2") + " units");
+           // Handles.Label(transform.position, "Total Distance: " + totalDistance.ToString("F2") + " units");
         }
     }
 
@@ -66,7 +63,7 @@ public class DistanceTracker : MonoBehaviour
     {
         float currentDistance = 0f;
 
-        for (int i = 0; i <= currentSegmentIndex; i++)
+        for (int i = 0; i < points.Count - 1; i++)
         {
             if (points[i] != null && points[i + 1] != null)
             {
@@ -93,18 +90,4 @@ public class DistanceTracker : MonoBehaviour
 
         playerProgress = currentDistance / totalDistance;
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("SegmentTrigger"))
-        {
-            SegmentTrigger trigger = other.GetComponent<SegmentTrigger>();
-            if (trigger != null)
-            {
-                currentSegmentIndex = trigger.segmentIndex;
-                previousDirection = trigger.newDirection;
-            }
-        }
-    }
 }
-

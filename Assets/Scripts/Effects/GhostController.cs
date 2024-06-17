@@ -26,7 +26,7 @@ public class GhostController : MonoBehaviour
     {
         if (delta > 0) { delta -= Time.deltaTime; }
         else { delta = delay; createGhost(); }
-        print(transform.position);
+        //print(transform.position);
     }
     void createGhost()
     {

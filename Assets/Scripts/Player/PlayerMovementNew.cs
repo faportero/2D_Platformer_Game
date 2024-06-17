@@ -1068,7 +1068,7 @@ public class PlayerMovementNew : MonoBehaviour
     private IEnumerator Diying()
     {
         //float startValue = material.GetFloat("_DissolveAmmount");
-        //anim.Play("Die");
+       // anim.Play("Die");
        // material.SetFloat("_DissolveAmmount", Mathf.Lerp(0, 1, Time.deltaTime * .5f));
         direction = Vector2.zero;
         playerController.isDie = true;

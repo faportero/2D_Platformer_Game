@@ -57,6 +57,7 @@ public class Health : MonoBehaviour
     }
     private void Start()
     {
+        playerController = FindAnyObjectByType<PlayerController>();
         h = new List<Health>();
         //spriteIndex = randomIndex;
     }
@@ -228,45 +229,32 @@ public class Health : MonoBehaviour
     public void HealthDie()
     {
         Destroy(gameObject, .2f);
-    }
-    public void ShowFeedback()
-    {
-        if(isShowPanel)StopCoroutine(coroutineFeedback);
-        coroutineFeedback = StartCoroutine(Feedback());
+       //gameObject.SetActive(false);
     }
 
-    private IEnumerator Feedback()
-    {
-        isShowPanel = true;
-        panelFeedback.SetActive(true);
-        yield return new WaitForSeconds(2f);
-        panelFeedback.SetActive(false);
-        isShowPanel = false;
-        //HealthDie();
-
-    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision != null && collision.tag == ("Player"))
         {
-            ShowFeedback();
-       // print("Spritee"+ spriteIndex);
+           // ShowFeedback();
+            HealthDie();
+            // print("Spritee"+ spriteIndex);
 
-        //    if (h.Count == 0) h = collision.GetComponent<PlayerController>().healhts;
-        //    playerController = collision.GetComponent<PlayerController>();
-        //    foreach (Health health in h)
-        //    {
-        //        if (health.healthType == healthType)
-        //        {
-        //            // ui_feedback.image.sprite
-        //            // collision.GetComponent<PlayerController>().TakeHealth(health);
-        //            // AssignPanelSprite();
-        //            // HealthDie();
-        //            // ShowFeedback();
-        //            //AssignPanelSprite();
+            //    if (h.Count == 0) h = collision.GetComponent<PlayerController>().healhts;
+            //    playerController = collision.GetComponent<PlayerController>();
+            //    foreach (Health health in h)
+            //    {
+            //        if (health.healthType == healthType)
+            //        {
+            //            // ui_feedback.image.sprite
+            //            // collision.GetComponent<PlayerController>().TakeHealth(health);
+            //            // AssignPanelSprite();
+            //            // HealthDie();
+            //            // ShowFeedback();
+            //            //AssignPanelSprite();
 
-        //        }
-        //    }
+            //        }
+            //    }
 
         }
 

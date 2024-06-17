@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour
     private TextMeshProUGUI effectText;
     private TextMeshProUGUI effectTextMensajeTitulo;
     private TextMeshProUGUI effectTextMensajeDesc;
+    private Image dieEffectImage;
 
     public bool isAdict = false;
     private List<Enemy> e;
@@ -57,6 +58,7 @@ public class Enemy : MonoBehaviour
         effectText = effectPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         effectTextMensajeTitulo = effectPanelMensaje.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         effectTextMensajeDesc = effectPanelMensaje.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+        dieEffectImage = effectPanelMensaje.transform.GetChild(2).GetComponent<Image>();
 
 
     }
@@ -88,7 +90,7 @@ public class Enemy : MonoBehaviour
                     }
                     else
                     {
-                        EnemyDie();
+                      //  EnemyDie();
                     }
                 }
             }
@@ -120,6 +122,7 @@ public class Enemy : MonoBehaviour
                 effectText.text = "Cannabis";
                 effectTextMensajeTitulo.text = "Cannabis";
                 effectTextMensajeDesc.text = "El cannabis te hace mover mas lento";
+                dieEffectImage.sprite = spriteRenderers[0];
                 break;
 
             case SustanceType.Cocaina:
@@ -129,6 +132,7 @@ public class Enemy : MonoBehaviour
                 effectText.text = "Cocaina";
                 effectTextMensajeTitulo.text = "Cocaina";
                 effectTextMensajeDesc.text = "La cocaina te hace saltar como loco";
+                dieEffectImage.sprite = spriteRenderers[1];
                 break;
             case SustanceType.Extasis:
                 //print("Exta");
@@ -137,6 +141,7 @@ public class Enemy : MonoBehaviour
                 effectText.text = "Éxtasis";
                 effectTextMensajeTitulo.text = "Extasis";
                 effectTextMensajeDesc.text = "El extasis te hace saltar como loco";
+                dieEffectImage.sprite = spriteRenderers[2];
                 break;
             case SustanceType.Metanfetamina:
                 //print("Metanfetamina");
@@ -145,6 +150,7 @@ public class Enemy : MonoBehaviour
                 effectText.text = "Metanfetamina";
                 effectTextMensajeTitulo.text = "Metanfetamina";
                 effectTextMensajeDesc.text = "La metanfetamina te hace saltar como loco";
+                dieEffectImage.sprite = spriteRenderers[3];
                 break;
             case SustanceType.Heroina:
                // print("Heroinaaaa");
@@ -153,6 +159,7 @@ public class Enemy : MonoBehaviour
                 effectText.text = "Heroina";
                 effectTextMensajeTitulo.text = "Heroina";
                 effectTextMensajeDesc.text = "La heroina te hace saltar como loco";
+                dieEffectImage.sprite = spriteRenderers[4];
                 break;
 
             case SustanceType.Psilocibina:
@@ -162,6 +169,7 @@ public class Enemy : MonoBehaviour
                 effectText.text = "Psilocibina";
                 effectTextMensajeTitulo.text = "Psilocibina";
                 effectTextMensajeDesc.text = "La psilocibina te altera la persepcion de la realidad";
+                dieEffectImage.sprite = spriteRenderers[5];
                 break;
 
             case SustanceType.Alcohol:
@@ -171,6 +179,7 @@ public class Enemy : MonoBehaviour
                 effectText.text = "Alcohol";
                 effectTextMensajeTitulo.text = "Alcohol";
                 effectTextMensajeDesc.text = "El alcohol te vuelve torpe";
+                dieEffectImage.sprite = spriteRenderers[6];
                 break;
             case SustanceType.Tabaco:
                 //print("Tabacooooo");
@@ -179,6 +188,7 @@ public class Enemy : MonoBehaviour
                 effectText.text = "Tabaco";
                 effectTextMensajeTitulo.text = "Tabaco";
                 effectTextMensajeDesc.text = "El tabaco te hace toser fuerte";
+                dieEffectImage.sprite = spriteRenderers[7];
                 break;
 
         }

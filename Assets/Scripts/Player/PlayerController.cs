@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviour
 
     public SpriteRenderer spriteRenderer;
     private Coroutine blinkCoroutine;
+    private Coroutine enemyEffectCoroutine;
     private CapsuleCollider2D capsuleCollider;
     public bool isAttack = true;
     public bool isEnemyAttack;
@@ -46,6 +47,7 @@ public class PlayerController : MonoBehaviour
 
     GhostController ghostController;
     [SerializeField] private UI_FeedbackSalud ui_feedback;
+    [SerializeField] private GameObject panelFeedback;
 
     private void Start()
     {
@@ -138,8 +140,8 @@ public class PlayerController : MonoBehaviour
         if (enemy.isAdict)
         {
             adiccionBar.UpdateAdiccion(adictionAmount);
-            enemy.Effect();
-            enemy.EnemyDie();
+            //enemy.Effect();
+            //enemy.EnemyDie();
             currentAdiction = adiccionBar.currentAdiccion;
         }
 
@@ -154,8 +156,8 @@ public class PlayerController : MonoBehaviour
 
     public void TakeHealth(Health health)
     {
-        health.AssignPanelSprite();
-        health.ShowFeedback();
+       // health.AssignPanelSprite();
+       // health.ShowFeedback();
         //adiccionBar.UpdateAdiccion(adictionAmount);
         //ability.NewAbility();
         //ability.AbilityDie();
@@ -188,17 +190,19 @@ public class PlayerController : MonoBehaviour
     }
     public void LoseLife()
     {
-        if (uiLifes.lifesCount > 1)
+        if (uiLifes.lifesCount > 0)
         {
             uiLifes.UpdateLife();
+            if (uiLifes.lifesCount == 0)
+            {
+                uiLifes.UpdateLife();
+                playerMovement.canMove = false;
+                uiHabilidades.CheckAvailable();
+                playerMovement.Die();
+                playerMovement.DieMaterialAnim();
+            }
         }
-        else
-        {
-            playerMovement.canMove = false;
-            uiHabilidades.CheckAvailable();
-            playerMovement.Die();
-            playerMovement.DieMaterialAnim();
-        }
+    
     }
 
 
@@ -208,31 +212,36 @@ public class PlayerController : MonoBehaviour
         {
             isDrugged = true;
             playerMovement.inputsEnabled = false;
-            StartCoroutine(CurrentEffect(2.5f));
+           // if (enemyEffectCoroutine != null) StopCoroutine(enemyEffectCoroutine);
+            enemyEffectCoroutine = StartCoroutine(CurrentEffect(2.5f));
         }
         else if (isCocaMetaHero)
         {
             isDrugged = true;
             playerMovement.inputsEnabled = false;
-            StartCoroutine(CurrentEffect(2.5f));
+           // if (enemyEffectCoroutine != null) StopCoroutine(enemyEffectCoroutine);
+            enemyEffectCoroutine = StartCoroutine(CurrentEffect(2.5f));
         }
         else if (isAlcohol)
         {
             isDrugged = true;
             playerMovement.inputsEnabled = false;
-            StartCoroutine(CurrentEffect(2.5f));
+          //  if (enemyEffectCoroutine != null) StopCoroutine(enemyEffectCoroutine);
+            enemyEffectCoroutine = StartCoroutine(CurrentEffect(2.5f));
         }
         else if (isPsilo)
         {
             isDrugged = true;
             playerMovement.inputsEnabled = false;
-            StartCoroutine(CurrentEffect(2.5f));
+         //   if (enemyEffectCoroutine != null) StopCoroutine(enemyEffectCoroutine);
+            enemyEffectCoroutine = StartCoroutine(CurrentEffect(2.5f));
         }
         else if (isTabaco)
         {
             isDrugged = true;
             playerMovement.inputsEnabled = false;
-            StartCoroutine(CurrentEffect(2.5f));
+          //  if (enemyEffectCoroutine != null) StopCoroutine(enemyEffectCoroutine);
+            enemyEffectCoroutine = StartCoroutine(CurrentEffect(2.5f));
 
         }
     }
@@ -324,14 +333,29 @@ public class PlayerController : MonoBehaviour
         isEnemyAttack = false;
     }
 
-    private IEnumerator ShowFeedbackPanel()
+    public void ShowFeedback()
     {
-        
-        yield return new WaitForSeconds(2);
+        if (isShowPanel) StopCoroutine(coroutineFeedback);
+        coroutineFeedback = StartCoroutine(Feedback());
     }
+
+    private IEnumerator Feedback()
+    {
+        isShowPanel = true;
+        panelFeedback.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        panelFeedback.SetActive(false);
+        isShowPanel = false;
+
+
+    }
+    int protaCount = 0;
+    private Coroutine coroutineFeedback;
+    private bool isShowPanel;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        
         //if (collision.gameObject.layer == 7)
         if (collision.tag == "BadFloor" && !isAttack)
         {
@@ -344,12 +368,25 @@ public class PlayerController : MonoBehaviour
         //{
         //    StarEnemyAttack();
         //}
+        
         if (collision.tag == "Salud")
         {
-           print(collision.GetComponent<Health>().spriteIndex);
+            uiSalud.UpdateSalud(1);
+            TakeSalud();
+            ShowFeedback();
+
+            protaCount++;
+            if (protaCount == 3)
+            {
+                uiLifes.CreateLife();
+                protaCount = 0;
+            }
+            // print(collision.GetComponent<Health>().spriteIndex);
             spritePanelIndex = collision.GetComponent<Health>().spriteIndex;
             ui_feedback.image.sprite = ui_feedback.feedbackSprites[spritePanelIndex];
-           // StartCoroutine(ShowFeedbackPanel());
+            //print(uiLifes.lifesCount);
+            //print(uiLifes.lifes.Count);
+            // StartCoroutine(ShowFeedbackPanel());
 
 
 
@@ -364,17 +401,15 @@ public class PlayerController : MonoBehaviour
             //}
             //if (currentAdiction <= 0)
             //{
-            //    uiSalud.UpdateSalud(1);
-            //    TakeSalud();
+               
+              
 
             //    //print(currentAdiction);
             //}
 
 
         }
-        //if (collision.CompareTag("SegmentTrigger"))
-        //{
-        //    distanceTracker.currentSegmentIndex++; // Avanzar al siguiente segmento
-        //}
+       // print(protaCount);
+
     }
 }

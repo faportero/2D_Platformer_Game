@@ -15,6 +15,7 @@ TagManager:
   - Resorte
   - FeedbackHealth
   - SegmentTrigger
+  - Lifes
   layers:
   - Default
   - TransparentFX

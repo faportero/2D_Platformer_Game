@@ -42,7 +42,7 @@ public class DistanceTrackerOld : MonoBehaviour
         if (transform.position != null)
         {
             Gizmos.DrawCube(transform.position, Vector3.one * 0.1f); // Pequeño marcador en el GameObject
-            Handles.Label(transform.position, "Total Distance: " + totalDistance.ToString("F2") + " units");
+            //Handles.Label(transform.position, "Total Distance: " + totalDistance.ToString("F2") + " units");
         }
     }
 

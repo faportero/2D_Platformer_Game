@@ -1,7 +1,9 @@
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+#if UNITY_EDITOR // => Ignore from here to next endif if not in editor
 using UnityEditor;
+#endif
 using UnityEngine;
 
 public class CameraCotrolTrigger : MonoBehaviour
@@ -71,7 +73,9 @@ public enum PanDirection
     Right
 }
 
+#if UNITY_EDITOR // => Ignore from here to next endif if not in editor
 [CustomEditor(typeof(CameraCotrolTrigger))]
+
 
 public class MyScriptEditor : Editor
 {
@@ -109,3 +113,4 @@ public class MyScriptEditor : Editor
         }
     }
 }
+#endif
