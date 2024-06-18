@@ -33,13 +33,17 @@ public class Wall : MonoBehaviour
     {
         if (collision.tag == "Player" && !playerController.isAttack)
         {
-            if (!playerMovement.doingSmash && !playerController.escudo)
+            if (!playerMovement.doingSmash)
             {
-                if (playerMovement.canMove) playerController.StartBlinking();
-                collision.gameObject.GetComponent<PlayerController>().LoseLife();
-                return;
+                if (playerMovement.canMove)
+                {
+                playerController.StartBlinking();
+                playerController.LoseLife();
+                }              
+                //collision.gameObject.GetComponent<PlayerController>().LoseLife();
+                //return;
             }
-            else
+            else if (playerMovement.doingSmash)
             {
                 WallDie();
             }

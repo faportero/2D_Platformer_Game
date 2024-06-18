@@ -50,7 +50,7 @@ public class PlayerMovementNew : MonoBehaviour
     [SerializeField] private float jumpFlappyStrength = 5;
     [SerializeField] private float rollVelocity = 20;
     [SerializeField] private float smashVelocity = 20;
-    [SerializeField] private float slowFallGravity = 2;
+    [SerializeField] private float slowFallGravity = 1;
     [SerializeField] private float fallingGravity = 1;
     [SerializeField] private float fallingModeMovementAmmount;
     public float fallingVelocity = 20;
@@ -319,7 +319,7 @@ public class PlayerMovementNew : MonoBehaviour
         else if (playerController.isCannabis) direction = new Vector2(.75f, 1);
         else if (doingSmash) direction = new Vector2(smashVelocity, 0);
         else if (doingRoll && isGrounded) direction = new Vector2(2.5f, 0);
-        if (anim.GetBool("SlowFall")) direction = new Vector2(slowFallGravity, 0);
+        if (anim.GetBool("SlowFall")) direction = new Vector2(slowFallGravity, .75f);
         //if (playerController.paracaidas) direction = new Vector2(slowFallGravity, 0);      
 
 

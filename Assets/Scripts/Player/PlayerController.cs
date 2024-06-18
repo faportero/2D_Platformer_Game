@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,7 +26,7 @@ public class PlayerController : MonoBehaviour
     public GameObject effectPanel;
     private PlayerMovementNew playerMovement;
 
-    private GameObject inmunidad;
+    [SerializeField] private GameObject inmunidad;
 
     public bool isDie = false;
 
@@ -51,7 +52,8 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        inmunidad = transform.GetChild(0).gameObject;
+        //inmunidad = transform.GetChild(0).gameObject;
+        //inmunidad.transform.SetParent(transform);
         if (lastPosition != Vector3.zero)
         {
             transform.position = lastPosition;
@@ -369,11 +371,51 @@ public class PlayerController : MonoBehaviour
         //    StarEnemyAttack();
         //}
         
+
+       //float hue, saturation, value;        
+       //Color.RGBToHSV(hearthColor, out hue, out saturation, out value);
+
+
         if (collision.tag == "Salud")
         {
+           // if(escudo)Physics2D.IgnoreCollision(inmunidad.GetComponent<BoxCollider2D>(), GetComponent<CapsuleCollider2D>());
+
             uiSalud.UpdateSalud(1);
             TakeSalud();
             ShowFeedback();
+
+
+
+
+
+            //for (int i = 0; i < uiLifes.transform.childCount; i++)
+            //{
+            //    if (uiLifes.transform.GetChild(i).GetComponent<Image>().color != Color.white)
+            //    {
+            //        List<GameObject> blackHearths = new List<GameObject>();
+            //        var child = uiLifes.transform.GetChild(i);
+            //        blackHearths.Add(child.gameObject);
+            //        Color newColor = blackHearths[0].GetComponent<Image>().color;
+            //        newColor.r += .33f;
+            //        newColor.g += .33f;
+            //        newColor.b += .33f;
+            //        blackHearths[0].GetComponent<Image>().color = newColor;
+                  
+            //    }
+            //}
+
+
+
+
+            //Color hearthColor = uiLifes.lifes.Last().GetComponent<Image>().color;
+            //print(uiLifes.lifes.Last());
+            //print(hearthColor);
+            //hearthColor.r += .33f;
+            //hearthColor.g += .33f;
+            //hearthColor.b += .33f;
+            //uiLifes.lifes[uiLifes.lifes.Count - 1].GetComponent<Image>().color = hearthColor;
+            //print(uiLifes.lifes[uiLifes.lifes.Count - 1].name);
+            //print(hearthColor);
 
             protaCount++;
             if (protaCount == 3)

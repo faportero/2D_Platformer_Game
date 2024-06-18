@@ -239,7 +239,7 @@ public class Health : MonoBehaviour
            // ShowFeedback();
             HealthDie();
             // print("Spritee"+ spriteIndex);
-
+                
             //    if (h.Count == 0) h = collision.GetComponent<PlayerController>().healhts;
             //    playerController = collision.GetComponent<PlayerController>();
             //    foreach (Health health in h)
