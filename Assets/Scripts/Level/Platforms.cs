@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 
 public class Platforms : MonoBehaviour
 {
-    [SerializeField] private PlayerController pController;
+    [SerializeField] private PlayerControllerNew pController;
     private Collider2D collision;
 
     private void Start()

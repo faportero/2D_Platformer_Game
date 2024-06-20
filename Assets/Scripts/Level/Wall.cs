@@ -23,11 +23,13 @@ public class Wall : MonoBehaviour
     //    }
     //}
     private PlayerMovementNew playerMovement;
-    private PlayerController playerController;
+   // private PlayerController playerController;
+    private PlayerControllerNew playerController;
     private void Start()
     {
         playerMovement = FindObjectOfType<PlayerMovementNew>();
-        playerController = FindObjectOfType<PlayerController>();
+        //playerController = FindObjectOfType<PlayerController>();
+       playerController = FindObjectOfType<PlayerControllerNew>();
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

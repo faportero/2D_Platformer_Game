@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8575706608871480287}
   - component: {fileID: 8636638279789851578}
   - component: {fileID: 2210464089200154208}
+  - component: {fileID: 4194381789265771637}
   m_Layer: 0
   m_Name: Salud
   m_TagString: Salud
@@ -155,6 +156,9 @@ MonoBehaviour:
   - {fileID: 890708351, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
   - {fileID: -729514748, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
   - {fileID: -1767254407, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
+  spriteRenderer: {fileID: 0}
+  panelSpriteRenderer: {fileID: 0}
+  isShowPanel: 0
   panelFeedback: {fileID: 0}
   imagePanelFeedback: {fileID: 0}
   imageFeedbackPanel:
@@ -167,3 +171,20 @@ MonoBehaviour:
   - {fileID: -86904252, guid: ba5829d259ffb74419d6766067d75bf6, type: 3}
   - {fileID: -833180290, guid: ba5829d259ffb74419d6766067d75bf6, type: 3}
   - {fileID: -1838184645, guid: ba5829d259ffb74419d6766067d75bf6, type: 3}
+  spriteIndex: 0
+--- !u!114 &4194381789265771637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6946410676566032438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 730b4f18346fa53429523f27bfea2e31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthType: 0
+  spriteRenderers: []
+  spriteRenderer: {fileID: 0}
+  spriteIndex: 0

@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float adictionAmount;
     public float currentAdiction;
     [SerializeField] public int SaludAmount = 0;
-    [SerializeField] private UI_AdiccionBar adiccionBar;
+    [SerializeField] private UI_SaludBar adiccionBar;
     public UI_Coins uiCoins;
 
     [SerializeField] private UI_Lifes uiLifes;
@@ -141,7 +141,7 @@ public class PlayerController : MonoBehaviour
     {
         if (enemy.isAdict)
         {
-            adiccionBar.UpdateAdiccion(adictionAmount);
+           // adiccionBar.UpdateAdiccion(adictionAmount);
             //enemy.Effect();
             //enemy.EnemyDie();
             currentAdiction = adiccionBar.currentAdiccion;
@@ -150,7 +150,7 @@ public class PlayerController : MonoBehaviour
     }
     public void TakeAbility(Ability ability)
     {
-        adiccionBar.UpdateAdiccion(adictionAmount);
+        //adiccionBar.UpdateAdiccion(adictionAmount);
         ability.NewAbility();
         ability.AbilityDie();
         currentAdiction = adiccionBar.currentAdiccion;
@@ -380,13 +380,9 @@ public class PlayerController : MonoBehaviour
         {
            // if(escudo)Physics2D.IgnoreCollision(inmunidad.GetComponent<BoxCollider2D>(), GetComponent<CapsuleCollider2D>());
 
-            uiSalud.UpdateSalud(1);
+            //uiSalud.UpdateSalud(1);
             TakeSalud();
             ShowFeedback();
-
-
-
-
 
             //for (int i = 0; i < uiLifes.transform.childCount; i++)
             //{
@@ -400,7 +396,7 @@ public class PlayerController : MonoBehaviour
             //        newColor.g += .33f;
             //        newColor.b += .33f;
             //        blackHearths[0].GetComponent<Image>().color = newColor;
-                  
+
             //    }
             //}
 

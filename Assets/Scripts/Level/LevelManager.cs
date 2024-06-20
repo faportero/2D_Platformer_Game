@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class LevelManager : MonoBehaviour
 {
 
-    public PlayerController playerController;
+    public PlayerControllerNew playerController;
     [SerializeField] private GameObject UI_Habilidades;
     [SerializeField] private GameObject UI_MensajeHabilidades;
     [SerializeField] private GameObject UI_CurrentEffect;

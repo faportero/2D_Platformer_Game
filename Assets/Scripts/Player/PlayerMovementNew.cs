@@ -25,7 +25,8 @@ public class PlayerMovementNew : MonoBehaviour
     private Animator anim;
     private CinemachineVirtualCamera cm;
     private SpriteRenderer spriteRenderer;
-    private PlayerController playerController;
+   // private PlayerController playerController;
+    private PlayerControllerNew playerController;
     private GhostController ghostController;
     private CameraFollowObject cameraFollowObject;
     public GameObject cameraFollowGo;
@@ -112,7 +113,8 @@ public class PlayerMovementNew : MonoBehaviour
         //camOffset = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineCameraOffset>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        playerController = GetComponent<PlayerController>();
+        //playerController = GetComponent<PlayerController>();
+        playerController = GetComponent<PlayerControllerNew>();
         ghostController = GetComponent<GhostController>();
         cameraFollowObject = cameraFollowGo.GetComponent<CameraFollowObject>();
     }

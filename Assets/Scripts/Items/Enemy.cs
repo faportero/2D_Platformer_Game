@@ -66,34 +66,36 @@ public class Enemy : MonoBehaviour
     {
         if (collision !=null && collision.tag == ("Player"))
         {
-            if (e.Count == 0) e = collision.GetComponent<PlayerController>().enemies;
-            playerController = collision.GetComponent<PlayerController>();
-            playerMovement = collision.GetComponent<PlayerMovementNew>();
-           
+            Effect();
+            EnemyDie();
+            //if (e.Count == 0) e = collision.GetComponent<PlayerController>().enemies;
+            //playerController = collision.GetComponent<PlayerController>();
+            //playerMovement = collision.GetComponent<PlayerMovementNew>();
 
-            isAdict = true;
-            foreach (Enemy enemy in e)
-            {
-                if (enemy.sustanceType == sustanceType && !playerController.isAttack)
-                {
-                    if (!playerMovement.doingSmash && !playerController.escudo)
-                    {
-                        if (playerMovement.canMove) playerController.StartBlinking();
-                        collision.GetComponent<PlayerController>().TakeAdiccion(enemy);
-                        collision.GetComponent<PlayerController>().SaludAmount = 0;
-                        collision.GetComponent<PlayerController>().uiSalud.saludCount = 0;
-                        collision.GetComponent<PlayerMovementNew>().canSmash = false;
-                        collision.GetComponent<PlayerController>().uiSalud.UpdateSalud(0);
-                        collision.GetComponent<PlayerController>().LoseLife();
-                        Effect();
-                        EnemyDie();
-                    }
-                    else
-                    {
-                      //  EnemyDie();
-                    }
-                }
-            }
+
+            //isAdict = true;
+            //foreach (Enemy enemy in e)
+            //{
+            //    if (enemy.sustanceType == sustanceType && !playerController.isAttack)
+            //    {
+            //        if (!playerMovement.doingSmash && !playerController.escudo)
+            //        {
+            //            if (playerMovement.canMove) playerController.StartBlinking();
+            //            collision.GetComponent<PlayerController>().TakeAdiccion(enemy);
+            //            collision.GetComponent<PlayerController>().SaludAmount = 0;
+            //            collision.GetComponent<PlayerController>().uiSalud.saludCount = 0;
+            //            collision.GetComponent<PlayerMovementNew>().canSmash = false;
+            //            collision.GetComponent<PlayerController>().uiSalud.UpdateSalud(0);
+            //            collision.GetComponent<PlayerController>().LoseLife();
+            //            Effect();
+            //            EnemyDie();
+            //        }
+            //        else
+            //        {
+            //          //  EnemyDie();
+            //        }
+            //    }
+            //}
 
         }
 
