@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using static PlayerMovementNew;
@@ -51,6 +52,9 @@ public class PlayerControllerNew : MonoBehaviour
     [SerializeField] private GameObject panelFeedback;
     private GameObject currentItem;
 
+
+    [SerializeField]private Material[] materials; 
+
     private void Start()
     {
         //inmunidad = transform.GetChild(0).gameObject;
@@ -64,6 +68,7 @@ public class PlayerControllerNew : MonoBehaviour
         ghostController = GetComponent<GhostController>();
         // ghostController.enabled = false;
         saludBar.currentAdiccion = currentAdiction;
+        //saludBar.UpdateHealth(currentAdiction);
 
         enemies = new List<EnemyNew>();
         healhts = new List<Health>();
@@ -81,8 +86,9 @@ public class PlayerControllerNew : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
         distanceTracker = FindAnyObjectByType<DistanceTracker>();
-
        
+
+
 
     }
 
@@ -218,35 +224,85 @@ public class PlayerControllerNew : MonoBehaviour
             isDrugged = true;
             playerMovement.inputsEnabled = false;
            // if (enemyEffectCoroutine != null) StopCoroutine(enemyEffectCoroutine);
-            enemyEffectCoroutine = StartCoroutine(CurrentEffect(2.5f));
+            //enemyEffectCoroutine = StartCoroutine(CurrentEffect(2.5f));
+            if (currentAdiction == 10) enemyEffectCoroutine = StartCoroutine(CurrentEffect(1));
+            else if (currentAdiction == 20)enemyEffectCoroutine = StartCoroutine(CurrentEffect(2));
+            else if (currentAdiction == 30)enemyEffectCoroutine = StartCoroutine(CurrentEffect(3));
+            else if (currentAdiction == 40)enemyEffectCoroutine = StartCoroutine(CurrentEffect(4));
+            else if (currentAdiction == 50)enemyEffectCoroutine = StartCoroutine(CurrentEffect(5));
+            else if (currentAdiction == 60)enemyEffectCoroutine = StartCoroutine(CurrentEffect(6));
+            else if (currentAdiction == 70)enemyEffectCoroutine = StartCoroutine(CurrentEffect(7));
+            else if (currentAdiction == 80)enemyEffectCoroutine = StartCoroutine(CurrentEffect(8));
+            else if (currentAdiction == 90) enemyEffectCoroutine = StartCoroutine(CurrentEffect(9));
+           // else if (enemyContactCount == 100) enemyEffectCoroutine = StartCoroutine(CurrentEffect(9999999));
         }
         else if (isCocaMetaHero)
         {
             isDrugged = true;
             playerMovement.inputsEnabled = false;
-           // if (enemyEffectCoroutine != null) StopCoroutine(enemyEffectCoroutine);
-            enemyEffectCoroutine = StartCoroutine(CurrentEffect(2.5f));
+            // if (enemyEffectCoroutine != null) StopCoroutine(enemyEffectCoroutine);
+            // enemyEffectCoroutine = StartCoroutine(CurrentEffect(2.5f));
+            if (currentAdiction == 10) enemyEffectCoroutine = StartCoroutine(CurrentEffect(1));
+            else if (currentAdiction == 20) enemyEffectCoroutine = StartCoroutine(CurrentEffect(2));
+            else if (currentAdiction == 30) enemyEffectCoroutine = StartCoroutine(CurrentEffect(3));
+            else if (currentAdiction == 40) enemyEffectCoroutine = StartCoroutine(CurrentEffect(4));
+            else if (currentAdiction == 50) enemyEffectCoroutine = StartCoroutine(CurrentEffect(5));
+            else if (currentAdiction == 60) enemyEffectCoroutine = StartCoroutine(CurrentEffect(6));
+            else if (currentAdiction == 70) enemyEffectCoroutine = StartCoroutine(CurrentEffect(7));
+            else if (currentAdiction == 80) enemyEffectCoroutine = StartCoroutine(CurrentEffect(8));
+            else if (currentAdiction == 90) enemyEffectCoroutine = StartCoroutine(CurrentEffect(9));
+           // else if (enemyContactCount == 100) enemyEffectCoroutine = StartCoroutine(CurrentEffect(9999999));
         }
         else if (isAlcohol)
         {
             isDrugged = true;
             playerMovement.inputsEnabled = false;
-          //  if (enemyEffectCoroutine != null) StopCoroutine(enemyEffectCoroutine);
-            enemyEffectCoroutine = StartCoroutine(CurrentEffect(2.5f));
+            //  if (enemyEffectCoroutine != null) StopCoroutine(enemyEffectCoroutine);
+            //enemyEffectCoroutine = StartCoroutine(CurrentEffect(2.5f));
+            if (currentAdiction == 10) enemyEffectCoroutine = StartCoroutine(CurrentEffect(1));
+            else if (currentAdiction == 20) enemyEffectCoroutine = StartCoroutine(CurrentEffect(2));
+            else if (currentAdiction == 30) enemyEffectCoroutine = StartCoroutine(CurrentEffect(3));
+            else if (currentAdiction == 40) enemyEffectCoroutine = StartCoroutine(CurrentEffect(4));
+            else if (currentAdiction == 50) enemyEffectCoroutine = StartCoroutine(CurrentEffect(5));
+            else if (currentAdiction == 60) enemyEffectCoroutine = StartCoroutine(CurrentEffect(6));
+            else if (currentAdiction == 70) enemyEffectCoroutine = StartCoroutine(CurrentEffect(7));
+            else if (currentAdiction == 80) enemyEffectCoroutine = StartCoroutine(CurrentEffect(8));
+            else if (currentAdiction == 90) enemyEffectCoroutine = StartCoroutine(CurrentEffect(9));
+            //else if (enemyContactCount == 100) enemyEffectCoroutine = StartCoroutine(CurrentEffect(9999999));
         }
         else if (isPsilo)
         {
             isDrugged = true;
             playerMovement.inputsEnabled = false;
-         //   if (enemyEffectCoroutine != null) StopCoroutine(enemyEffectCoroutine);
-            enemyEffectCoroutine = StartCoroutine(CurrentEffect(2.5f));
+            //   if (enemyEffectCoroutine != null) StopCoroutine(enemyEffectCoroutine);
+            //enemyEffectCoroutine = StartCoroutine(CurrentEffect(2.5f));
+            if (currentAdiction == 10) enemyEffectCoroutine = StartCoroutine(CurrentEffect(1));
+            else if (currentAdiction == 20) enemyEffectCoroutine = StartCoroutine(CurrentEffect(2));
+            else if (currentAdiction == 30) enemyEffectCoroutine = StartCoroutine(CurrentEffect(3));
+            else if (currentAdiction == 40) enemyEffectCoroutine = StartCoroutine(CurrentEffect(4));
+            else if (currentAdiction == 50) enemyEffectCoroutine = StartCoroutine(CurrentEffect(5));
+            else if (currentAdiction == 60) enemyEffectCoroutine = StartCoroutine(CurrentEffect(6));
+            else if (currentAdiction == 70) enemyEffectCoroutine = StartCoroutine(CurrentEffect(7));
+            else if (currentAdiction == 80) enemyEffectCoroutine = StartCoroutine(CurrentEffect(8));
+            else if (currentAdiction == 90) enemyEffectCoroutine = StartCoroutine(CurrentEffect(9));
+            //else if (enemyContactCount == 100) enemyEffectCoroutine = StartCoroutine(CurrentEffect(9999999));
         }
         else if (isTabaco)
         {
             isDrugged = true;
             playerMovement.inputsEnabled = false;
-          //  if (enemyEffectCoroutine != null) StopCoroutine(enemyEffectCoroutine);
-            enemyEffectCoroutine = StartCoroutine(CurrentEffect(2.5f));
+            //  if (enemyEffectCoroutine != null) StopCoroutine(enemyEffectCoroutine);
+            // enemyEffectCoroutine = StartCoroutine(CurrentEffect(10));
+            if (currentAdiction == 10) enemyEffectCoroutine = StartCoroutine(CurrentEffect(1));
+            //else if (currentAdiction == 20) enemyEffectCoroutine = StartCoroutine(CurrentEffect(2));
+            //else if (currentAdiction == 30) enemyEffectCoroutine = StartCoroutine(CurrentEffect(3));
+            //else if (currentAdiction == 40) enemyEffectCoroutine = StartCoroutine(CurrentEffect(4));
+            //else if (currentAdiction == 50) enemyEffectCoroutine = StartCoroutine(CurrentEffect(5));
+            //else if (currentAdiction == 60) enemyEffectCoroutine = StartCoroutine(CurrentEffect(6));
+            //else if (currentAdiction == 70) enemyEffectCoroutine = StartCoroutine(CurrentEffect(7));
+            //else if (currentAdiction == 80) enemyEffectCoroutine = StartCoroutine(CurrentEffect(8));
+            //else if (currentAdiction == 90) enemyEffectCoroutine = StartCoroutine(CurrentEffect(9));
+           // else if (enemyContactCount == 100) enemyEffectCoroutine = StartCoroutine(CurrentEffect(9999999));
 
         }
     }
@@ -257,6 +313,7 @@ public class PlayerControllerNew : MonoBehaviour
         {
             effectPanel.SetActive(true);
             yield return new WaitForSecondsRealtime(delay);
+            //yield return new WaitForSeconds(delay);
             //StopAllCoroutines();
             effectPanel.SetActive(false);
             isCannabis = false;
@@ -356,6 +413,7 @@ public class PlayerControllerNew : MonoBehaviour
     }
 
     int protaCount = 0;
+    int enemyContactCount = 0;
     private Coroutine coroutineFeedback;
     private bool isShowPanel;
     private Vector3 startPosition;
@@ -364,30 +422,52 @@ public class PlayerControllerNew : MonoBehaviour
     private Vector3 targetScale;
     public AnimationCurve animationItemPositionCurve, animationItemScaleCurve;
     private Image healthFillBar;
+    private float currentLuminance = 1;
     [SerializeField] private Gradient colorEnemyGradient;
 
     private IEnumerator TakeEnemyBarAnim(float duration)
     {
         float startFillAmount = healthFillBar.fillAmount;
         float targetFillAmount = 1/100;
-        float elapsedTime = 0;        
-
-        healthFillBar.color = colorEnemyGradient.Evaluate(targetFillAmount);
+        float elapsedTime = 0;
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
             healthFillBar.fillAmount = Mathf.Lerp(startFillAmount, targetFillAmount, elapsedTime / duration);
+            print("Durecion de animBar: "+ elapsedTime);
             yield return null;
+            healthFillBar.color = colorEnemyGradient.Evaluate(targetFillAmount);
         }
        currentItem.gameObject.SetActive(false);
 
     }
 
+    private IEnumerator TakeEnemyAnim()
+    {        
+        Vector3 targetPosition = transform.localPosition;
+        targetPosition = targetPosition + new Vector3(1.5f, .15f, 0);
+        float elapsedTime = 0;
+        float duration = 0.25f;
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / duration;
+            currentItem.transform.localPosition = Vector3.Lerp(startPosition, targetPosition, t);           
+            yield return null;
+        }
+
+        // Asegurarse de que el valor final sea el targetPosition
+        currentItem.gameObject.transform.parent = transform;
+        currentItem.transform.position = targetPosition;
+
+    }
+
     private IEnumerator TakeSaludAnim()
     {
+        //Vector3 startPosition = currentItem.transform.position;
         Vector3 startPosition = currentItem.transform.position;
         Vector3 targetPosition = GetWorldPositionFromUI(saludBar.GetComponent<RectTransform>());
-        targetPosition = targetPosition + new Vector3(0, -.25f, 0);
+        targetPosition = targetPosition + new Vector3(0, -.5f, 0);
         Vector3 startScale = currentItem.transform.localScale;
 
         float elapsedTime = 0;
@@ -398,7 +478,7 @@ public class PlayerControllerNew : MonoBehaviour
         {
             elapsedTime += Time.deltaTime;
             float t = elapsedTime / duration;
-            float t1 = elapsedTime / duration;
+            float t1 = elapsedTime / duration2;
             float curvePosValue = animationItemPositionCurve.Evaluate(t);
             float curveScaleValue = animationItemScaleCurve.Evaluate(t1);
             currentItem.transform.position = Vector3.Lerp(startPosition, targetPosition, curvePosValue);
@@ -435,43 +515,133 @@ public class PlayerControllerNew : MonoBehaviour
         animator.Rebind();
         animator.SetBool("Enfasis", false);
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+
+    // Convertir de RGB a HSV
+    private static void RGBToHSV(Color color, out float hue, out float saturation, out float value)
     {
-        
-        //if (collision.gameObject.layer == 7)
-        if (collision.tag == "BadFloor" && !isAttack)
+        float max = Mathf.Max(color.r, Mathf.Max(color.g, color.b));
+        float min = Mathf.Min(color.r, Mathf.Min(color.g, color.b));
+
+        hue = 0f;
+        if (max == min)
         {
-            if (playerMovement.canMove) StartBlinking();
-            //print("badlayer" + collision.gameObject.name);
-            LoseLife();
-           // return;
+            hue = 0f; // Achromatic
+        }
+        else if (max == color.r)
+        {
+            hue = (color.g - color.b) / (max - min);
+            hue = (hue < 0) ? hue + 6 : hue;
+        }
+        else if (max == color.g)
+        {
+            hue = (color.b - color.r) / (max - min) + 2;
+        }
+        else if (max == color.b)
+        {
+            hue = (color.r - color.g) / (max - min) + 4;
         }
 
+        hue /= 6;
+
+        saturation = (max == 0) ? 0 : (max - min) / max;
+        value = max;
+    }
+
+    // Convertir de HSV a RGB
+    private static Color HSVToRGB(float hue, float saturation, float value)
+    {
+        int i = Mathf.FloorToInt(hue * 6);
+        float f = hue * 6 - i;
+        float p = value * (1 - saturation);
+        float q = value * (1 - f * saturation);
+        float t = value * (1 - (1 - f) * saturation);
+
+        switch (i % 6)
+        {
+            case 0: return new Color(value, t, p);
+            case 1: return new Color(q, value, p);
+            case 2: return new Color(p, value, t);
+            case 3: return new Color(p, q, value);
+            case 4: return new Color(t, p, value);
+            case 5: return new Color(value, p, q);
+            default: return Color.black; // Esto nunca debería suceder
+        }
+    }
+
+    private void AdjustLuminance(float newLuminance)
+    {
+        // Obtén el color actual del SpriteRenderer
+        Color color = spriteRenderer.color;
+
+        // Convierte el color de RGB a HSV
+        float hue, saturation, value;
+        RGBToHSV(color, out hue, out saturation, out value);
+
+        // Ajusta la luminancia (valor en el espacio HSV)
+        value = newLuminance;
+
+        // Convierte el color de vuelta de HSV a RGB
+        color = HSVToRGB(hue, saturation, value);
+
+        // Asigna el color ajustado al SpriteRenderer
+        spriteRenderer.color = color;
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {     
         if (collision.tag == "Salud")
         {
+
+            startPosition = collision.ClosestPoint(transform.position);
             currentItem = collision.gameObject;
             StartCoroutine(TakeSaludAnim());
             StartCoroutine(ActivarEnfasis());
             ShowFeedback();
+            currentLuminance += .1f;
+            currentLuminance = Mathf.Clamp(currentLuminance, 0, 1);
+            AdjustLuminance(currentLuminance);
 
+            
             currentAdiction += saludAmount;
+
             saludBar.UpdateHealth(saludAmount);
             currentAdiction = Mathf.Clamp(currentAdiction, 0f, 100);
             saludBar.currentAdiccion = currentAdiction;
+            if (currentAdiction > 90) spriteRenderer.material = materials[1];
             print(currentAdiction);
             //return;
         }
 
         if (collision.tag == "Enemy")
         {
+            startPosition = collision.ClosestPoint(transform.position);
             collision.GetComponent<BoxCollider2D>().enabled = false;
+            collision.gameObject.GetComponent<EnemyNew>().Effect();
             collision.transform.GetChild(0).gameObject.SetActive(true);
-            //collision.gameObject.GetComponent<Enemy>().Effect();
             healthFillBar = collision.transform.GetChild(0).GetChild(1).GetComponent<Image>();
             currentItem = collision.gameObject;
-            collision.gameObject.transform.parent = transform;
+            //collision.gameObject.transform.parent = transform;
+            StartBlinking();
+            currentLuminance -= .1f;
+            currentLuminance = Mathf.Clamp(currentLuminance, 0, 1);
+            AdjustLuminance(currentLuminance);
+            StartCoroutine(TakeEnemyAnim());
             StartCoroutine(DeactivateEnfasis());
-            StartCoroutine(TakeEnemyBarAnim(2.5f));
+
+            print(currentAdiction);
+            //if (currentAdiction == 0) playerMovement.Die();
+            if (currentAdiction == 10) StartCoroutine(TakeEnemyBarAnim(1));
+            else if (currentAdiction == 20) StartCoroutine(TakeEnemyBarAnim(2)); 
+            else if (currentAdiction == 30) StartCoroutine(TakeEnemyBarAnim(3)); 
+            else if (currentAdiction == 40) StartCoroutine(TakeEnemyBarAnim(4)); 
+            else if (currentAdiction == 50) StartCoroutine(TakeEnemyBarAnim(5)); 
+            else if (currentAdiction == 60) StartCoroutine(TakeEnemyBarAnim(6)); 
+            else if (currentAdiction == 70) StartCoroutine(TakeEnemyBarAnim(7)); 
+            else if (currentAdiction == 80) StartCoroutine(TakeEnemyBarAnim(8)); 
+            else if (currentAdiction == 90) StartCoroutine(TakeEnemyBarAnim(9)); 
+            else if (currentAdiction == 100) StartCoroutine(TakeEnemyBarAnim(9999999));
+            if (spriteRenderer.material != materials[0]) spriteRenderer.material = materials[0];
 
 
 
@@ -481,6 +651,11 @@ public class PlayerControllerNew : MonoBehaviour
             saludBar.currentAdiccion = currentAdiction;
             print(currentAdiction);
         }
-    }
 
+        if (collision.tag == "BadFloor" && !isAttack)       
+        {
+            if (playerMovement.canMove) StartBlinking();
+            LoseLife();
+        }
+    }
 }

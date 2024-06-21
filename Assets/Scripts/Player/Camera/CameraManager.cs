@@ -20,7 +20,7 @@ public class CameraManager : MonoBehaviour
     private Coroutine lerpYPanCoroutine;
     private Coroutine panCameraCoroutine;
 
-    private CinemachineVirtualCamera currentCamera;
+    public CinemachineVirtualCamera currentCamera;
     private CinemachineFramingTransposer framingTransposer;
 
     private Vector2 statingTrackedObjectOffset;

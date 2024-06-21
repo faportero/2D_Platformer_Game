@@ -30,6 +30,7 @@ public class PlayerMovementNew : MonoBehaviour
     private GhostController ghostController;
     private CameraFollowObject cameraFollowObject;
     public GameObject cameraFollowGo;
+    private Coroutine heartbeatShakeSequence;
 
     [Header("Level Colisions")]
     [SerializeField] private List<FallingLevelColliders> fallingColliders;
@@ -109,7 +110,8 @@ public class PlayerMovementNew : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        cm = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
+        //cm = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
+        cm = CameraManager.instance.currentCamera;
         //camOffset = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineCameraOffset>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -422,6 +424,7 @@ public class PlayerMovementNew : MonoBehaviour
             {
                 // StartCoroutine(CameraShake(1f));
                 StartCoroutine(HeartbeatShakeSequence());
+                //else StopCoroutine("HeartbeatShakeSequence");
             }
 
             if (playerController.paracaidas)
@@ -880,13 +883,20 @@ public class PlayerMovementNew : MonoBehaviour
     private IEnumerator HeartbeatShakeSequence()
     {
         // Tres latidos
-        doingShake = true;
-        for (int i = 0; i < 3; i++)
+        if (playerController.isDrugged)
         {
-            yield return StartCoroutine(CameraShake(.1f)); // Temblor por 1 segundo
-            yield return new WaitForSeconds(.3f); // Pausa por 1 segundo
+            doingShake = true;
+            for (int i = 0; i < 3; i++)
+            {
+                yield return StartCoroutine(CameraShake(.1f)); // Temblor por 1 segundo
+                yield return new WaitForSeconds(.3f); // Pausa por 1 segundo
+            }
+            doingShake = false;
         }
-        doingShake = false;
+        else
+        {
+            yield break;
+        }
     }
     #endregion
     #region FallingMde

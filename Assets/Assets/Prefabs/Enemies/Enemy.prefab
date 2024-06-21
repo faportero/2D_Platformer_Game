@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8416440996108465780}
   - component: {fileID: 7319204650855204938}
-  - component: {fileID: 8750281199081832684}
   - component: {fileID: 4696492953407014338}
   m_Layer: 0
   m_Name: Enemy
@@ -86,32 +85,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8750281199081832684
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4771624932131410722}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47847e4ff49e28c4abef8fa96332be34, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  effectPanel: {fileID: 0}
-  effectPanelMensaje: {fileID: 0}
-  isAdict: 0
-  spriteRenderers:
-  - {fileID: 2037664235, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
-  - {fileID: -919176376, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
-  - {fileID: 385580801, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
-  - {fileID: -1039522883, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
-  - {fileID: 1493782479, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
-  - {fileID: -1542685175, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
-  - {fileID: 545440941, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
-  - {fileID: 1957117115, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
-  isRandom: 0
-  sustanceType: 3
 --- !u!61 &4696492953407014338
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4766595694723896139}
   - component: {fileID: 8575706608871480287}
   - component: {fileID: 8636638279789851578}
-  - component: {fileID: 2210464089200154208}
   - component: {fileID: 4194381789265771637}
   m_Layer: 0
   m_Name: Salud
@@ -132,46 +131,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.449585, y: 2.4681256}
   m_EdgeRadius: 0
---- !u!114 &2210464089200154208
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6946410676566032438}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0326a8a2fb2a02840b8197a868943050, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthType: 0
-  isRandom: 0
-  spriteRenderers:
-  - {fileID: -1629981688, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
-  - {fileID: 1243380800, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
-  - {fileID: 625992989, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
-  - {fileID: 588844899, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
-  - {fileID: -508278915, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
-  - {fileID: -848050602, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
-  - {fileID: 890708351, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
-  - {fileID: -729514748, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
-  - {fileID: -1767254407, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
-  spriteRenderer: {fileID: 0}
-  panelSpriteRenderer: {fileID: 0}
-  isShowPanel: 0
-  panelFeedback: {fileID: 0}
-  imagePanelFeedback: {fileID: 0}
-  imageFeedbackPanel:
-  - {fileID: -130876784, guid: ba5829d259ffb74419d6766067d75bf6, type: 3}
-  - {fileID: 1199095463, guid: ba5829d259ffb74419d6766067d75bf6, type: 3}
-  - {fileID: 1785600386, guid: ba5829d259ffb74419d6766067d75bf6, type: 3}
-  - {fileID: -1802789429, guid: ba5829d259ffb74419d6766067d75bf6, type: 3}
-  - {fileID: 356742736, guid: ba5829d259ffb74419d6766067d75bf6, type: 3}
-  - {fileID: -1022870191, guid: ba5829d259ffb74419d6766067d75bf6, type: 3}
-  - {fileID: -86904252, guid: ba5829d259ffb74419d6766067d75bf6, type: 3}
-  - {fileID: -833180290, guid: ba5829d259ffb74419d6766067d75bf6, type: 3}
-  - {fileID: -1838184645, guid: ba5829d259ffb74419d6766067d75bf6, type: 3}
-  spriteIndex: 0
 --- !u!114 &4194381789265771637
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,6 +144,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthType: 0
-  spriteRenderers: []
-  spriteRenderer: {fileID: 0}
+  spriteRenderers:
+  - {fileID: -1629981688, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
+  - {fileID: 1243380800, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
+  - {fileID: 625992989, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
+  - {fileID: 588844899, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
+  - {fileID: -508278915, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
+  - {fileID: -848050602, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
+  - {fileID: 890708351, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
+  - {fileID: -729514748, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
+  - {fileID: -1767254407, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
+  playerController: {fileID: 0}
   spriteIndex: 0

@@ -10,7 +10,7 @@ public class GhostController : MonoBehaviour
     float delta = 0;
 
 
-    PlayerController player;
+    PlayerControllerNew player;
     SpriteRenderer spriteRenderer;
 
     public float destroyTime = .1f;
@@ -19,7 +19,7 @@ public class GhostController : MonoBehaviour
 
     private void Start()
     {       
-        player = GetComponent<PlayerController>();
+        player = GetComponent<PlayerControllerNew>();
 
     }
     private void Update()

@@ -18,7 +18,7 @@ public class Salud : MonoBehaviour
 
     public HealthType healthType;
     public List<Sprite> spriteRenderers = new List<Sprite>();
-    private PlayerController playerController;
+    private PlayerControllerNew playerController;
     [HideInInspector] public int spriteIndex;
 
     private void OnValidate()
@@ -27,7 +27,7 @@ public class Salud : MonoBehaviour
     }
     private void Start()
     {
-        playerController = FindAnyObjectByType<PlayerController>();
+       playerController = FindAnyObjectByType<PlayerControllerNew>();
     }    
     public void AssignSprite()
     {
