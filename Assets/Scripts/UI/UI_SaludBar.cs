@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,14 +8,20 @@ public class UI_SaludBar : MonoBehaviour
 {
     public AnimationCurve curve;
     private float maxAdiccion = 100;
-    public float currentAdiccion = 10;
+    public float currentAdiccion;
     private float fillSpeed = 1f;
-    [SerializeField] private Image healthFillBar;
+   public Image healthFillBar;
     [SerializeField] private Gradient colorGradient;
     private float duration = 3;
     private float targetFillAmount;
     private float startFillAmount;
 
+
+    private void OnValidate()
+    {
+        healthFillBar = transform.GetChild(1).GetComponent<Image>();
+
+    }
     private void Start()
     {
         healthFillBar = transform.GetChild(1).GetComponent<Image>();

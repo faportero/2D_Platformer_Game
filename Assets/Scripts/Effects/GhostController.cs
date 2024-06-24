@@ -40,6 +40,5 @@ public class GhostController : MonoBehaviour
         spriteRenderer.sortingOrder = player.spriteRenderer.sortingOrder;
         if (material != null) spriteRenderer.material = material;
         spriteRenderer.sortingOrder = player.spriteRenderer.sortingOrder - 1;
-
     }
 }

@@ -43,7 +43,7 @@ public class EnemyNew : MonoBehaviour
     private void Awake()
     {
 
-        AssignSprite();
+        //AssignSprite();
         PlayerControllerNew = FindAnyObjectByType<PlayerControllerNew>();
         //Effect();
     

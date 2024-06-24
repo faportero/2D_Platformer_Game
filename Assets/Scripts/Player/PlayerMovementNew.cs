@@ -158,16 +158,19 @@ public class PlayerMovementNew : MonoBehaviour
             switch (movementMode)
             {
                 case MovementMode.TapMode:
+                    isFallingMode = false;
                     LerpYDamping();
                     TapMovement();
                     //CheckGround();
                     break;
                 case MovementMode.RunnerMode:
+                    isFallingMode = false;
                     LerpYDamping();
                     RunnerMovement();
                     CheckGround();
                     break;
                 case MovementMode.FallingMode:
+                    isFallingMode = true;
                     GetInputDirection();
                     if(inputsEnabled)GetDirecction();
                     //if(inputsEnabled)TurnCheck();
@@ -175,6 +178,7 @@ public class PlayerMovementNew : MonoBehaviour
                     FallingMovement();
                     break;
                 case MovementMode.FlappyMode:
+                    isFallingMode = false;
                     FlappyMovement();
                     break;
             }
@@ -343,7 +347,7 @@ public class PlayerMovementNew : MonoBehaviour
 
         if (isPC)
         {
-            if (Input.GetKeyDown(KeyCode.Space) && inputsEnabled)
+            if (Input.GetKeyDown(KeyCode.Space) && inputsEnabled )
             {
                 jumpBufferCounter = jumpBufferTime;
             }
