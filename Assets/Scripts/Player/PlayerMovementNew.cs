@@ -22,7 +22,7 @@ public class PlayerMovementNew : MonoBehaviour
     [HideInInspector] public Rigidbody2D rb;
     [SerializeField] private LevelManager levelManager;
     private CapsuleCollider2D capsuleCollider;
-    private Animator anim;
+    [HideInInspector] public Animator anim;
     private CinemachineVirtualCamera cm;
     private SpriteRenderer spriteRenderer;
    // private PlayerController playerController;
@@ -159,8 +159,12 @@ public class PlayerMovementNew : MonoBehaviour
             {
                 case MovementMode.TapMode:
                     isFallingMode = false;
-                    LerpYDamping();
-                    TapMovement();
+                    if (inputsEnabled) 
+                    {
+                        LerpYDamping();
+                        TapMovement();
+                    }
+             
                     //CheckGround();
                     break;
                 case MovementMode.RunnerMode:

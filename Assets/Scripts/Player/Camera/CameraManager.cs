@@ -187,5 +187,15 @@ public class CameraManager : MonoBehaviour
             framingTransposer = currentCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
         }
     }
+    public void SingleSwapCamera(CinemachineVirtualCamera newCamera)
+    {
+        if (currentCamera != null)
+        {
+            currentCamera.enabled = false;
+        }
+        newCamera.enabled = true;
+        currentCamera = newCamera;
+        framingTransposer = currentCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+    }
     #endregion
 }

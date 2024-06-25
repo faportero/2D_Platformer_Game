@@ -44,7 +44,7 @@ public class UI_SaludBar : MonoBehaviour
         //StartCoroutine(LerpValue(0, 1));
         // healthFillBar.fillAmount = Mathf.Lerp(healthFillBar.fillAmount, targetFillAmount, curve.Evaluate(currentAdiccion * Time.deltaTime));
         //healthFillBar.DOFillAmount(targetFillAmount, fillSpeed);
-        StartCoroutine(SmoothUpdateHealth());
+        if(isActiveAndEnabled)StartCoroutine(SmoothUpdateHealth());
         healthFillBar.color = colorGradient.Evaluate(targetFillAmount);
     }
 

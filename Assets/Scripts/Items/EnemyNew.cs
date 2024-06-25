@@ -10,6 +10,7 @@ using UnityEngine.UI;
 public class EnemyNew : MonoBehaviour
 {
     public GameObject effectPanel;
+    private Animator effectPanelAnimator;
     public GameObject effectPanelMensaje;
     private TextMeshProUGUI effectText;
     private TextMeshProUGUI effectTextMensajeTitulo;
@@ -64,6 +65,8 @@ public class EnemyNew : MonoBehaviour
         dieEffectImage = effectPanelMensaje.transform.GetChild(2).GetComponent<Image>();
 
         saludBar = transform.GetChild(0).GetComponent<UI_SaludBar>();
+
+        effectPanelAnimator = effectPanel.GetComponent<Animator>();
 
 
     }
@@ -152,7 +155,7 @@ public class EnemyNew : MonoBehaviour
             case SustanceType.Extasis:
                 //print("Exta");
                 PlayerControllerNew.isCocaMetaHero = true;
-               effectPanel.GetComponent<Image>().color = new Color(1, 1, 1, .25f);
+                effectPanel.GetComponent<Image>().color = new Color(1, 1, 1, .25f);
                 effectText.text = "Éxtasis";
                 effectTextMensajeTitulo.text = "Extasis";
                 effectTextMensajeDesc.text = "El extasis te hace saltar como loco";
@@ -199,7 +202,9 @@ public class EnemyNew : MonoBehaviour
             case SustanceType.Tabaco:
                 //print("Tabacooooo");
                 PlayerControllerNew.isTabaco = true;
-               effectPanel.GetComponent<Image>().color = new Color(0, 0, 1, .25f);
+                //effectPanel.GetComponent<Image>().color = new Color(0, 0, 1, .25f);
+                //effectPanelAnimator.SetBool("Smoke", true);
+
                 effectText.text = "Tabaco";
                 effectTextMensajeTitulo.text = "Tabaco";
                 effectTextMensajeDesc.text = "El tabaco te hace toser fuerte";

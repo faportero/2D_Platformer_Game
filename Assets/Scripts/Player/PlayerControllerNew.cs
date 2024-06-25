@@ -50,6 +50,16 @@ public class PlayerControllerNew : MonoBehaviour
         playerMovement = GetComponent<PlayerMovementNew>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         saludBar.UpdateHealth(currentSalud);
+        if (currentSalud == 10) AdjustLuminance(.1f);
+        else if (currentSalud == 20) AdjustLuminance(.2f);
+        else if (currentSalud == 30) AdjustLuminance(.3f);
+        else if (currentSalud == 40) AdjustLuminance(.4f);
+        else if (currentSalud == 50) AdjustLuminance(.5f);
+        else if (currentSalud == 60) AdjustLuminance(.6f);
+        else if (currentSalud == 70) AdjustLuminance(.7f);
+        else if (currentSalud == 80) AdjustLuminance(.8f);
+        else if (currentSalud == 90) AdjustLuminance(.9f);
+        else if (currentSalud == 100) AdjustLuminance(1);
         print(currentSalud);
     }
 
@@ -85,14 +95,14 @@ public class PlayerControllerNew : MonoBehaviour
             currentLuminance += .1f;
             currentLuminance = Mathf.Clamp(currentLuminance, 0, 1);
 
-            if (currentSalud > 10)
-            {
-                GlowSpriteEffect.SetActive(false);
-            }
-            if (currentSalud == 10)
-            {
-                GlowSpriteEffect.SetActive(true);
-            }
+            //if (currentSalud > 10)
+            //{
+            //    GlowSpriteEffect.SetActive(false);
+            //}
+            //if (currentSalud == 10)
+            //{
+            //    GlowSpriteEffect.SetActive(true);
+            //}
 
             if (currentSalud == 10) AdjustLuminance(.1f);
             else if (currentSalud == 20) AdjustLuminance(.2f);
@@ -134,14 +144,14 @@ public class PlayerControllerNew : MonoBehaviour
 
             //print(currentSalud);
             //if (currentSalud == 0) playerMovement.Die();
-            if (currentSalud > 10)
-            {
-                GlowSpriteEffect.SetActive(false);
-            }
-            if (currentSalud == 10)
-            {
-                GlowSpriteEffect.SetActive(true);
-            }
+            //if (currentSalud > 10)
+            //{
+            //    GlowSpriteEffect.SetActive(false);
+            //}
+            //if (currentSalud == 10)
+            //{
+            //    GlowSpriteEffect.SetActive(true);
+            //}
 
             if (currentSalud == 10) { StartCoroutine(TakeEnemyBarAnim(9999999)); AdjustLuminance(.1f); }
             else if (currentSalud == 20) { StartCoroutine(TakeEnemyBarAnim(9)); AdjustLuminance(.2f); }
@@ -297,6 +307,7 @@ public class PlayerControllerNew : MonoBehaviour
         if (!isDie && playerMovement.canMove)
         {
             effectPanel.SetActive(true);
+            //effectPanel.GetComponent<Animator>().SetBool("Smoke", true);
             yield return new WaitForSecondsRealtime(delay);
             effectPanel.SetActive(false);
             isCannabis = false;
@@ -331,6 +342,7 @@ public class PlayerControllerNew : MonoBehaviour
         panelFeedback.SetActive(true);
         yield return new WaitForSeconds(2f);
         panelFeedback.SetActive(false);
+        
         isShowPanel = false;
     }
     private IEnumerator TakeSaludAnim()
