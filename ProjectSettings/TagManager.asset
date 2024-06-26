@@ -16,6 +16,7 @@ TagManager:
   - FeedbackHealth
   - SegmentTrigger
   - Lifes
+  - EnemyAttached
   layers:
   - Default
   - TransparentFX

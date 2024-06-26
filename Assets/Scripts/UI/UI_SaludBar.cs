@@ -66,7 +66,7 @@ public class UI_SaludBar : MonoBehaviour
 
     private IEnumerator SmoothUpdateHealth()
     {
-        yield return new WaitForSeconds(.5f);
+        //yield return new WaitForSeconds(.5f);
          startFillAmount = healthFillBar.fillAmount; 
          targetFillAmount = currentAdiccion / maxAdiccion;
 

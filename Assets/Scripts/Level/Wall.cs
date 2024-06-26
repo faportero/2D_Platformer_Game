@@ -39,7 +39,7 @@ public class Wall : MonoBehaviour
             {
                 if (playerMovement.canMove)
                 {
-                playerController.StartBlinking();
+                playerController.StartBlinking(0);
                // playerController.LoseLife();
                 }              
                 //collision.gameObject.GetComponent<PlayerController>().LoseLife();
