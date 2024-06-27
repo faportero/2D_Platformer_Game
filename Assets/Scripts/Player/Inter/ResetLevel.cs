@@ -32,9 +32,9 @@ public class ResetLevel : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            isResetLevel = true;
-            levelManager.ResetLevel();
-           // SceneManager.LoadScene(levelName.ToString());
+            //isResetLevel = true;
+            //levelManager.ResetLevel();
+            SceneManager.LoadScene(levelName.ToString());
         }
     }
 }

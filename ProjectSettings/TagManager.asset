@@ -17,6 +17,7 @@ TagManager:
   - SegmentTrigger
   - Lifes
   - EnemyAttached
+  - Pieza
   layers:
   - Default
   - TransparentFX

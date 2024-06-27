@@ -72,7 +72,7 @@ public class PlayerMovementNew : MonoBehaviour
     private Vector2 capsuleColliderSize;
     private Vector2 capsuleColliderOffset;
     private Vector3 screenPosition;
-    private Vector3 targetPosition;
+    [HideInInspector]public Vector3 targetPosition;
     private float x, y;
     private float xRaw, yRaw;
     private float tapStartTime;
@@ -164,7 +164,7 @@ public class PlayerMovementNew : MonoBehaviour
                         LerpYDamping();
                         TapMovement();
                     }
-             
+                    print(inputsEnabled);
                     //CheckGround();
                     break;
                 case MovementMode.RunnerMode:

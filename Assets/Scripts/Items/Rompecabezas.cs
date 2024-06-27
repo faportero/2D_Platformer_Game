@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Rompecabezas : MonoBehaviour
 {
-    private enum RompecabezasType
+    public enum RompecabezasType
     {
         RompecabezasA,
         RompecabezasB,
@@ -12,7 +12,7 @@ public class Rompecabezas : MonoBehaviour
         RompecabezasD
 
     }
-    [SerializeField] private RompecabezasType rompecabezasType;
+    [SerializeField] public RompecabezasType rompecabezasType;
     [SerializeField] private List<Sprite> spriteRenderers = new List<Sprite>();
 
     private void Awake()
@@ -49,7 +49,7 @@ public class Rompecabezas : MonoBehaviour
     {
         if(collision != null && collision.tag == "Player")
         {
-            RompecabezasDie();       
+           // RompecabezasDie();       
         }
     }
 
