@@ -49,7 +49,7 @@ public class Rompecabezas : MonoBehaviour
     {
         if(collision != null && collision.tag == "Player")
         {
-           // RompecabezasDie();       
+            RompecabezasDie();       
         }
     }
 

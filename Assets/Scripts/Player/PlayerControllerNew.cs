@@ -677,7 +677,7 @@ public class PlayerControllerNew : MonoBehaviour
         }
     }
 
-    private void AdjustLuminance(float newLuminance)
+    public void AdjustLuminance(float newLuminance)
     {
         // Obtén el color actual del SpriteRenderer
         Color color = spriteRenderer.color;

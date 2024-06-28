@@ -12,6 +12,9 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject UI_CurrentEffect;
     [SerializeField] private UI_Coins uiCoins;
     [SerializeField] private UI_Lifes uiLifes;
+    [SerializeField] private GameObject[] piezasNivel;
+    public static bool usedPA, usedPB, usedPC, usedPD;
+    //[SerializeField] private UI_Piezas uiPiezas;
 
     private void Awake()
     {
@@ -26,6 +29,7 @@ public class LevelManager : MonoBehaviour
     private void Start()
     {
         Time.timeScale = 1;
+        if(piezasNivel != null) CheckLevelPieces();
     }
     public void GameOver()
     {
@@ -52,6 +56,26 @@ public class LevelManager : MonoBehaviour
         UserData.vidaExtra = playerController.vidaExtra;
         UserData.paracaidas = playerController.paracaidas;
         SceneManager.LoadScene("Nivel_1");
+    }
+
+    private void CheckLevelPieces()
+    {
+        if (usedPA)
+        {
+            piezasNivel[0].SetActive(false);
+        }
+        if (usedPB)
+        {
+            piezasNivel[1].SetActive(false);
+        }
+        if (usedPC)
+        {
+            piezasNivel[2].SetActive(false);
+        }
+        if (usedPD)
+        {
+            piezasNivel[3].SetActive(false);
+        }
     }
 
 }

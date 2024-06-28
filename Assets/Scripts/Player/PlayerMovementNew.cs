@@ -164,7 +164,7 @@ public class PlayerMovementNew : MonoBehaviour
                         LerpYDamping();
                         TapMovement();
                     }
-                    print(inputsEnabled);
+                    //print(inputsEnabled);
                     //CheckGround();
                     break;
                 case MovementMode.RunnerMode:

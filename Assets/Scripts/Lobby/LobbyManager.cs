@@ -29,17 +29,20 @@ public class LobbyManager : MonoBehaviour
     public Transform pivot;
     public Transform portalPos;
 
-    public static bool intro;
+    public static bool pasoIntro;
     private void Awake()
     {
-        PlayerPrefs.GetInt("Intro");
-        if(PlayerPrefs.GetInt("Intro") != 0)
+        //if (PlayerPrefs.GetInt("pasoIntro") == 0) PlayerPrefs.SetInt("pasoIntro", 0);
+        //PlayerPrefs.SetInt("pasoIntro", 0);
+        PlayerPrefs.GetInt("pasoIntro");
+        print("PasoIntro: " + PlayerPrefs.GetInt("pasoIntro"));
+        if (PlayerPrefs.GetInt("pasoIntro") != 0)
         {
-            intro = false;
+            pasoIntro = true;
         }
         else
         {
-            intro = true;
+            pasoIntro = false;
         }
 
     }
@@ -50,16 +53,17 @@ public class LobbyManager : MonoBehaviour
         playerMaterial = playerController.GetComponent<SpriteRenderer>().material;
         playerMovementNew = FindAnyObjectByType<PlayerMovementNew>();
         spriteRenderer = playerController.GetComponent<SpriteRenderer>();
-        audioPause.Pause(true);
+        
         // Obtener el componente VideoPlayer del objeto actual
 
 
-        if (intro == false)
+        if (pasoIntro == false)
         {
-
+            audioPause.Pause(true);
 
             if (videoPlayer != null)
             {
+                panelVideo.SetActive(true);
                 videoPlayer.Play();
                 // Suscribirse al evento loopPointReached para saber cuándo termina el video
                 videoPlayer.loopPointReached += OnVideoEnd;
@@ -70,17 +74,22 @@ public class LobbyManager : MonoBehaviour
             }
 
         }
-        else
+        else if(pasoIntro == true)
         {
+            audioPause.Pause(false);
+            panelHUD.SetActive(true);
             playerMovementNew.targetPosition = new Vector3(portalPos.transform.position.x, portalPos.transform.position.y, 0);
             playerController.transform.position = new Vector3 (portalPos.transform.position.x, portalPos.transform.position.y, 0);
             playerMovementNew.transform.rotation = Quaternion.Euler(0, 0, 0);
+
+            //playerController.GetComponent<SpriteRenderer>().color = Color.white;
+
         }
 
     }
     private void Update()
     {
-        if (intro == false)
+        if (pasoIntro == false)
         {
 
             if (InputManager.isPC)
@@ -105,18 +114,21 @@ public class LobbyManager : MonoBehaviour
     void OnVideoEnd(VideoPlayer vp)
     {
         // Lógica para cambiar al juego
-        if (intro == false) StartGame();
+        if (pasoIntro == false)
+        {
+            videoPlayer.enabled = false;
+            panelVideo.SetActive(false);
+            StartGame();
+        }
     }
 
     void StartGame()
     {
         // Aquí puedes agregar la lógica para iniciar tu juego
         // Por ejemplo, puedes desactivar el objeto VideoPlayerObject y activar otro objeto del juego
-        StartCoroutine(AnimatePlayer());
-        panelVideo.SetActive(false);
-        audioPause.Pause(false);
-        
 
+        StartCoroutine(AnimatePlayer());
+        audioPause.Pause(false);   
     }
 
     
@@ -203,6 +215,8 @@ public class LobbyManager : MonoBehaviour
         //playerMovementNew.anim.SetBool("SlowWalk", true);
         StartCoroutine(PlayerSolidify());
         panelHUD.SetActive(true);
+
+        PlayerPrefs.SetInt("pasoIntro", 1);
     }
 
     private IEnumerator PlayerDisolve()

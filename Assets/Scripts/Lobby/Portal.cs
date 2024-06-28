@@ -44,6 +44,7 @@ public class Portal : MonoBehaviour
                 SceneManager.LoadScene(limbos[0]);
                 break;
         }
+        Espejo.isChecked = false;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
