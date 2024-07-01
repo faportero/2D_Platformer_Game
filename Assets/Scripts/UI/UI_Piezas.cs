@@ -10,34 +10,28 @@ public class UI_Piezas : MonoBehaviour
     private void Start()
     {
        
-        CheckPieces();
-    }   
-   
+    }
+    private void Update()
+    {
+        CheckPieces();        
+    }
     private void CheckPieces()
     {
         if (PlayerControllerNew.piezaA && !LevelManager.usedPA)
         {
-
             piezaA.GetComponent<Image>().color = Color.red;
-
         }
         if (PlayerControllerNew.piezaB && !LevelManager.usedPB)
         {
-
             piezaB.GetComponent<Image>().color = Color.red;
-
         }
         if (PlayerControllerNew.piezaC && !LevelManager.usedPC)
         {
-
             piezaC.GetComponent<Image>().color = Color.red;
-
         }
         if (PlayerControllerNew.piezaD && !LevelManager.usedPD)
         {
-
             piezaD.GetComponent<Image>().color = Color.red;
-
         }
     }
 

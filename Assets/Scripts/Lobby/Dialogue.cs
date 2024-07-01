@@ -2,51 +2,64 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+
+[System.Serializable]
+public struct DialogueLine
+{
+    public string line;
+    public Sprite characterImage;
+}
 
 public class Dialogue : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI textComponent;
-    [SerializeField] string[] lines;
+    [SerializeField] List<DialogueLine> dialogueLines;
     [SerializeField] float textSpeed;
+    [SerializeField] Image characterImage; // El Image donde se mostrará la imagen del personaje
+
     private LobbyManager lobbyManager;
-
     private PlayerMovementNew playerMovement;
-
     private int index;
 
     private void Awake()
     {
         playerMovement = FindAnyObjectByType<PlayerMovementNew>();
         lobbyManager = FindAnyObjectByType<LobbyManager>();
-        print(playerMovement.anim.GetBool("SlowWalk"));
     }
+
     private void OnEnable()
-    { 
+    {
         playerMovement.inputsEnabled = false;
         playerMovement.anim.SetBool("SlowWalk", false);
-        print(playerMovement.anim.GetBool("SlowWalk"));
     }
+
     void Start()
     {
-
         textComponent.text = string.Empty;
         StartDialogue();
     }
+
     private void Update()
     {
         playerMovement.anim.SetBool("SlowWalk", false);
-
-        
-    }
-    public void OnButtonDown() // Método que se llamará cuando el botón sea presionado
-    {
-        NextLine();
     }
 
-    public void OnButtonUp() // Método que se llamará cuando el botón sea soltado
+    public void OnButtonDown()
     {
-        StopAllCoroutines();
-        textComponent.text = lines[index];
+        if (textComponent.text == dialogueLines[index].line)
+        {
+            NextLine();
+        }
+        else
+        {
+            StopAllCoroutines();
+            textComponent.text = dialogueLines[index].line;
+        }
+    }
+
+    public void OnButtonUp()
+    {
     }
 
     private void StartDialogue()
@@ -57,7 +70,12 @@ public class Dialogue : MonoBehaviour
 
     private IEnumerator TypeLine()
     {
-        foreach (char c in lines[index].ToCharArray())
+        // Actualiza la imagen del personaje
+        characterImage.sprite = dialogueLines[index].characterImage;
+
+        // Muestra el diálogo carácter por carácter
+        textComponent.text = string.Empty;
+        foreach (char c in dialogueLines[index].line.ToCharArray())
         {
             textComponent.text += c;
             yield return new WaitForSeconds(textSpeed);
@@ -66,7 +84,7 @@ public class Dialogue : MonoBehaviour
 
     private void NextLine()
     {
-        if (index < lines.Length - 1)
+        if (index < dialogueLines.Count - 1)
         {
             index++;
             textComponent.text = string.Empty;
@@ -76,9 +94,6 @@ public class Dialogue : MonoBehaviour
         {
             gameObject.SetActive(false);
             lobbyManager.PaneoCamera();
-            //playerMovement.inputsEnabled = true;
-            //playerMovement.anim.SetBool("SlowWalk", true);
         }
     }
-
 }

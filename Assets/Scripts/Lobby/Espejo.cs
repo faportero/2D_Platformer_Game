@@ -14,7 +14,11 @@ public class Espejo : MonoBehaviour
 
     private void Start()
     {
-        CheckEspejoPieces();
+       // CheckEspejoPieces();
+        //CheckEspejoPiecesInit();
+    }
+    private void Update()
+    {
         CheckEspejoPiecesInit();
     }
     private void OnTriggerEnter2D(Collider2D collision)
@@ -46,7 +50,7 @@ public class Espejo : MonoBehaviour
 
     private void CheckEspejoPieces()
     {
-        if (PlayerControllerNew.piezaA)
+        if (PlayerControllerNew.piezaA && !LevelManager.usedPA)
         {
             //PlayerControllerNew.piezaA = false;
             p1.GetComponent<SpriteRenderer>().color = Color.red;
@@ -55,7 +59,7 @@ public class Espejo : MonoBehaviour
             countPiezas = Mathf.Clamp(countPiezas, 0, 4);
             LevelManager.usedPA = true;
         }
-        if (PlayerControllerNew.piezaB)
+        if (PlayerControllerNew.piezaB && !LevelManager.usedPB)
         {
             //PlayerControllerNew.piezaB = false;
             p2.GetComponent<SpriteRenderer>().color = Color.red;
@@ -64,7 +68,7 @@ public class Espejo : MonoBehaviour
             countPiezas = Mathf.Clamp(countPiezas, 0, 4);
             LevelManager.usedPB = true;
         }
-        if (PlayerControllerNew.piezaC)
+        if (PlayerControllerNew.piezaC && !LevelManager.usedPC)
         {
            // PlayerControllerNew.piezaC = false;
             p3.GetComponent<SpriteRenderer>().color = Color.red;
@@ -73,7 +77,7 @@ public class Espejo : MonoBehaviour
             countPiezas = Mathf.Clamp(countPiezas, 0, 4);
             LevelManager.usedPC = true;
         }
-        if (PlayerControllerNew.piezaD)
+        if (PlayerControllerNew.piezaD && !LevelManager.usedPD)
         {
            // PlayerControllerNew.piezaD = false;
             p4.GetComponent<SpriteRenderer>().color = Color.red;
@@ -85,29 +89,25 @@ public class Espejo : MonoBehaviour
     } 
     private void CheckEspejoPiecesInit()
     {
-        if (PlayerControllerNew.piezaA && !LevelManager.usedPA)
+        if (LevelManager.usedPA)
         {
-            //PlayerControllerNew.piezaA = false;
-            piezasPanel.piezaA.GetComponent<Image>().color = Color.red;           
-
+            p1.GetComponent<SpriteRenderer>().color = Color.red;
+            piezasPanel.piezaA.GetComponent<Image>().color = Color.black;     
         }
-        if (PlayerControllerNew.piezaB &&  !LevelManager.usedPB)
+        if (LevelManager.usedPB)
         {
-            //PlayerControllerNew.piezaB = false;
-            piezasPanel.piezaB.GetComponent<Image>().color = Color.red;           
-
+            p2.GetComponent<SpriteRenderer>().color = Color.red;
+            piezasPanel.piezaB.GetComponent<Image>().color = Color.black;
         }
-        if (PlayerControllerNew.piezaC && !LevelManager.usedPC)
+        if (LevelManager.usedPC)
         {
-           // PlayerControllerNew.piezaC = false;
-            piezasPanel.piezaC.GetComponent<Image>().color = Color.red;           
-
+            p3.GetComponent<SpriteRenderer>().color = Color.red;
+            piezasPanel.piezaC.GetComponent<Image>().color = Color.black;
         }
-        if (PlayerControllerNew.piezaD && !LevelManager.usedPD)
+        if (LevelManager.usedPD)
         {
-           // PlayerControllerNew.piezaD = false;
-            piezasPanel.piezaD.GetComponent<Image>().color = Color.red;           
-
+            p4.GetComponent<SpriteRenderer>().color = Color.red;
+            piezasPanel.piezaD.GetComponent<Image>().color = Color.black;
         }
     }
 }

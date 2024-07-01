@@ -26,7 +26,7 @@ public class LobbyManager : MonoBehaviour
     public float elevationDuration = 2f; // Duración de la elevación y cambio de opacidad
     public float rotationDuration = 1f;  // Duración de la rotación
     private SpriteRenderer spriteRenderer;
-    public Transform pivot;
+
     public Transform portalPos;
 
     public static bool pasoIntro;
@@ -141,13 +141,19 @@ public class LobbyManager : MonoBehaviour
 
     private IEnumerator AnimatePlayer()
     {
-
         playerMovementNew.enabled = false;
         playerMovementNew.anim.enabled = false;
-        //playerMovementNew.anim.SetBool("SlowWalk", false);
+        Rigidbody2D playerRigidbody = playerController.GetComponent<Rigidbody2D>();
+        playerController.GetComponent<GhostController>().enabled = false;
+
+        if (playerRigidbody != null)
+        {
+            playerRigidbody.simulated = false;
+        }
+
         // Configuración inicial
         playerController.transform.position = new Vector3(playerController.transform.position.x, playerController.transform.position.y, playerController.transform.position.z);
-        pivot.transform.rotation = Quaternion.Euler(0, 180, 90);
+        playerController.transform.rotation = Quaternion.Euler(0, 180, 90);
         spriteRenderer.color = new Color(1, 1, 1, 0); // Opacidad 0
 
         // Variables de tiempo
@@ -169,36 +175,40 @@ public class LobbyManager : MonoBehaviour
         }
 
         // Asegurarse de que la elevación y opacidad terminen en el estado final exacto
-        playerController.transform.position = playerController.transform.position;
+        playerController.transform.position = endPosition;
         spriteRenderer.color = new Color(1, 1, 1, 1); // Opacidad 1
 
-        // Reiniciar el tiempo para la rotación
-        elapsedTime = 0;
+        // Esperar un tiempo en la posición elevada y aplicar el efecto de disolución
+        yield return StartCoroutine(PlayerDisolve());
+        // Ajustar la posición al descender una unidad en el eje Y
+        playerController.transform.position = endPosition - new Vector3(0, 1, 0);
+        // Aplicar la rotación final instantáneamente
+        playerController.transform.rotation = Quaternion.Euler(0, -180, 0);
 
-        // Rotación inicial y final
-        Quaternion startRotation = pivot.transform.rotation;
-        Quaternion endRotation = Quaternion.Euler(0, 180, 0);
+        // Mantener la posición elevada durante un tiempo
+        yield return new WaitForSeconds(1);
 
-        // Rotación
-        while (elapsedTime < rotationDuration)
-        {
-            // Interpolación
-            pivot.transform.rotation = Quaternion.Lerp(startRotation, endRotation, elapsedTime / rotationDuration);
+        // Volver a aparecer con el método de solidificación
+        yield return StartCoroutine(PlayerSolidify());
 
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
 
-        // Asegurarse de que la rotación termine en el estado final exacto
-        pivot.transform.rotation = endRotation;
+        spriteRenderer.color = new Color(1, 1, 1, 1); // Opacidad 1
+
         playerMovementNew.enabled = true;
         playerMovementNew.anim.enabled = true;
         playerMovementNew.targetPosition = playerController.transform.position;
+        playerController.GetComponent<GhostController>().enabled = true;
+
+        if (playerRigidbody != null)
+        {
+            playerRigidbody.simulated = true;
+        }
 
         tapPanel.SetActive(true);
-
-
     }
+
+
+
 
     private IEnumerator ChangePlayerPosition()
     {
