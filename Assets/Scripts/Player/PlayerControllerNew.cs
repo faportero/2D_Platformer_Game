@@ -356,24 +356,28 @@ public class PlayerControllerNew : MonoBehaviour
            if( collision.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasA)
             {
                 piezaA = true;
-                piezasPanel.piezaA.GetComponent<Image>().color = Color.red;
+                // piezasPanel.piezaA.GetComponent<Image>().color = Color.red;
+                piezasPanel.piezaA.SetActive(false);
             }
             if (collision.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasB)
             {
                 piezaB = true;
-                piezasPanel.piezaB.GetComponent<Image>().color = Color.red;
+                //piezasPanel.piezaB.GetComponent<Image>().color = Color.red;
+                piezasPanel.piezaB.SetActive(false);
 
             }
             if (collision.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasC)
             {
                 piezaC = true;
-                piezasPanel.piezaC.GetComponent<Image>().color = Color.red;
+                //piezasPanel.piezaC.GetComponent<Image>().color = Color.red;
+                piezasPanel.piezaC.SetActive(false);
 
             }
             if (collision.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasD)
             {
                 piezaD = true;
-                piezasPanel.piezaD.GetComponent<Image>().color = Color.red;
+                //piezasPanel.piezaD.GetComponent<Image>().color = Color.red;
+                piezasPanel.piezaD.SetActive(false);
 
             }
 

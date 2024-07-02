@@ -5,11 +5,12 @@ using UnityEngine.UI;
 
 public class Espejo : MonoBehaviour
 {
-    [SerializeField] GameObject p1, p2, p3, p4;
+    [SerializeField] GameObject p1, p2, p3, p4, panelFeedback;
     [SerializeField] UI_Piezas piezasPanel;
 
     private static int countPiezas;
     private int maxPiezas = 4;
+    [HideInInspector] public static int piezasRestantes;
     public static bool isChecked;
 
     private void Start()
@@ -30,14 +31,20 @@ public class Espejo : MonoBehaviour
             if(countPiezas != maxPiezas)
             {
                 //CheckEspejoPieces();
-                int piezasRestantes = maxPiezas - countPiezas;
+                piezasRestantes = maxPiezas - countPiezas;
                 print("Te faltan " + piezasRestantes);
+                Invoke("ShowFeedbackPanel", 2);
             }
             else
             {
+                panelFeedback.SetActive(false);
                 print("Piezas complatas");
             }
         }
+    }
+    private void ShowFeedbackPanel()
+    {
+        panelFeedback.SetActive(true);
     }
 
     //private void OnTriggerExit2D(Collider2D collision)
@@ -53,8 +60,10 @@ public class Espejo : MonoBehaviour
         if (PlayerControllerNew.piezaA && !LevelManager.usedPA)
         {
             //PlayerControllerNew.piezaA = false;
-            p1.GetComponent<SpriteRenderer>().color = Color.red;
-            piezasPanel.piezaA.GetComponent<Image>().color = Color.black;           
+            //p1.GetComponent<SpriteRenderer>().color = Color.red;
+            //piezasPanel.piezaA.GetComponent<Image>().color = Color.black;      
+            p1.SetActive(true);
+            piezasPanel.piezaA.SetActive(false);
             countPiezas++;
             countPiezas = Mathf.Clamp(countPiezas, 0, 4);
             LevelManager.usedPA = true;
@@ -62,26 +71,32 @@ public class Espejo : MonoBehaviour
         if (PlayerControllerNew.piezaB && !LevelManager.usedPB)
         {
             //PlayerControllerNew.piezaB = false;
-            p2.GetComponent<SpriteRenderer>().color = Color.red;
-            piezasPanel.piezaB.GetComponent<Image>().color = Color.black;           
+            //p2.GetComponent<SpriteRenderer>().color = Color.red;
+            //piezasPanel.piezaB.GetComponent<Image>().color = Color.black;           
+            p2.SetActive(true);
+            piezasPanel.piezaB.SetActive(false);
             countPiezas++;
             countPiezas = Mathf.Clamp(countPiezas, 0, 4);
             LevelManager.usedPB = true;
         }
         if (PlayerControllerNew.piezaC && !LevelManager.usedPC)
         {
-           // PlayerControllerNew.piezaC = false;
-            p3.GetComponent<SpriteRenderer>().color = Color.red;
-            piezasPanel.piezaC.GetComponent<Image>().color = Color.black;           
+            // PlayerControllerNew.piezaC = false;
+            //p3.GetComponent<SpriteRenderer>().color = Color.red;
+            //piezasPanel.piezaC.GetComponent<Image>().color = Color.black;           
+            p3.SetActive(true);
+            piezasPanel.piezaC.SetActive(false);
             countPiezas++;
             countPiezas = Mathf.Clamp(countPiezas, 0, 4);
             LevelManager.usedPC = true;
         }
         if (PlayerControllerNew.piezaD && !LevelManager.usedPD)
         {
-           // PlayerControllerNew.piezaD = false;
-            p4.GetComponent<SpriteRenderer>().color = Color.red;
-            piezasPanel.piezaD.GetComponent<Image>().color = Color.black;           
+            // PlayerControllerNew.piezaD = false;
+            //p4.GetComponent<SpriteRenderer>().color = Color.red;
+            //piezasPanel.piezaD.GetComponent<Image>().color = Color.black;           
+            p4.SetActive(true);
+            piezasPanel.piezaD.SetActive(false);
             countPiezas++;
             countPiezas = Mathf.Clamp(countPiezas, 0, 4);
             LevelManager.usedPD = true;
@@ -91,23 +106,31 @@ public class Espejo : MonoBehaviour
     {
         if (LevelManager.usedPA)
         {
-            p1.GetComponent<SpriteRenderer>().color = Color.red;
-            piezasPanel.piezaA.GetComponent<Image>().color = Color.black;     
+            //p1.GetComponent<SpriteRenderer>().color = Color.red;
+            //piezasPanel.piezaA.GetComponent<Image>().color = Color.black;
+            p1.SetActive(true);
+            piezasPanel.piezaA.SetActive(false);
         }
         if (LevelManager.usedPB)
         {
-            p2.GetComponent<SpriteRenderer>().color = Color.red;
-            piezasPanel.piezaB.GetComponent<Image>().color = Color.black;
+            //p2.GetComponent<SpriteRenderer>().color = Color.red;
+            //piezasPanel.piezaB.GetComponent<Image>().color = Color.black;
+            p2.SetActive(true);
+            piezasPanel.piezaB.SetActive(false);
         }
         if (LevelManager.usedPC)
         {
-            p3.GetComponent<SpriteRenderer>().color = Color.red;
-            piezasPanel.piezaC.GetComponent<Image>().color = Color.black;
+            //p3.GetComponent<SpriteRenderer>().color = Color.red;
+            //piezasPanel.piezaC.GetComponent<Image>().color = Color.black;
+            p3.SetActive(true);
+            piezasPanel.piezaC.SetActive(false);
         }
         if (LevelManager.usedPD)
         {
-            p4.GetComponent<SpriteRenderer>().color = Color.red;
-            piezasPanel.piezaD.GetComponent<Image>().color = Color.black;
+            //p4.GetComponent<SpriteRenderer>().color = Color.red;
+            //piezasPanel.piezaD.GetComponent<Image>().color = Color.black;
+            p4.SetActive(true);
+            piezasPanel.piezaD.SetActive(false);
         }
     }
 }

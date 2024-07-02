@@ -11,13 +11,21 @@ public class Gargola : MonoBehaviour
     [SerializeField] private VideoPlayer videoPlayer;
     [SerializeField] private CinemachineVirtualCamera camera1, camera2;
     private PlayerMovementNew playerMovementNew;
+    private PlayerControllerNew playerController;
     private Animator animator;
+
 
     private void Start()
     {
         playerMovementNew = FindAnyObjectByType<PlayerMovementNew>();
+        playerController = FindAnyObjectByType<PlayerControllerNew>();
         animator = videoPlayerPlane.GetComponent<Animator>();    
         videoPlayer.loopPointReached += OnVideoEnd;
+    }
+    private void Update()
+    {
+
+
     }
     void OnVideoEnd(VideoPlayer vp)
     {
@@ -28,8 +36,7 @@ public class Gargola : MonoBehaviour
     }
     private IEnumerator ShowVideoPanel()
     {
-        GetComponent<Collider2D>().enabled = false;
-        playerMovementNew.inputsEnabled = false;
+        //GetComponent<Collider2D>().enabled = false;
         yield return new WaitForSeconds(2);
         animator.enabled = true;
         videoPlayerPlane.SetActive(true);
@@ -42,11 +49,24 @@ public class Gargola : MonoBehaviour
         {
             playerMovementNew.anim.SetBool("SlowWalk", false);
             //playerMovementNew.targetPosition = new Vector3(playerMovementNew.transform.position.x, playerMovementNew.transform.position.y, 0);
-            playerMovementNew.targetPosition = playerMovementNew.transform.position;
+            playerMovementNew.targetPosition = playerController.transform.position;
             CameraManager.instance.SingleSwapCamera(camera2);
-            StartCoroutine(ShowVideoPanel());
+            
+            if (LimboManager.countVideosWatched != 3)
+            {
+                StartCoroutine(ShowVideoPanel());
+                videoPlayer.Play();
+            }
+            else if (LimboManager.countVideosWatched >= 3)
+            {
+                videoPlayerPlane.SetActive(true);
+                videoPlayerPlane.GetComponent<Animator>().enabled = true;
+                videoPlayerPlane.GetComponent<Animator>().Play("IdlePlayer");
+                videoPlayer.Play();
+            }
+        }
 
 
         }
     }
-}
+

@@ -19,19 +19,23 @@ public class UI_Piezas : MonoBehaviour
     {
         if (PlayerControllerNew.piezaA && !LevelManager.usedPA)
         {
-            piezaA.GetComponent<Image>().color = Color.red;
+           // piezaA.GetComponent<Image>().color = Color.red;
+            piezaA.SetActive(true);
         }
         if (PlayerControllerNew.piezaB && !LevelManager.usedPB)
         {
-            piezaB.GetComponent<Image>().color = Color.red;
+            //piezaB.GetComponent<Image>().color = Color.red;
+            piezaB.SetActive(true);
         }
         if (PlayerControllerNew.piezaC && !LevelManager.usedPC)
         {
-            piezaC.GetComponent<Image>().color = Color.red;
+            //piezaC.GetComponent<Image>().color = Color.red;
+            piezaC.SetActive(true);
         }
         if (PlayerControllerNew.piezaD && !LevelManager.usedPD)
         {
-            piezaD.GetComponent<Image>().color = Color.red;
+            //piezaD.GetComponent<Image>().color = Color.red;
+            piezaD.SetActive(true);
         }
     }
 

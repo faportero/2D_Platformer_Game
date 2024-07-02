@@ -164,6 +164,11 @@ public class PlayerMovementNew : MonoBehaviour
                         LerpYDamping();
                         TapMovement();
                     }
+                    else
+                    {
+                        anim.SetBool("SlowWalk", false);
+                        anim.Play("Idle");
+                    }
                     //print(inputsEnabled);
                     //CheckGround();
                     break;
