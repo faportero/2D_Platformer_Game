@@ -42,7 +42,7 @@ public class PlayerMovementNew : MonoBehaviour
 
     [Header("Input")]
     public SwipeDetector swipeDetector;
-    private Vector2 direction;
+    [HideInInspector]public Vector2 direction;
     
 
     [Header("Movement Parameters")]

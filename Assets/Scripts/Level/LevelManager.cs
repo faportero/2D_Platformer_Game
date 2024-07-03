@@ -5,6 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
+    public enum CurrentScene
+    {
+        Lobby,
+        Limbo,
+        Nivel1,
+        Nivel2,
+        Nivel3,
+    }
+    [Header("Current Level")]
+    public CurrentScene currentScene;
 
     public PlayerControllerNew playerController;
     [SerializeField] private GameObject UI_Habilidades;

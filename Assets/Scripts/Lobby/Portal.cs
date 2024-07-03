@@ -19,15 +19,19 @@ public class Portal : MonoBehaviour
         DimensionC,
         DimensionD,
     }
-  [SerializeField]  private Dimensions dimensions;
+    [SerializeField]  private Dimensions dimensions;
     [SerializeField] private GameObject panelFeedback;
     [SerializeField] private GameObject canvasFog;
     private PlayerMovementNew playerMovementNew;
+    private PlayerControllerNew playerControllerNew;
     private float progress;
+    private Material playerMaterial;
 
     private void Awake()
     {
         playerMovementNew = FindAnyObjectByType<PlayerMovementNew>();
+        playerControllerNew = FindAnyObjectByType<PlayerControllerNew>();
+        playerMaterial = playerControllerNew.GetComponent<SpriteRenderer>().material;
     }
     private void Start()
     {
@@ -40,14 +44,33 @@ public class Portal : MonoBehaviour
         StartCoroutine(SwitchScene());
         Espejo.isChecked = false;
     }
+    private IEnumerator PlayerDisolve()
+    {
+        float dissolveAmount = 0;
+        float duration = 1f;  // Duración total de la animación en segundos
+        float elapsedTime = 0;
+
+        while (elapsedTime < duration)
+        {
+            dissolveAmount = Mathf.Lerp(0, 1, elapsedTime / duration);
+            playerMaterial.SetFloat("_DissolveAmmount", dissolveAmount);
+            elapsedTime += Time.deltaTime;
+            yield return null;  // Esperar al siguiente frame
+        }
+
+        // Asegurarse de que el valor final sea exactamente 1
+        playerMaterial.SetFloat("_DissolveAmmount", 1);
+    }
     private IEnumerator SwitchScene()
     {
         canvasFog.SetActive(true);
         canvasFog.transform.GetChild(0).gameObject.SetActive(true);
         canvasFog.transform.GetChild(0).GetComponent<Animator>().enabled = true;
         canvasFog.transform.GetChild(0).GetComponent<Animator>().Play("FogTransition");
+        StartCoroutine(PlayerDisolve());
 
-        yield return new WaitForSecondsRealtime(1);
+        yield return new WaitForSecondsRealtime(.5f);
+        playerMovementNew.direction = Vector2.zero;
         playerMovementNew.movementMode = PlayerMovementNew.MovementMode.TapMode;
         playerMovementNew.inputsEnabled = false;
         playerMovementNew.targetPosition = playerMovementNew.transform.position;

@@ -5,66 +5,54 @@ using UnityEngine;
 
 public class Piezas : MonoBehaviour
 {
-    public enum PieceType
-    {
-        A,
-        B,
-        C,
-        D,
-    }
-    public Transform uiPosition;
-    public PieceType pieceType;
-    private Vector3 targetPosition;
-    private Vector3 startPosition;
+    [SerializeField] private enum PieceType { P1, P2, P3, P4, }
+    [SerializeField] private PieceType pieceType;
+    [SerializeField] private RectTransform UIPiece;
     [SerializeField] private AnimationCurve animationItemScaleCurve, animationItemPositionCurve;
+    private Vector3 targetPosition;
+    private Vector3 endScale;
+    private Vector3 startPosition;
+    private Coroutine pieceAnimCoroutine;
+    public static bool enableP1, enableP2, enableP3, enableP4;
 
-    // Start is called before the first frame update
     private void OnEnable()
     {
         SelectType();
-        StartCoroutine(PiecedAnim());
     }
-
-    // Update is called once per frame
-    void Update()
+    void Awake()
     {
-        SelectType();
+        targetPosition = transform.position;
+        endScale = transform.localScale;
+        startPosition = GetWorldPositionFromUI(UIPiece);
+
     }
-    public void SelectType()
+    public void ShowPiece(float delay)
     {
-
-        //sustanceType = SustanceType.Cannabis;
-        switch (pieceType)
+        if (pieceAnimCoroutine != null)
         {
-            case PieceType.A:
-                startPosition = uiPosition.position;
-                targetPosition = transform.position;
-                break;
-
-            case PieceType.B:
-                startPosition = uiPosition.position;
-                targetPosition = transform.position;
-
-                break;
-            case PieceType.C:
-                startPosition = uiPosition.position;
-                targetPosition = transform.position;
-
-                break;
-            case PieceType.D:
-                startPosition = uiPosition.position;
-                targetPosition = transform.position;
-
-                break;
-              
-
+            StopCoroutine(pieceAnimCoroutine);
         }
+        pieceAnimCoroutine = StartCoroutine(PiecedAnim(delay));
     }
-    private IEnumerator PiecedAnim()
+    private void LoadTransforms()
     {
-        
+        //targetPosition = transform.position;
+    }
+    private Vector3 GetWorldPositionFromUI(RectTransform uiElement)
+    {
+        Vector3 screenPos = uiElement.position;
+        Vector3 worldPos;
+        RectTransformUtility.ScreenPointToWorldPointInRectangle(uiElement, screenPos, Camera.main, out worldPos);
+        return worldPos;
+    }
+
+    private IEnumerator PiecedAnim(float delay)
+    {
+        //gameObject.SetActive(true);
+        LoadTransforms();
+        yield return new WaitForSeconds(delay);
         Vector3 startScale = Vector3.zero;
-        Vector3 endScale = transform.localScale;
+        // endScale = transform.localScale;
 
         float elapsedTime = 0;
         float duration = 0.5f;
@@ -81,9 +69,44 @@ public class Piezas : MonoBehaviour
             transform.localScale = Vector3.Lerp(startScale, endScale, curveScaleValue);
             yield return null;
         }
-
-        // Asegurarse de que el valor final sea el targetPosition
         transform.position = targetPosition;
-
+    }
+    private void SelectType()
+    {
+        switch (pieceType)
+        {
+            case (PieceType.P1):
+                if (!enableP1)
+                {
+                    transform.position = GetWorldPositionFromUI(UIPiece);
+                    transform.localScale = Vector3.zero;
+                    enableP1 = true;
+                }
+                break;
+            case (PieceType.P2):
+                if (!enableP2)
+                {
+                    transform.position = GetWorldPositionFromUI(UIPiece);
+                    transform.localScale = Vector3.zero;
+                    enableP2 = true;
+                }
+                break;
+            case (PieceType.P3):
+                if (!enableP3)
+                {
+                    transform.position = GetWorldPositionFromUI(UIPiece);
+                    transform.localScale = Vector3.zero;
+                    enableP3 = true;
+                }
+                break;
+            case (PieceType.P4):
+                if (!enableP4)
+                {
+                    transform.position = GetWorldPositionFromUI(UIPiece);
+                    transform.localScale = Vector3.zero;
+                    enableP4 = true;
+                }
+                break;
+        }
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +13,7 @@ public class Espejo : MonoBehaviour
     private int maxPiezas = 4;
     [HideInInspector] public static int piezasRestantes;
     public static bool isChecked;
+
 
     private void Start()
     {
@@ -42,18 +44,13 @@ public class Espejo : MonoBehaviour
             }
         }
     }
+
+
     private void ShowFeedbackPanel()
     {
         panelFeedback.SetActive(true);
     }
 
-    //private void OnTriggerExit2D(Collider2D collision)
-    //{
-    //    if(collision.tag == "Player")
-    //        isChecked = false;
-
-
-    //}
 
     private void CheckEspejoPieces()
     {
@@ -64,6 +61,7 @@ public class Espejo : MonoBehaviour
             //piezasPanel.piezaA.GetComponent<Image>().color = Color.black;      
             p1.SetActive(true);
             piezasPanel.piezaA.SetActive(false);
+            p1.GetComponent<Piezas>().ShowPiece(.1f);
             countPiezas++;
             countPiezas = Mathf.Clamp(countPiezas, 0, 4);
             LevelManager.usedPA = true;
@@ -75,6 +73,7 @@ public class Espejo : MonoBehaviour
             //piezasPanel.piezaB.GetComponent<Image>().color = Color.black;           
             p2.SetActive(true);
             piezasPanel.piezaB.SetActive(false);
+            p2.GetComponent<Piezas>().ShowPiece(.2f);
             countPiezas++;
             countPiezas = Mathf.Clamp(countPiezas, 0, 4);
             LevelManager.usedPB = true;
@@ -86,6 +85,7 @@ public class Espejo : MonoBehaviour
             //piezasPanel.piezaC.GetComponent<Image>().color = Color.black;           
             p3.SetActive(true);
             piezasPanel.piezaC.SetActive(false);
+            p3.GetComponent<Piezas>().ShowPiece(.3f);
             countPiezas++;
             countPiezas = Mathf.Clamp(countPiezas, 0, 4);
             LevelManager.usedPC = true;
@@ -97,6 +97,7 @@ public class Espejo : MonoBehaviour
             //piezasPanel.piezaD.GetComponent<Image>().color = Color.black;           
             p4.SetActive(true);
             piezasPanel.piezaD.SetActive(false);
+            p4.GetComponent<Piezas>().ShowPiece(.4f);
             countPiezas++;
             countPiezas = Mathf.Clamp(countPiezas, 0, 4);
             LevelManager.usedPD = true;
