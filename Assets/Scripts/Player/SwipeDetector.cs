@@ -66,6 +66,7 @@ public class SwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
             }
             else
             {
+
                 swipeDirection = (deltaY > 0) ? SwipeDirection.Up : SwipeDirection.Down;
             }
         }

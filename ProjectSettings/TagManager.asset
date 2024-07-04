@@ -18,6 +18,7 @@ TagManager:
   - Lifes
   - EnemyAttached
   - Pieza
+  - Hand
   layers:
   - Default
   - TransparentFX

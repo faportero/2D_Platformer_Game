@@ -103,6 +103,7 @@ public class PlayerMovementNew : MonoBehaviour
     private bool isAnimating;
     private float clicDirection;
     public bool isFacingRight = true;
+    public bool tutorialActive;
     #endregion
     #region Unity Callbacks
     private void Awake()
@@ -132,7 +133,17 @@ public class PlayerMovementNew : MonoBehaviour
         fallSpeedYDampingChangeThreshold = CameraManager.instance.fallSpeedYDampingChangeThreshold;
 
     }
-
+    public void InputEnable(bool pause)
+    {
+        if (pause)
+        {
+            inputsEnabled = true;
+        }
+        else
+        {
+            inputsEnabled = false;  
+        }
+    }
     private void LerpYDamping()
     {
         if (rb.velocity.y < fallSpeedYDampingChangeThreshold && !CameraManager.instance.isLerpingYDamping && !CameraManager.instance.LerpedFromPlayerFalling)
@@ -173,10 +184,12 @@ public class PlayerMovementNew : MonoBehaviour
                     //CheckGround();
                     break;
                 case MovementMode.RunnerMode:
-                    isFallingMode = false;
-                    LerpYDamping();
-                    RunnerMovement();
-                    CheckGround();
+                  
+                        isFallingMode = false;
+                        LerpYDamping();
+                        RunnerMovement();
+                        CheckGround();
+                   
                     break;
                 case MovementMode.FallingMode:
                     isFallingMode = true;
@@ -352,11 +365,11 @@ public class PlayerMovementNew : MonoBehaviour
         {
             coyoteTimeCounter -= Time.deltaTime;
         }
-           
+
 
         if (isPC)
         {
-            if (Input.GetKeyDown(KeyCode.Space) && inputsEnabled )
+            if (Input.GetMouseButtonDown(0) && inputsEnabled)
             {
                 jumpBufferCounter = jumpBufferTime;
             }
@@ -369,7 +382,7 @@ public class PlayerMovementNew : MonoBehaviour
             //if (Input.GetKeyDown(KeyCode.Space) && !playerController.isCocaMetaHero)
             if (jumpBufferCounter > 0 && !playerController.isCocaMetaHero)
             {
-              
+
                 if (coyoteTimeCounter > 0)
                 //if (isGrounded)
                 {
@@ -378,7 +391,7 @@ public class PlayerMovementNew : MonoBehaviour
 
                     if (!playerController.isCannabis && !playerController.isAlcohol)
                     {
-                        
+
                         StartCoroutine(Jump(0));
                         jumpBufferCounter = 0;
                     }
@@ -467,7 +480,8 @@ public class PlayerMovementNew : MonoBehaviour
             }
 
 
-            if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S) && !doingRoll)
+           // if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S) && !doingRoll)
+            if (Input.GetMouseButtonDown(1) && !doingRoll && inputsEnabled)
             {
                 if (!playerController.isCannabis)
                 {
@@ -526,10 +540,11 @@ public class PlayerMovementNew : MonoBehaviour
             }
         }
 
+
         else if (!isPC)
         {
-
-            if (Input.touchCount > 0)
+      
+            if (Input.touchCount > 0 && !tutorialActive)
             {
                 if (Input.touchCount == 1)
                 {
@@ -755,6 +770,21 @@ public class PlayerMovementNew : MonoBehaviour
     }
     #endregion
     #region RunnerMethods
+    public void DoJump(float delay)
+    {
+        //if (tutorialActive)
+        //    return;
+
+        if (coyoteTimeCounter > 0)
+        {
+            StartCoroutine(Jump(0));  // Iniciar el salto
+        }
+        else if (playerController.saltoDoble && canDoubleJump)
+        {
+            StartCoroutine(Jump(0));  // Iniciar el doble salto si está disponible
+            canDoubleJump = false;     // Desactivar el doble salto después de usarlo
+        }
+    }
     private IEnumerator Jump(float delay)
     {
         if (!playerController.isCannabis)
@@ -786,6 +816,21 @@ public class PlayerMovementNew : MonoBehaviour
     private void TapFloor()
     {
         anim.SetBool("Jump", false);
+    }
+    public void DoRoll()
+    {
+        //if (tutorialActive)
+        //    return;
+
+        if (playerController.isCannabis)
+        {
+            StartCoroutine(Roll(0, -1, .25f));  // Iniciar el roll especial si está bajo efecto de cannabis
+        }
+        else
+        {
+            StartCoroutine(Roll(0, -1, 0));     // Iniciar el roll estándar
+        }
+
     }
     private IEnumerator Roll(float x, float y, float time)
     {
