@@ -23,6 +23,8 @@ public class CameraManager : MonoBehaviour
     public CinemachineVirtualCamera currentCamera;
     private CinemachineFramingTransposer framingTransposer;
 
+    [SerializeField] private CinemachineBlenderSettings blend;
+
     private Vector2 statingTrackedObjectOffset;
 
     private float normYPanAmount;
@@ -192,10 +194,12 @@ public class CameraManager : MonoBehaviour
         if (currentCamera != null)
         {
             currentCamera.enabled = false;
-        }
+            //currentCamera.GetComponent<CinemachineBrain>().m_CustomBlends = blend;
+        }   
         newCamera.enabled = true;
         currentCamera = newCamera;
         framingTransposer = currentCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+       
     }
     #endregion
 }

@@ -423,7 +423,8 @@ public class PlayerMovementNew : MonoBehaviour
                 }
 
             }
-            if (Input.GetKeyUp(KeyCode.Space)) coyoteTimeCounter = 0;
+            if (Input.GetMouseButtonUp(0)) coyoteTimeCounter = 0;
+            //if (Input.GetKeyUp(KeyCode.Space)) coyoteTimeCounter = 0;
 
             if (playerController.isCocaMetaHero)
             {
@@ -544,9 +545,10 @@ public class PlayerMovementNew : MonoBehaviour
         else if (!isPC)
         {
       
-            if (Input.touchCount > 0 && !tutorialActive)
+           // if (Input.touchCount > 0 && inputsEnabled)
+            if (Input.touchCount > 0)
             {
-                if (Input.touchCount == 1)
+                if (Input.touchCount == 1 && inputsEnabled)
                 {
                     touch = Input.GetTouch(0);
 
@@ -627,7 +629,7 @@ public class PlayerMovementNew : MonoBehaviour
                         {
                             // Esto es un swipe
 
-                            if (swipeDetector.swipeDirection == SwipeDirection.Down && !doingRoll)
+                            if (swipeDetector.swipeDirection == SwipeDirection.Down && inputsEnabled && !doingRoll)
                             {
                                 swipeDetector.TapPerformed = false;
                                 if (!playerController.isCannabis)
@@ -819,18 +821,7 @@ public class PlayerMovementNew : MonoBehaviour
     }
     public void DoRoll()
     {
-        //if (tutorialActive)
-        //    return;
-
-        if (playerController.isCannabis)
-        {
-            StartCoroutine(Roll(0, -1, .25f));  // Iniciar el roll especial si está bajo efecto de cannabis
-        }
-        else
-        {
-            StartCoroutine(Roll(0, -1, 0));     // Iniciar el roll estándar
-        }
-
+        StartCoroutine(Roll(0, -1, 0));     // Iniciar el roll estándar
     }
     private IEnumerator Roll(float x, float y, float time)
     {
@@ -975,36 +966,51 @@ public class PlayerMovementNew : MonoBehaviour
             {
                 if (inputsEnabled)
                 {
-                    if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
-                    {
-                        if (movimientosIzquierda < maxMovimientos)
-                        {
-                            foreach (FallingLevelColliders collider in fallingColliders)
-                            {
-                                if (!collider.isFallColliding)
-                                {
-                                    Mover(Vector3.left + new Vector3(0, -.25f, 0));
-                                }
-                            }
-                            movimientosIzquierda++;
-                            movimientosDerecha = Mathf.Max(0, movimientosDerecha - 1);
-                        }
-                    }
-                    if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
-                    {
+                    //if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+                    //{
+                    //    if (movimientosIzquierda < maxMovimientos)
+                    //    {
+                    //        foreach (FallingLevelColliders collider in fallingColliders)
+                    //        {
+                    //            if (!collider.isFallColliding)
+                    //            {
+                    //                Mover(Vector3.left + new Vector3(0, -.25f, 0));
+                    //            }
+                    //        }
+                    //        movimientosIzquierda++;
+                    //        movimientosDerecha = Mathf.Max(0, movimientosDerecha - 1);
+                    //    }
+                    //}
+                    //if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+                    //{
 
-                        if (movimientosDerecha < maxMovimientos)
-                        {
-                            foreach (FallingLevelColliders collider in fallingColliders)
-                            {
-                                if (!collider.isFallColliding)
-                                {
-                                    Mover(Vector3.right + new Vector3(0, -.25f, 0));
-                                }
-                            }                            
-                            movimientosDerecha++;
-                            movimientosIzquierda = Mathf.Max(0, movimientosIzquierda - 1);
-                        }
+                    //    if (movimientosDerecha < maxMovimientos)
+                    //    {
+                    //        foreach (FallingLevelColliders collider in fallingColliders)
+                    //        {
+                    //            if (!collider.isFallColliding)
+                    //            {
+                    //                Mover(Vector3.right + new Vector3(0, -.25f, 0));
+                    //            }
+                    //        }                            
+                    //        movimientosDerecha++;
+                    //        movimientosIzquierda = Mathf.Max(0, movimientosIzquierda - 1);
+                    //    }
+                    //}
+
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                       transform.localScale = new Vector3(-1, 1, 1);
+                        Mover(Vector3.left + new Vector3(0, -.25f, 0));
+                        movimientosIzquierda++;
+                        movimientosDerecha = Mathf.Max(0, movimientosDerecha - 1);
+                    }
+                    else if (Input.GetMouseButtonDown(1))
+                    {
+                        transform.localScale = new Vector3(1, 1, 1);
+                        Mover(Vector3.right + new Vector3(0, -.25f, 0));
+                        movimientosDerecha++;
+                        movimientosIzquierda = Mathf.Max(0, movimientosIzquierda - 1);
                     }
                 }
             }
@@ -1038,14 +1044,14 @@ public class PlayerMovementNew : MonoBehaviour
                                 //Detactar si el usuario hace tap en la izquierda de la pantalla o en la derecha
                                 if (tapEndPos.x < screenWidth / 2)
                                 {
-                                    transform.localScale = new Vector3(-2, 2, 2);
+                                    transform.localScale = new Vector3(-1, 1, 1);
                                     Mover(Vector3.left + new Vector3(0, -.25f, 0));
                                     movimientosIzquierda++;
                                     movimientosDerecha = Mathf.Max(0, movimientosDerecha - 1);
                                 }
                                 else
                                 {
-                                    transform.localScale = new Vector3(2, 2, 2);
+                                    transform.localScale = new Vector3(1, 1, 1);
                                     Mover(Vector3.right + new Vector3(0, -.25f, 0));
                                     movimientosDerecha++;
                                     movimientosIzquierda = Mathf.Max(0, movimientosIzquierda - 1);
@@ -1057,8 +1063,75 @@ public class PlayerMovementNew : MonoBehaviour
             }
             else
             {
-
                 movementMode = MovementMode.RunnerMode;
+            }
+        }
+    }
+    public void DoMove()
+    {
+        int movimientosIzquierda = 0;
+        int movimientosDerecha = 0;
+        int maxMovimientos = 2;
+
+        if (isPC)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                transform.localScale = new Vector3(-1, 1, 1);
+                Mover(Vector3.left + new Vector3(0, -.25f, 0));
+                movimientosIzquierda++;
+                movimientosDerecha = Mathf.Max(0, movimientosDerecha - 1);
+            }
+            else if (Input.GetMouseButtonDown(1))
+            {
+                transform.localScale = new Vector3(1, 1, 1);
+                Mover(Vector3.right + new Vector3(0, -.25f, 0));
+                movimientosDerecha++;
+                movimientosIzquierda = Mathf.Max(0, movimientosIzquierda - 1);
+            }
+        }
+        else
+        {
+            float screenWidth = Screen.width;
+            if (Input.touchCount > 0)
+            {
+                Touch touch = Input.GetTouch(0);
+
+                if (touch.phase == TouchPhase.Began)
+                {
+                    tapDetected = true;
+                    tapStartTime = Time.time;
+                    tapStartPos = touch.position;
+                }
+                // Detectar el final del toque
+                else if (touch.phase == TouchPhase.Ended && tapDetected)
+                {
+                    tapDetected = false;
+                    float tapEndTime = Time.time;
+                    Vector2 tapEndPos = touch.position;
+                    float tapDuration = tapEndTime - tapStartTime;
+                    float swipeDistance = Vector2.Distance(tapStartPos, tapEndPos);
+
+                    if (tapDuration < tapTimeThreshold && swipeDistance < swipeDistanceThreshold && !playerController.isCocaMetaHero)
+                    {
+                        // Tap
+                        //Detactar si el usuario hace tap en la izquierda de la pantalla o en la derecha
+                        if (tapEndPos.x < screenWidth / 2)
+                        {
+                            transform.localScale = new Vector3(-1, 1, 1);
+                            Mover(Vector3.left + new Vector3(0, -.25f, 0));
+                            movimientosIzquierda++;
+                            movimientosDerecha = Mathf.Max(0, movimientosDerecha - 1);
+                        }
+                        else
+                        {
+                            transform.localScale = new Vector3(1, 1, 1);
+                            Mover(Vector3.right + new Vector3(0, -.25f, 0));
+                            movimientosDerecha++;
+                            movimientosIzquierda = Mathf.Max(0, movimientosIzquierda - 1);
+                        }
+                    }
+                }
             }
         }
     }

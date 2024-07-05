@@ -15,7 +15,7 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] private Transform newPlayerPos;
 
     [SerializeField] private SwipeDetector swipeDetector;
-    [SerializeField] private CinemachineVirtualCamera camera2;
+    [SerializeField] private CinemachineVirtualCamera cameraInit,camera2;
 
     private PlayerControllerNew playerController;
     private PlayerMovementNew playerMovementNew;
@@ -101,14 +101,19 @@ public class LobbyManager : MonoBehaviour
             }
             else
             {
-                if (swipeDetector.TapPerformed == true)
+                if (Input.touchCount > 0)
                 {
-                    tapPanel.SetActive(false);
+                    Touch touch = Input.GetTouch(0);
+                    if (touch.phase == TouchPhase.Began)
+                    {
+                        tapPanel.SetActive(false);
+                    }
                 }
-
             }
+
         }
     }
+    
 
     // Método llamado cuando el video termina
     void OnVideoEnd(VideoPlayer vp)
@@ -138,9 +143,21 @@ public class LobbyManager : MonoBehaviour
         StartCoroutine(ChangePlayerPosition());
         
     }
+    public void PaneoCameraInit()
+    {       
+       StartCoroutine (PaneoCameraInitAnim());
+    }
+    private IEnumerator PaneoCameraInitAnim()
+    {
+        CameraManager.instance.SingleSwapCamera(cameraInit);
+        yield return new WaitForSeconds(5);
 
+    }
     private IEnumerator AnimatePlayer()
     {
+        CameraManager.instance.SingleSwapCamera(cameraInit);
+        yield return new WaitForSeconds(5);
+
         playerMovementNew.enabled = false;
         playerMovementNew.anim.enabled = false;
         Rigidbody2D playerRigidbody = playerController.GetComponent<Rigidbody2D>();

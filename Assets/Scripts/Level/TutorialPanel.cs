@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TutorialPanel : MonoBehaviour
 {
     [SerializeField] private GameObject panelTutorial;
     [SerializeField] private GameObject PanelDetectInput;
     [SerializeField] private GameObject hand;
+    [SerializeField] private GameObject canvasHUD;
     private AudioPause audioPause;
     [SerializeField] private bool isInteractive;
     private PlayerMovementNew playerMovementNew;
@@ -28,8 +30,8 @@ public class TutorialPanel : MonoBehaviour
     {
         if(collision.tag == "Player")
         {
-            
-            playerMovementNew.tutorialActive = true;
+            canvasHUD.GetComponent<Image>().raycastTarget = false;
+            //playerMovementNew.tutorialActive = true;
             audioPause.Pause(true);
             panelTutorial.SetActive(true);
 
@@ -47,6 +49,11 @@ public class TutorialPanel : MonoBehaviour
                 {
                     hand.SetActive(true);
                     hand.SetActive(true); handAnim.Play("Roll Animation");
+                }
+                else if (interactionIndex == 2)
+                {
+                    hand.SetActive(true);
+                    hand.SetActive(true); handAnim.Play("FallingTap Animation");
                 }
             }
         }
