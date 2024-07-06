@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,14 +12,16 @@ public class PlayerControllerNew : MonoBehaviour
     [SerializeField] private GameObject GlowSpriteEffect;
     [SerializeField] private GameObject effectPanel;
     [SerializeField] private GameObject panelFeedback;
+    [SerializeField] private GameObject panelFeedbackBadFloor;
     [SerializeField] private  UI_Piezas piezasPanel;
     [SerializeField] private  UI_SaludBar saludBar;
     [HideInInspector] public SpriteRenderer spriteRenderer;
     private PlayerMovementNew playerMovement;
     private GameObject currentItem;
+    private GameObject currenPiece;
     [SerializeField] private GameObject enemyAttached;
     [SerializeField] private GameObject playerExplode;
-    private UI_SaludAttachedBar ui_enemyAttachedBar;
+    [SerializeField] private UI_SaludAttachedBar ui_enemyAttachedBar;
 
 
     [Header("Stats")]
@@ -30,6 +33,7 @@ public class PlayerControllerNew : MonoBehaviour
     [SerializeField] private Gradient colorEnemyGradient;
     [SerializeField]private Material[] materials;
     private AudioSource audioSource;
+    [SerializeField] GameObject[] pieces;
 
     private Image healthFillBar;    
 
@@ -52,6 +56,7 @@ public class PlayerControllerNew : MonoBehaviour
     [Header("Intern Variables")]
     private Vector3 startPosition;
     private Vector3 targetPosition;
+    private Vector3 targetPiecePosition;
 
     #endregion
     #region Unity Callbacks
@@ -63,7 +68,7 @@ public class PlayerControllerNew : MonoBehaviour
         audioSource = GetComponent<AudioSource>();  
         saludBar.UpdateHealth(currentSalud);
 
-        if(ui_enemyAttachedBar != null) ui_enemyAttachedBar = enemyAttached.transform.GetChild(0).GetComponent<UI_SaludAttachedBar>();
+        //if(ui_enemyAttachedBar != null) ui_enemyAttachedBar = enemyAttached.transform.GetChild(0).GetComponent<UI_SaludAttachedBar>();
 
 
 
@@ -135,6 +140,15 @@ public class PlayerControllerNew : MonoBehaviour
     {
         targetPosition = GetWorldPositionFromUI(saludBar.GetComponent<RectTransform>());
         targetPosition = targetPosition + new Vector3(0, -1.25f, 0);
+        
+        if(currenPiece != null && pieces != null && currenPiece.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasA)
+            targetPiecePosition = GetWorldPositionFromUI(pieces[0].GetComponent<RectTransform>());
+        if(currenPiece != null && pieces != null && currenPiece.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasB)
+            targetPiecePosition = GetWorldPositionFromUI(pieces[1].GetComponent<RectTransform>());
+        if(currenPiece != null && pieces != null && currenPiece.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasC)
+            targetPiecePosition = GetWorldPositionFromUI(pieces[2].GetComponent<RectTransform>());
+        if(currenPiece != null && pieces != null && currenPiece.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasD)
+            targetPiecePosition = GetWorldPositionFromUI(pieces[3].GetComponent<RectTransform>());
 
     }
 
@@ -353,16 +367,19 @@ public class PlayerControllerNew : MonoBehaviour
 
         if (collision.tag == "Pieza")
         {
-           if( collision.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasA)
-            {
+            currenPiece = collision.gameObject;
+            if ( collision.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasA)
+            {                
                 piezaA = true;
                 // piezasPanel.piezaA.GetComponent<Image>().color = Color.red;
+                StartCoroutine(TakePieceAnim());
                 piezasPanel.piezaA.SetActive(false);
             }
             if (collision.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasB)
             {
                 piezaB = true;
                 //piezasPanel.piezaB.GetComponent<Image>().color = Color.red;
+                StartCoroutine(TakePieceAnim());
                 piezasPanel.piezaB.SetActive(false);
 
             }
@@ -370,6 +387,7 @@ public class PlayerControllerNew : MonoBehaviour
             {
                 piezaC = true;
                 //piezasPanel.piezaC.GetComponent<Image>().color = Color.red;
+                StartCoroutine(TakePieceAnim());
                 piezasPanel.piezaC.SetActive(false);
 
             }
@@ -377,20 +395,134 @@ public class PlayerControllerNew : MonoBehaviour
             {
                 piezaD = true;
                 //piezasPanel.piezaD.GetComponent<Image>().color = Color.red;
+                StartCoroutine(TakePieceAnim());
                 piezasPanel.piezaD.SetActive(false);
 
             }
 
         }
 
-        if (collision.tag == "BadFloor" && !isAttack)
-        {
-            if (playerMovement.canMove) StartBlinking(0);
+        //if (collision.tag == "BadFloor" && !isAttack)
+        //{
+        //    if (playerMovement.canMove)
+        //    {
+        //        StartBlinking(0);
+        //        playerMovement.StartCameraShake(.1f);
 
+        //    }
+
+        //}
+    }
+    public void TakePiece()
+    {
+        StartCoroutine(TakePieceAnim());
+    }
+    private IEnumerator TakePieceAnim()
+    {
+        Vector3 startPosition = currenPiece.transform.position;
+        Vector3 startScale = currenPiece.transform.localScale;
+
+        float elapsedTime = 0;
+        float duration = 0.5f;
+        float duration2 = .5f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / duration;
+            float t1 = elapsedTime / duration2;
+            float curvePosValue = animationItemPositionCurve.Evaluate(t);
+            float curveScaleValue = animationItemScaleCurve.Evaluate(t1);
+            currenPiece.transform.position = Vector3.Lerp(startPosition, targetPiecePosition, curvePosValue);
+            currenPiece.transform.localScale = Vector3.Lerp(startScale, Vector3.zero, curveScaleValue);
+            yield return null;
         }
+
+        // Asegurarse de que el valor final sea el targetPosition
+        currenPiece.transform.position = targetPiecePosition;
+        currenPiece.SetActive(false);
+    }
+    private IEnumerator HitBadFloor()
+    {
+        playerMovement.inputsEnabled = false;
+        playerMovement.direction = Vector2.zero;
+        panelFeedbackBadFloor.SetActive(true);
+        StartBlinking(2);
+        playerMovement.StartCameraShake(.1f);
+
+
+
+     
+             float shakeDuration = 0.25f;
+             float shakeMagnitude = 2f;
+             float inertiaDuration = 0.5f;
+             float returnDuration = 0.25f;
+             Transform cameraTarget;
+             Vector3 originalCameraPosition;
+            bool isShaking = false;
+            cameraTarget = CameraManager.instance.currentCamera.Follow;
+            originalCameraPosition = cameraTarget.position;
+            // Inertia movement
+            Vector3 inertiaTargetPosition = cameraTarget.position + (Vector3)transform.right * shakeMagnitude;
+            float elapsed = 0f;
+
+            while (elapsed < inertiaDuration)
+            {
+                cameraTarget.position = Vector3.Lerp(originalCameraPosition, inertiaTargetPosition, elapsed / inertiaDuration);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+        // Shake effect
+        //isShaking = true;
+        //elapsed = 0f;
+
+        //while (elapsed < shakeDuration)
+        //{
+        //    cameraTarget.position = originalCameraPosition + UnityEngine.Random.insideUnitSphere * shakeMagnitude;
+        //    elapsed += Time.deltaTime;
+        //    yield return null;
+        //}
+
+        cameraTarget.position = originalCameraPosition;
+            isShaking = false;
+
+            // Return to player
+            elapsed = 0f;
+            while (elapsed < returnDuration)
+            {
+                cameraTarget.position = Vector3.Lerp(inertiaTargetPosition, originalCameraPosition, elapsed / returnDuration);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            cameraTarget.position = originalCameraPosition;
+        
+
+
+        yield return new WaitForSeconds(.5f);
+        playerMovement.direction = new Vector2(1.2f, 1);
+        playerMovement.inputsEnabled = true;
+        panelFeedbackBadFloor.SetActive(false);
+        StartCoroutine(ResetCollision());
+
+        
+    }
+    private IEnumerator ResetCollision()
+    {
+        currentItem.GetComponent<CompositeCollider2D>().isTrigger = true;
+        yield return new WaitForSeconds(1);
+        currentItem.GetComponent<CompositeCollider2D>().isTrigger = false;
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.gameObject.tag == "BadFloor" && !isAttack)
+        {
+            currentItem = collision.gameObject;
+            StartCoroutine(HitBadFloor());         
+
+        }
+
         if (collision.gameObject.CompareTag("Wall"))
         {
             collision.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
@@ -412,8 +544,6 @@ public class PlayerControllerNew : MonoBehaviour
 
 
     #endregion
-
-
     #region Enemy Managment
 
 
@@ -599,12 +729,12 @@ public class PlayerControllerNew : MonoBehaviour
     private IEnumerator BlinkAlpha(float duration)
     {
         //capsuleCollider.enabled = false;
-        yield return new WaitForSeconds(duration);
+        //yield return new WaitForSeconds(duration);
         isAttack = true;       
         float blinkSpeed = 6.0f; // Velocidad del parpadeo
         float elapsedTime = 0.0f;
 
-        while (elapsedTime < .5f)
+        while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
             float alpha = Mathf.PingPong(elapsedTime * blinkSpeed, 1.0f);

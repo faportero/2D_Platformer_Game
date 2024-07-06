@@ -6,10 +6,11 @@ using UnityEngine.UI;
 public class UI_Piezas : MonoBehaviour
 {
     public GameObject piezaA, piezaB, piezaC, piezaD;
+    private PlayerControllerNew playerControllerNew;
 
     private void Start()
     {
-       
+       playerControllerNew = FindAnyObjectByType<PlayerControllerNew>();
     }
     private void Update()
     {
@@ -17,9 +18,15 @@ public class UI_Piezas : MonoBehaviour
     }
     private void CheckPieces()
     {
+        Invoke("ShowPanelPieces", .75f);
+    }
+
+    private void ShowPanelPieces()
+    {
         if (PlayerControllerNew.piezaA && !LevelManager.usedPA)
         {
-           // piezaA.GetComponent<Image>().color = Color.red;
+            // piezaA.GetComponent<Image>().color = Color.red;
+            //playerControllerNew.TakePiece();
             piezaA.SetActive(true);
         }
         if (PlayerControllerNew.piezaB && !LevelManager.usedPB)

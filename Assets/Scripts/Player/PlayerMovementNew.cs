@@ -28,7 +28,7 @@ public class PlayerMovementNew : MonoBehaviour
    // private PlayerController playerController;
     private PlayerControllerNew playerController;
     private GhostController ghostController;
-    private CameraFollowObject cameraFollowObject;
+    [HideInInspector] public CameraFollowObject cameraFollowObject;
     public GameObject cameraFollowGo;
     private Coroutine heartbeatShakeSequence;
 
@@ -353,8 +353,9 @@ public class PlayerMovementNew : MonoBehaviour
         //if (playerController.paracaidas) direction = new Vector2(slowFallGravity, 0);      
 
 
-        Walk();
-        if (isGrounded) anim.SetBool("Walk", true);
+        if(inputsEnabled) Walk();
+            else anim.Play("Idle"); anim.SetBool("Walk", false);
+        if (isGrounded && inputsEnabled) anim.SetBool("Walk", true);
         else anim.SetBool("Jump", true);
 
         if (isGrounded)
@@ -918,6 +919,11 @@ public class PlayerMovementNew : MonoBehaviour
         //spriteRenderer.color = Color.white;
         anim.SetBool("Smash", false);
         ghostController.enabled = false;
+    }
+    public void StartCameraShake(float tiempo)
+    {
+        StopAllCoroutines();
+        StartCoroutine(CameraShake(tiempo));
     }
     private IEnumerator CameraShake(float tiempo)
     {

@@ -10,7 +10,7 @@ public class UI_SaludBar : MonoBehaviour
     private float maxAdiccion = 100;
     public float currentAdiccion;
     private float fillSpeed = 1f;
-   public Image healthFillBar;
+    public Image healthFillBar;
     [SerializeField] private Gradient colorGradient;
     private float duration = 3;
     private float targetFillAmount;
@@ -19,12 +19,12 @@ public class UI_SaludBar : MonoBehaviour
 
     private void OnValidate()
     {
-        healthFillBar = transform.GetChild(1).GetComponent<Image>();
+       // healthFillBar = transform.GetChild(1).GetComponent<Image>();
 
     }
     private void Start()
     {
-        healthFillBar = transform.GetChild(1).GetComponent<Image>();
+      //  healthFillBar = transform.GetChild(1).GetComponent<Image>();
         //UpdateAdiccion(currentAdiccion);
     }
 
@@ -44,7 +44,9 @@ public class UI_SaludBar : MonoBehaviour
         //StartCoroutine(LerpValue(0, 1));
         // healthFillBar.fillAmount = Mathf.Lerp(healthFillBar.fillAmount, targetFillAmount, curve.Evaluate(currentAdiccion * Time.deltaTime));
         //healthFillBar.DOFillAmount(targetFillAmount, fillSpeed);
-        if(isActiveAndEnabled)StartCoroutine(SmoothUpdateHealth());
+        if(isActiveAndEnabled)
+            StartCoroutine(SmoothUpdateHealth());
+        //StartCoroutine(SmoothUpdateHealth());
         healthFillBar.color = colorGradient.Evaluate(targetFillAmount);
     }
 

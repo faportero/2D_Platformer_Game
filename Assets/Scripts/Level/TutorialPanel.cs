@@ -23,13 +23,14 @@ public class TutorialPanel : MonoBehaviour
         //hand = GameObject.FindGameObjectWithTag("Hand");
         handAnim = hand.GetComponent<Animator>();
 
-        playerMovementNew.inputsEnabled = false;
+        //playerMovementNew.inputsEnabled = false;
         playerMovementNew.tutorialActive = true;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.tag == "Player")
         {
+            canvasHUD.GetComponent<SwipeDetector>().enabled = false;
             canvasHUD.GetComponent<Image>().raycastTarget = false;
             //playerMovementNew.tutorialActive = true;
             audioPause.Pause(true);

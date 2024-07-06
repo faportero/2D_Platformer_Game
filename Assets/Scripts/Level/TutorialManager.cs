@@ -22,14 +22,20 @@ public class TutorialManager : MonoBehaviour, IPointerDownHandler, IPointerUpHan
     }
     public void ActiveTutorial(bool pause)
     {
-        playerMovementNew.tutorialActive = pause;
+        //playerMovementNew.tutorialActive = pause;
     }
 
     public void ActiveRayCastHUD(bool pause)
     {
-        canvasHUD.GetComponent<UnityEngine.UI.Image>().raycastTarget = pause;
+        StartCoroutine(ActiveRayCastDelay(pause));
     }
+    private IEnumerator ActiveRayCastDelay(bool pause)
+    {
+        yield return new WaitForSeconds(.2f);
+        canvasHUD.GetComponent<SwipeDetector>().enabled = pause;
+        canvasHUD.GetComponent<UnityEngine.UI.Image>().raycastTarget = pause;
 
+    }
 
     private PointerEventData CreatePointerEventData(Vector2 position)
     {
