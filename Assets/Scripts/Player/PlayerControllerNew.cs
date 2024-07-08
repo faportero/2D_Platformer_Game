@@ -13,6 +13,8 @@ public class PlayerControllerNew : MonoBehaviour
     [SerializeField] private GameObject effectPanel;
     [SerializeField] private GameObject panelFeedback;
     [SerializeField] private GameObject panelFeedbackBadFloor;
+    [SerializeField] private GameObject panelInmunidad;
+    [SerializeField] private GameObject panelPocaVida;
     [SerializeField] private  UI_Piezas piezasPanel;
     [SerializeField] private  UI_SaludBar saludBar;
     [HideInInspector] public SpriteRenderer spriteRenderer;
@@ -22,6 +24,7 @@ public class PlayerControllerNew : MonoBehaviour
     [SerializeField] private GameObject enemyAttached;
     [SerializeField] private GameObject playerExplode;
     [SerializeField] private UI_SaludAttachedBar ui_enemyAttachedBar;
+    private AudioPause audioPause;
 
 
     [Header("Stats")]
@@ -34,8 +37,11 @@ public class PlayerControllerNew : MonoBehaviour
     [SerializeField]private Material[] materials;
     private AudioSource audioSource;
     [SerializeField] GameObject[] pieces;
+    [HideInInspector] public Color color;
 
-    private Image healthFillBar;    
+
+    private Image healthFillBar;
+    private List<CompositeCollider2D> compositeColliders = new List<CompositeCollider2D>();
 
     [Header("Bools")]
     public float currentSalud;
@@ -47,6 +53,7 @@ public class PlayerControllerNew : MonoBehaviour
     private bool isShowPanel;
     private bool isIndestructible;
     public static bool piezaA, piezaB, piezaC, piezaD;
+    public static bool showInmunidadPanel = true, showPocaVidePanel = true;
 
     [Header("Coroutines")]
     private Coroutine blinkCoroutine;
@@ -65,10 +72,11 @@ public class PlayerControllerNew : MonoBehaviour
         
         playerMovement = GetComponent<PlayerMovementNew>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        audioSource = GetComponent<AudioSource>();  
+        audioSource = GetComponent<AudioSource>();
+        audioPause = FindAnyObjectByType<AudioPause>();
         saludBar.UpdateHealth(currentSalud);
-
-        //if(ui_enemyAttachedBar != null) ui_enemyAttachedBar = enemyAttached.transform.GetChild(0).GetComponent<UI_SaludAttachedBar>();
+        print("Current Salud: " + currentSalud);
+        print("Fill Amount: " + saludBar.healthFillBar.fillAmount);
 
 
 
@@ -136,6 +144,8 @@ public class PlayerControllerNew : MonoBehaviour
 
 
     }
+
+
     private void Update()
     {
         targetPosition = GetWorldPositionFromUI(saludBar.GetComponent<RectTransform>());
@@ -163,7 +173,9 @@ public class PlayerControllerNew : MonoBehaviour
             saludBar.UpdateHealth(saludAmount);
             currentSalud = Mathf.Clamp(currentSalud, 0f, 100);
             saludBar.currentAdiccion = currentSalud;
-            print(currentSalud);
+            print("Current Salud: "+currentSalud);
+            print("Fill Amount: " + saludBar.healthFillBar.fillAmount);
+
             collision.GetComponent<BoxCollider2D>().enabled = false;
 
             if (isDrugged)
@@ -238,8 +250,20 @@ public class PlayerControllerNew : MonoBehaviour
                 case 100:
                     //isIndestructible = true;
                     //GlowSpriteEffect.SetActive(true);
-                    StartCoroutine(Inmunidad());
                     AdjustLuminance(1);
+                    StartCoroutine(Inmunidad());
+                    //if (showInmunidadPanel)
+                    //{
+                    //    audioPause.Pause(true);
+                    //    panelInmunidad.SetActive(true);
+                    //    //playerMovement.inputsEnabled = false;
+                    //}
+                    //else 
+                    //{
+                    //    panelInmunidad.SetActive(false);
+                    //    audioPause.Pause(false);
+                    //    //playerMovement.inputsEnabled = true;
+                    //} 
                     break;
                 default:
                     ui_enemyAttachedBar.UpdateTime(1);
@@ -266,8 +290,10 @@ public class PlayerControllerNew : MonoBehaviour
                 saludBar.UpdateHealth(-saludAmount);
                 currentSalud = Mathf.Clamp(currentSalud, 0f, 100);
                 saludBar.currentAdiccion = currentSalud;
+                print("Current Salud: " + currentSalud);
+                print("Fill Amount: " + saludBar.healthFillBar.fillAmount);
 
-                isDrugged = true;
+            isDrugged = true;
 
                 switch (currentSalud)
                 {
@@ -282,7 +308,19 @@ public class PlayerControllerNew : MonoBehaviour
                         break;
                     case 10:
                         isIndestructible = false;
-                        ui_enemyAttachedBar.UpdateTime(10);
+                    //if (showPocaVidePanel)
+                    //{
+                    //    panelPocaVida.SetActive(true);
+                    //    audioPause.Pause(true);
+                    //    playerMovement.inputsEnabled = false;
+                    //}
+                    //else
+                    //{
+                    //    panelPocaVida.SetActive(false);
+                    //    audioPause.Pause(false);
+                    //    playerMovement.inputsEnabled = true;
+                    //}
+                    ui_enemyAttachedBar.UpdateTime(10);
                         enemyEffectCoroutine = StartCoroutine(CurrentEffect(10));
                         GlowSpriteEffect.SetActive(false);
                         AdjustLuminance(0);
@@ -413,6 +451,41 @@ public class PlayerControllerNew : MonoBehaviour
 
         //}
     }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "BadFloor" && !isAttack)
+        {
+            
+            currentSalud -= saludAmount;
+            saludBar.UpdateHealth(-saludAmount);
+            currentSalud = Mathf.Clamp(currentSalud, 0f, 100);
+            saludBar.currentAdiccion = currentSalud;
+
+            currentItem = collision.gameObject;
+            StopAllCoroutines();
+            StartCoroutine(HitBadFloor());
+
+        }
+
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            collision.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+            currentSalud -= saludAmount;
+            saludBar.UpdateHealth(-saludAmount);
+            currentSalud = Mathf.Clamp(currentSalud, 0f, 100);
+            saludBar.currentAdiccion = currentSalud;
+            StartBlinking(0);
+            StartCoroutine(DeactivateEnfasis());
+
+            // if (isIndestructible)
+            // {
+            collision.gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
+            //collision.gameObject.GetComponent<Rigidbody2D>().simulated = true;
+            collision.gameObject.GetComponent<ExplodeOnClick>().Explode();
+            // }
+        }
+    }
+
     public void TakePiece()
     {
         StartCoroutine(TakePieceAnim());
@@ -444,6 +517,8 @@ public class PlayerControllerNew : MonoBehaviour
     }
     private IEnumerator HitBadFloor()
     {
+        StartCoroutine(DeactivateEnfasis());
+
         playerMovement.inputsEnabled = false;
         playerMovement.direction = Vector2.zero;
         panelFeedbackBadFloor.SetActive(true);
@@ -454,7 +529,7 @@ public class PlayerControllerNew : MonoBehaviour
 
      
              float shakeDuration = 0.25f;
-             float shakeMagnitude = 2f;
+             float shakeMagnitude = 1.5f;
              float inertiaDuration = 0.5f;
              float returnDuration = 0.25f;
              Transform cameraTarget;
@@ -498,8 +573,6 @@ public class PlayerControllerNew : MonoBehaviour
 
             cameraTarget.position = originalCameraPosition;
         
-
-
         yield return new WaitForSeconds(.5f);
         playerMovement.direction = new Vector2(1.2f, 1);
         playerMovement.inputsEnabled = true;
@@ -514,31 +587,33 @@ public class PlayerControllerNew : MonoBehaviour
         yield return new WaitForSeconds(1);
         currentItem.GetComponent<CompositeCollider2D>().isTrigger = false;
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void GetCompositeColliders2D()
     {
-        if (collision.gameObject.tag == "BadFloor" && !isAttack)
-        {
-            currentItem = collision.gameObject;
-            StartCoroutine(HitBadFloor());         
+        // Obtener todos los GameObjects activos en la escena
+        GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
 
+        // Iterar a través de todos los GameObjects y buscar CompositeCollider2D con el tag "BadFloor"
+        foreach (GameObject obj in allObjects)
+        {
+            // Obtener el CompositeCollider2D del GameObject actual, si existe
+            CompositeCollider2D collider = obj.GetComponent<CompositeCollider2D>();
+
+            // Verificar si el objeto tiene el tag "BadFloor" y el componente CompositeCollider2D
+            if (obj.CompareTag("BadFloor") && collider != null)
+            {
+                // Agregar el CompositeCollider2D a la lista
+                compositeColliders.Add(collider);
+            }
         }
 
-        if (collision.gameObject.CompareTag("Wall"))
+        // Método para convertir todos los CompositeCollider2D a trigger
+        // SetAllCompositeCollidersTrigger(compositeColliders, true);
+    }
+    void SetAllCompositeCollidersTrigger(List<CompositeCollider2D> colliders, bool isTrigger)
+    {
+        foreach (CompositeCollider2D collider in colliders)
         {
-            collision.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
-            currentSalud -= saludAmount;
-            saludBar.UpdateHealth(-saludAmount);
-            currentSalud = Mathf.Clamp(currentSalud, 0f, 100);
-            saludBar.currentAdiccion = currentSalud;
-            StartBlinking(0);
-            StartCoroutine(DeactivateEnfasis());
-
-           // if (isIndestructible)
-           // {
-                collision.gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
-                //collision.gameObject.GetComponent<Rigidbody2D>().simulated = true;
-                collision.gameObject.GetComponent<ExplodeOnClick>().Explode();
-           // }
+            collider.isTrigger = isTrigger;
         }
     }
 
@@ -582,34 +657,20 @@ public class PlayerControllerNew : MonoBehaviour
 
     }
 
-    private void DeactivateWalls()
-    {
-        GameObject[] foundWalls = GameObject.FindGameObjectsWithTag("Wall");
-        foreach (GameObject wallObject in foundWalls)      
-        {
-            wallObject.GetComponent<BoxCollider2D>().enabled = false;
-
-        }
-    }
-    private void ActivateWalls()
-    {
-        GameObject[] foundWalls = GameObject.FindGameObjectsWithTag("Wall");
-        foreach (GameObject wallObject in foundWalls)
-        {
-            wallObject.GetComponent<BoxCollider2D>().enabled = true;
-
-        }
-    }
 
     private IEnumerator Inmunidad()
     {
         isIndestructible = true;
-        GlowSpriteEffect.SetActive(true);
-        DeactivateWalls();
+        GlowSpriteEffect.SetActive(true);        
+        GetCompositeColliders2D();
+        SetAllCompositeCollidersTrigger(compositeColliders, true);
         yield return new WaitForSeconds(5);
         isIndestructible = false;
         GlowSpriteEffect.SetActive(false);
-        ActivateWalls();
+        spriteRenderer.material = materials[0];
+        SetAllCompositeCollidersTrigger(compositeColliders, false);
+
+
     }
 
     private IEnumerator CurrentEffect(float delay)
@@ -639,7 +700,8 @@ public class PlayerControllerNew : MonoBehaviour
         Animator animator = saludBar.GetComponent<Animator>();
         if (!animator.isActiveAndEnabled) animator.enabled = true;
         animator.Rebind();
-        animator.SetBool("Enfasis", false);
+        animator.Play("Wrong");
+       // animator.SetBool("Enfasis", false);
     }
 
     #endregion
@@ -703,7 +765,8 @@ public class PlayerControllerNew : MonoBehaviour
         Animator animator = saludBar.GetComponent<Animator>();
         if (!animator.isActiveAndEnabled) animator.enabled = true;
         animator.Rebind();
-        animator.SetBool("Enfasis", true);
+        animator.Play("Enfasis");
+        //animator.SetBool("Enfasis", true);
     }
     #endregion
     #region Blinking
@@ -814,7 +877,7 @@ public class PlayerControllerNew : MonoBehaviour
     public void AdjustLuminance(float newLuminance)
     {
         // Obtén el color actual del SpriteRenderer
-        Color color = spriteRenderer.color;
+         color = spriteRenderer.color;
 
         // Convierte el color de RGB a HSV
         float hue, saturation, value;

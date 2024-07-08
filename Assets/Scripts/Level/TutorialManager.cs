@@ -13,7 +13,9 @@ public class TutorialManager : MonoBehaviour, IPointerDownHandler, IPointerUpHan
     [SerializeField] private bool isTutorialJump;
     [SerializeField] private GameObject hand;
     [SerializeField] private GameObject canvasHUD;
- private  AudioPause audioPause;
+
+    private  AudioPause audioPause;
+    public static bool showTutorial = true;
     private void Start()
     {
         playerMovementNew = FindAnyObjectByType<PlayerMovementNew>();
@@ -23,6 +25,18 @@ public class TutorialManager : MonoBehaviour, IPointerDownHandler, IPointerUpHan
     public void ActiveTutorial(bool pause)
     {
         //playerMovementNew.tutorialActive = pause;
+    }
+    public void ShowTutorial(bool pause)
+    {
+        showTutorial = pause;
+    }
+    public void ShowInmunidadPanel(bool pause)
+    {
+        PlayerControllerNew.showInmunidadPanel = pause;
+    }
+    public void ShowPocaVidaPanel(bool pause)
+    {
+        PlayerControllerNew.showPocaVidePanel = pause;
     }
 
     public void ActiveRayCastHUD(bool pause)
@@ -46,113 +60,121 @@ public class TutorialManager : MonoBehaviour, IPointerDownHandler, IPointerUpHan
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if(isTutorialJump)
+        if (showTutorial)
         {
-            if (playerMovementNew.isPC) 
+
+            if (isTutorialJump)
             {
-                swipeDetector.OnPointerUp(CreatePointerEventData(Input.mousePosition));
+                if (playerMovementNew.isPC)
+                {
+                    swipeDetector.OnPointerUp(CreatePointerEventData(Input.mousePosition));
+                }
+                else
+                {
+                    swipeDetector.OnPointerUp(CreatePointerEventData(Input.GetTouch(0).position));
+                }
             }
             else
             {
-                swipeDetector.OnPointerUp(CreatePointerEventData(Input.GetTouch(0).position));
+                if (playerMovementNew.isPC)
+                {
+                    swipeDetector.OnPointerUp(CreatePointerEventData(Input.mousePosition));
+                }
+                else
+                {
+                    swipeDetector.OnPointerUp(CreatePointerEventData(Input.GetTouch(0).position));
+
+                }
+
             }
-        }
-        else
-        {
             if (playerMovementNew.isPC)
             {
-                swipeDetector.OnPointerUp(CreatePointerEventData(Input.mousePosition));
+                if (Input.GetMouseButtonDown(1))
+                // if (swipeDetector.swipeDirection == SwipeDetector.SwipeDirection.Down)
+
+                {
+                    audioPause.Pause(false);
+                    playerMovementNew.tutorialActive = true;
+                    playerMovementNew.inputsEnabled = true;
+                    gameObject.transform.parent.gameObject.SetActive(false);
+                    hand.SetActive(false);
+                    playerMovementNew.DoRoll();
+                    canvasHUD.GetComponent<UnityEngine.UI.Image>().raycastTarget = false;
+                }
             }
             else
             {
-                swipeDetector.OnPointerUp(CreatePointerEventData(Input.GetTouch(0).position));
-
+                if (swipeDetector.swipeDirection == SwipeDetector.SwipeDirection.Down)
+                {
+                    audioPause.Pause(false);
+                    playerMovementNew.tutorialActive = true;
+                    playerMovementNew.inputsEnabled = true;
+                    gameObject.transform.parent.gameObject.SetActive(false);
+                    hand.SetActive(false);
+                    playerMovementNew.DoRoll();
+                    canvasHUD.GetComponent<UnityEngine.UI.Image>().raycastTarget = false;
+                }
             }
 
         }
-        if (playerMovementNew.isPC)
-        {
-             if (Input.GetMouseButtonDown(1))
-           // if (swipeDetector.swipeDirection == SwipeDetector.SwipeDirection.Down)
-
-            {
-                audioPause.Pause(false);
-                playerMovementNew.tutorialActive = true;
-                playerMovementNew.inputsEnabled = true;
-                gameObject.transform.parent.gameObject.SetActive(false);
-                hand.SetActive(false);
-                playerMovementNew.DoRoll();
-                canvasHUD.GetComponent<UnityEngine.UI.Image>().raycastTarget = false;
-            }
-        }
-        else
-        {
-            if (swipeDetector.swipeDirection == SwipeDetector.SwipeDirection.Down)
-            {
-                audioPause.Pause(false);
-                playerMovementNew.tutorialActive = true;
-                playerMovementNew.inputsEnabled = true;
-                gameObject.transform.parent.gameObject.SetActive(false);
-                hand.SetActive(false);
-                playerMovementNew.DoRoll();
-                canvasHUD.GetComponent<UnityEngine.UI.Image>().raycastTarget = false;
-            }
-        }
-
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (isTutorialJump)
+        if (showTutorial)
         {
-            if (playerMovementNew.isPC)
+
+            if (isTutorialJump)
             {
-                swipeDetector.OnPointerDown(CreatePointerEventData(Input.mousePosition));
+                if (playerMovementNew.isPC)
+                {
+                    swipeDetector.OnPointerDown(CreatePointerEventData(Input.mousePosition));
+                }
+                else
+                {
+                    swipeDetector.OnPointerDown(CreatePointerEventData(Input.GetTouch(0).position));
+                }
             }
             else
             {
-                swipeDetector.OnPointerDown(CreatePointerEventData(Input.GetTouch(0).position));
+                if (playerMovementNew.isPC)
+                {
+                    swipeDetector.OnPointerDown(CreatePointerEventData(Input.mousePosition));
+                }
+                else
+                {
+                    swipeDetector.OnPointerDown(CreatePointerEventData(Input.GetTouch(0).position));
+                }
+
             }
-        }
-        else
-        {
+
             if (playerMovementNew.isPC)
             {
-                swipeDetector.OnPointerDown(CreatePointerEventData(Input.mousePosition));
+                if (Input.GetMouseButtonDown(1))
+                // if (swipeDetector.swipeDirection == SwipeDetector.SwipeDirection.Down)
+
+                {
+                    audioPause.Pause(false);
+                    playerMovementNew.tutorialActive = true;
+                    playerMovementNew.inputsEnabled = true;
+                    gameObject.transform.parent.gameObject.SetActive(false);
+                    hand.SetActive(false);
+                    playerMovementNew.DoRoll();
+                    canvasHUD.GetComponent<UnityEngine.UI.Image>().raycastTarget = false;
+                }
             }
             else
             {
-                swipeDetector.OnPointerDown(CreatePointerEventData(Input.GetTouch(0).position));
-            }
-            
-        }
-
-        if (playerMovementNew.isPC)
-        {
-            if (Input.GetMouseButtonDown(1))
-            // if (swipeDetector.swipeDirection == SwipeDetector.SwipeDirection.Down)
-
-            {
-                audioPause.Pause(false);
-                playerMovementNew.tutorialActive = true;
-                playerMovementNew.inputsEnabled = true;
-                gameObject.transform.parent.gameObject.SetActive(false);
-                hand.SetActive(false);
-                playerMovementNew.DoRoll();
-                canvasHUD.GetComponent<UnityEngine.UI.Image>().raycastTarget = false;
-            }
-        }
-        else
-        {
-            if (swipeDetector.swipeDirection == SwipeDetector.SwipeDirection.Down)
-            {
-                audioPause.Pause(false);
-                playerMovementNew.tutorialActive = true;
-                playerMovementNew.inputsEnabled = true;
-                gameObject.transform.parent.gameObject.SetActive(false);
-                hand.SetActive(false);
-                playerMovementNew.DoRoll();
-                canvasHUD.GetComponent<UnityEngine.UI.Image>().raycastTarget = false;
+                if (swipeDetector.swipeDirection == SwipeDetector.SwipeDirection.Down)
+                {
+                    audioPause.Pause(false);
+                    playerMovementNew.tutorialActive = true;
+                    playerMovementNew.inputsEnabled = true;
+                    gameObject.transform.parent.gameObject.SetActive(false);
+                    hand.SetActive(false);
+                    playerMovementNew.DoRoll();
+                    canvasHUD.GetComponent<UnityEngine.UI.Image>().raycastTarget = false;
+                }
             }
         }
     }

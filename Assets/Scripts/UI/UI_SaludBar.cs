@@ -8,7 +8,7 @@ public class UI_SaludBar : MonoBehaviour
 {
     public AnimationCurve curve;
     private float maxAdiccion = 100;
-    public float currentAdiccion;
+    public float currentAdiccion = 0;
     private float fillSpeed = 1f;
     public Image healthFillBar;
     [SerializeField] private Gradient colorGradient;

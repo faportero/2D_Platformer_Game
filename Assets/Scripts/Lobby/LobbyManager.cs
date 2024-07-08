@@ -7,6 +7,7 @@ using UnityEngine.Video;
 public class LobbyManager : MonoBehaviour
 {
     [SerializeField] private GameObject panelHUD;
+    [SerializeField] private GameObject canvasFade;
     [SerializeField] private VideoPlayer videoPlayer;
     [SerializeField] private AudioPause audioPause;
     [SerializeField] private GameObject panelVideo;
@@ -53,7 +54,7 @@ public class LobbyManager : MonoBehaviour
         playerMaterial = playerController.GetComponent<SpriteRenderer>().material;
         playerMovementNew = FindAnyObjectByType<PlayerMovementNew>();
         spriteRenderer = playerController.GetComponent<SpriteRenderer>();
-        
+        spriteRenderer.color = new Color(1, 1, 1, 0);
         // Obtener el componente VideoPlayer del objeto actual
 
 
@@ -131,8 +132,8 @@ public class LobbyManager : MonoBehaviour
     {
         // Aquí puedes agregar la lógica para iniciar tu juego
         // Por ejemplo, puedes desactivar el objeto VideoPlayerObject y activar otro objeto del juego
-
-        StartCoroutine(AnimatePlayer());
+        PaneoCameraInit();
+       // StartCoroutine(AnimatePlayer());
         audioPause.Pause(false);   
     }
 
@@ -144,19 +145,61 @@ public class LobbyManager : MonoBehaviour
         
     }
     public void PaneoCameraInit()
-    {       
-       StartCoroutine (PaneoCameraInitAnim());
+    {
+        //CameraManager.instance.SingleSwapCamera(cameraInit);
+        spriteRenderer.color = new Color(1, 1, 1, 0);
+       // playerController.AdjustLuminance(0);
+        canvasFade.SetActive(true);
+        StartCoroutine(PaneoCameraInitAnim());
     }
     private IEnumerator PaneoCameraInitAnim()
     {
-        CameraManager.instance.SingleSwapCamera(cameraInit);
-        yield return new WaitForSeconds(5);
+        //CameraManager.instance.SingleSwapCamera(cameraInit);
+        //yield return new WaitForSeconds(5);
+
+
+       
+        float shakeMagnitude = 10f;
+        float inertiaDuration = .2f;
+        float returnDuration = 5f;
+        Transform cameraTarget;
+        Vector3 originalCameraPosition;
+        bool isShaking = false;
+        cameraTarget = CameraManager.instance.currentCamera.Follow;
+        originalCameraPosition = cameraTarget.position;
+        // Inertia movement
+        Vector3 inertiaTargetPosition = cameraTarget.position + (Vector3)transform.up * shakeMagnitude;
+        float elapsed = 0f;
+
+        //while (elapsed < inertiaDuration)
+        //{
+        //    cameraTarget.position = Vector3.Lerp(originalCameraPosition, inertiaTargetPosition, elapsed / inertiaDuration);
+        //    elapsed += Time.deltaTime;
+        //    yield return null;
+        //}
+
+
+
+        cameraTarget.position = originalCameraPosition;
+        isShaking = false;
+
+        // Return to player
+        elapsed = 0f;
+        while (elapsed < returnDuration)
+        {
+            cameraTarget.position = Vector3.Lerp(inertiaTargetPosition, originalCameraPosition, elapsed / returnDuration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        cameraTarget.position = originalCameraPosition;
+        canvasFade.SetActive(false);
+        StartCoroutine(AnimatePlayer());
 
     }
     private IEnumerator AnimatePlayer()
     {
-        CameraManager.instance.SingleSwapCamera(cameraInit);
-        yield return new WaitForSeconds(5);
+
 
         playerMovementNew.enabled = false;
         playerMovementNew.anim.enabled = false;

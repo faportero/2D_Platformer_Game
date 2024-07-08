@@ -28,7 +28,7 @@ public class TutorialPanel : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Player")
+        if(collision.tag == "Player" && TutorialManager.showTutorial)
         {
             canvasHUD.GetComponent<SwipeDetector>().enabled = false;
             canvasHUD.GetComponent<Image>().raycastTarget = false;
