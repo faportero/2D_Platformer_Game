@@ -30,9 +30,14 @@ public class UI_SaludBar : MonoBehaviour
 
     public void UpdateHealth(float amount)
     {
-        currentAdiccion += amount;
-        currentAdiccion = Mathf.Clamp(currentAdiccion, 0f, maxAdiccion);
-        UpdateHealthBar();
+        //currentAdiccion += amount;
+        //currentAdiccion = Mathf.Clamp(currentAdiccion, 0f, maxAdiccion);
+        //UpdateHealthBar();
+        if (isActiveAndEnabled)
+        {
+            currentAdiccion += amount;
+            healthFillBar.fillAmount = currentAdiccion;
+        }
     }
 
 
@@ -40,13 +45,20 @@ public class UI_SaludBar : MonoBehaviour
     {
         //targetFillAmount = currentAdiccion / maxAdiccion;
         //startFillAmount = healthFillBar.fillAmount;
-       // healthFillBar.fillAmount = targetFillAmount;
+        // healthFillBar.fillAmount = targetFillAmount;
         //StartCoroutine(LerpValue(0, 1));
         // healthFillBar.fillAmount = Mathf.Lerp(healthFillBar.fillAmount, targetFillAmount, curve.Evaluate(currentAdiccion * Time.deltaTime));
         //healthFillBar.DOFillAmount(targetFillAmount, fillSpeed);
-        if(isActiveAndEnabled)
-            StartCoroutine(SmoothUpdateHealth());
+        if (isActiveAndEnabled)
+        {
+
+            //StartCoroutine(SmoothUpdateHealth());
+            //targetFillAmount = currentAdiccion / maxAdiccion;
+            targetFillAmount += currentAdiccion;
+            healthFillBar.fillAmount = targetFillAmount;
+        }
         //StartCoroutine(SmoothUpdateHealth());
+
         healthFillBar.color = colorGradient.Evaluate(targetFillAmount);
     }
 
@@ -79,6 +91,7 @@ public class UI_SaludBar : MonoBehaviour
         {
             elapsedTime += Time.deltaTime;
             healthFillBar.fillAmount = Mathf.Lerp(startFillAmount, targetFillAmount, elapsedTime / duration);
+            //healthFillBar.fillAmount = Mathf.Lerp(startFillAmount, targetFillAmount, elapsedTime / duration);
             yield return null;
         }
 

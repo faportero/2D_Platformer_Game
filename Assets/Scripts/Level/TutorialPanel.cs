@@ -10,6 +10,7 @@ public class TutorialPanel : MonoBehaviour
     [SerializeField] private GameObject PanelDetectInput;
     [SerializeField] private GameObject hand;
     [SerializeField] private GameObject canvasHUD;
+    [SerializeField] private GameObject pingPongObject;
     private AudioPause audioPause;
     [SerializeField] private bool isInteractive;
     private PlayerMovementNew playerMovementNew;
@@ -23,13 +24,25 @@ public class TutorialPanel : MonoBehaviour
         //hand = GameObject.FindGameObjectWithTag("Hand");
         handAnim = hand.GetComponent<Animator>();
 
-        //playerMovementNew.inputsEnabled = false;
-        playerMovementNew.tutorialActive = true;
+        if (!TutorialManager.endTutorial)
+        {
+            playerMovementNew.inputsEnabled = false;
+            playerMovementNew.tutorialActive = true;
+        }
+    }
+    public void ActivePingPongOBjectl(bool active)
+    {
+        pingPongObject.GetComponent<PingPongScaleAnimation>().enabled = active;
+    }
+    public void StopPingPongOBjectl()
+    {
+        pingPongObject.GetComponent<PingPongScaleAnimation>().PauseAnimation();
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.tag == "Player" && TutorialManager.showTutorial)
         {
+            if (pingPongObject != null) ActivePingPongOBjectl(true);
             canvasHUD.GetComponent<SwipeDetector>().enabled = false;
             canvasHUD.GetComponent<Image>().raycastTarget = false;
             //playerMovementNew.tutorialActive = true;

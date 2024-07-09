@@ -21,7 +21,7 @@ public class PlayerMovementNew : MonoBehaviour
     [Header("Components Reference")]
     [HideInInspector] public Rigidbody2D rb;
     [SerializeField] private LevelManager levelManager;
-    private CapsuleCollider2D capsuleCollider;
+    [HideInInspector]public CapsuleCollider2D capsuleCollider;
     [HideInInspector] public Animator anim;
     private CinemachineVirtualCamera cm;
     private SpriteRenderer spriteRenderer;
@@ -46,14 +46,14 @@ public class PlayerMovementNew : MonoBehaviour
     
 
     [Header("Movement Parameters")]
-    [SerializeField] private float gravityScale;
+    [HideInInspector] public float gravityScale;
     [SerializeField] private float velocity = 10;
     [SerializeField] private float jumpStrength = 5;
     [SerializeField] private float jumpFlappyStrength = 5;
     [SerializeField] private float rollVelocity = 20;
     [SerializeField] private float smashVelocity = 20;
     [SerializeField] private float slowFallGravity = 1;
-    [SerializeField] private float fallingGravity = 1;
+    public float fallingGravity = 1;
     [SerializeField] private float fallingModeMovementAmmount;
     public float fallingVelocity = 20;
     [SerializeField] private float clickMoveSpeed = 5;
@@ -69,7 +69,7 @@ public class PlayerMovementNew : MonoBehaviour
     [Header("Input Parameters")]
     [SerializeField] private float tapTimeThreshold = .3f;
     [SerializeField] private float swipeDistanceThreshold = 150;
-    private Vector2 capsuleColliderSize;
+    [HideInInspector]public Vector2 capsuleColliderSize;
     private Vector2 capsuleColliderOffset;
     private Vector3 screenPosition;
     [HideInInspector]public Vector3 targetPosition;
@@ -87,6 +87,7 @@ public class PlayerMovementNew : MonoBehaviour
     public bool canMove = true;
     public bool isGrounded;
     public bool canRoll;
+    [HideInInspector]public Vector2 rbVelocityTemp;
     public bool doingRoll;
     public bool canSmash;
     public bool doingSmash;
@@ -104,6 +105,7 @@ public class PlayerMovementNew : MonoBehaviour
     private float clicDirection;
     public bool isFacingRight = true;
     public bool tutorialActive;
+    public bool isHitBadFloor;
     #endregion
     #region Unity Callbacks
     private void Awake()
@@ -160,7 +162,12 @@ public class PlayerMovementNew : MonoBehaviour
 
     private void Update()
     {
+        //print("Gravity Scale: "+rb.gravityScale);
+        print("Velocity: " + rb.velocity + "ANimator: "+anim.GetBool("Roll") + "Boll: " + doingRoll);
 
+        //print("FallingGravity: "+fallingGravity);
+        //print("Falling Movement ModeAmmount: "+fallingModeMovementAmmount);
+        //print("Falling Velocity: "+fallingVelocity);
         // StartCoroutine(DieAnimation());
 
         //print(material.GetFloat("_DissolveAmmount"));
@@ -184,15 +191,25 @@ public class PlayerMovementNew : MonoBehaviour
                     //CheckGround();
                     break;
                 case MovementMode.RunnerMode:
-                  
+
                         isFallingMode = false;
-                        LerpYDamping();
+
+                    float clampedHorizontalSpeed = Mathf.Clamp(rb.velocity.x, 0, 11);
+                    rb.velocity = new Vector2(clampedHorizontalSpeed, rb.velocity.y);
+
+
+                    LerpYDamping();
                         RunnerMovement();
                         CheckGround();
                    
                     break;
                 case MovementMode.FallingMode:
                     isFallingMode = true;
+
+                    rb.velocity = new Vector2(0, rb.velocity.y);
+                    float clampedVerticalSpeed = Mathf.Clamp(rb.velocity.y, -10f, 0f);
+                    rb.velocity = new Vector2(rb.velocity.x, clampedVerticalSpeed);
+
                     GetInputDirection();
                     if(inputsEnabled)GetDirecction();
                     //if(inputsEnabled)TurnCheck();
@@ -352,11 +369,50 @@ public class PlayerMovementNew : MonoBehaviour
         if (anim.GetBool("SlowFall")) direction = new Vector2(slowFallGravity, .75f);
         //if (playerController.paracaidas) direction = new Vector2(slowFallGravity, 0);      
 
+        //Walk();
+        //if (isGrounded)
+        //{
+        //    anim.SetBool("Walk", true);
+        //}
+        //else
+        //{
+        //    anim.SetBool("Jump", true);
 
-        if(inputsEnabled) Walk();
-            else anim.Play("Idle"); anim.SetBool("Walk", false);
-        if (isGrounded && inputsEnabled) anim.SetBool("Walk", true);
-        else anim.SetBool("Jump", true);
+        //}
+        if (!isHitBadFloor)
+        {
+            Walk();
+        }
+        else
+        {
+            anim.SetBool("Walk", false);
+            anim.SetBool("Jump", false);
+            anim.SetBool("Roll", false);
+            anim.SetBool("SlowFall", false);
+            anim.Play("Idle");
+        }
+        if (isGrounded && !isHitBadFloor)
+        {
+            anim.SetBool("Walk", true);
+            anim.SetBool("Jump", false);
+        }
+        else if (!isGrounded && isHitBadFloor)
+        {
+            //anim.SetBool("Jump", true);
+            anim.SetBool("Walk", false);
+            anim.SetBool("Jump", false);
+            anim.SetBool("Roll", false);
+            anim.SetBool("SlowFall", false);
+            anim.Play("Idle");
+
+        }
+        else if(!isGrounded && !isHitBadFloor) 
+        {
+            anim.SetBool("Jump", true);
+        }
+
+
+
 
         if (isGrounded)
         {
@@ -834,6 +890,7 @@ public class PlayerMovementNew : MonoBehaviour
             //Camera.main.GetComponent<RippleEffect>().Emit(playerPosition);
             //StartCoroutine(CameraShake());
             canRoll = true;
+            rbVelocityTemp = rb.velocity;
             rb.velocity += new Vector2(x, y).normalized * rollVelocity;
             StartCoroutine(SwitchCapsuleColliderSize());
             StartCoroutine(PreRoll());
@@ -843,7 +900,8 @@ public class PlayerMovementNew : MonoBehaviour
             yield return new WaitForSeconds(time);
             anim.SetBool("Roll", true);
             canRoll = true;
-            rb.velocity += new Vector2(x, y).normalized * rollVelocity;
+            rbVelocityTemp = rb.velocity;
+           rb.velocity += new Vector2(x, y).normalized * rollVelocity;
             StartCoroutine(SwitchCapsuleColliderSize());
             StartCoroutine(PreRoll());
         }
@@ -877,10 +935,12 @@ public class PlayerMovementNew : MonoBehaviour
         yield return new WaitForSeconds(.1f);
        // capsuleCollider.size = capsuleColliderSize * new Vector2(1, 0.05f);
         capsuleCollider.size = new Vector2(.79f, 0.0001f);
-        if (doingRoll) capsuleCollider.offset = new Vector2(0,-.34f);
+        //if (doingRoll) capsuleCollider.offset = new Vector2(0,-.14f);
         yield return new WaitForSeconds(.3f);
-        capsuleCollider.size = capsuleColliderSize;
+        capsuleCollider.size = capsuleColliderSize; 
         capsuleCollider.offset = capsuleColliderOffset;
+        //rb.velocity = rbVelocityTemp;
+
     }
     private void Smash(float x, float y)
     {

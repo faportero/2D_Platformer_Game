@@ -4,13 +4,17 @@ using UnityEngine;
 public class PingPongScaleAnimation : MonoBehaviour
 {
     private float minScale = 0.75f; // Escala mínima
-    private float maxScale = 1f;   // Escala máxima
+    private float maxScale, maxScaleTemp;        // Escala máxima
     private float duration = .5f;   // Duración de la animación
+
+    private Coroutine scaleCoroutine; // Referencia a la corrutina de escala activa
 
     void Start()
     {
+        maxScale = transform.localScale.x;
+        maxScaleTemp = maxScale;
         // Iniciar la corutina para la animación de escala
-        StartCoroutine(ScalePingPong());
+        scaleCoroutine = StartCoroutine(ScalePingPong());
     }
 
     // Corutina para la animación de ping pong en la escala
@@ -35,6 +39,18 @@ public class PingPongScaleAnimation : MonoBehaviour
             float temp = minScale;
             minScale = maxScale;
             maxScale = temp;
+        }
+    }
+
+    // Método para pausar la animación y mantener la escala máxima
+    public void PauseAnimation()
+    {
+        if (scaleCoroutine != null)
+        {
+            StopCoroutine(scaleCoroutine); // Detener la corutina actual
+
+            // Mantener la escala máxima actual
+            transform.localScale = new Vector3(maxScaleTemp, maxScaleTemp, 1f);
         }
     }
 }

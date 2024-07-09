@@ -21,7 +21,7 @@ public class Portal : MonoBehaviour
     }
     [SerializeField]  private Dimensions dimensions;
     [SerializeField] private GameObject panelFeedback;
-    [SerializeField] private GameObject canvasFog;
+    public GameObject canvasFog;
     private PlayerMovementNew playerMovementNew;
     private PlayerControllerNew playerControllerNew;
     private float progress;
@@ -29,12 +29,14 @@ public class Portal : MonoBehaviour
 
     private void Awake()
     {
+        canvasFog.SetActive(false);
         playerMovementNew = FindAnyObjectByType<PlayerMovementNew>();
         playerControllerNew = FindAnyObjectByType<PlayerControllerNew>();
         playerMaterial = playerControllerNew.GetComponent<SpriteRenderer>().material;
     }
     private void Start()
     {
+        canvasFog.SetActive(false);
         //espejo = FindAnyObjectByType<Espejo>();
     }
 
@@ -89,7 +91,7 @@ public class Portal : MonoBehaviour
                     if (progress == .9f)
                     {
                         //textoCarga.text = "100 %";
-                        yield return new WaitForSecondsRealtime(.5f);
+                        yield return new WaitForSecondsRealtime(2f);
                         //anim.Play("AnimacionSalida");
                         //yield return new WaitForSecondsRealtime(animacion.averageDuration / Mathf.Abs(anim.GetFloat("ExitSpeed")));
                         //isLoading = false;
@@ -110,7 +112,10 @@ public class Portal : MonoBehaviour
             default:
                 SceneManager.LoadScene(limbos[0]);
                 break;
+
         }
+        canvasFog.SetActive(false);
+
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

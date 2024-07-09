@@ -23,8 +23,10 @@ public class PlayerControllerNew : MonoBehaviour
     private GameObject currenPiece;
     [SerializeField] private GameObject enemyAttached;
     [SerializeField] private GameObject playerExplode;
+    [SerializeField] private GameObject ExplodeObject;
     [SerializeField] private UI_SaludAttachedBar ui_enemyAttachedBar;
     private AudioPause audioPause;
+    private LevelManager levelManager;
 
 
     [Header("Stats")]
@@ -38,13 +40,14 @@ public class PlayerControllerNew : MonoBehaviour
     private AudioSource audioSource;
     [SerializeField] GameObject[] pieces;
     [HideInInspector] public Color color;
+    [SerializeField] GameObject NewStartPosition;
 
 
     private Image healthFillBar;
     private List<CompositeCollider2D> compositeColliders = new List<CompositeCollider2D>();
 
     [Header("Bools")]
-    public float currentSalud;
+    public float currentSalud = 0;
     public bool isDie = false;
     public bool isCannabis, isCocaMetaHero, isPsilo, isAlcohol, isTabaco;
     public bool escudo, saltoDoble, vidaExtra, paracaidas;
@@ -67,6 +70,11 @@ public class PlayerControllerNew : MonoBehaviour
 
     #endregion
     #region Unity Callbacks
+    public void ActiveGamePanelsl(bool active)
+    {
+        showInmunidadPanel = active;
+        showPocaVidePanel = active;
+    }
     private void Start()
     {   
         
@@ -74,64 +82,68 @@ public class PlayerControllerNew : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
         audioPause = FindAnyObjectByType<AudioPause>();
-        saludBar.UpdateHealth(currentSalud);
-        print("Current Salud: " + currentSalud);
-        print("Fill Amount: " + saludBar.healthFillBar.fillAmount);
+        saludBar.healthFillBar.fillAmount = currentSalud;
+        //saludBar.UpdateHealth(currentSalud);
+        //print("Current Salud: " + currentSalud);
+        //print("Fill Amount: " + saludBar.healthFillBar.fillAmount);
 
-
-
+        //if(levelManager.currentScene == LevelManager.CurrentScene.Nivel1 && NewStartPosition != null && TutorialManager.endTutorial)
+        //{
+        //   transform.position = new Vector3(NewStartPosition.transform.position.x, transform.position.y, transform.position.z);
+        //}
+        
         switch (currentSalud)
         {
             case 0:
                 // ui_enemyAttachedBar.UpdateTime(999999999);
                 isIndestructible = false;
                 break;
-            case 10:
+            case .1f:
                 isIndestructible = false;
                 GlowSpriteEffect.SetActive(false);
                 AdjustLuminance(0);
                 break;
-            case 20:
+            case .2f:
                 isIndestructible = false;
                 GlowSpriteEffect.SetActive(false);
                 AdjustLuminance(.2f);
                 break;
-            case 30:
+            case .3f:
                 isIndestructible = false;
                 GlowSpriteEffect.SetActive(false);
                 AdjustLuminance(.3f);
                 break;
-            case 40:
+            case .4f:
                 isIndestructible = false;
                 GlowSpriteEffect.SetActive(false);
                 AdjustLuminance(.4f);
                 break;
-            case 50:
+            case .5f:
                 isIndestructible = false;
                 GlowSpriteEffect.SetActive(false);
                 AdjustLuminance(.5f);
                 break;
-            case 60:
+            case .6f:
                 isIndestructible = false;
                 GlowSpriteEffect.SetActive(false);
                 AdjustLuminance(.6f);
                 break;
-            case 70:
+            case .7f:
                 isIndestructible = false;
                 GlowSpriteEffect.SetActive(false);
                 AdjustLuminance(.7f);
                 break;
-            case 80:
+            case .8f:
                 isIndestructible = false;
                 GlowSpriteEffect.SetActive(false);
                 AdjustLuminance(.8f);
                 break;
-            case 90:
+            case .9f:
                 isIndestructible = false;
                 GlowSpriteEffect.SetActive(false);
                 AdjustLuminance(.9f);
                 break;
-            case 100:
+            case 1:
                 //isIndestructible = true;
                 //GlowSpriteEffect.SetActive(true);
                 AdjustLuminance(1);
@@ -168,11 +180,12 @@ public class PlayerControllerNew : MonoBehaviour
         if (collision.tag == "Salud")
         {
             audioSource.Stop();
-
+           // StopAllCoroutines();
+            //saludBar.UpdateHealth(saludAmount);
+            //saludBar.currentAdiccion = currentSalud;
             currentSalud += saludAmount;
-            saludBar.UpdateHealth(saludAmount);
-            currentSalud = Mathf.Clamp(currentSalud, 0f, 100);
-            saludBar.currentAdiccion = currentSalud;
+            currentSalud = Mathf.Clamp(currentSalud, 0f, 1);
+            saludBar.healthFillBar.fillAmount = currentSalud;
             print("Current Salud: "+currentSalud);
             print("Fill Amount: " + saludBar.healthFillBar.fillAmount);
 
@@ -202,68 +215,70 @@ public class PlayerControllerNew : MonoBehaviour
                     isIndestructible = false;
                     playerMovement.Die();
                     break;
-                case 10:
+                case .1f:
                     isIndestructible = false;
                     GlowSpriteEffect.SetActive(false);
                     AdjustLuminance(0);
                     break;
-                case 20:
+                case .2f:
                     isIndestructible = false;
                     GlowSpriteEffect.SetActive(false);
                     AdjustLuminance(.2f);
                     break;
-                case 30:
+                case .3f:
                     isIndestructible = false;
                     GlowSpriteEffect.SetActive(false);
                     AdjustLuminance(.3f);
                     break;
-                case 40:
+                case .4f:
                     isIndestructible = false;
                     GlowSpriteEffect.SetActive(false);
                     AdjustLuminance(.4f);
                     break;
-                case 50:
+                case .5f:
                     isIndestructible = false;
                     GlowSpriteEffect.SetActive(false);
                     AdjustLuminance(.5f);
                     break;
-                case 60:
+                case .6f:
                     isIndestructible = false;
                     GlowSpriteEffect.SetActive(false);
                     AdjustLuminance(.6f);
                     break;
-                case 70:
+                case .7f:
                     isIndestructible = false;
                     GlowSpriteEffect.SetActive(false);
                     AdjustLuminance(.7f);
                     break;
-                case 80:
+                case .8f:
                     isIndestructible = false;
                     GlowSpriteEffect.SetActive(false);
                     AdjustLuminance(.8f);
                     break;
-                case 90:
+                case .9f:
                     isIndestructible = false;
                     GlowSpriteEffect.SetActive(false);
                     AdjustLuminance(.9f);
                     break;
-                case 100:
+                case 1:
                     //isIndestructible = true;
                     //GlowSpriteEffect.SetActive(true);
                     AdjustLuminance(1);
                     StartCoroutine(Inmunidad());
+                    audioPause.Pause(true);
+                    if (showInmunidadPanel) panelInmunidad.SetActive(true);
                     //if (showInmunidadPanel)
                     //{
                     //    audioPause.Pause(true);
                     //    panelInmunidad.SetActive(true);
                     //    //playerMovement.inputsEnabled = false;
                     //}
-                    //else 
+                    //else
                     //{
                     //    panelInmunidad.SetActive(false);
                     //    audioPause.Pause(false);
                     //    //playerMovement.inputsEnabled = true;
-                    //} 
+                    //}
                     break;
                 default:
                     ui_enemyAttachedBar.UpdateTime(1);
@@ -286,12 +301,15 @@ public class PlayerControllerNew : MonoBehaviour
                 collision.GetComponent<EnemyNew>().Effect();
                 enemyAttached.SetActive(true);
 
-                currentSalud -= saludAmount;
-                saludBar.UpdateHealth(-saludAmount);
-                currentSalud = Mathf.Clamp(currentSalud, 0f, 100);
-                saludBar.currentAdiccion = currentSalud;
-                print("Current Salud: " + currentSalud);
-                print("Fill Amount: " + saludBar.healthFillBar.fillAmount);
+            //currentSalud -= saludAmount;
+            //saludBar.UpdateHealth(-saludAmount);
+            //currentSalud = Mathf.Clamp(currentSalud, 0f, 100);
+            //saludBar.currentAdiccion = currentSalud;
+            currentSalud -= saludAmount;
+            currentSalud = Mathf.Clamp(currentSalud, 0f, 1);
+            saludBar.healthFillBar.fillAmount = currentSalud;
+            //print("Current Salud: " + currentSalud);
+            //    print("Fill Amount: " + saludBar.healthFillBar.fillAmount);
 
             isDrugged = true;
 
@@ -306,8 +324,10 @@ public class PlayerControllerNew : MonoBehaviour
                     playerMovement.Die();
                     isIndestructible = false;
                         break;
-                    case 10:
+                    case .1f:
                         isIndestructible = false;
+                    if (showPocaVidePanel) panelPocaVida.SetActive(true);
+                    effectPanel.SetActive(true);
                     //if (showPocaVidePanel)
                     //{
                     //    panelPocaVida.SetActive(true);
@@ -325,63 +345,71 @@ public class PlayerControllerNew : MonoBehaviour
                         GlowSpriteEffect.SetActive(false);
                         AdjustLuminance(0);
                         break;
-                    case 20:
+                    case .2f:
                         isIndestructible = false;
-                        ui_enemyAttachedBar.UpdateTime(9);
+                    effectPanel.SetActive(true);
+                    ui_enemyAttachedBar.UpdateTime(9);
                         enemyEffectCoroutine = StartCoroutine(CurrentEffect(9));
                         GlowSpriteEffect.SetActive(false);
                         AdjustLuminance(.2f);
                         break;
-                    case 30:
+                    case .3f:
                         isIndestructible = false;
-                        enemyAttached.SetActive(false);
+                    effectPanel.SetActive(true);
+                    enemyAttached.SetActive(false);
                         ui_enemyAttachedBar.UpdateTime(8);
                         GlowSpriteEffect.SetActive(false);
                         AdjustLuminance(.3f);
                         break;
-                    case 40:
+                    case .4f:
                         isIndestructible = false;
-                        ui_enemyAttachedBar.UpdateTime(7);
+                    effectPanel.SetActive(true);
+                    ui_enemyAttachedBar.UpdateTime(7);
                         enemyEffectCoroutine = StartCoroutine(CurrentEffect(7));
                         GlowSpriteEffect.SetActive(false);
                         AdjustLuminance(.4f);
                         break;
-                    case 50:
+                    case .5f:
                         isIndestructible = false;
-                        ui_enemyAttachedBar.UpdateTime(6);
+                    effectPanel.SetActive(true);
+                    ui_enemyAttachedBar.UpdateTime(6);
                         enemyEffectCoroutine = StartCoroutine(CurrentEffect(6));
                         GlowSpriteEffect.SetActive(false);
                         AdjustLuminance(.5f);
                         break;
-                    case 60:
+                    case .6f:
                         isIndestructible = false;
-                        ui_enemyAttachedBar.UpdateTime(5);
+                    effectPanel.SetActive(true);
+                    ui_enemyAttachedBar.UpdateTime(5);
                         enemyEffectCoroutine = StartCoroutine(CurrentEffect(5));
                         GlowSpriteEffect.SetActive(false);
                         AdjustLuminance(.6f);
                         break;
-                    case 70:
+                    case .7f:
                         isIndestructible = false;
-                        ui_enemyAttachedBar.UpdateTime(4);
+                    effectPanel.SetActive(true);
+                    ui_enemyAttachedBar.UpdateTime(4);
                         enemyEffectCoroutine = StartCoroutine(CurrentEffect(4));
                         GlowSpriteEffect.SetActive(false);
                         AdjustLuminance(.7f);
                         break;
-                    case 80:
+                    case .8f:
                         isIndestructible = false;
-                        ui_enemyAttachedBar.UpdateTime(3);
+                    effectPanel.SetActive(true);
+                    ui_enemyAttachedBar.UpdateTime(3);
                         enemyEffectCoroutine = StartCoroutine(CurrentEffect(3));
                         GlowSpriteEffect.SetActive(false);
                         AdjustLuminance(.8f);
                         break;
-                    case 90:
+                    case .9f:
                         isIndestructible = false;
-                        ui_enemyAttachedBar.UpdateTime(2);
+                    effectPanel.SetActive(true);
+                    ui_enemyAttachedBar.UpdateTime(2);
                         enemyEffectCoroutine = StartCoroutine(CurrentEffect(2));
                         GlowSpriteEffect.SetActive(false);
                         AdjustLuminance(.9f);
                         break;
-                    case 100:
+                    case 1:
                         //isIndestructible = true;
                         //ui_enemyAttachedBar.UpdateTime(1);
                         //enemyEffectCoroutine = StartCoroutine(CurrentEffect(1));
@@ -440,29 +468,47 @@ public class PlayerControllerNew : MonoBehaviour
 
         }
 
-        //if (collision.tag == "BadFloor" && !isAttack)
-        //{
-        //    if (playerMovement.canMove)
-        //    {
-        //        StartBlinking(0);
-        //        playerMovement.StartCameraShake(.1f);
+        if (collision.tag == "BadFloor" && !isAttack)
+        {
+            if (isIndestructible)
+            {
+                collision.gameObject.SetActive(false);
+                playerMovement.StartCameraShake(.1f);
+                Vector2 contactPoint = collision.ClosestPoint(transform.position);
+                ExplodeObject.SetActive(true);
+                GameObject explodeInstance = Instantiate(ExplodeObject, contactPoint, Quaternion.identity);
+                ParticleSystem particleSystem = explodeInstance.GetComponentInChildren<ParticleSystem>();
+                particleSystem.Play();
+                Destroy(explodeInstance, particleSystem.main.duration);
+                ExplodeObject.SetActive(false);
 
-        //    }
+            }
 
-        //}
+        }
     }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "BadFloor" && !isAttack)
         {
-            
+            //StopAllCoroutines();
+            if(playerMovement.doingRoll)
+            {
+                //playerMovement.rb.bodyType = RigidbodyType2D.Kinematic;
+                //playerMovement.rb.gravityScale = 0;
+                playerMovement.capsuleCollider.size = playerMovement.capsuleColliderSize;
+                playerMovement.doingRoll = false;
+                //playerMovement.rb.velocity = playerMovement.rbVelocityTemp;
+            }
+            //currentSalud -= saludAmount;
+            //saludBar.UpdateHealth(-saludAmount);
+            //currentSalud = Mathf.Clamp(currentSalud, 0f, 100);
+            //saludBar.currentAdiccion = currentSalud;
             currentSalud -= saludAmount;
-            saludBar.UpdateHealth(-saludAmount);
-            currentSalud = Mathf.Clamp(currentSalud, 0f, 100);
-            saludBar.currentAdiccion = currentSalud;
+            currentSalud = Mathf.Clamp(currentSalud, 0f, 1);
+            saludBar.healthFillBar.fillAmount = currentSalud;
 
             currentItem = collision.gameObject;
-            StopAllCoroutines();
             StartCoroutine(HitBadFloor());
 
         }
@@ -517,23 +563,24 @@ public class PlayerControllerNew : MonoBehaviour
     }
     private IEnumerator HitBadFloor()
     {
-        StartCoroutine(DeactivateEnfasis());
+        playerMovement.isHitBadFloor = true;
+        if (!playerMovement.isFallingMode)
+        {
+            StartCoroutine(DeactivateEnfasis());
+           // playerMovement.rb.gravityScale = 0;
+            playerMovement.inputsEnabled = false;
+            playerMovement.direction = Vector2.zero;
+            panelFeedbackBadFloor.SetActive(true);
+            StartBlinking(2);
+            playerMovement.StartCameraShake(.1f);
 
-        playerMovement.inputsEnabled = false;
-        playerMovement.direction = Vector2.zero;
-        panelFeedbackBadFloor.SetActive(true);
-        StartBlinking(2);
-        playerMovement.StartCameraShake(.1f);
 
-
-
-     
-             float shakeDuration = 0.25f;
-             float shakeMagnitude = 1.5f;
-             float inertiaDuration = 0.5f;
-             float returnDuration = 0.25f;
-             Transform cameraTarget;
-             Vector3 originalCameraPosition;
+            float shakeDuration = 0.25f;
+            float shakeMagnitude = 1.5f;
+            float inertiaDuration = 0.5f;
+            float returnDuration = 0.25f;
+            Transform cameraTarget;
+            Vector3 originalCameraPosition;
             bool isShaking = false;
             cameraTarget = CameraManager.instance.currentCamera.Follow;
             originalCameraPosition = cameraTarget.position;
@@ -548,18 +595,7 @@ public class PlayerControllerNew : MonoBehaviour
                 yield return null;
             }
 
-        // Shake effect
-        //isShaking = true;
-        //elapsed = 0f;
-
-        //while (elapsed < shakeDuration)
-        //{
-        //    cameraTarget.position = originalCameraPosition + UnityEngine.Random.insideUnitSphere * shakeMagnitude;
-        //    elapsed += Time.deltaTime;
-        //    yield return null;
-        //}
-
-        cameraTarget.position = originalCameraPosition;
+            cameraTarget.position = originalCameraPosition;
             isShaking = false;
 
             // Return to player
@@ -572,19 +608,79 @@ public class PlayerControllerNew : MonoBehaviour
             }
 
             cameraTarget.position = originalCameraPosition;
-        
-        yield return new WaitForSeconds(.5f);
-        playerMovement.direction = new Vector2(1.2f, 1);
-        playerMovement.inputsEnabled = true;
-        panelFeedbackBadFloor.SetActive(false);
-        StartCoroutine(ResetCollision());
 
-        
+            yield return new WaitForSeconds(.5f);
+            playerMovement.direction = new Vector2(1.2f, 1);
+            playerMovement.inputsEnabled = true;
+            playerMovement.isHitBadFloor = false;
+            panelFeedbackBadFloor.SetActive(false);
+            //playerMovement.rb.gravityScale = playerMovement.gravityScale;
+            //playerMovement.rb.bodyType = RigidbodyType2D.Dynamic;
+
+            StartCoroutine(ResetCollision());
+        }
+        else
+        {
+            StartCoroutine(DeactivateEnfasis());
+
+            playerMovement.inputsEnabled = false;
+            playerMovement.direction = Vector2.zero;
+            panelFeedbackBadFloor.SetActive(true);
+            StartBlinking(2);
+            playerMovement.StartCameraShake(.1f);
+
+
+            float shakeDuration = 0.25f;
+            float shakeMagnitude = 1.5f;
+            float inertiaDuration = 0.5f;
+            float returnDuration = 0.25f;
+            Transform cameraTarget;
+            Vector3 originalCameraPosition;
+            bool isShaking = false;
+            cameraTarget = CameraManager.instance.currentCamera.Follow;
+            originalCameraPosition = cameraTarget.position;
+            // Inertia movement
+            Vector3 inertiaTargetPosition = cameraTarget.position + (Vector3)transform.up * -shakeMagnitude;
+            float elapsed = 0f;
+
+            while (elapsed < inertiaDuration)
+            {
+                cameraTarget.position = Vector3.Lerp(originalCameraPosition, inertiaTargetPosition, elapsed / inertiaDuration);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            cameraTarget.position = originalCameraPosition;
+            isShaking = false;
+
+            // Return to player
+            elapsed = 0f;
+            while (elapsed < returnDuration)
+            {
+                cameraTarget.position = Vector3.Lerp(inertiaTargetPosition, originalCameraPosition, elapsed / returnDuration);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            cameraTarget.position = originalCameraPosition;
+
+            yield return new WaitForSeconds(.5f);
+            playerMovement.direction = new Vector2(1.2f, 1);
+            playerMovement.inputsEnabled = true;
+            playerMovement.isHitBadFloor = false;
+            panelFeedbackBadFloor.SetActive(false);   
+            StartCoroutine(ResetCollision());
+        }
+
+
+
     }
     private IEnumerator ResetCollision()
     {
+        if (playerMovement.isFallingMode) playerMovement.rb.gravityScale = 1;
         currentItem.GetComponent<CompositeCollider2D>().isTrigger = true;
         yield return new WaitForSeconds(1);
+        if (playerMovement.isFallingMode) playerMovement.rb.gravityScale = 0;
         currentItem.GetComponent<CompositeCollider2D>().isTrigger = false;
     }
     private void GetCompositeColliders2D()
@@ -675,23 +771,37 @@ public class PlayerControllerNew : MonoBehaviour
 
     private IEnumerator CurrentEffect(float delay)
     {
-        if (!isDie && playerMovement.canMove)
-        {
-            audioSource.Play();
-            effectPanel.SetActive(true);
-            //effectPanel.GetComponent<Animator>().SetBool("Smoke", true);
-            yield return new WaitForSecondsRealtime(delay);
-            audioSource.Stop();
-            effectPanel.SetActive(false);
-            enemyAttached.SetActive(false);
-            isCannabis = false;
-            isCocaMetaHero = false;
-            isPsilo = false;
-            isAlcohol = false;
-            isTabaco = false;
-            isDrugged = false;
-            playerMovement.inputsEnabled = true;
-        }
+        audioSource.Play();
+        effectPanel.SetActive(true);
+        //effectPanel.GetComponent<Animator>().SetBool("Smoke", true);
+        yield return new WaitForSecondsRealtime(delay);
+        audioSource.Stop();
+        effectPanel.SetActive(false);
+        enemyAttached.SetActive(false);
+        isCannabis = false;
+        isCocaMetaHero = false;
+        isPsilo = false;
+        isAlcohol = false;
+        isTabaco = false;
+        isDrugged = false;
+        playerMovement.inputsEnabled = true;
+        //if (!isDie && playerMovement.canMove)
+        //{
+        //    audioSource.Play();
+        //    effectPanel.SetActive(true);
+        //    //effectPanel.GetComponent<Animator>().SetBool("Smoke", true);
+        //    yield return new WaitForSecondsRealtime(delay);
+        //    audioSource.Stop();
+        //    effectPanel.SetActive(false);
+        //    enemyAttached.SetActive(false);
+        //    isCannabis = false;
+        //    isCocaMetaHero = false;
+        //    isPsilo = false;
+        //    isAlcohol = false;
+        //    isTabaco = false;
+        //    isDrugged = false;
+        //    playerMovement.inputsEnabled = true;
+        //}
     }
 
     IEnumerator DeactivateEnfasis()

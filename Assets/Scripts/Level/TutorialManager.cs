@@ -15,7 +15,8 @@ public class TutorialManager : MonoBehaviour, IPointerDownHandler, IPointerUpHan
     [SerializeField] private GameObject canvasHUD;
 
     private  AudioPause audioPause;
-    public static bool showTutorial = true;
+    public static bool showTutorial = true, endTutorial;
+   
     private void Start()
     {
         playerMovementNew = FindAnyObjectByType<PlayerMovementNew>();
@@ -160,7 +161,7 @@ public class TutorialManager : MonoBehaviour, IPointerDownHandler, IPointerUpHan
                     gameObject.transform.parent.gameObject.SetActive(false);
                     hand.SetActive(false);
                     playerMovementNew.DoRoll();
-                    canvasHUD.GetComponent<UnityEngine.UI.Image>().raycastTarget = false;
+                    //canvasHUD.GetComponent<UnityEngine.UI.Image>().raycastTarget = false;
                 }
             }
             else
@@ -173,7 +174,7 @@ public class TutorialManager : MonoBehaviour, IPointerDownHandler, IPointerUpHan
                     gameObject.transform.parent.gameObject.SetActive(false);
                     hand.SetActive(false);
                     playerMovementNew.DoRoll();
-                    canvasHUD.GetComponent<UnityEngine.UI.Image>().raycastTarget = false;
+                    //canvasHUD.GetComponent<UnityEngine.UI.Image>().raycastTarget = false;
                 }
             }
         }

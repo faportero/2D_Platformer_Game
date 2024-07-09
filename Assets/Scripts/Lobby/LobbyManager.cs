@@ -37,7 +37,8 @@ public class LobbyManager : MonoBehaviour
         //PlayerPrefs.SetInt("pasoIntro", 0);
         PlayerPrefs.GetInt("pasoIntro");
         print("PasoIntro: " + PlayerPrefs.GetInt("pasoIntro"));
-        if (PlayerPrefs.GetInt("pasoIntro") != 0)
+        //if (PlayerPrefs.GetInt("pasoIntro") != 0)
+        if (pasoIntro)
         {
             pasoIntro = true;
         }
@@ -119,6 +120,7 @@ public class LobbyManager : MonoBehaviour
     // Método llamado cuando el video termina
     void OnVideoEnd(VideoPlayer vp)
     {
+
         // Lógica para cambiar al juego
         if (pasoIntro == false)
         {
