@@ -47,6 +47,7 @@ public class Gargola : MonoBehaviour
     {
         if(collision.tag == "Player")
         {
+            playerMovementNew.inputsEnabled = false;
             playerMovementNew.anim.SetBool("SlowWalk", false);
             //playerMovementNew.targetPosition = new Vector3(playerMovementNew.transform.position.x, playerMovementNew.transform.position.y, 0);
             playerMovementNew.targetPosition = playerController.transform.position;

@@ -38,7 +38,7 @@ public class SwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         startPosition = eventData.position;
         isSwiping = true;
         TapPerformed = true; // Restablecer el valor de isTap en cada nuevo toque
-       // IsPressing = true;
+                             // IsPressing = true;
         Invoke("Pressing", .5f);
         pressTime = Time.time;
     }
@@ -73,7 +73,7 @@ public class SwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         else
         {
             swipeDirection = SwipeDirection.None; // Restablecer la dirección a "None"
-            TapPerformed = true; 
+            TapPerformed = true;
             Invoke("ResetTap", 0.5f);
         }
     }
@@ -100,9 +100,9 @@ public class SwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         if (IsPressing && Time.time - pressTime > pressThreshold)
         {
             // Si se mantiene presionado el tap durante más tiempo del umbral, hacemos algo aquí
-           // Debug.Log(TapPerformed);
+            // Debug.Log(TapPerformed);
             //IsPressing = true;
         }
-           
+
     }
 }

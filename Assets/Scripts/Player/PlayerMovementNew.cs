@@ -7,6 +7,7 @@ using DG.Tweening;
 
 public class PlayerMovementNew : MonoBehaviour
 {
+    private Touch theTouch;
     #region Variables
     public enum MovementMode
     {
@@ -163,7 +164,7 @@ public class PlayerMovementNew : MonoBehaviour
     private void Update()
     {
         //print("Gravity Scale: "+rb.gravityScale);
-        print("Velocity: " + rb.velocity + "ANimator: "+anim.GetBool("Roll") + "Boll: " + doingRoll);
+        //print("Velocity: " + rb.velocity + "ANimator: "+anim.GetBool("Roll") + "Boll: " + doingRoll);
 
         //print("FallingGravity: "+fallingGravity);
         //print("Falling Movement ModeAmmount: "+fallingModeMovementAmmount);
@@ -176,8 +177,10 @@ public class PlayerMovementNew : MonoBehaviour
             switch (movementMode)
             {
                 case MovementMode.TapMode:
+                    //TapMovement();
+
                     isFallingMode = false;
-                    if (inputsEnabled) 
+                    if (inputsEnabled)
                     {
                         LerpYDamping();
                         TapMovement();
@@ -189,6 +192,11 @@ public class PlayerMovementNew : MonoBehaviour
                     }
                     //print(inputsEnabled);
                     //CheckGround();
+
+
+
+
+
                     break;
                 case MovementMode.RunnerMode:
 
@@ -283,7 +291,8 @@ public class PlayerMovementNew : MonoBehaviour
         }
         else if (!isPC)
         {
-            if (swipeDetector.TapPerformed == true)
+            print("entro al modo tap");
+            if (Input.touchCount > 0 || swipeDetector.TapPerformed == true)
             {
                 Touch touch = Input.GetTouch(0);
                 screenPosition = touch.position;
@@ -343,19 +352,85 @@ public class PlayerMovementNew : MonoBehaviour
         }
     }
     private void TapMovement()
-    {        
+    {
         rb.gravityScale = gravityScale;
         direction = new Vector2(x, y);
-        TurnCheck();           
+        TurnCheck();
         StartCoroutine(MovetoTarget());
+        //if (isPC)
+        //{
+
+        //    if (Input.GetMouseButtonDown(0))
+        //    {
+
+        //        screenPosition = Input.mousePosition;
+        //        screenPosition.z = Camera.main.nearClipPlane + 25;
+        //        targetPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+
+        //        targetPosition.y = transform.position.y;
+        //        targetPosition.z = transform.position.z;
+        //        TurnCheck();
+
+
+        //        //float clicDirection = targetPosition.x;
+        //        //clicDirection = clicDirection - transform.position.x;
+
+        //        //if (clicDirection < 0 && transform.localScale.x > 0)
+        //        //{
+        //        //    transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        //        //}
+        //        //else if (clicDirection > 0 && transform.localScale.x < 0)
+        //        //{
+        //        //    transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        //        //}
+        //    }
+        //    StartCoroutine(MovetoTarget());
+        //}
+        //else if (!isPC) 
+        //{
+        //    print("Entrooooooooooooooooooooooooooooooo");
+        //    if (Input.touchCount > 0 || swipeDetector.TapPerformed == true)
+        //    {
+
+        //        // screenPosition = Input.mousePosition;
+        //        Touch touch = Input.GetTouch(0);
+        //        screenPosition = touch.position;
+        //        screenPosition.z = Camera.main.nearClipPlane + 25;
+        //        targetPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+
+        //        targetPosition.y = transform.position.y;
+        //        targetPosition.z = transform.position.z;
+
+        //        screenPosition = Camera.main.ViewportToScreenPoint(screenPosition);
+
+        //        TurnCheck();
+        //        //float clicDirection = targetPosition.x;
+        //        //clicDirection = clicDirection - transform.position.x;
+        //        //print("screenPosAux = " + clicDirection);
+
+        //        //if (clicDirection < 0 && transform.localScale.x > 0)
+        //        //{
+
+        //        //    transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        //        //}
+        //        //else if (clicDirection > 0 && transform.localScale.x < 0)
+        //        //{
+        //        //    transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        //        //}
+        //    }
+        //    print(targetPosition);
+        //    StartCoroutine(MovetoTarget());
+        //}
+
     }
-    private IEnumerator MovetoTarget()
+        private IEnumerator MovetoTarget()
     {
         //anim.SetBool("Walk", false);
         anim.SetBool("SlowWalk", false);
         rb.position = Vector3.MoveTowards(rb.position, targetPosition, clickMoveSpeed * Time.deltaTime);
         yield return new WaitWhile(() => rb.position.x == targetPosition.x);
         anim.SetBool("SlowWalk", true);
+        print("llego a su destino");
     }
     #endregion
     #region RunnerMode

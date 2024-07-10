@@ -79,7 +79,7 @@
 //        cm = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
 //        capsuleCollider = GetComponent<CapsuleCollider2D>();
 //        spriteRenderer = GetComponent<SpriteRenderer>();
-//        //swipeDetector = GetComponent<SwipeDetector>();
+//        swipeDetector = GetComponent<SwipeDetector>();
 //    }
 //    void Start()
 //    {
@@ -90,12 +90,12 @@
 
 //    void Update()
 //    {
-//        //if (canMove)
-//        //{
+//        if (canMove)
+//        {
 
-//        //    Movement();
-//        //    CheckGround();
-//        //}
+//            Movement();
+//            CheckGround();
+//        }
 //        Movement();
 //        CheckGround();
 //    }
@@ -131,12 +131,12 @@
 //    private void Roll(float x, float y)
 //    {
 //        anim.SetBool("Roll", true);
-//        // Vector3 playerPosition = Camera.main.WorldToViewportPoint(transform.position);
-//        //Camera.main.GetComponent<RippleEffect>().Emit(playerPosition);
-//        //StartCoroutine(CameraShake());
+//        Vector3 playerPosition = Camera.main.WorldToViewportPoint(transform.position);
+//        Camera.main.GetComponent<RippleEffect>().Emit(playerPosition);
+//        StartCoroutine(CameraShake());
 
 //        canRoll = true;
-//        //rb.velocity = Vector2.zero;
+//        rb.velocity = Vector2.zero;
 //        rb.velocity += new Vector2(x, y).normalized * rollVelocity;
 //        StartCoroutine(SwitchCapsuleColliderSize());
 //        StartCoroutine(PreRoll());
@@ -145,11 +145,11 @@
 //    private IEnumerator PreRoll()
 //    {
 //        StartCoroutine(FloorRoll());
-//        //rb.gravityScale = 0;
+//        rb.gravityScale = 0;
 //        doingRoll = true;
 
 //        yield return new WaitForSeconds(0.3f);
-//        //rb.gravityScale = gravityScale;
+//        rb.gravityScale = gravityScale;
 //        doingRoll = false;
 //        EndRoll();
 //    }
@@ -175,13 +175,13 @@
 //        anim.SetBool("Smash", true);
 //        canSmash = true;
 //        rb.velocity = Vector2.zero;
-//        //Vector3 smashPosition = new Vector3(transform.position.x, transform.position.y + 550,0);
+//        Vector3 smashPosition = new Vector3(transform.position.x, transform.position.y + 550, 0);
 //        rb.velocity += new Vector2(x, 0).normalized * smashVelocity;
 
-//        //Vector2 m_NewForce = new Vector2(smashVelocity, .0f);
-//        //rb.AddForce(m_NewForce, ForceMode2D.Impulse);
+//        Vector2 m_NewForce = new Vector2(smashVelocity, .0f);
+//        rb.AddForce(m_NewForce, ForceMode2D.Impulse);
 
-//        //transform.position = Vector3.MoveTowards(transform.position, smashPosition, 200 * Time.deltaTime);
+//        transform.position = Vector3.MoveTowards(transform.position, smashPosition, 200 * Time.deltaTime);
 //        StartCoroutine(PreSmash());
 //    }
 
@@ -256,19 +256,19 @@
 //    {
 
 //        rb.gravityScale = fallingGravity;
-//        //  rb.velocity = Vector2.zero;
+//        rb.velocity = Vector2.zero;
 //        rb.velocity += new Vector2(x, y).normalized * fallingVelocity;
-//        //transform.rotation = Quaternion.Euler(0,0, rb.velocity.y * rotationFallingSpeed);
+//        transform.rotation = Quaternion.Euler(0, 0, rb.velocity.y * rotationFallingSpeed);
 //    }
 
 //    private IEnumerator MovetoTarget()
 //    {
-//        //rb.constraints = RigidbodyConstraints2D.FreezePositionY;
+//        rb.constraints = RigidbodyConstraints2D.FreezePositionY;
 //        anim.SetBool("Walk", false);
 //        transform.position = Vector3.MoveTowards(transform.position, targetPosition, clickMoveSpeed * Time.deltaTime);
 //        yield return new WaitWhile(() => transform.position.x == targetPosition.x);
-//        //rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-//        //rb.constraints = RigidbodyConstraints2D.None;
+//        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+//        rb.constraints = RigidbodyConstraints2D.None;
 //        anim.SetBool("Walk", true);
 //    }
 
@@ -299,84 +299,40 @@
 
 
 //        Walk();
-//        //BetterJump();
+//        BetterJump();
 
-//        // if (Input.GetKeyDown(KeyCode.Space) || swipeDetector.TapPerformed)
-//        if (isPC)
-//        {
-
-//            if (Input.GetKeyDown(KeyCode.Space) || swipeDetector.TapPerformed == true)
+//        if (Input.GetKeyDown(KeyCode.Space) || swipeDetector.TapPerformed)
+//            if (isPC)
 //            {
-//                //print("saltaaaaaaaa");
-//                if (!flappyCollider.GetComponent<FlappyCollider>().isFlappy)
+
+//                if (Input.GetKeyDown(KeyCode.Space) || swipeDetector.TapPerformed == true)
 //                {
+//                    print("saltaaaaaaaa");
+//                    if (!flappyCollider.GetComponent<FlappyCollider>().isFlappy)
+//                    {
 
-//                    if (isGrounded)
-//                    {
-//                        anim.SetBool("Jump", true);
-//                        canDoubleJump = true;
-//                        Jump();
-//                        //swipeDetector.TapPerformed = false;
-//                    }
-//                    else
-//                    {
-//                        if (Input.GetKeyDown(KeyCode.Space) || swipeDetector.TapPerformed == true)
+//                        if (isGrounded)
 //                        {
-//                            if (canDoubleJump)
+//                            anim.SetBool("Jump", true);
+//                            canDoubleJump = true;
+//                            Jump();
+//                            swipeDetector.TapPerformed = false;
+//                        }
+//                        else
+//                        {
+//                            if (Input.GetKeyDown(KeyCode.Space) || swipeDetector.TapPerformed == true)
 //                            {
-//                                Jump();
-//                                canDoubleJump = false;
-//                                //swipeDetector.TapPerformed = false;
+//                                if (canDoubleJump)
+//                                {
+//                                    Jump();
+//                                    canDoubleJump = false;
+//                                    swipeDetector.TapPerformed = false;
 
+//                                }
 //                            }
 //                        }
+
 //                    }
-
-//                }
-//                else
-//                {
-//                    canDoubleJump = false;
-//                    anim.SetBool("Walk", true);
-//                    anim.SetBool("Jump", false);
-//                    anim.SetBool("Flappy", true);
-//                    rb.gravityScale = 10;
-//                    FlappyJump();
-//                }
-//            }
-
-//        }
-//        else if (!isPC)
-//        {
-//            //  jumpCount = 0;   
-//            if (Input.touchCount > 0)
-//                // {
-//                // if (jumpsPerformedt < jumpMaxCount && theTouch.phase == TouchPhase.Began)
-//                if (theTouch.phase == TouchPhase.Began)
-//                    //if (!flappyCollider.GetComponent<FlappyCollider>().isFlappy)
-//                    //{
-
-//                    //    if (isGrounded)
-//                    //    {
-//                    //        anim.SetBool("Jump", true);
-//                    //        canDoubleJump = true;
-//                    //        Jump();
-//                    //        //swipeDetector.TapPerformed = false;
-//                    //    }
-//                    //    else
-//                    //    {
-//                    //        if (theTouch.phase == TouchPhase.Began)
-//                    //        {
-//                    //            if (canDoubleJump)
-//                    //            {
-//                    //                Jump();
-//                    //                canDoubleJump = false;
-//                    //                //swipeDetector.TapPerformed = false;
-
-//                    //            }
-//                    //        }
-//                    //    }
-
-//                    //}
 //                    else
 //                    {
 //                        canDoubleJump = false;
@@ -386,9 +342,53 @@
 //                        rb.gravityScale = 10;
 //                        FlappyJump();
 //                    }
-//            // }
+//                }
 
-//        }
+//            }
+//            else if (!isPC)
+//            {
+//                jumpCount = 0;
+//                if (Input.touchCount > 0)
+//                {
+//                    if (jumpsPerformedt < jumpMaxCount && theTouch.phase == TouchPhase.Began)
+//                        if (theTouch.phase == TouchPhase.Began)
+//                            if (!flappyCollider.GetComponent<FlappyCollider>().isFlappy)
+//                            {
+
+//                                if (isGrounded)
+//                                {
+//                                    anim.SetBool("Jump", true);
+//                                    canDoubleJump = true;
+//                                    Jump();
+//                                    swipeDetector.TapPerformed = false;
+//                                }
+//                                else
+//                                {
+//                                    if (theTouch.phase == TouchPhase.Began)
+//                                    {
+//                                        if (canDoubleJump)
+//                                        {
+//                                            Jump();
+//                                            canDoubleJump = false;
+//                                            swipeDetector.TapPerformed = false;
+
+//                                        }
+//                                    }
+//                                }
+
+//                            }
+//                            else
+//                            {
+//                                canDoubleJump = false;
+//                                anim.SetBool("Walk", true);
+//                                anim.SetBool("Jump", false);
+//                                anim.SetBool("Flappy", true);
+//                                rb.gravityScale = 10;
+//                                FlappyJump();
+//                            }
+//                }
+
+//            }
 
 
 //        if (Input.GetKeyDown(KeyCode.DownArrow) && !doingRoll)
@@ -439,51 +439,51 @@
 //        if (mouseWalk)
 //        {
 
-//            //if (Input.GetMouseButtonDown(0) || theTouch.phase == TouchPhase.Began)
-//            if (Input.GetMouseButtonDown(0) || swipeDetector.TapPerformed == true)
-//            {
-
-//                screenPosition = Input.mousePosition;
-//                screenPosition.z = Camera.main.nearClipPlane + 25;
-//                targetPosition = Camera.main.ScreenToWorldPoint(screenPosition);
-
-//                targetPosition.y = transform.position.y;
-//                targetPosition.z = transform.position.z;
-
-
-
-//                float clicDirection = targetPosition.x;
-//                clicDirection = clicDirection - transform.position.x;
-//                //screenPosAux = Camera.main.ViewportToScreenPoint(screenPosAux);
-//                print("screenPosAux = " + clicDirection);
-
-//                if (clicDirection < 0 && transform.localScale.x > 0)
+//            if (Input.GetMouseButtonDown(0) || theTouch.phase == TouchPhase.Began)
+//                if (Input.GetMouseButtonDown(0) || swipeDetector.TapPerformed == true)
 //                {
 
-//                    transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+//                    screenPosition = Input.mousePosition;
+//                    screenPosition.z = Camera.main.nearClipPlane + 25;
+//                    targetPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+
+//                    targetPosition.y = transform.position.y;
+//                    targetPosition.z = transform.position.z;
+
+
+
+//                    float clicDirection = targetPosition.x;
+//                    clicDirection = clicDirection - transform.position.x;
+//                    screenPosAux = Camera.main.ViewportToScreenPoint(screenPosAux);
+//                    print("screenPosAux = " + clicDirection);
+
+//                    if (clicDirection < 0 && transform.localScale.x > 0)
+//                    {
+
+//                        transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+//                    }
+//                    else if (clicDirection > 0 && transform.localScale.x < 0)
+//                    {
+//                        transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+//                    }
 //                }
-//                else if (clicDirection > 0 && transform.localScale.x < 0)
-//                {
-//                    transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-//                }
-//            }
-//            //  print(targetPosition);
+//            print(targetPosition);
 //            StartCoroutine(MovetoTarget());
 //        }
 
-//        //if (faillingCollider.GetComponent<FallingCollider>().isFalling)
-//        //{
+//        if (faillingCollider.GetComponent<FallingCollider>().isFalling)
+//        {
 
-//        //    if (xRaw != 0 || yRaw != 0)
-//        //    {
-//        //        Failling(xRaw, yRaw);
-//        //    }
-//        //    else if (isGrounded)
-//        //    {
-//        //        faillingCollider.GetComponent<FallingCollider>().isFalling = false;
-//        //        rb.gravityScale = gravityScale;
-//        //    }
-//        //}
+//            if (xRaw != 0 || yRaw != 0)
+//            {
+//                Failling(xRaw, yRaw);
+//            }
+//            else if (isGrounded)
+//            {
+//                faillingCollider.GetComponent<FallingCollider>().isFalling = false;
+//                rb.gravityScale = gravityScale;
+//            }
+//        }
 
 
 
@@ -504,15 +504,15 @@
 
 //    private void BetterJump()
 //    {
-//        //if (rb.velocity.y < 0) 
-//        //{
-//        //    rb.velocity += Vector2.up * Physics2D.gravity.y * (2.5f - 1) * Time.deltaTime;
-//        //}
-//        //else if(rb.velocity.y > 0 && !Input.GetKey(KeyCode.Space))  
-//        //{
-//        //    rb.velocity += Vector2.up * Physics2D.gravity.y * (2.0f - 1) * Time.deltaTime;
+//        if (rb.velocity.y < 0)
+//        {
+//            rb.velocity += Vector2.up * Physics2D.gravity.y * (2.5f - 1) * Time.deltaTime;
+//        }
+//        else if (rb.velocity.y > 0 && !Input.GetKey(KeyCode.Space))
+//        {
+//            rb.velocity += Vector2.up * Physics2D.gravity.y * (2.0f - 1) * Time.deltaTime;
 
-//        //}
+//        }
 //    }
 
 //    private void CheckGround()
@@ -558,36 +558,36 @@
 //        }
 //    }
 
-//    //private void Walk()
-//    //{
-//    //    if (canMove && !doingRoll && !doingSmash)
-//    //    {
-//    //        rb.velocity = new Vector2(direction.x * velocity, rb.velocity.y);
+//    private void Walk()
+//    {
+//        if (canMove && !doingRoll && !doingSmash)
+//        {
+//            rb.velocity = new Vector2(direction.x * velocity, rb.velocity.y);
 
-//    //        if (direction != Vector2.zero)
-//    //        {
-//    //            if (!isGrounded && !flappyCollider.GetComponent<FlappyCollider>().isFlappy)
-//    //            {
+//            if (direction != Vector2.zero)
+//            {
+//                if (!isGrounded && !flappyCollider.GetComponent<FlappyCollider>().isFlappy)
+//                {
 
-//    //                anim.SetBool("Jump", true);
-//    //            }
-//    //            else if (isGrounded && !flappyCollider.GetComponent<FlappyCollider>().isFlappy)
-//    //            {
-//    //                anim.SetBool("Walk", true);
-//    //            }
-//    //            else if (!isGrounded && flappyCollider.GetComponent<FlappyCollider>().isFlappy)
-//    //            {
-//    //                // anim.SetBool("Flappy", true);
-//    //                anim.SetBool("Jump", true);
-//    //            }
+//                    anim.SetBool("Jump", true);
+//                }
+//                else if (isGrounded && !flappyCollider.GetComponent<FlappyCollider>().isFlappy)
+//                {
+//                    anim.SetBool("Walk", true);
+//                }
+//                else if (!isGrounded && flappyCollider.GetComponent<FlappyCollider>().isFlappy)
+//                {
+//                    anim.SetBool("Flappy", true);
+//                    anim.SetBool("Jump", true);
+//                }
 
-//    //            GetDirecction();
-//    //        }
-//    //        else
-//    //        {
-//    //            anim.SetBool("Walk", false);
-//    //        }
-//    //    }
-//    //}
+//                GetDirecction();
+//            }
+//            else
+//            {
+//                anim.SetBool("Walk", false);
+//            }
+//        }
+//    }
 
 //}
