@@ -36,7 +36,7 @@ public class LobbyManager : MonoBehaviour
         //if (PlayerPrefs.GetInt("pasoIntro") == 0) PlayerPrefs.SetInt("pasoIntro", 0);
         //PlayerPrefs.SetInt("pasoIntro", 0);
         PlayerPrefs.GetInt("pasoIntro");
-        print("PasoIntro: " + PlayerPrefs.GetInt("pasoIntro"));
+       // print("PasoIntro: " + PlayerPrefs.GetInt("pasoIntro"));
         //if (PlayerPrefs.GetInt("pasoIntro") != 0)
         if (pasoIntro)
         {

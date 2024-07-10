@@ -1,8 +1,11 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
+
 
 public class SwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerClickHandler
 {
+    [HideInInspector] public bool isJumping;
     private Vector2 startPosition;
     private Vector2 endPosition;
     private bool isSwiping = false;
@@ -10,6 +13,7 @@ public class SwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     //private bool isPressing = false;
     private float pressTime = 0f;
     public float pressThreshold = 0.05f; // Tiempo mínimo de presión para considerarla un "press and hold"
+    [HideInInspector] public Button btnPause;
 
     public float tapThreshold = 10f; // Umbral de distancia para considerar un tap
 
@@ -35,6 +39,10 @@ public class SwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        
+         isJumping = true;
+
+
         startPosition = eventData.position;
         isSwiping = true;
         TapPerformed = true; // Restablecer el valor de isTap en cada nuevo toque
@@ -45,6 +53,8 @@ public class SwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
     public void OnPointerUp(PointerEventData eventData)
     {
+         isJumping = false;
+
         endPosition = eventData.position;
         isSwiping = false;
         IsPressing = false;
@@ -80,6 +90,7 @@ public class SwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
     public void OnPointerClick(PointerEventData eventData)
     {
+
         //TapPerformed = true;
         //Invoke("ResetTap", 0.5f);
     }
@@ -93,9 +104,27 @@ public class SwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         //TapPerformed = false;
         IsPressing = false;
     }
-
+    private void Start()
+    {
+        btnPause = transform.parent.GetComponentInChildren<Button>();
+    }
     private void Update()
     {
+        if(Time.timeScale == 0.0f && transform.parent.parent.gameObject.layer == 5) 
+        {
+            GetComponent<Image>().raycastTarget = false;
+            btnPause.enabled = false;
+        }
+        else
+        {
+            if (GetComponent<Image>().raycastTarget == false)
+            {
+                GetComponent<Image>().raycastTarget = true;
+                btnPause.enabled = true;  
+            }
+
+        }
+
         //Debug.Log("esta presionando" + IsPressing);
         if (IsPressing && Time.time - pressTime > pressThreshold)
         {
@@ -105,4 +134,6 @@ public class SwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         }
 
     }
+
 }
+

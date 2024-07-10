@@ -5,12 +5,12 @@ using UnityEngine;
 public class UI_LoadingScene : MonoBehaviour
 {
     private Animator anim;
-   
+    private Coroutine fogCoroutine;
 
     private void Awake()
     {
-        anim = transform.GetChild(0).GetComponent<Animator>();
-        anim.enabled = true;
+        //anim = transform.GetChild(0).GetComponent<Animator>();
+        //anim.enabled = true;
         ////anim.Play("FogTransitionEnd");
         ////print(transform.GetChild(0).gameObject.name);
         //StartCoroutine(Openner());
@@ -21,10 +21,19 @@ public class UI_LoadingScene : MonoBehaviour
         //}
 
     }
+    private void Start()
+    {
+        anim = transform.GetChild(0).GetComponent<Animator>();
+        anim.enabled = true;
+    }
     public void ShowOppener()
     {
-        StopAllCoroutines();
-        StartCoroutine(Openner());
+        //StopAllCoroutines();
+        if(fogCoroutine != null)
+        {
+            StopCoroutine(fogCoroutine);
+            StartCoroutine(Openner());
+        }
     }
     private IEnumerator Openner()
     {       

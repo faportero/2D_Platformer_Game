@@ -19,6 +19,10 @@ TagManager:
   - EnemyAttached
   - Pieza
   - Hand
+  - CanvasTutorial
+  - PanelSwipe
+  - Fog
+  - EnemyAttachedBar
   layers:
   - Default
   - TransparentFX
@@ -31,8 +35,8 @@ TagManager:
   - Health
   - Escudo
   - Player
-  - 
-  - 
+  - CanvasTutorial
+  - CanvasSwipe
   - 
   - 
   - 

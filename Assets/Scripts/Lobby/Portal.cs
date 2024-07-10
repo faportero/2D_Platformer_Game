@@ -29,14 +29,14 @@ public class Portal : MonoBehaviour
 
     private void Awake()
     {
-        canvasFog.SetActive(false);
+        //canvasFog.SetActive(false);
         playerMovementNew = FindAnyObjectByType<PlayerMovementNew>();
         playerControllerNew = FindAnyObjectByType<PlayerControllerNew>();
         playerMaterial = playerControllerNew.GetComponent<SpriteRenderer>().material;
     }
     private void Start()
     {
-        canvasFog.SetActive(false);
+        //canvasFog.SetActive(false);
         //espejo = FindAnyObjectByType<Espejo>();
     }
 
@@ -65,10 +65,10 @@ public class Portal : MonoBehaviour
     }
     private IEnumerator SwitchScene()
     {
-        canvasFog.SetActive(true);
-        canvasFog.transform.GetChild(0).gameObject.SetActive(true);
-        canvasFog.transform.GetChild(0).GetComponent<Animator>().enabled = true;
-        canvasFog.transform.GetChild(0).GetComponent<Animator>().Play("FogTransition");
+        //canvasFog.SetActive(true);
+        //canvasFog.transform.GetChild(0).gameObject.SetActive(true);
+        //canvasFog.transform.GetChild(0).GetComponent<Animator>().enabled = true;
+        //canvasFog.transform.GetChild(0).GetComponent<Animator>().Play("FogTransition");
         StartCoroutine(PlayerDisolve());
 
         yield return new WaitForSecondsRealtime(.5f);
@@ -114,7 +114,7 @@ public class Portal : MonoBehaviour
                 break;
 
         }
-        canvasFog.SetActive(false);
+        //canvasFog.SetActive(false);
 
     }
     private void OnTriggerEnter2D(Collider2D collision)

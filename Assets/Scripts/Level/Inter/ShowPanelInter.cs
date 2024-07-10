@@ -13,5 +13,13 @@ public class ShowPanelInter : MonoBehaviour
             feedbackPanel.SetActive(true);
         }
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            feedbackPanel.SetActive(true);
+        }
+    }
 }
 

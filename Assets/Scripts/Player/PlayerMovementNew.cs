@@ -436,6 +436,10 @@ public class PlayerMovementNew : MonoBehaviour
     #region RunnerMode
     private void RunnerMovement()
     {
+        
+
+        print("Anim: " + anim.GetBool("Roll") + "DoingRoll: " + doingRoll + "InputEnabled" + inputsEnabled + "SwipeDirection" + swipeDetector.swipeDirection);
+
         rb.gravityScale = gravityScale;
         if (!doingSmash && !doingRoll && !playerController.isCannabis) direction = new Vector2(1.2f, 1);
         else if (playerController.isCannabis) direction = new Vector2(.75f, 1);
@@ -473,7 +477,6 @@ public class PlayerMovementNew : MonoBehaviour
         }
         else if (!isGrounded && isHitBadFloor)
         {
-            //anim.SetBool("Jump", true);
             anim.SetBool("Walk", false);
             anim.SetBool("Jump", false);
             anim.SetBool("Roll", false);
@@ -501,7 +504,9 @@ public class PlayerMovementNew : MonoBehaviour
 
         if (isPC)
         {
-            if (Input.GetMouseButtonDown(0) && inputsEnabled)
+            if (Time.timeScale == 0) return;
+            //if (Input.GetMouseButtonDown(0) && inputsEnabled)
+            if (swipeDetector.isJumping && inputsEnabled)
             {
                 jumpBufferCounter = jumpBufferTime;
             }
@@ -676,14 +681,14 @@ public class PlayerMovementNew : MonoBehaviour
 
         else if (!isPC)
         {
-      
-           // if (Input.touchCount > 0 && inputsEnabled)
-            if (Input.touchCount > 0)
+            if (Time.timeScale == 0) return;
+            // if (Input.touchCount > 0 && inputsEnabled)
+            if (Input.touchCount > 0 )
             {
                 if (Input.touchCount == 1 && inputsEnabled)
                 {
+                    if (!swipeDetector.btnPause.enabled) return;
                     touch = Input.GetTouch(0);
-
 
                     if (touch.phase == TouchPhase.Began)
                     {
@@ -719,8 +724,10 @@ public class PlayerMovementNew : MonoBehaviour
                         {
                             // Esto es un tap
                             //if (isGrounded)
+
                             if (coyoteTimeCounter > 0)
                             {
+
                                 swipeDetector.TapPerformed = false;
                                 anim.SetBool("Jump", true);
                                 canDoubleJump = true;
@@ -1057,7 +1064,7 @@ public class PlayerMovementNew : MonoBehaviour
     }
     public void StartCameraShake(float tiempo)
     {
-        StopAllCoroutines();
+        //StopAllCoroutines();
         StartCoroutine(CameraShake(tiempo));
     }
     private IEnumerator CameraShake(float tiempo)

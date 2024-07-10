@@ -9,7 +9,7 @@ public class TutorialPanel : MonoBehaviour
     [SerializeField] private GameObject panelTutorial;
     [SerializeField] private GameObject PanelDetectInput;
     [SerializeField] private GameObject hand;
-    [SerializeField] private GameObject canvasHUD;
+     private SwipeDetector canvasSwipe;
     [SerializeField] private GameObject pingPongObject;
     private AudioPause audioPause;
     [SerializeField] private bool isInteractive;
@@ -20,13 +20,14 @@ public class TutorialPanel : MonoBehaviour
     private void Start()
     {
         playerMovementNew = FindAnyObjectByType<PlayerMovementNew>();
+        if((!canvasSwipe)) canvasSwipe = playerMovementNew.swipeDetector;
         audioPause = FindAnyObjectByType<AudioPause>();
-        //hand = GameObject.FindGameObjectWithTag("Hand");
+        if (!hand) hand = GameObject.FindGameObjectWithTag("Hand");
         handAnim = hand.GetComponent<Animator>();
 
         if (!TutorialManager.endTutorial)
         {
-            //playerMovementNew.inputsEnabled = false;
+            playerMovementNew.inputsEnabled = false;
             playerMovementNew.tutorialActive = true;
         }
     }
@@ -42,15 +43,18 @@ public class TutorialPanel : MonoBehaviour
     {
         if(collision.tag == "Player" && TutorialManager.showTutorial)
         {
+            //panelTutorial.transform.parent.gameObject.SetActive(true);
+            //canvasSwipe.gameObject.transform.parent.gameObject.SetActive(false);
+            //canvasSwipe.enabled = false;
+            //canvasHUD.gameObject.GetComponent<Image>().raycastTarget = false;
             if (pingPongObject != null) ActivePingPongOBjectl(true);
-            canvasHUD.GetComponent<SwipeDetector>().enabled = false;
-            canvasHUD.GetComponent<Image>().raycastTarget = false;
             //playerMovementNew.tutorialActive = true;
             audioPause.Pause(true);
             panelTutorial.SetActive(true);
 
             if (isInteractive)
             {
+               // playerMovementNew.inputsEnabled = true;
                 audioPause.Pause(true);
                 panelTutorial.SetActive(true);
                 if (PanelDetectInput != null) PanelDetectInput.SetActive(true);

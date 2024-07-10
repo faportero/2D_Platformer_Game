@@ -2,6 +2,7 @@ using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
@@ -70,19 +71,27 @@ public class PlayerControllerNew : MonoBehaviour
 
     #endregion
     #region Unity Callbacks
+    private void Awake()
+    {
+    }
     public void ActiveGamePanelsl(bool active)
     {
         showInmunidadPanel = active;
         showPocaVidePanel = active;
     }
     private void Start()
-    {   
-        
+    {
+
+         if(!ui_enemyAttachedBar) ui_enemyAttachedBar = FindFirstObjectByType<UI_SaludAttachedBar>();
+       // if (!ui_enemyAttachedBar) ui_enemyAttachedBar = GameObject.FindGameObjectWithTag("EnemyAttachedBar").GetComponent<UI_SaludAttachedBar>();
+       // ui_enemyAttachedBar = FindAnyObjectByType<UI_SaludAttachedBar>();
         playerMovement = GetComponent<PlayerMovementNew>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
         audioPause = FindAnyObjectByType<AudioPause>();
         saludBar.healthFillBar.fillAmount = currentSalud;
+
+       if(ui_enemyAttachedBar) print(ui_enemyAttachedBar.gameObject.name);
         //saludBar.UpdateHealth(currentSalud);
         //print("Current Salud: " + currentSalud);
         //print("Fill Amount: " + saludBar.healthFillBar.fillAmount);
@@ -149,7 +158,7 @@ public class PlayerControllerNew : MonoBehaviour
                 AdjustLuminance(1);
                 break;
             default:
-                ui_enemyAttachedBar.UpdateTime(1);
+                if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(1);
                 AdjustLuminance(1);
                 break;
         }
@@ -160,6 +169,9 @@ public class PlayerControllerNew : MonoBehaviour
 
     private void Update()
     {
+       // ui_enemyAttachedBar = FindAnyObjectByType<UI_SaludAttachedBar>();
+
+
         targetPosition = GetWorldPositionFromUI(saludBar.GetComponent<RectTransform>());
         targetPosition = targetPosition + new Vector3(0, -1.25f, 0);
         
@@ -281,7 +293,7 @@ public class PlayerControllerNew : MonoBehaviour
                     //}
                     break;
                 default:
-                    ui_enemyAttachedBar.UpdateTime(1);
+                    if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(1);
                     AdjustLuminance(1);
                     break;
             }
@@ -340,7 +352,7 @@ public class PlayerControllerNew : MonoBehaviour
                     //    audioPause.Pause(false);
                     //    playerMovement.inputsEnabled = true;
                     //}
-                    ui_enemyAttachedBar.UpdateTime(10);
+                    if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(10);
                         enemyEffectCoroutine = StartCoroutine(CurrentEffect(10));
                         GlowSpriteEffect.SetActive(false);
                         AdjustLuminance(0);
@@ -348,7 +360,7 @@ public class PlayerControllerNew : MonoBehaviour
                     case .2f:
                         isIndestructible = false;
                     effectPanel.SetActive(true);
-                    ui_enemyAttachedBar.UpdateTime(9);
+                    if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(9);
                         enemyEffectCoroutine = StartCoroutine(CurrentEffect(9));
                         GlowSpriteEffect.SetActive(false);
                         AdjustLuminance(.2f);
@@ -357,14 +369,14 @@ public class PlayerControllerNew : MonoBehaviour
                         isIndestructible = false;
                     effectPanel.SetActive(true);
                     enemyAttached.SetActive(false);
-                        ui_enemyAttachedBar.UpdateTime(8);
+                    if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(8);
                         GlowSpriteEffect.SetActive(false);
                         AdjustLuminance(.3f);
                         break;
                     case .4f:
                         isIndestructible = false;
                     effectPanel.SetActive(true);
-                    ui_enemyAttachedBar.UpdateTime(7);
+                    if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(7);
                         enemyEffectCoroutine = StartCoroutine(CurrentEffect(7));
                         GlowSpriteEffect.SetActive(false);
                         AdjustLuminance(.4f);
@@ -372,7 +384,7 @@ public class PlayerControllerNew : MonoBehaviour
                     case .5f:
                         isIndestructible = false;
                     effectPanel.SetActive(true);
-                    ui_enemyAttachedBar.UpdateTime(6);
+                    if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(6);
                         enemyEffectCoroutine = StartCoroutine(CurrentEffect(6));
                         GlowSpriteEffect.SetActive(false);
                         AdjustLuminance(.5f);
@@ -380,7 +392,7 @@ public class PlayerControllerNew : MonoBehaviour
                     case .6f:
                         isIndestructible = false;
                     effectPanel.SetActive(true);
-                    ui_enemyAttachedBar.UpdateTime(5);
+                    if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(5);
                         enemyEffectCoroutine = StartCoroutine(CurrentEffect(5));
                         GlowSpriteEffect.SetActive(false);
                         AdjustLuminance(.6f);
@@ -388,7 +400,7 @@ public class PlayerControllerNew : MonoBehaviour
                     case .7f:
                         isIndestructible = false;
                     effectPanel.SetActive(true);
-                    ui_enemyAttachedBar.UpdateTime(4);
+                    if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(4);
                         enemyEffectCoroutine = StartCoroutine(CurrentEffect(4));
                         GlowSpriteEffect.SetActive(false);
                         AdjustLuminance(.7f);
@@ -396,7 +408,7 @@ public class PlayerControllerNew : MonoBehaviour
                     case .8f:
                         isIndestructible = false;
                     effectPanel.SetActive(true);
-                    ui_enemyAttachedBar.UpdateTime(3);
+                    if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(3);
                         enemyEffectCoroutine = StartCoroutine(CurrentEffect(3));
                         GlowSpriteEffect.SetActive(false);
                         AdjustLuminance(.8f);
@@ -404,7 +416,7 @@ public class PlayerControllerNew : MonoBehaviour
                     case .9f:
                         isIndestructible = false;
                     effectPanel.SetActive(true);
-                    ui_enemyAttachedBar.UpdateTime(2);
+                    if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(2);
                         enemyEffectCoroutine = StartCoroutine(CurrentEffect(2));
                         GlowSpriteEffect.SetActive(false);
                         AdjustLuminance(.9f);
@@ -418,7 +430,7 @@ public class PlayerControllerNew : MonoBehaviour
                         AdjustLuminance(1);
                         break;
                     default:
-                        ui_enemyAttachedBar.UpdateTime(1);
+                    if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(1);
                         break;
                 }
 
@@ -568,7 +580,7 @@ public class PlayerControllerNew : MonoBehaviour
         {
             StartCoroutine(DeactivateEnfasis());
            // playerMovement.rb.gravityScale = 0;
-            playerMovement.inputsEnabled = false;
+           // playerMovement.inputsEnabled = false;
             playerMovement.direction = Vector2.zero;
             panelFeedbackBadFloor.SetActive(true);
             StartBlinking(2);
@@ -623,7 +635,7 @@ public class PlayerControllerNew : MonoBehaviour
         {
             StartCoroutine(DeactivateEnfasis());
 
-            playerMovement.inputsEnabled = false;
+          //  playerMovement.inputsEnabled = false;
             playerMovement.direction = Vector2.zero;
             panelFeedbackBadFloor.SetActive(true);
             StartBlinking(2);

@@ -22,7 +22,7 @@ public class Resorte : MonoBehaviour
         }
         else if (collision.tag == "Player" && pMovement.doingRoll)
         {
-           // Impulse(impulseAmmount + 10);
+            Impulse(impulseAmmount);
         }
     }
 

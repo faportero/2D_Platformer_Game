@@ -26,7 +26,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject fogPanel;
     public static bool usedPA, usedPB, usedPC, usedPD, isFogTransition = false;
     //[SerializeField] private UI_Piezas uiPiezas;
-
+        
     private void Awake()
     {
         uiCoins.coinCount = UserData.coins;
@@ -41,14 +41,16 @@ public class LevelManager : MonoBehaviour
     {
         Time.timeScale = 1;
         if(piezasNivel != null) CheckLevelPieces();
-        if (isFogTransition)
-        {
-            isFogTransition = false;
-            fogPanel.SetActive(true);
-            fogPanel.transform.GetChild(0).gameObject.SetActive(true);
-            fogPanel.transform.GetChild(0).GetComponent<Animator>().enabled = true;
-            fogPanel.GetComponent<UI_LoadingScene>().ShowOppener();
-        }
+
+        //if (isFogTransition)
+        //{
+        //    fogPanel.SetActive(true);
+        //    fogPanel.transform.GetChild(0).gameObject.SetActive(true);
+        //    fogPanel.transform.GetChild(0).GetComponent<Animator>().enabled = true;
+        //    fogPanel.transform.GetChild(0).GetComponent<Animator>().Play("FogTransition");
+        //    fogPanel.GetComponent<UI_LoadingScene>().ShowOppener();
+        //    isFogTransition = false;
+        //}
     }
     public void GameOver()
     {

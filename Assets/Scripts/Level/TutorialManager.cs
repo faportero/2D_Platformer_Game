@@ -12,16 +12,24 @@ public class TutorialManager : MonoBehaviour, IPointerDownHandler, IPointerUpHan
     private SwipeDetector swipeDetector;
     [SerializeField] private bool isTutorialJump;
     [SerializeField] private GameObject hand;
-    [SerializeField] private GameObject canvasHUD;
+    private GameObject canvasSwipe;
+    private GameObject canvasTutorial;
 
     private  AudioPause audioPause;
     public static bool showTutorial = true, endTutorial;
-   
+
+    private void Awake()
+    {
+        canvasTutorial = GameObject.FindGameObjectWithTag("CanvasTutorial");
+       // canvasSwipe = GameObject.FindGameObjectWithTag("PanelSwipe");
+    }
     private void Start()
     {
         playerMovementNew = FindAnyObjectByType<PlayerMovementNew>();
         audioPause = FindAnyObjectByType<AudioPause>();
         swipeDetector = playerMovementNew.swipeDetector;
+        print(swipeDetector.gameObject.name);
+       // print(canvasSwipe.name);
     }
     public void ActiveTutorial(bool pause)
     {
@@ -47,8 +55,8 @@ public class TutorialManager : MonoBehaviour, IPointerDownHandler, IPointerUpHan
     private IEnumerator ActiveRayCastDelay(bool pause)
     {
         yield return new WaitForSeconds(.2f);
-        canvasHUD.GetComponent<SwipeDetector>().enabled = pause;
-        canvasHUD.GetComponent<UnityEngine.UI.Image>().raycastTarget = pause;
+        canvasSwipe.GetComponent<SwipeDetector>().enabled = pause;
+        canvasSwipe.GetComponent<UnityEngine.UI.Image>().raycastTarget = pause;
 
     }
 
@@ -100,7 +108,8 @@ public class TutorialManager : MonoBehaviour, IPointerDownHandler, IPointerUpHan
                     gameObject.transform.parent.gameObject.SetActive(false);
                     hand.SetActive(false);
                     playerMovementNew.DoRoll();
-                    canvasHUD.GetComponent<UnityEngine.UI.Image>().raycastTarget = false;
+                    swipeDetector.gameObject.transform.parent.gameObject.SetActive(true);
+                    swipeDetector.gameObject.SetActive(true);
                 }
             }
             else
@@ -113,7 +122,9 @@ public class TutorialManager : MonoBehaviour, IPointerDownHandler, IPointerUpHan
                     gameObject.transform.parent.gameObject.SetActive(false);
                     hand.SetActive(false);
                     playerMovementNew.DoRoll();
-                    canvasHUD.GetComponent<UnityEngine.UI.Image>().raycastTarget = false;
+                    swipeDetector.gameObject.transform.parent.gameObject.SetActive(true);
+                    swipeDetector.gameObject.SetActive(true);
+                    //canvasHUD.GetComponent<UnityEngine.UI.Image>().raycastTarget = false;
                 }
             }
 
@@ -161,7 +172,7 @@ public class TutorialManager : MonoBehaviour, IPointerDownHandler, IPointerUpHan
                     gameObject.transform.parent.gameObject.SetActive(false);
                     hand.SetActive(false);
                     playerMovementNew.DoRoll();
-                    //canvasHUD.GetComponent<UnityEngine.UI.Image>().raycastTarget = false;
+                    playerMovementNew.swipeDetector.gameObject.GetComponent<UnityEngine.UI.Image>().raycastTarget = true;
                 }
             }
             else
@@ -174,7 +185,9 @@ public class TutorialManager : MonoBehaviour, IPointerDownHandler, IPointerUpHan
                     gameObject.transform.parent.gameObject.SetActive(false);
                     hand.SetActive(false);
                     playerMovementNew.DoRoll();
-                    //canvasHUD.GetComponent<UnityEngine.UI.Image>().raycastTarget = false;
+                    playerMovementNew.swipeDetector.gameObject.GetComponent<UnityEngine.UI.Image>().raycastTarget = true;
+
+
                 }
             }
         }
