@@ -38,14 +38,14 @@ public class LobbyManager : MonoBehaviour
         PlayerPrefs.GetInt("pasoIntro");
        // print("PasoIntro: " + PlayerPrefs.GetInt("pasoIntro"));
         //if (PlayerPrefs.GetInt("pasoIntro") != 0)
-        if (pasoIntro)
-        {
-            pasoIntro = true;
-        }
-        else
-        {
-            pasoIntro = false;
-        }
+        //if (pasoIntro)
+        //{
+        //    pasoIntro = true;
+        //}
+        //else
+        //{
+        //    pasoIntro = false;
+        //}
 
     }
     void Start()
@@ -59,7 +59,8 @@ public class LobbyManager : MonoBehaviour
         // Obtener el componente VideoPlayer del objeto actual
 
 
-        if (pasoIntro == false)
+        //if (pasoIntro == false)
+        if (!UserData.terminoLobby)
         {
             audioPause.Pause(true);
 
@@ -76,22 +77,28 @@ public class LobbyManager : MonoBehaviour
             }
 
         }
-        else if(pasoIntro == true)
+        else
         {
-            audioPause.Pause(false);
-            panelHUD.SetActive(true);
-            playerMovementNew.targetPosition = new Vector3(portalPos.transform.position.x, portalPos.transform.position.y, 0);
-            playerController.transform.position = new Vector3 (portalPos.transform.position.x, portalPos.transform.position.y, 0);
-            playerMovementNew.transform.rotation = Quaternion.Euler(0, 0, 0);
-
-            //playerController.GetComponent<SpriteRenderer>().color = Color.white;
-
+            panelVideo.SetActive(false);
         }
+
+        //else if(pasoIntro == true)
+        //{
+        //    audioPause.Pause(false);
+        //    panelHUD.SetActive(true);
+        //    playerMovementNew.targetPosition = new Vector3(portalPos.transform.position.x, portalPos.transform.position.y, 0);
+        //    playerController.transform.position = new Vector3 (portalPos.transform.position.x, portalPos.transform.position.y, 0);
+        //    playerMovementNew.transform.rotation = Quaternion.Euler(0, 0, 0);
+
+        //    //playerController.GetComponent<SpriteRenderer>().color = Color.white;
+
+        //}
 
     }
     private void Update()
     {
-        if (pasoIntro == false)
+        //if (pasoIntro == false)
+        if (!UserData.terminoLobby)
         {
 
             if (InputManager.isPC)
@@ -122,7 +129,8 @@ public class LobbyManager : MonoBehaviour
     {
 
         // Lógica para cambiar al juego
-        if (pasoIntro == false)
+        //if (pasoIntro == false)
+        if (!UserData.terminoLobby)
         {
             videoPlayer.enabled = false;
             panelVideo.SetActive(false);
@@ -143,7 +151,7 @@ public class LobbyManager : MonoBehaviour
     public void PaneoCamera()
     {
         
-        StartCoroutine(ChangePlayerPosition());
+        StartCoroutine( ChangePlayerPosition());
         
     }
     public void PaneoCameraInit()

@@ -100,7 +100,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   limbos:
+  - Lobby2
   - Limbo_N1
+  - Nivel_1
   dimensions: 0
   panelFeedback: {fileID: 0}
   canvasFog: {fileID: 0}

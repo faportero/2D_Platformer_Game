@@ -151,8 +151,8 @@ public class CameraManager : MonoBehaviour
 
     public void SwapCamera(CinemachineVirtualCamera cameraFromLeft, CinemachineVirtualCamera cameraFromRight, Vector2 triggerExitDirection)
     {
-        print(triggerExitDirection);
-        print(currentCamera);
+        //print(triggerExitDirection);
+        //print(currentCamera);
         if (currentCamera == cameraFromLeft && triggerExitDirection.y < 0 && triggerExitDirection.x < 0)
         {
             cameraFromLeft.enabled = false;

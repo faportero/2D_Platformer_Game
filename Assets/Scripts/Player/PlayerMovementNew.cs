@@ -107,6 +107,7 @@ public class PlayerMovementNew : MonoBehaviour
     public bool isFacingRight = true;
     public bool tutorialActive;
     public bool isHitBadFloor;
+    public bool isLeftClick;
     #endregion
     #region Unity Callbacks
     private void Awake()
@@ -267,6 +268,7 @@ public class PlayerMovementNew : MonoBehaviour
     {
         if (direction.x < 0 && transform.localScale.x > 0)
         {
+
             transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
         }
         else if (direction.x > 0 && transform.localScale.x < 0)
@@ -357,70 +359,6 @@ public class PlayerMovementNew : MonoBehaviour
         direction = new Vector2(x, y);
         TurnCheck();
         StartCoroutine(MovetoTarget());
-        //if (isPC)
-        //{
-
-        //    if (Input.GetMouseButtonDown(0))
-        //    {
-
-        //        screenPosition = Input.mousePosition;
-        //        screenPosition.z = Camera.main.nearClipPlane + 25;
-        //        targetPosition = Camera.main.ScreenToWorldPoint(screenPosition);
-
-        //        targetPosition.y = transform.position.y;
-        //        targetPosition.z = transform.position.z;
-        //        TurnCheck();
-
-
-        //        //float clicDirection = targetPosition.x;
-        //        //clicDirection = clicDirection - transform.position.x;
-
-        //        //if (clicDirection < 0 && transform.localScale.x > 0)
-        //        //{
-        //        //    transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-        //        //}
-        //        //else if (clicDirection > 0 && transform.localScale.x < 0)
-        //        //{
-        //        //    transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-        //        //}
-        //    }
-        //    StartCoroutine(MovetoTarget());
-        //}
-        //else if (!isPC) 
-        //{
-        //    print("Entrooooooooooooooooooooooooooooooo");
-        //    if (Input.touchCount > 0 || swipeDetector.TapPerformed == true)
-        //    {
-
-        //        // screenPosition = Input.mousePosition;
-        //        Touch touch = Input.GetTouch(0);
-        //        screenPosition = touch.position;
-        //        screenPosition.z = Camera.main.nearClipPlane + 25;
-        //        targetPosition = Camera.main.ScreenToWorldPoint(screenPosition);
-
-        //        targetPosition.y = transform.position.y;
-        //        targetPosition.z = transform.position.z;
-
-        //        screenPosition = Camera.main.ViewportToScreenPoint(screenPosition);
-
-        //        TurnCheck();
-        //        //float clicDirection = targetPosition.x;
-        //        //clicDirection = clicDirection - transform.position.x;
-        //        //print("screenPosAux = " + clicDirection);
-
-        //        //if (clicDirection < 0 && transform.localScale.x > 0)
-        //        //{
-
-        //        //    transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-        //        //}
-        //        //else if (clicDirection > 0 && transform.localScale.x < 0)
-        //        //{
-        //        //    transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-        //        //}
-        //    }
-        //    print(targetPosition);
-        //    StartCoroutine(MovetoTarget());
-        //}
 
     }
         private IEnumerator MovetoTarget()
@@ -430,7 +368,7 @@ public class PlayerMovementNew : MonoBehaviour
         rb.position = Vector3.MoveTowards(rb.position, targetPosition, clickMoveSpeed * Time.deltaTime);
         yield return new WaitWhile(() => rb.position.x == targetPosition.x);
         anim.SetBool("SlowWalk", true);
-        print("llego a su destino");
+        //Sprint("llego a su destino");
     }
     #endregion
     #region RunnerMode
@@ -438,7 +376,7 @@ public class PlayerMovementNew : MonoBehaviour
     {
         
 
-        print("Anim: " + anim.GetBool("Roll") + "DoingRoll: " + doingRoll + "InputEnabled" + inputsEnabled + "SwipeDirection" + swipeDetector.swipeDirection);
+        //print("Anim: " + anim.GetBool("Roll") + "DoingRoll: " + doingRoll + "InputEnabled" + inputsEnabled + "SwipeDirection" + swipeDetector.swipeDirection);
 
         rb.gravityScale = gravityScale;
         if (!doingSmash && !doingRoll && !playerController.isCannabis) direction = new Vector2(1.2f, 1);
@@ -1359,19 +1297,40 @@ public class PlayerMovementNew : MonoBehaviour
     private IEnumerator Diying()
     {
         //float startValue = material.GetFloat("_DissolveAmmount");
-       // anim.Play("Die");
-       // material.SetFloat("_DissolveAmmount", Mathf.Lerp(0, 1, Time.deltaTime * .5f));
+        // anim.Play("Die");
+        // material.SetFloat("_DissolveAmmount", Mathf.Lerp(0, 1, Time.deltaTime * .5f));
+        //StartCoroutine(PlayerDisolve());
+        //StartCoroutine(DieAnim2());
         direction = Vector2.zero;
         playerController.isDie = true;
         playerController.escudo = false;
         playerController.saltoDoble = false;
         playerController.vidaExtra = false;
         playerController.paracaidas = false;
-        yield return new WaitForSeconds(1);
-        levelManager.GameOver();
+        yield return new WaitForSeconds(5);
+        levelManager.ResetLevel();
+        //levelManager.GameOver();
         //canMove = false;
         //SceneManager.LoadScene("Test");
 
+    }
+    private IEnumerator PlayerDisolve()
+    {
+        float dissolveAmount = 0;
+        float duration = 1f;  // Duración total de la animación en segundos
+        float elapsedTime = 0;
+
+        while (elapsedTime < duration)
+        {
+            dissolveAmount = Mathf.Lerp(0, 1, elapsedTime / duration);
+            material.SetFloat("_DissolveAmmount", dissolveAmount);
+            elapsedTime += Time.deltaTime;
+            print(material.GetFloat("_DissolveAmmount"));
+            yield return null;  // Esperar al siguiente frame
+        }
+
+        // Asegurarse de que el valor final sea exactamente 1
+        material.SetFloat("_DissolveAmmount", 1);
     }
     public void DieMaterialAnim()
     {
@@ -1395,7 +1354,9 @@ public class PlayerMovementNew : MonoBehaviour
         {
             dissolveAmount += .1f;
             material.SetFloat("_DissolveAmmount", dissolveAmount);
-             yield return new WaitForSeconds(.05f);
+            print(material.GetFloat("_DissolveAmmount"));
+
+            yield return new WaitForSeconds(.05f);
            // yield return null;
         }
         Die();

@@ -2,54 +2,54 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static Health;
+
 
 public class UI_FeedbackSalud : MonoBehaviour
 {
     public List<Sprite> feedbackSprites = new List<Sprite>();
-    private Health health;
+    private Salud health;
     public Image image; 
 
     private void Awake()
     {
-       health = FindAnyObjectByType<Health>();
+         health = FindAnyObjectByType<Salud>();
        //health = GameObject.FindGameObjectWithTag("Salud");
         //image = gameObject.transform.GetChild(0).GetComponent<Image>();
         image = GetComponent<Image>();
     }
     private void Update()
     {
-        //AssignFeedbackSprite();
+       // AssignFeedbackSprite();
     }
     public void AssignFeedbackSprite()
     {
-        switch (health.GetComponent<Health>().healthType)
+        switch (health.healthType)
         {
-            case HealthType.Futbol:
+            case Salud.HealthType.Futbol:
                 image.sprite = feedbackSprites[0];
                 break;
-            case HealthType.Gym:
+            case Salud.HealthType.Gym:
                 image.sprite = feedbackSprites[1];
                 break;
-            case HealthType.Trotar:
+            case Salud.HealthType.Trotar:
                 image.sprite = feedbackSprites[2];
                 break;
-            case HealthType.No:
+            case Salud.HealthType.No:
                 image.sprite = feedbackSprites[3];
                 break;
-            case HealthType.SoloHoy:
+            case Salud.HealthType.SoloHoy:
                 image.sprite = feedbackSprites[4];
                 break;
-            case HealthType.Meditacion:
+            case Salud.HealthType.Meditacion:
                 image.sprite = feedbackSprites[5];
                 break;
-            case HealthType.Agua:
+            case Salud.HealthType.Agua:
                 image.sprite = feedbackSprites[6];
                 break;
-            case HealthType.Manzana:
+            case Salud.HealthType.Manzana:
                 image.sprite = feedbackSprites[7];
                 break;
-            case HealthType.Pescado:
+            case Salud.HealthType.Pescado:
                 image.sprite = feedbackSprites[8];
                 break;
         }

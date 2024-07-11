@@ -15,46 +15,36 @@ public class UI_SaludAttachedBar : MonoBehaviour
     private float duration = 3;
     private float targetFillAmount;
     private float startFillAmount;
+    [HideInInspector] public Coroutine updateTimeCoroutine;
 
 
     private void Start()
     {
         healthFillBar = transform.GetChild(1).GetComponent<Image>();
-
+        //UpdateTime(2);
     }
-
-    public void UpdateHealth(float amount)
-    {
-        currentTimeEffect += amount;
-        currentTimeEffect = Mathf.Clamp(currentTimeEffect, 0f, maxTimeEffect);
-        //UpdateHealthBar();
-    }
-
 
     public void UpdateTime(float duration)
     {
-    if (isActiveAndEnabled)
+
+        if (updateTimeCoroutine != null)
         {
-            StartCoroutine(UpdateTimeEffect(duration));
-            
-        }       
+            StopCoroutine(updateTimeCoroutine);
+        }
+        updateTimeCoroutine = StartCoroutine(UpdateTimeEffect(duration));
     }
-
-
 
     private IEnumerator UpdateTimeEffect(float duration)
     {       
          startFillAmount = 1; 
          targetFillAmount = currentTimeEffect / maxTimeEffect;
-
         float elapsedTime = 0;
-
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
             healthFillBar.fillAmount = Mathf.Lerp(startFillAmount, targetFillAmount, elapsedTime / duration);
             yield return null;
         }
-       // healthFillBar.color = colorGradient.Evaluate(targetFillAmount);
+     // transform.parent.gameObject.SetActive(false);
     }
 }

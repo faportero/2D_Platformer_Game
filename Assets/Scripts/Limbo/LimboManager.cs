@@ -12,18 +12,18 @@ public class LimboManager : MonoBehaviour
 
     private void Start()
     {
-        if (countVideosWatched >= 3)
-        {
-            playerController.transform.position = newPosition.position;
-            playerMovementNew.targetPosition = playerController.transform.position;
-        }
+        //if (countVideosWatched >= 3)
+        //{
+        //    playerController.transform.position = newPosition.position;
+        //    playerMovementNew.targetPosition = playerController.transform.position;
+        //}
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.tag == "Player")
         {
             
-            countVideosWatched++;
+         //   countVideosWatched++;
 
         }
     }

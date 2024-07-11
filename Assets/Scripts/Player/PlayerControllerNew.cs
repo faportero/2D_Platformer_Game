@@ -63,6 +63,8 @@ public class PlayerControllerNew : MonoBehaviour
     private Coroutine blinkCoroutine;
     private Coroutine enemyEffectCoroutine;
     private Coroutine coroutineFeedback;
+    private Coroutine takeSaludAnim;
+    private Coroutine activarEnfasis;
 
     [Header("Intern Variables")]
     private Vector3 startPosition;
@@ -82,7 +84,7 @@ public class PlayerControllerNew : MonoBehaviour
     private void Start()
     {
 
-         if(!ui_enemyAttachedBar) ui_enemyAttachedBar = FindFirstObjectByType<UI_SaludAttachedBar>();
+        // if(!ui_enemyAttachedBar) ui_enemyAttachedBar = FindFirstObjectByType<UI_SaludAttachedBar>();
        // if (!ui_enemyAttachedBar) ui_enemyAttachedBar = GameObject.FindGameObjectWithTag("EnemyAttachedBar").GetComponent<UI_SaludAttachedBar>();
        // ui_enemyAttachedBar = FindAnyObjectByType<UI_SaludAttachedBar>();
         playerMovement = GetComponent<PlayerMovementNew>();
@@ -100,7 +102,7 @@ public class PlayerControllerNew : MonoBehaviour
         //{
         //   transform.position = new Vector3(NewStartPosition.transform.position.x, transform.position.y, transform.position.z);
         //}
-        
+
         switch (currentSalud)
         {
             case 0:
@@ -158,10 +160,11 @@ public class PlayerControllerNew : MonoBehaviour
                 AdjustLuminance(1);
                 break;
             default:
-                if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(1);
                 AdjustLuminance(1);
                 break;
         }
+
+
 
 
     }
@@ -192,9 +195,7 @@ public class PlayerControllerNew : MonoBehaviour
         if (collision.tag == "Salud")
         {
             audioSource.Stop();
-           // StopAllCoroutines();
-            //saludBar.UpdateHealth(saludAmount);
-            //saludBar.currentAdiccion = currentSalud;
+
             currentSalud += saludAmount;
             currentSalud = Mathf.Clamp(currentSalud, 0f, 1);
             saludBar.healthFillBar.fillAmount = currentSalud;
@@ -209,21 +210,31 @@ public class PlayerControllerNew : MonoBehaviour
                 enemyAttached.SetActive(false);
                 if (enemyEffectCoroutine != null) StopCoroutine(enemyEffectCoroutine);
                 if (blinkCoroutine != null) StopCoroutine(blinkCoroutine);
+                if (ui_enemyAttachedBar.updateTimeCoroutine != null) StopCoroutine(ui_enemyAttachedBar.updateTimeCoroutine);
                 isDrugged = false;
             }
-            ////if(isDrugged) { isDrugged = false; transform.GetChild(1).gameObject.SetActive(false); }
+
 
 
             startPosition = collision.ClosestPoint(transform.position);
             currentItem = collision.gameObject;
-            StartCoroutine(TakeSaludAnim());
-            StartCoroutine(ActivarEnfasis());
+
+            if (takeSaludAnim != null) 
+            {
+                StopCoroutine(takeSaludAnim);
+            }
+            takeSaludAnim = StartCoroutine(TakeSaludAnim());
+            if (activarEnfasis != null)
+            {
+                StopCoroutine (activarEnfasis);
+            }
+            activarEnfasis = StartCoroutine(ActivarEnfasis());
+
             ShowFeedback();
 
             switch (currentSalud)
             {
                 case 0:
-                    // ui_enemyAttachedBar.UpdateTime(999999999);
                     isIndestructible = false;
                     playerMovement.Die();
                     break;
@@ -300,23 +311,18 @@ public class PlayerControllerNew : MonoBehaviour
 
             if (currentSalud > 90) spriteRenderer.material = materials[1];
 
-            return;
+          //  return;
         }
 
         if (collision.tag == "Enemy")
         {
+            //enemyAttached.SetActive(true);
+            //if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(5);
+
+            enemyAttached.SetActive(true);
+            collision.GetComponent<EnemyNew>().Effect();
             collision.gameObject.SetActive(false);
 
-           // if (!isIndestructible)
-           // {
-
-                collision.GetComponent<EnemyNew>().Effect();
-                enemyAttached.SetActive(true);
-
-            //currentSalud -= saludAmount;
-            //saludBar.UpdateHealth(-saludAmount);
-            //currentSalud = Mathf.Clamp(currentSalud, 0f, 100);
-            //saludBar.currentAdiccion = currentSalud;
             currentSalud -= saludAmount;
             currentSalud = Mathf.Clamp(currentSalud, 0f, 1);
             saludBar.healthFillBar.fillAmount = currentSalud;
@@ -325,19 +331,25 @@ public class PlayerControllerNew : MonoBehaviour
 
             isDrugged = true;
 
-                switch (currentSalud)
-                {
-                    case 0:
-                    // ui_enemyAttachedBar.UpdateTime(999999999);
-                    //shatterEffect.StartShatter();
-                    //StopAllCoroutines();
-                    //playerExplode.SetActive(true);
-                    //gameObject.SetActive(false);
+            if (isShowPanel)
+            {
+                panelFeedback.SetActive(false);
+                if (takeSaludAnim != null) StopCoroutine(takeSaludAnim);
+                if (activarEnfasis != null) StopCoroutine(activarEnfasis);
+            }
+
+            //StopCoroutine(ui_enemyAttachedBar.updateTimeCoroutine);
+
+
+
+            switch (currentSalud)
+            {
+                case 0:
                     playerMovement.Die();
                     isIndestructible = false;
-                        break;
-                    case .1f:
-                        isIndestructible = false;
+                    break;
+                case .1f:
+                    isIndestructible = false;
                     if (showPocaVidePanel) panelPocaVida.SetActive(true);
                     effectPanel.SetActive(true);
                     //if (showPocaVidePanel)
@@ -353,94 +365,91 @@ public class PlayerControllerNew : MonoBehaviour
                     //    playerMovement.inputsEnabled = true;
                     //}
                     if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(10);
-                        enemyEffectCoroutine = StartCoroutine(CurrentEffect(10));
-                        GlowSpriteEffect.SetActive(false);
-                        AdjustLuminance(0);
-                        break;
-                    case .2f:
-                        isIndestructible = false;
+                    enemyEffectCoroutine = StartCoroutine(CurrentEffect(10));
+                    GlowSpriteEffect.SetActive(false);
+                    AdjustLuminance(0);
+                    break;
+                case .2f:
+                    isIndestructible = false;
                     effectPanel.SetActive(true);
                     if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(9);
-                        enemyEffectCoroutine = StartCoroutine(CurrentEffect(9));
-                        GlowSpriteEffect.SetActive(false);
-                        AdjustLuminance(.2f);
-                        break;
-                    case .3f:
-                        isIndestructible = false;
+                    enemyEffectCoroutine = StartCoroutine(CurrentEffect(9));
+                    GlowSpriteEffect.SetActive(false);
+                    AdjustLuminance(.2f);
+                    break;
+                case .3f:
+                    isIndestructible = false;
                     effectPanel.SetActive(true);
-                    enemyAttached.SetActive(false);
                     if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(8);
-                        GlowSpriteEffect.SetActive(false);
-                        AdjustLuminance(.3f);
-                        break;
-                    case .4f:
-                        isIndestructible = false;
+                    GlowSpriteEffect.SetActive(false);
+                    AdjustLuminance(.3f);
+                    break;
+                case .4f:
+                    isIndestructible = false;
                     effectPanel.SetActive(true);
                     if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(7);
-                        enemyEffectCoroutine = StartCoroutine(CurrentEffect(7));
-                        GlowSpriteEffect.SetActive(false);
-                        AdjustLuminance(.4f);
-                        break;
-                    case .5f:
-                        isIndestructible = false;
+                    enemyEffectCoroutine = StartCoroutine(CurrentEffect(7));
+                    GlowSpriteEffect.SetActive(false);
+                    AdjustLuminance(.4f);
+                    break;
+                case .5f:
+                    isIndestructible = false;
                     effectPanel.SetActive(true);
                     if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(6);
-                        enemyEffectCoroutine = StartCoroutine(CurrentEffect(6));
-                        GlowSpriteEffect.SetActive(false);
-                        AdjustLuminance(.5f);
-                        break;
-                    case .6f:
-                        isIndestructible = false;
+                    enemyEffectCoroutine = StartCoroutine(CurrentEffect(6));
+                    GlowSpriteEffect.SetActive(false);
+                    AdjustLuminance(.5f);
+                    break;
+                case .6f:
+                    isIndestructible = false;
                     effectPanel.SetActive(true);
                     if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(5);
-                        enemyEffectCoroutine = StartCoroutine(CurrentEffect(5));
-                        GlowSpriteEffect.SetActive(false);
-                        AdjustLuminance(.6f);
-                        break;
-                    case .7f:
-                        isIndestructible = false;
+                    enemyEffectCoroutine = StartCoroutine(CurrentEffect(5));
+                    GlowSpriteEffect.SetActive(false);
+                    AdjustLuminance(.6f);
+                    break;
+                case .7f:
+                    isIndestructible = false;
                     effectPanel.SetActive(true);
                     if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(4);
-                        enemyEffectCoroutine = StartCoroutine(CurrentEffect(4));
-                        GlowSpriteEffect.SetActive(false);
-                        AdjustLuminance(.7f);
-                        break;
-                    case .8f:
-                        isIndestructible = false;
+                    enemyEffectCoroutine = StartCoroutine(CurrentEffect(4));
+                    GlowSpriteEffect.SetActive(false);
+                    AdjustLuminance(.7f);
+                    break;
+                case .8f:
+                    isIndestructible = false;
                     effectPanel.SetActive(true);
                     if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(3);
-                        enemyEffectCoroutine = StartCoroutine(CurrentEffect(3));
-                        GlowSpriteEffect.SetActive(false);
-                        AdjustLuminance(.8f);
-                        break;
-                    case .9f:
-                        isIndestructible = false;
+                    enemyEffectCoroutine = StartCoroutine(CurrentEffect(3));
+                    GlowSpriteEffect.SetActive(false);
+                    AdjustLuminance(.8f);
+                    break;
+                case .9f:
+                    isIndestructible = false;
                     effectPanel.SetActive(true);
                     if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(2);
-                        enemyEffectCoroutine = StartCoroutine(CurrentEffect(2));
-                        GlowSpriteEffect.SetActive(false);
-                        AdjustLuminance(.9f);
-                        break;
-                    case 1:
-                        //isIndestructible = true;
-                        //ui_enemyAttachedBar.UpdateTime(1);
-                        //enemyEffectCoroutine = StartCoroutine(CurrentEffect(1));
-                        //GlowSpriteEffect.SetActive(true);
-                        //Inmunidad();
-                        AdjustLuminance(1);
-                        break;
-                    default:
+                    enemyEffectCoroutine = StartCoroutine(CurrentEffect(2));
+                    GlowSpriteEffect.SetActive(false);
+                    AdjustLuminance(.9f);
+                    break;
+                case 1:
+                    //isIndestructible = true;
+                    //ui_enemyAttachedBar.UpdateTime(1);
+                    //enemyEffectCoroutine = StartCoroutine(CurrentEffect(1));
+                    //GlowSpriteEffect.SetActive(true);
+                    //Inmunidad();
+                    AdjustLuminance(1);
+                    break;
+                default:
                     if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(1);
-                        break;
-                }
+                    break;
+            }
 
-                StartBlinking(0);
-                StartCoroutine(DeactivateEnfasis());
+            StartBlinking(0);
+            StartCoroutine(DeactivateEnfasis());
 
             if (currentSalud != 100) spriteRenderer.material = materials[0];
 
-            return;
-            //}
         }
 
         if (collision.tag == "Pieza")
@@ -449,14 +458,12 @@ public class PlayerControllerNew : MonoBehaviour
             if ( collision.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasA)
             {                
                 piezaA = true;
-                // piezasPanel.piezaA.GetComponent<Image>().color = Color.red;
                 StartCoroutine(TakePieceAnim());
                 piezasPanel.piezaA.SetActive(false);
             }
             if (collision.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasB)
             {
                 piezaB = true;
-                //piezasPanel.piezaB.GetComponent<Image>().color = Color.red;
                 StartCoroutine(TakePieceAnim());
                 piezasPanel.piezaB.SetActive(false);
 
@@ -464,7 +471,6 @@ public class PlayerControllerNew : MonoBehaviour
             if (collision.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasC)
             {
                 piezaC = true;
-                //piezasPanel.piezaC.GetComponent<Image>().color = Color.red;
                 StartCoroutine(TakePieceAnim());
                 piezasPanel.piezaC.SetActive(false);
 
@@ -472,7 +478,6 @@ public class PlayerControllerNew : MonoBehaviour
             if (collision.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasD)
             {
                 piezaD = true;
-                //piezasPanel.piezaD.GetComponent<Image>().color = Color.red;
                 StartCoroutine(TakePieceAnim());
                 piezasPanel.piezaD.SetActive(false);
 
@@ -503,19 +508,12 @@ public class PlayerControllerNew : MonoBehaviour
     {
         if (collision.gameObject.tag == "BadFloor" && !isAttack)
         {
-            //StopAllCoroutines();
             if(playerMovement.doingRoll)
             {
-                //playerMovement.rb.bodyType = RigidbodyType2D.Kinematic;
-                //playerMovement.rb.gravityScale = 0;
+
                 playerMovement.capsuleCollider.size = playerMovement.capsuleColliderSize;
                 playerMovement.doingRoll = false;
-                //playerMovement.rb.velocity = playerMovement.rbVelocityTemp;
-            }
-            //currentSalud -= saludAmount;
-            //saludBar.UpdateHealth(-saludAmount);
-            //currentSalud = Mathf.Clamp(currentSalud, 0f, 100);
-            //saludBar.currentAdiccion = currentSalud;
+            }        
             currentSalud -= saludAmount;
             currentSalud = Mathf.Clamp(currentSalud, 0f, 1);
             saludBar.healthFillBar.fillAmount = currentSalud;
@@ -772,7 +770,7 @@ public class PlayerControllerNew : MonoBehaviour
         GlowSpriteEffect.SetActive(true);        
         GetCompositeColliders2D();
         SetAllCompositeCollidersTrigger(compositeColliders, true);
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSecondsRealtime(10);
         isIndestructible = false;
         GlowSpriteEffect.SetActive(false);
         spriteRenderer.material = materials[0];
@@ -789,13 +787,13 @@ public class PlayerControllerNew : MonoBehaviour
         yield return new WaitForSecondsRealtime(delay);
         audioSource.Stop();
         effectPanel.SetActive(false);
-        enemyAttached.SetActive(false);
+        //enemyAttached.SetActive(false);
+        isDrugged = false;
         isCannabis = false;
         isCocaMetaHero = false;
         isPsilo = false;
         isAlcohol = false;
         isTabaco = false;
-        isDrugged = false;
         playerMovement.inputsEnabled = true;
         //if (!isDie && playerMovement.canMove)
         //{
@@ -830,7 +828,11 @@ public class PlayerControllerNew : MonoBehaviour
     #region Salud Managment
     public void ShowFeedback()
     {
-        if (isShowPanel) StopCoroutine(coroutineFeedback);
+        //if (isShowPanel) StopCoroutine(coroutineFeedback);
+        if (coroutineFeedback != null)
+        {
+            StopCoroutine(coroutineFeedback);            
+        }
         coroutineFeedback = StartCoroutine(Feedback());
     }
     private IEnumerator Feedback()

@@ -8,7 +8,7 @@ public class UI_Habilidades : MonoBehaviour
     [SerializeField] private TextMeshProUGUI txEscudo, txSaltoDoble, txVidaExtra, txParacaidas, txCoins;
     [SerializeField] private int valorEscudo, valorSaltoDoble, valorVidaExtra, valorParacaidas;
    
-    [SerializeField] private PlayerController playerController;
+    [SerializeField] private PlayerControllerNew playerController;
     [SerializeField] private UI_Coins uiCoins;
     [SerializeField] LevelManager levelManager;
 

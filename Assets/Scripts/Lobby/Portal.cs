@@ -14,10 +14,11 @@ public class Portal : MonoBehaviour
 
    [SerializeField] private enum Dimensions
     {
-        DimensionA,
-        DimensionB,
-        DimensionC,
-        DimensionD,
+        Lobby,
+        Limbo,
+        Nivel1,
+        Nivel2,
+        Nivel3,
     }
     [SerializeField]  private Dimensions dimensions;
     [SerializeField] private GameObject panelFeedback;
@@ -46,6 +47,7 @@ public class Portal : MonoBehaviour
         StartCoroutine(SwitchScene());
         Espejo.isChecked = false;
     }
+
     private IEnumerator PlayerDisolve()
     {
         float dissolveAmount = 0;
@@ -80,10 +82,12 @@ public class Portal : MonoBehaviour
         
         // yield return new WaitForSeconds(5);
         yield return new WaitForSecondsRealtime(3);
+
+        AsyncOperation asyncOperation;
         switch (dimensions)
         {
-            case (Dimensions.DimensionA):
-                AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(limbos[0]);
+            case (Dimensions.Lobby):
+                asyncOperation = SceneManager.LoadSceneAsync(limbos[0]);
                 asyncOperation.allowSceneActivation = false;
                 while (!asyncOperation.isDone)
                 {
@@ -91,22 +95,65 @@ public class Portal : MonoBehaviour
                     if (progress == .9f)
                     {
                         //textoCarga.text = "100 %";
-                        yield return new WaitForSecondsRealtime(2f);
+                        yield return new WaitForSecondsRealtime(1f);
                         //anim.Play("AnimacionSalida");
                         //yield return new WaitForSecondsRealtime(animacion.averageDuration / Mathf.Abs(anim.GetFloat("ExitSpeed")));
                         //isLoading = false;
+                        UserData.terminoNivel1 = true;
                         asyncOperation.allowSceneActivation = true;
                     }
                 }
-                //SceneManager.LoadScene(limbos[0]);
+
+               
+
                 break;
-            case (Dimensions.DimensionB):
-                SceneManager.LoadScene(limbos[1]);
+            case (Dimensions.Limbo):
+                asyncOperation = SceneManager.LoadSceneAsync(limbos[1]);
+                asyncOperation.allowSceneActivation = false;
+                while (!asyncOperation.isDone)
+                {
+                    progress = asyncOperation.progress;
+                    if (progress == .9f)
+                    {
+                        //textoCarga.text = "100 %";
+                        yield return new WaitForSecondsRealtime(1f);
+                        //anim.Play("AnimacionSalida");
+                        //yield return new WaitForSecondsRealtime(animacion.averageDuration / Mathf.Abs(anim.GetFloat("ExitSpeed")));
+                        //isLoading = false;
+                        UserData.terminoLobby = true;
+                        asyncOperation.allowSceneActivation = true;
+                    }
+                }
+
+               
+
+
                 break;
-            case (Dimensions.DimensionC):
-                SceneManager.LoadScene(limbos[2]);
+            case (Dimensions.Nivel1):
+                asyncOperation = SceneManager.LoadSceneAsync(limbos[2]);
+                asyncOperation.allowSceneActivation = false;
+                while (!asyncOperation.isDone)
+                {
+                    progress = asyncOperation.progress;
+                    if (progress == .9f)
+                    {
+                        //textoCarga.text = "100 %";
+                        yield return new WaitForSecondsRealtime(1f);
+                        //anim.Play("AnimacionSalida");
+                        //yield return new WaitForSecondsRealtime(animacion.averageDuration / Mathf.Abs(anim.GetFloat("ExitSpeed")));
+                        //isLoading = false;
+                        UserData.terminoLimbo = true;
+
+                        asyncOperation.allowSceneActivation = true;
+                    }
+                }
+
+
                 break;
-            case (Dimensions.DimensionD):
+            case (Dimensions.Nivel2):
+                SceneManager.LoadScene(limbos[3]);
+                break;
+            case (Dimensions.Nivel3):
                 SceneManager.LoadScene(limbos[3]);
                 break;
             default:

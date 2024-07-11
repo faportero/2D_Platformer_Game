@@ -8,6 +8,7 @@ public class Clickable : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public void OnPointerDown(PointerEventData eventData)
     {
         dialogue.OnButtonDown();
+        dialogue.StartBlinkAnimation();
     }
 
     public void OnPointerUp(PointerEventData eventData)

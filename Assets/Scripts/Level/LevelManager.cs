@@ -24,18 +24,53 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private UI_Lifes uiLifes;
     [SerializeField] private GameObject[] piezasNivel;
     [SerializeField] private GameObject fogPanel;
+    [SerializeField] private Transform newStartPos;
     public static bool usedPA, usedPB, usedPC, usedPD, isFogTransition = false;
     //[SerializeField] private UI_Piezas uiPiezas;
         
     private void Awake()
     {
-        uiCoins.coinCount = UserData.coins;
-        uiCoins.coinCountText.text = uiCoins.coinCount.ToString();
+       // if (newStartPos) playerController.transform.position = newStartPos.position;
+        //uiCoins.coinCount = UserData.coins;
+        //uiCoins.coinCountText.text = uiCoins.coinCount.ToString();
 
         //playerController.escudo = UserData.escudo;
         //playerController.vidaExtra = UserData.vidaExtra;
         //playerController.saltoDoble = UserData.saltoDoble;
         //playerController.paracaidas = UserData.paracaidas;
+        print("TerminoLobby: " + UserData.terminoLobby);
+        print("TerminoLimbo: " + UserData.terminoLimbo);
+        print("TerminoNivel1: " + UserData.terminoNivel1);
+        switch (currentScene)
+        {
+            case CurrentScene.Lobby:
+                if (UserData.terminoLobby)
+                {
+                    if (newStartPos) playerController.transform.position = newStartPos.position;
+                   // print("Lobbyyyy");
+                }
+                break;
+            case CurrentScene.Limbo:
+                if (UserData.terminoLimbo)
+                {
+                    if (newStartPos) playerController.transform.position = newStartPos.position;
+                    //print("Limboooo");
+                }
+                break;
+            case CurrentScene.Nivel1:
+
+                break;
+            case CurrentScene.Nivel2:
+
+                break;
+            case CurrentScene.Nivel3:
+
+                break;
+
+            default:
+
+                break;
+        }
     }
     private void Start()
     {
@@ -51,6 +86,9 @@ public class LevelManager : MonoBehaviour
         //    fogPanel.GetComponent<UI_LoadingScene>().ShowOppener();
         //    isFogTransition = false;
         //}
+
+
+
     }
     public void GameOver()
     {
@@ -76,7 +114,8 @@ public class LevelManager : MonoBehaviour
         UserData.saltoDoble = playerController.saltoDoble;
         UserData.vidaExtra = playerController.vidaExtra;
         UserData.paracaidas = playerController.paracaidas;
-        SceneManager.LoadScene("Nivel_1");
+       // SceneManager.LoadScene("Nivel_1");
+        SceneManager.LoadScene("Lobby2");
     }
 
     private void CheckLevelPieces()
