@@ -14,18 +14,22 @@ public class PlayerControllerNew : MonoBehaviour
     [SerializeField] private GameObject effectPanel;
     [SerializeField] private GameObject panelFeedback;
     [SerializeField] private GameObject panelFeedbackBadFloor;
-    [SerializeField] private GameObject panelInmunidad;
-    [SerializeField] private GameObject panelPocaVida;
+    [SerializeField] private GameObject panelInmunidadTuto;
+    [SerializeField] private GameObject panelPocaVidaTuto;
+    [SerializeField] private GameObject panelPiezasTuto;
     [SerializeField] private  UI_Piezas piezasPanel;
     [SerializeField] private  UI_SaludBar saludBar;
+    [SerializeField] private  UI_FeedbackSalud ui_FeedbackSalud;
     [HideInInspector] public SpriteRenderer spriteRenderer;
     private PlayerMovementNew playerMovement;
     private GameObject currentItem;
     private GameObject currenPiece;
+    [HideInInspector] public Salud currentItemSalud;
     [SerializeField] private GameObject enemyAttached;
     [SerializeField] private GameObject playerExplode;
     [SerializeField] private GameObject ExplodeObject;
     [SerializeField] private UI_SaludAttachedBar ui_enemyAttachedBar;
+    
     private AudioPause audioPause;
     private LevelManager levelManager;
 
@@ -57,7 +61,7 @@ public class PlayerControllerNew : MonoBehaviour
     private bool isShowPanel;
     private bool isIndestructible;
     public static bool piezaA, piezaB, piezaC, piezaD;
-    public static bool showInmunidadPanel = true, showPocaVidePanel = true;
+    public static bool showInmunidadPanel = true, showPocaVidePanel = true, showPiezasPanel = true;
 
     [Header("Coroutines")]
     private Coroutine blinkCoroutine;
@@ -194,6 +198,7 @@ public class PlayerControllerNew : MonoBehaviour
 
         if (collision.tag == "Salud")
         {
+            
             audioSource.Stop();
 
             currentSalud += saludAmount;
@@ -201,6 +206,10 @@ public class PlayerControllerNew : MonoBehaviour
             saludBar.healthFillBar.fillAmount = currentSalud;
             print("Current Salud: "+currentSalud);
             print("Fill Amount: " + saludBar.healthFillBar.fillAmount);
+
+            
+            currentItemSalud = collision.GetComponent<Salud>();
+            ui_FeedbackSalud.AssignFeedbackSprite();
 
             collision.GetComponent<BoxCollider2D>().enabled = false;
 
@@ -284,24 +293,17 @@ public class PlayerControllerNew : MonoBehaviour
                     AdjustLuminance(.9f);
                     break;
                 case 1:
-                    //isIndestructible = true;
-                    //GlowSpriteEffect.SetActive(true);
                     AdjustLuminance(1);
                     StartCoroutine(Inmunidad());
-                    audioPause.Pause(true);
-                    if (showInmunidadPanel) panelInmunidad.SetActive(true);
-                    //if (showInmunidadPanel)
-                    //{
-                    //    audioPause.Pause(true);
-                    //    panelInmunidad.SetActive(true);
-                    //    //playerMovement.inputsEnabled = false;
-                    //}
-                    //else
-                    //{
-                    //    panelInmunidad.SetActive(false);
-                    //    audioPause.Pause(false);
-                    //    //playerMovement.inputsEnabled = true;
-                    //}
+
+                    if (showInmunidadPanel)
+                    {  
+                        audioPause.Pause(true);
+                        playerMovement.swipeDetector.gameObject.SetActive(false);
+                        panelInmunidadTuto.SetActive(true);
+                        showInmunidadPanel = false;
+                    }
+
                     break;
                 default:
                     if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(1);
@@ -350,24 +352,26 @@ public class PlayerControllerNew : MonoBehaviour
                     break;
                 case .1f:
                     isIndestructible = false;
-                    if (showPocaVidePanel) panelPocaVida.SetActive(true);
-                    effectPanel.SetActive(true);
-                    //if (showPocaVidePanel)
+                    // if (showPocaVidePanel) panelPocaVida.SetActive(true);
+
+
+                    if (showPocaVidePanel)
+                    {
+                        //StopAllCoroutines();
+                        audioPause.Pause(true);
+                        playerMovement.swipeDetector.gameObject.SetActive(false);
+                        panelPocaVidaTuto.SetActive(true);
+                        showPocaVidePanel = false;
+                        //return;
+                    }
+                    //if (!showPocaVidePanel)
                     //{
-                    //    panelPocaVida.SetActive(true);
-                    //    audioPause.Pause(true);
-                    //    playerMovement.inputsEnabled = false;
+                    //    effectPanel.SetActive(true);
+                    //    if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(10);
+                    //    enemyEffectCoroutine = StartCoroutine(CurrentEffect(10));
+                    //    GlowSpriteEffect.SetActive(false);
+                    //    AdjustLuminance(0);
                     //}
-                    //else
-                    //{
-                    //    panelPocaVida.SetActive(false);
-                    //    audioPause.Pause(false);
-                    //    playerMovement.inputsEnabled = true;
-                    //}
-                    if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(10);
-                    enemyEffectCoroutine = StartCoroutine(CurrentEffect(10));
-                    GlowSpriteEffect.SetActive(false);
-                    AdjustLuminance(0);
                     break;
                 case .2f:
                     isIndestructible = false;
@@ -454,6 +458,13 @@ public class PlayerControllerNew : MonoBehaviour
 
         if (collision.tag == "Pieza")
         {
+
+            if(showPiezasPanel)
+            {
+                playerMovement.swipeDetector.gameObject.SetActive(false);
+                panelPiezasTuto.SetActive(true);
+                showPiezasPanel = false;
+            }
             currenPiece = collision.gameObject;
             if ( collision.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasA)
             {                
@@ -541,7 +552,14 @@ public class PlayerControllerNew : MonoBehaviour
             // }
         }
     }
-
+    public void FirstEnemyEffect()
+    {
+        effectPanel.SetActive(true);
+        if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(10);
+        enemyEffectCoroutine = StartCoroutine(CurrentEffect(10));
+        GlowSpriteEffect.SetActive(false);
+        AdjustLuminance(0);
+    }
     public void TakePiece()
     {
         StartCoroutine(TakePieceAnim());

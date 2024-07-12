@@ -155,3 +155,14 @@ MonoBehaviour:
   - {fileID: -729514748, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
   - {fileID: -1767254407, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
   spriteIndex: 0
+  panelSpriteRenderer: {fileID: 0}
+  imageFeedbackPanel:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

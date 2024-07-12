@@ -114,7 +114,8 @@ public class LevelManager : MonoBehaviour
         UserData.saltoDoble = playerController.saltoDoble;
         UserData.vidaExtra = playerController.vidaExtra;
         UserData.paracaidas = playerController.paracaidas;
-       // SceneManager.LoadScene("Nivel_1");
+        // SceneManager.LoadScene("Nivel_1");
+       // UserData.terminoLobby = true;
         SceneManager.LoadScene("Lobby2");
     }
 

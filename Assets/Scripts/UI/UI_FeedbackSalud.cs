@@ -9,21 +9,27 @@ public class UI_FeedbackSalud : MonoBehaviour
     public List<Sprite> feedbackSprites = new List<Sprite>();
     private Salud health;
     public Image image; 
-
+    [SerializeField] private PlayerControllerNew playerControllerNew;
     private void Awake()
     {
-         health = FindAnyObjectByType<Salud>();
+        // health = FindAnyObjectByType<Salud>();
        //health = GameObject.FindGameObjectWithTag("Salud");
         //image = gameObject.transform.GetChild(0).GetComponent<Image>();
         image = GetComponent<Image>();
     }
+    private void Start()
+    {
+       // playerControllerNew = FindAnyObjectByType<PlayerControllerNew>();
+    }
     private void Update()
     {
        // AssignFeedbackSprite();
+     //  health = playerControllerNew.currentItemSalud;
     }
     public void AssignFeedbackSprite()
     {
-        switch (health.healthType)
+        //switch (health.healthType)
+        switch (playerControllerNew.currentItemSalud.healthType)
         {
             case Salud.HealthType.Futbol:
                 image.sprite = feedbackSprites[0];

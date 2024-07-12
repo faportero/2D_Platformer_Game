@@ -31,7 +31,8 @@ public class UI_SaludAttachedBar : MonoBehaviour
         {
             StopCoroutine(updateTimeCoroutine);
         }
-        updateTimeCoroutine = StartCoroutine(UpdateTimeEffect(duration));
+        if(gameObject.activeSelf && transform.parent.gameObject.activeSelf)updateTimeCoroutine = StartCoroutine(UpdateTimeEffect(duration));
+        if(gameObject.activeSelf && transform.parent.gameObject.activeSelf)updateTimeCoroutine = StartCoroutine(UpdateTimeEffect(duration));
     }
 
     private IEnumerator UpdateTimeEffect(float duration)

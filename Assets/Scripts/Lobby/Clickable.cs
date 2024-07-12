@@ -1,18 +1,18 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Clickable : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class Clickable : MonoBehaviour, IPointerDownHandler
 {
     [SerializeField] private Dialogue dialogue;
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        dialogue.OnButtonDown();
-        dialogue.StartBlinkAnimation();
+        if (dialogue.gameObject.activeSelf)
+        {
+            dialogue.OnButtonDown();
+           // dialogue.StartBlinkAnimation();
+        }
     }
 
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        dialogue.OnButtonUp();
-    }
+
 }

@@ -108,6 +108,7 @@ public class PlayerMovementNew : MonoBehaviour
     public bool tutorialActive;
     public bool isHitBadFloor;
     public bool isLeftClick;
+    private bool isMoving;
     #endregion
     #region Unity Callbacks
     private void Awake()
@@ -191,14 +192,8 @@ public class PlayerMovementNew : MonoBehaviour
                         anim.SetBool("SlowWalk", false);
                         anim.Play("Idle");
                     }
-                    //print(inputsEnabled);
-                    //CheckGround();
-
-
-
-
-
                     break;
+
                 case MovementMode.RunnerMode:
 
                         isFallingMode = false;
@@ -341,6 +336,101 @@ public class PlayerMovementNew : MonoBehaviour
             cameraFollowObject.CallTurn();
         }
     }
+
+    //private void TapMovement()
+    //{
+    //    rb.gravityScale = gravityScale;
+    //    direction = new Vector2(x, y);
+    //    TurnCheck();
+    //    StartCoroutine(MovetoTarget());
+
+    //}
+
+    private void TapMovement()
+    {
+        if (!isMoving) // Verifica si el personaje no está en movimiento
+        {
+            if (DetectTap())
+            {
+                rb.gravityScale = gravityScale;
+                direction = new Vector2(x, y);
+                TurnCheck();
+                StartCoroutine(MoveFixedDistance()); // Inicia la corrutina para mover una distancia fija
+            }
+        }
+    }
+
+    private IEnumerator MoveFixedDistance()
+    {
+        isMoving = true; // Marca el inicio del movimiento
+        anim.SetBool("SlowWalk", true); // Activar animación de caminar
+
+        // Calcular la posición final a 3 unidades en la dirección del clic
+        Vector3 startPosition = rb.position;
+        // Vector3 endPosition = startPosition + new Vector3(clicDirection > 0 ? 3 : -3, 0, 0);
+        
+        Vector3 endPosition;
+        if (clicDirection > 0)
+        {
+            endPosition = startPosition + new Vector3(3, 0, 0);
+        }
+        else
+        {
+            endPosition = startPosition + new Vector3(-3, 0, 0);
+        }
+
+        // Mover el personaje hacia la posición final
+        while (Vector3.Distance(rb.position, endPosition) > 0.1f)
+        {
+            rb.position = Vector3.MoveTowards(rb.position, endPosition, clickMoveSpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        // Desactivar animación de caminar y activar animación de Idle
+        anim.SetBool("SlowWalk", false);
+        anim.Play("Idle");
+        isMoving = false; // Marca el fin del movimiento
+    }
+
+    private bool DetectTap()
+    {
+        if (isPC)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                screenPosition = Input.mousePosition;
+                screenPosition.z = Camera.main.nearClipPlane + 25;
+                targetPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+
+                targetPosition.y = transform.position.y;
+                targetPosition.z = transform.position.z;
+
+                clicDirection = targetPosition.x;
+                clicDirection = clicDirection - transform.position.x;
+                return true; // Se detectó un clic
+            }
+        }
+        else if (!isPC)
+        {
+            if (Input.touchCount > 0 || swipeDetector.TapPerformed == true)
+            {
+                Touch touch = Input.GetTouch(0);
+                screenPosition = touch.position;
+                screenPosition.z = Camera.main.nearClipPlane + 25;
+                targetPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+
+                targetPosition.y = transform.position.y;
+                targetPosition.z = transform.position.z;
+
+                clicDirection = targetPosition.x;
+                clicDirection = clicDirection - transform.position.x;
+                swipeDetector.TapPerformed = false;
+                return true; // Se detectó un toque
+            }
+        }
+        return false; // No se detectó un clic o toque
+    }
+
     private void TurnCheck()
     {
         GetDirecction();
@@ -353,15 +443,7 @@ public class PlayerMovementNew : MonoBehaviour
             Turn();
         }
     }
-    private void TapMovement()
-    {
-        rb.gravityScale = gravityScale;
-        direction = new Vector2(x, y);
-        TurnCheck();
-        StartCoroutine(MovetoTarget());
-
-    }
-        private IEnumerator MovetoTarget()
+    private IEnumerator MovetoTarget()
     {
         //anim.SetBool("Walk", false);
         anim.SetBool("SlowWalk", false);

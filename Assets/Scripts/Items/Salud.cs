@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class Salud : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class Salud : MonoBehaviour
     public List<Sprite> spriteRenderers = new List<Sprite>();
     private PlayerControllerNew playerController;
     [HideInInspector] public int spriteIndex;
-
+   
     private void OnValidate()
     {
         AssignSprite();
@@ -71,7 +72,9 @@ public class Salud : MonoBehaviour
                 gameObject.GetComponent<SpriteRenderer>().sprite = spriteRenderers[8];
                 break;
         }
-    }   
+    }
+
+
     public void HealthDie()
     {
         Destroy(gameObject, .2f);

@@ -24,6 +24,9 @@ public class Dialogue : MonoBehaviour
     private int index;
 
     private Coroutine blinkCoroutine; // Corrutina para el efecto de "pestañeo"
+    [HideInInspector] public Coroutine typeLineCoroutine;
+
+    private bool wasPreviousPlayerSpeaking;
 
     private void Awake()
     {
@@ -35,6 +38,7 @@ public class Dialogue : MonoBehaviour
     {
         playerMovement.inputsEnabled = false;
         playerMovement.anim.SetBool("SlowWalk", false);
+        StartBlinkAnimation();
     }
 
     void Start()
@@ -56,19 +60,20 @@ public class Dialogue : MonoBehaviour
         }
         else
         {
-            StopAllCoroutines();
+            if (typeLineCoroutine != null) StopCoroutine(typeLineCoroutine);
             textComponent.text = dialogueLines[index].line;
         }
-    }
-
-    public void OnButtonUp()
-    {
     }
 
     private void StartDialogue()
     {
         index = 0;
-        StartCoroutine(TypeLine());
+        wasPreviousPlayerSpeaking = dialogueLines[index].isPlayerSpeaking; // Inicializar con el primer valor
+        if (typeLineCoroutine != null)
+        {
+            StopCoroutine(typeLineCoroutine);
+        }
+        typeLineCoroutine = StartCoroutine(TypeLine());
     }
 
     private IEnumerator TypeLine()
@@ -99,22 +104,17 @@ public class Dialogue : MonoBehaviour
             textComponent.text += c;
             yield return new WaitForSeconds(textSpeed);
         }
-
-        // Inicia la corrutina para el efecto de "pestañeo"
-        if (blinkCoroutine != null)
-        {
-            StopCoroutine(blinkCoroutine);
-        }
-       // blinkCoroutine = StartCoroutine(BlinkEffect());
     }
+
     public void StartBlinkAnimation()
     {
         if (blinkCoroutine != null)
         {
             StopCoroutine(blinkCoroutine);
         }
-        blinkCoroutine = StartCoroutine(BlinkEffect());
+        if (gameObject.activeSelf) blinkCoroutine = StartCoroutine(BlinkEffect());
     }
+
     private IEnumerator BlinkEffect()
     {
         // Escala inicial
@@ -157,7 +157,19 @@ public class Dialogue : MonoBehaviour
         {
             index++;
             textComponent.text = string.Empty;
-            StartCoroutine(TypeLine());
+
+            // Verificar si el interlocutor ha cambiado
+            if (dialogueLines[index].isPlayerSpeaking != wasPreviousPlayerSpeaking)
+            {
+                StartBlinkAnimation();
+                wasPreviousPlayerSpeaking = dialogueLines[index].isPlayerSpeaking; // Actualizar el valor
+            }
+
+            if (typeLineCoroutine != null)
+            {
+                StopCoroutine(typeLineCoroutine);
+            }
+            typeLineCoroutine = StartCoroutine(TypeLine());
         }
         else
         {
@@ -165,5 +177,4 @@ public class Dialogue : MonoBehaviour
             lobbyManager.PaneoCamera();
         }
     }
-
 }
