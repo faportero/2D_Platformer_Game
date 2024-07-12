@@ -16,7 +16,7 @@ public class UI_SaludAttachedBar : MonoBehaviour
     private float targetFillAmount;
     private float startFillAmount;
     [HideInInspector] public Coroutine updateTimeCoroutine;
-
+    [HideInInspector] public bool startUpdateTimeCoroutine;
 
     private void Start()
     {
@@ -29,14 +29,22 @@ public class UI_SaludAttachedBar : MonoBehaviour
 
         if (updateTimeCoroutine != null)
         {
+
             StopCoroutine(updateTimeCoroutine);
+            startUpdateTimeCoroutine = false;
+
         }
-        if(gameObject.activeSelf && transform.parent.gameObject.activeSelf)updateTimeCoroutine = StartCoroutine(UpdateTimeEffect(duration));
-        if(gameObject.activeSelf && transform.parent.gameObject.activeSelf)updateTimeCoroutine = StartCoroutine(UpdateTimeEffect(duration));
+        if(!startUpdateTimeCoroutine) updateTimeCoroutine = StartCoroutine(UpdateTimeEffect(duration));
+        //if(gameObject.activeSelf && transform.parent.gameObject.activeSelf)updateTimeCoroutine = StartCoroutine(UpdateTimeEffect(duration));
+
     }
 
     private IEnumerator UpdateTimeEffect(float duration)
-    {       
+    {
+        startUpdateTimeCoroutine = true;
+        transform.parent.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+        transform.GetChild(1).gameObject.GetComponent<Image>().color = Color.white;
+
          startFillAmount = 1; 
          targetFillAmount = currentTimeEffect / maxTimeEffect;
         float elapsedTime = 0;
@@ -44,8 +52,14 @@ public class UI_SaludAttachedBar : MonoBehaviour
         {
             elapsedTime += Time.deltaTime;
             healthFillBar.fillAmount = Mathf.Lerp(startFillAmount, targetFillAmount, elapsedTime / duration);
+            print("TiempoCorutina bar: " + elapsedTime + ". Duracion: " + duration);
             yield return null;
+            //yield return new WaitForEndOfFrame();
         }
-     // transform.parent.gameObject.SetActive(false);
+        // transform.parent.gameObject.SetActive(false);
+        Color newColor = new Color (1, 1, 1, 0);
+        transform.parent.gameObject.GetComponent<SpriteRenderer>().color = newColor;
+        transform.GetChild(1).gameObject.GetComponent<Image>().color = newColor;
+        startUpdateTimeCoroutine = false;
     }
 }

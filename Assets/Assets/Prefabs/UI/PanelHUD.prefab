@@ -945,7 +945,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c309241284c5a29498f89673fa52618f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isJumping: 0
   pressThreshold: 0.5
+  btnPause: {fileID: 0}
   tapThreshold: 10
   swipeDirection: 0
   TapPerformed: 0
@@ -1452,7 +1454,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c309241284c5a29498f89673fa52618f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isJumping: 0
   pressThreshold: 0.5
+  btnPause: {fileID: 0}
   tapThreshold: 10
   swipeDirection: 0
   TapPerformed: 0
@@ -2112,7 +2116,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

@@ -108,7 +108,9 @@ public class PlayerMovementNew : MonoBehaviour
     public bool tutorialActive;
     public bool isHitBadFloor;
     public bool isLeftClick;
-    private bool isMoving;
+    [HideInInspector] public bool isMoving;
+
+
     #endregion
     #region Unity Callbacks
     private void Awake()
@@ -365,24 +367,31 @@ public class PlayerMovementNew : MonoBehaviour
         isMoving = true; // Marca el inicio del movimiento
         anim.SetBool("SlowWalk", true); // Activar animación de caminar
 
-        // Calcular la posición final a 3 unidades en la dirección del clic
-        Vector3 startPosition = rb.position;
-        // Vector3 endPosition = startPosition + new Vector3(clicDirection > 0 ? 3 : -3, 0, 0);
-        
-        Vector3 endPosition;
+        Vector2 startPosition = rb.position;
+        Vector2 endPosition;
+
         if (clicDirection > 0)
         {
-            endPosition = startPosition + new Vector3(3, 0, 0);
+            endPosition = startPosition + new Vector2(3f, 0f);
         }
         else
         {
-            endPosition = startPosition + new Vector3(-3, 0, 0);
+            endPosition = startPosition + new Vector2(-3f, 0f);
+        }
+
+        // Realizar un raycast para detectar obstáculos
+        RaycastHit2D hit = Physics2D.Raycast(rb.position, endPosition - startPosition, Vector2.Distance(startPosition, endPosition), LayerMask.GetMask("SolidObjects"));
+
+        // Si el raycast golpea algo, ajustar la posición final
+        if (hit.collider != null)
+        {
+            endPosition = hit.point; // Establecer la posición final en el punto de impacto
         }
 
         // Mover el personaje hacia la posición final
-        while (Vector3.Distance(rb.position, endPosition) > 0.1f)
+        while (Vector2.Distance(rb.position, endPosition) > 0.1f)
         {
-            rb.position = Vector3.MoveTowards(rb.position, endPosition, clickMoveSpeed * Time.deltaTime);
+            rb.position = Vector2.MoveTowards(rb.position, endPosition, clickMoveSpeed * Time.deltaTime);
             yield return null;
         }
 
@@ -391,6 +400,7 @@ public class PlayerMovementNew : MonoBehaviour
         anim.Play("Idle");
         isMoving = false; // Marca el fin del movimiento
     }
+
 
     private bool DetectTap()
     {
@@ -431,7 +441,7 @@ public class PlayerMovementNew : MonoBehaviour
         return false; // No se detectó un clic o toque
     }
 
-    private void TurnCheck()
+    public void TurnCheck()
     {
         GetDirecction();
         if (clicDirection > 0 && !isFacingRight)
@@ -604,11 +614,16 @@ public class PlayerMovementNew : MonoBehaviour
                 Camera.main.ResetProjectionMatrix();
             }
 
-            if (playerController.isTabaco && !doingShake)
+            //if (playerController.isTabaco && !doingShake)
+            if (playerController.isSmokePanelEffect)
             {
                 // StartCoroutine(CameraShake(1f));
                 StartCoroutine(HeartbeatShakeSequence());
                 //else StopCoroutine("HeartbeatShakeSequence");
+            }
+            else
+            {
+                if(heartbeatShakeSequence != null) StopCoroutine(heartbeatShakeSequence);   
             }
 
             if (playerController.paracaidas)
@@ -897,10 +912,15 @@ public class PlayerMovementNew : MonoBehaviour
                 Camera.main.ResetProjectionMatrix();
             }
 
-            if (playerController.isTabaco && !doingShake)
+            if (playerController.isSmokePanelEffect)
             {
                 // StartCoroutine(CameraShake(1f));
                 StartCoroutine(HeartbeatShakeSequence());
+                //else StopCoroutine("HeartbeatShakeSequence");
+            }
+            else
+            {
+                if (heartbeatShakeSequence != null) StopCoroutine(heartbeatShakeSequence);
             }
 
 
@@ -1378,10 +1398,19 @@ public class PlayerMovementNew : MonoBehaviour
     }
     private IEnumerator Diying()
     {
+        GetComponent<GhostController>().enabled = false;
         //float startValue = material.GetFloat("_DissolveAmmount");
         // anim.Play("Die");
         // material.SetFloat("_DissolveAmmount", Mathf.Lerp(0, 1, Time.deltaTime * .5f));
-        //StartCoroutine(PlayerDisolve());
+        StartCoroutine(PlayerDisolve());
+        // Buscar todos los objetos activos con el nombre "Ghost(Clone)"
+        GameObject[] objetosGhost = GameObject.FindGameObjectsWithTag("Ghost");
+
+        // Iterar sobre los objetos encontrados y desactivarlos
+        foreach (GameObject ghost in objetosGhost)
+        {
+            ghost.SetActive(false);
+        }
         //StartCoroutine(DieAnim2());
         direction = Vector2.zero;
         playerController.isDie = true;
@@ -1389,9 +1418,10 @@ public class PlayerMovementNew : MonoBehaviour
         playerController.saltoDoble = false;
         playerController.vidaExtra = false;
         playerController.paracaidas = false;
+        PlayerDisolve();
         yield return new WaitForSeconds(5);
-        levelManager.ResetLevel();
-        //levelManager.GameOver();
+        //levelManager.ResetLevel();
+        levelManager.GameOver();
         //canMove = false;
         //SceneManager.LoadScene("Test");
 

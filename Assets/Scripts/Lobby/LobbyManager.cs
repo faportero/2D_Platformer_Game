@@ -79,6 +79,7 @@ public class LobbyManager : MonoBehaviour
         }
         else
         {
+            panelHUD.SetActive(true);   
             panelVideo.SetActive(false);
         }
 
@@ -251,7 +252,7 @@ public class LobbyManager : MonoBehaviour
         // Esperar un tiempo en la posición elevada y aplicar el efecto de disolución
         yield return StartCoroutine(PlayerDisolve());
         // Ajustar la posición al descender una unidad en el eje Y
-        playerController.transform.position = endPosition - new Vector3(0, 1, 0);
+        playerController.transform.position = endPosition - new Vector3(6, 1, 0);
         // Aplicar la rotación final instantáneamente
         playerController.transform.rotation = Quaternion.Euler(0, -180, 0);
 

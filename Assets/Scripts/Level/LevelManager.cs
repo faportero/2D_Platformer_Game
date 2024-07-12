@@ -17,6 +17,7 @@ public class LevelManager : MonoBehaviour
     public CurrentScene currentScene;
 
     public PlayerControllerNew playerController;
+    private PlayerMovementNew playerMovementNew;
     [SerializeField] private GameObject UI_Habilidades;
     [SerializeField] private GameObject UI_MensajeHabilidades;
     [SerializeField] private GameObject UI_CurrentEffect;
@@ -25,11 +26,12 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject[] piezasNivel;
     [SerializeField] private GameObject fogPanel;
     [SerializeField] private Transform newStartPos;
-    public static bool usedPA, usedPB, usedPC, usedPD, isFogTransition = false;
+    public static bool usedPA, usedPB, usedPC, usedPD, isFogTransition;
     //[SerializeField] private UI_Piezas uiPiezas;
         
     private void Awake()
     {
+        playerMovementNew = FindAnyObjectByType<PlayerMovementNew>();
        // if (newStartPos) playerController.transform.position = newStartPos.position;
         //uiCoins.coinCount = UserData.coins;
         //uiCoins.coinCountText.text = uiCoins.coinCount.ToString();
@@ -44,13 +46,26 @@ public class LevelManager : MonoBehaviour
         switch (currentScene)
         {
             case CurrentScene.Lobby:
+
+                InitFogTransition();
+
                 if (UserData.terminoLobby)
                 {
-                    if (newStartPos) playerController.transform.position = newStartPos.position;
-                   // print("Lobbyyyy");
+                    if (newStartPos)
+                    {
+                        playerController.transform.position = newStartPos.position;
+                        Vector3 rotator = new Vector3(transform.rotation.x, 0, transform.rotation.z);
+                        playerController.transform.rotation = Quaternion.Euler(rotator);
+                        playerMovementNew.TurnCheck();
+
+                    }
+                    // print("Lobbyyyy");
                 }
                 break;
             case CurrentScene.Limbo:
+
+                InitFogTransition();
+
                 if (UserData.terminoLimbo)
                 {
                     if (newStartPos) playerController.transform.position = newStartPos.position;
@@ -58,6 +73,7 @@ public class LevelManager : MonoBehaviour
                 }
                 break;
             case CurrentScene.Nivel1:
+                InitFogTransition();
 
                 break;
             case CurrentScene.Nivel2:
@@ -76,31 +92,30 @@ public class LevelManager : MonoBehaviour
     {
         Time.timeScale = 1;
         if(piezasNivel != null) CheckLevelPieces();
-
-        //if (isFogTransition)
-        //{
-        //    fogPanel.SetActive(true);
-        //    fogPanel.transform.GetChild(0).gameObject.SetActive(true);
-        //    fogPanel.transform.GetChild(0).GetComponent<Animator>().enabled = true;
-        //    fogPanel.transform.GetChild(0).GetComponent<Animator>().Play("FogTransition");
-        //    fogPanel.GetComponent<UI_LoadingScene>().ShowOppener();
-        //    isFogTransition = false;
-        //}
-
-
-
     }
+    private void InitFogTransition()
+    {
+        if (isFogTransition)
+        {
+            fogPanel.SetActive(true);
+            fogPanel.transform.GetChild(0).gameObject.SetActive(true);
+            fogPanel.transform.GetChild(0).GetComponent<Animator>().enabled = true;
+            fogPanel.transform.GetChild(0).GetComponent<Animator>().Play("FogTransitionEnd");
+            //fogPanel.GetComponent<UI_LoadingScene>().ShowOppener();
+        }
+    }
+
     public void GameOver()
     {
         Time.timeScale = 0;
 
         if (playerController != null)
         {
-            if (!playerController.isDrugged && playerController.isDie)
-            {                
-                UI_Habilidades.SetActive(true);
-            }
-            else if (playerController.isDrugged && playerController.isDie)
+            //if (!playerController.isDrugged && playerController.isDie)
+            //{                
+            //    UI_Habilidades.SetActive(true);
+            //}
+             if (playerController.isDrugged && playerController.isDie)
             {  
                 UI_MensajeHabilidades.SetActive(true);
             }

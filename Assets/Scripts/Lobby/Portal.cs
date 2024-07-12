@@ -67,10 +67,13 @@ public class Portal : MonoBehaviour
     }
     private IEnumerator SwitchScene()
     {
-        //canvasFog.SetActive(true);
-        //canvasFog.transform.GetChild(0).gameObject.SetActive(true);
-        //canvasFog.transform.GetChild(0).GetComponent<Animator>().enabled = true;
-        //canvasFog.transform.GetChild(0).GetComponent<Animator>().Play("FogTransition");
+        playerMovementNew.canMove = false;
+        //FogTransicion
+        LevelManager.isFogTransition = true;
+        canvasFog.SetActive(true);
+        canvasFog.transform.GetChild(0).gameObject.SetActive(true);
+        canvasFog.transform.GetChild(0).GetComponent<Animator>().enabled = true;
+        canvasFog.transform.GetChild(0).GetComponent<Animator>().Play("FogTransition");
         StartCoroutine(PlayerDisolve());
 
         yield return new WaitForSecondsRealtime(.5f);
@@ -168,7 +171,9 @@ public class Portal : MonoBehaviour
     {
         if(collision.tag == "Player")
         {
-                LevelManager.isFogTransition = true;
+            playerMovementNew.isMoving = false; // Detener el movimiento
+            playerMovementNew.anim.SetBool("SlowWalk", false); // Desactivar animación de caminar
+            LevelManager.isFogTransition = true;
                 SelectDimension();
             //if (Espejo.piezasRestantes != 0)
             //{

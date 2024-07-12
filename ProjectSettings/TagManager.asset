@@ -23,6 +23,7 @@ TagManager:
   - PanelSwipe
   - Fog
   - EnemyAttachedBar
+  - Ghost
   layers:
   - Default
   - TransparentFX
@@ -37,7 +38,7 @@ TagManager:
   - Player
   - CanvasTutorial
   - CanvasSwipe
-  - 
+  - SolidObjects
   - 
   - 
   - 

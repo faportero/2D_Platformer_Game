@@ -40,8 +40,7 @@ public class SwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     public void OnPointerDown(PointerEventData eventData)
     {
         
-         isJumping = true;
-
+         if(Input.GetMouseButtonDown(0)) isJumping = true;
 
         startPosition = eventData.position;
         isSwiping = true;
