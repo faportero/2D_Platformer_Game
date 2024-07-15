@@ -14,7 +14,8 @@ public class Salud : MonoBehaviour
         Meditacion,
         Agua,
         Manzana,
-        Pescado
+        Pescado,
+        Indestructible
     }
 
     public HealthType healthType;

@@ -20,6 +20,7 @@ public class PlayerControllerNew : MonoBehaviour
     [SerializeField] private UI_Piezas piezasPanel;
     [SerializeField] private UI_SaludBar saludBar;
     [SerializeField] private UI_FeedbackSalud ui_FeedbackSalud;
+    [SerializeField] private UI_IndestructibleBar ui_IndestructibleBar;
     [HideInInspector] public SpriteRenderer spriteRenderer;
     private PlayerMovementNew playerMovement;
     private GameObject currentItem;
@@ -214,6 +215,20 @@ public class PlayerControllerNew : MonoBehaviour
             currentItemSalud = collision.GetComponent<Salud>();
             ui_FeedbackSalud.AssignFeedbackSprite();
 
+            if(currentSalud > .9f)
+            {
+                ui_IndestructibleBar.gameObject.SetActive(true);
+                ui_IndestructibleBar.UpdateTime(10);
+                currentItemSalud.healthType = Salud.HealthType.Indestructible;
+                ui_FeedbackSalud.AssignFeedbackSprite();
+
+            }
+            else
+            {
+                ui_IndestructibleBar.gameObject.SetActive(false);
+
+            }
+
             collision.GetComponent<BoxCollider2D>().enabled = false;
 
             if (ui_enemyAttachedBar.startUpdateTimeCoroutine)
@@ -225,11 +240,10 @@ public class PlayerControllerNew : MonoBehaviour
                 ui_enemyAttachedBar.gameObject.transform.GetChild(1).gameObject.GetComponent<Image>().color = newColor;
                 if (enemyEffectCoroutine != null) StopCoroutine(enemyEffectCoroutine);
                 if (blinkCoroutine != null) StopCoroutine(blinkCoroutine);
-                if (ui_enemyAttachedBar.updateTimeCoroutine != null) StopCoroutine(ui_enemyAttachedBar.updateTimeCoroutine);
-               // ui_enemyAttachedBar.startUpdateTimeCoroutine = false;
+                if (playerMovement.heartbeatShakeSequence != null) StopCoroutine(playerMovement.heartbeatShakeSequence);
+                //if (ui_enemyAttachedBar.updateTimeCoroutine != null) StopCoroutine(ui_enemyAttachedBar.updateTimeCoroutine);
+                // ui_enemyAttachedBar.startUpdateTimeCoroutine = false;
             }
-
-
 
             startPosition = collision.ClosestPoint(transform.position);
             currentItem = collision.gameObject;
@@ -303,13 +317,13 @@ public class PlayerControllerNew : MonoBehaviour
                     AdjustLuminance(1);
                     StartCoroutine(Inmunidad());
 
-                    if (showInmunidadPanel)
-                    {  
-                        audioPause.Pause(true);
-                        playerMovement.swipeDetector.gameObject.SetActive(false);
-                        panelInmunidadTuto.SetActive(true);
-                        showInmunidadPanel = false;
-                    }
+                //    //if (showInmunidadPanel)
+                //    //{  
+                //    //    audioPause.Pause(true);
+                //    //    playerMovement.swipeDetector.gameObject.SetActive(false);
+                //    //    panelInmunidadTuto.SetActive(true);
+                //    //    showInmunidadPanel = false;
+                //    //}
 
                     break;
                 default:
@@ -342,6 +356,12 @@ public class PlayerControllerNew : MonoBehaviour
             //print("Current Salud: " + currentSalud);
             //print("Fill Amount: " + saludBar.healthFillBar.fillAmount);
 
+            if (currentSalud < .1f)
+            {
+                playerMovement.Die();
+                return;
+            }
+
             isDrugged = true;
 
             if (isShowPanel)
@@ -349,16 +369,14 @@ public class PlayerControllerNew : MonoBehaviour
                 panelFeedback.SetActive(false);
                 if (takeSaludAnim != null) StopCoroutine(takeSaludAnim);
                 if (activarEnfasis != null) StopCoroutine(activarEnfasis);
+                ui_IndestructibleBar.gameObject.SetActive(false);
+
             }
 
             //StopCoroutine(ui_enemyAttachedBar.updateTimeCoroutine);
 
 
-            if (currentSalud < .1f)
-            {
-                playerMovement.Die();
-                return;
-            }
+
             switch (currentSalud)
             {
                 case 0:
@@ -366,10 +384,12 @@ public class PlayerControllerNew : MonoBehaviour
                     //isIndestructible = false;
                     break;
                 case .1f:
-                    
+
+                    ui_IndestructibleBar.gameObject.SetActive(false);
 
                     isIndestructible = false;
-                   // effectPanel.SetActive(true);
+                    // effectPanel.SetActive(true);
+                    playerMovement.StartHearthBeathCameraShake(10);
                     CurrentEffectPanel(10);
                     ui_enemyAttachedBar.UpdateTime(10);
                     //enemyEffectCoroutine = StartCoroutine(CurrentEffect(10));
@@ -378,8 +398,11 @@ public class PlayerControllerNew : MonoBehaviour
 
                     break;
                 case .2f:
+                    ui_IndestructibleBar.gameObject.SetActive(false);
+
                     isIndestructible = false;
                     // effectPanel.SetActive(true);
+                    playerMovement.StartHearthBeathCameraShake(9);
                     CurrentEffectPanel(9);
                     //enemyEffectCoroutine = StartCoroutine(CurrentEffect(8));
                     ui_enemyAttachedBar.UpdateTime(9);
@@ -387,8 +410,11 @@ public class PlayerControllerNew : MonoBehaviour
                     AdjustLuminance(.2f);
                     break;
                 case .3f:
+                    ui_IndestructibleBar.gameObject.SetActive(false);
+
                     isIndestructible = false;
                    // effectPanel.SetActive(true);
+                    playerMovement.StartHearthBeathCameraShake(8);
                     CurrentEffectPanel(8);
                     //enemyEffectCoroutine = StartCoroutine(CurrentEffect(7));
                     ui_enemyAttachedBar.UpdateTime(8);
@@ -396,8 +422,11 @@ public class PlayerControllerNew : MonoBehaviour
                     AdjustLuminance(.3f);
                     break;
                 case .4f:
+                    ui_IndestructibleBar.gameObject.SetActive(false);
+
                     isIndestructible = false;
                    // effectPanel.SetActive(true);
+                    playerMovement.StartHearthBeathCameraShake(7);
                     CurrentEffectPanel(7);
                     //enemyEffectCoroutine = StartCoroutine(CurrentEffect(7));
                     ui_enemyAttachedBar.UpdateTime(7);
@@ -405,8 +434,11 @@ public class PlayerControllerNew : MonoBehaviour
                     AdjustLuminance(.4f);
                     break;
                 case .5f:
+                    ui_IndestructibleBar.gameObject.SetActive(false);
+
                     isIndestructible = false;
                   //  effectPanel.SetActive(true);
+                    playerMovement.StartHearthBeathCameraShake(6);
                     CurrentEffectPanel(6);
                     //enemyEffectCoroutine = StartCoroutine(CurrentEffect(6));
                     ui_enemyAttachedBar.UpdateTime(6);
@@ -414,8 +446,11 @@ public class PlayerControllerNew : MonoBehaviour
                     AdjustLuminance(.5f);
                     break;
                 case .6f:
+                    ui_IndestructibleBar.gameObject.SetActive(false);
+
                     isIndestructible = false;
                   //  effectPanel.SetActive(true);
+                    playerMovement.StartHearthBeathCameraShake(5);
                     CurrentEffectPanel(5);
                     //enemyEffectCoroutine = StartCoroutine(CurrentEffect(5));
                     ui_enemyAttachedBar.UpdateTime(5);
@@ -423,8 +458,11 @@ public class PlayerControllerNew : MonoBehaviour
                     AdjustLuminance(.6f);
                     break;
                 case .7f:
+                    ui_IndestructibleBar.gameObject.SetActive(false);
+
                     isIndestructible = false;
                   //  effectPanel.SetActive(true);
+                    playerMovement.StartHearthBeathCameraShake(4);
                     CurrentEffectPanel(4);
                     //enemyEffectCoroutine = StartCoroutine(CurrentEffect(4));
                     ui_enemyAttachedBar.UpdateTime(4);
@@ -432,8 +470,11 @@ public class PlayerControllerNew : MonoBehaviour
                     AdjustLuminance(.7f);
                     break;
                 case .8f:
+                    ui_IndestructibleBar.gameObject.SetActive(false);
+
                     isIndestructible = false;
                    // effectPanel.SetActive(true);
+                    playerMovement.StartHearthBeathCameraShake(3);
                     CurrentEffectPanel(3);
                     //enemyEffectCoroutine = StartCoroutine(CurrentEffect(3));
                     ui_enemyAttachedBar.UpdateTime(3);
@@ -441,8 +482,11 @@ public class PlayerControllerNew : MonoBehaviour
                     AdjustLuminance(.8f);
                     break;
                 case .9f:
+                    ui_IndestructibleBar.gameObject.SetActive(false);
+
                     isIndestructible = false;
                     //effectPanel.SetActive(true);
+                    playerMovement.StartHearthBeathCameraShake(2);
                     CurrentEffectPanel(2);
                     //enemyEffectCoroutine = StartCoroutine(CurrentEffect(2));
                     ui_enemyAttachedBar.UpdateTime(2);
@@ -464,7 +508,9 @@ public class PlayerControllerNew : MonoBehaviour
             if (currentSalud != 100) spriteRenderer.material = materials[0];
 
 
-          //  return;
+
+
+            //  return;
         }
 
         if (collision.tag == "Pieza")
@@ -508,7 +554,7 @@ public class PlayerControllerNew : MonoBehaviour
 
         }
 
-        if (collision.tag == "BadFloor" && !isAttack)
+        if (collision.tag == "BadFloor")
         {
             if (isIndestructible)
             {
@@ -529,7 +575,7 @@ public class PlayerControllerNew : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "BadFloor" && !isAttack)
+        if (collision.gameObject.tag == "BadFloor")
         {
             if(playerMovement.doingRoll)
             {
@@ -608,7 +654,8 @@ public class PlayerControllerNew : MonoBehaviour
         {
             StartCoroutine(DeactivateEnfasis());
            // playerMovement.rb.gravityScale = 0;
-            playerMovement.inputsEnabled = false;
+            if(!isSmokePanelEffect)playerMovement.inputsEnabled = false;
+            playerMovement.rb.bodyType = RigidbodyType2D.Static;
             playerMovement.direction = Vector2.zero;
             panelFeedbackBadFloor.SetActive(true);
             StartBlinking(2);
@@ -654,17 +701,21 @@ public class PlayerControllerNew : MonoBehaviour
             playerMovement.inputsEnabled = true;
             playerMovement.isHitBadFloor = false;
             panelFeedbackBadFloor.SetActive(false);
+
             //playerMovement.rb.gravityScale = playerMovement.gravityScale;
-            //playerMovement.rb.bodyType = RigidbodyType2D.Dynamic;
+            playerMovement.rb.bodyType = RigidbodyType2D.Dynamic;
 
             StartCoroutine(ResetCollision());
         }
         else
         {
             StartCoroutine(DeactivateEnfasis());
+            playerMovement.rb.bodyType = RigidbodyType2D.Static;
 
-           playerMovement.inputsEnabled = false;
+            if(!isSmokePanelEffect)playerMovement.inputsEnabled = false;
             playerMovement.direction = Vector2.zero;
+            playerMovement.rb.bodyType = RigidbodyType2D.Static;
+
             panelFeedbackBadFloor.SetActive(true);
             StartBlinking(2);
             playerMovement.StartCameraShake(.1f);
@@ -710,6 +761,8 @@ public class PlayerControllerNew : MonoBehaviour
             playerMovement.isHitBadFloor = false;
             panelFeedbackBadFloor.SetActive(false);   
             StartCoroutine(ResetCollision());
+            playerMovement.rb.bodyType = RigidbodyType2D.Dynamic;
+
         }
 
 
@@ -718,10 +771,10 @@ public class PlayerControllerNew : MonoBehaviour
     private IEnumerator ResetCollision()
     {
         if (playerMovement.isFallingMode) playerMovement.rb.gravityScale = 1;
-        currentItem.GetComponent<CompositeCollider2D>().isTrigger = true;
-        yield return new WaitForSeconds(1);
+        if(currentItem != null) currentItem.GetComponent<CompositeCollider2D>().isTrigger = true;
+        yield return new WaitForSeconds(2);
         if (playerMovement.isFallingMode) playerMovement.rb.gravityScale = 0;
-        currentItem.GetComponent<CompositeCollider2D>().isTrigger = false;
+        if (currentItem != null) currentItem.GetComponent<CompositeCollider2D>().isTrigger = false;
     }
     private void GetCompositeColliders2D()
     {
@@ -816,6 +869,7 @@ public class PlayerControllerNew : MonoBehaviour
             isSmokePanelEffect = false;
         }
         if(!isSmokePanelEffect) enemyEffectCoroutine = StartCoroutine(CurrentEffect(delay));
+
     }
     private IEnumerator CurrentEffect(float delay)
     {

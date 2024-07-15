@@ -9,5 +9,5 @@ public class UserData
     public static bool escudo, saltoDoble, vidaExtra, paracaidas;
 
 
-    public static bool terminoLobby, terminoLimbo, terminoNivel1;
+    public static bool terminoLobby, terminoLimbo, terminoNivel1, terminoTutorial;
 }

@@ -7,8 +7,9 @@ using UnityEngine.Video;
 
 public class Gargola : MonoBehaviour
 {
-    [SerializeField] private GameObject videoPlayerPlane;
-    [SerializeField] private VideoPlayer videoPlayer;
+    public GameObject videoPlayerPlane;
+    private Collider2D solidObjectCol;
+    public VideoPlayer videoPlayer;
     [SerializeField] private CinemachineVirtualCamera camera1, camera2;
     private PlayerMovementNew playerMovementNew;
     private PlayerControllerNew playerController;
@@ -19,8 +20,9 @@ public class Gargola : MonoBehaviour
     {
         playerMovementNew = FindAnyObjectByType<PlayerMovementNew>();
         playerController = FindAnyObjectByType<PlayerControllerNew>();
-        animator = videoPlayerPlane.GetComponent<Animator>();    
+        animator = videoPlayerPlane.GetComponent<Animator>();
         videoPlayer.loopPointReached += OnVideoEnd;
+        solidObjectCol = transform.GetChild(0).gameObject.GetComponent<Collider2D>();
     }
     private void Update()
     {
@@ -45,14 +47,15 @@ public class Gargola : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Player")
+        if (collision.tag == "Player")
         {
+            solidObjectCol.enabled = false;
             playerMovementNew.inputsEnabled = false;
             playerMovementNew.anim.SetBool("SlowWalk", false);
             //playerMovementNew.targetPosition = new Vector3(playerMovementNew.transform.position.x, playerMovementNew.transform.position.y, 0);
             playerMovementNew.targetPosition = playerController.transform.position;
             CameraManager.instance.SingleSwapCamera(camera2);
-            
+
             if (LimboManager.countVideosWatched != 3)
             {
                 StartCoroutine(ShowVideoPanel());
@@ -67,7 +70,11 @@ public class Gargola : MonoBehaviour
             }
         }
 
-
-        }
     }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        solidObjectCol.enabled = true;
+
+    }
+}
 

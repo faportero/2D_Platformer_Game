@@ -66,7 +66,7 @@ public class LevelManager : MonoBehaviour
 
                 InitFogTransition();
 
-                if (UserData.terminoLimbo)
+                if (UserData.terminoTutorial)
                 {
                     if (newStartPos) playerController.transform.position = newStartPos.position;
                     //print("Limboooo");

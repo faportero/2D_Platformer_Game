@@ -31,7 +31,7 @@ public class PlayerMovementNew : MonoBehaviour
     private GhostController ghostController;
     [HideInInspector] public CameraFollowObject cameraFollowObject;
     public GameObject cameraFollowGo;
-    private Coroutine heartbeatShakeSequence;
+    [HideInInspector]public Coroutine heartbeatShakeSequence, cameraShake;
 
     [Header("Level Colisions")]
     [SerializeField] private List<FallingLevelColliders> fallingColliders;
@@ -372,11 +372,11 @@ public class PlayerMovementNew : MonoBehaviour
 
         if (clicDirection > 0)
         {
-            endPosition = startPosition + new Vector2(3f, 0f);
+            endPosition = startPosition + new Vector2(5.25f, 0f);
         }
         else
         {
-            endPosition = startPosition + new Vector2(-3f, 0f);
+            endPosition = startPosition + new Vector2(-5.25f, 0f);
         }
 
         // Realizar un raycast para detectar obstáculos
@@ -614,17 +614,18 @@ public class PlayerMovementNew : MonoBehaviour
                 Camera.main.ResetProjectionMatrix();
             }
 
-            //if (playerController.isTabaco && !doingShake)
-            if (playerController.isSmokePanelEffect)
-            {
-                // StartCoroutine(CameraShake(1f));
-                StartCoroutine(HeartbeatShakeSequence());
-                //else StopCoroutine("HeartbeatShakeSequence");
-            }
-            else
-            {
-                if(heartbeatShakeSequence != null) StopCoroutine(heartbeatShakeSequence);   
-            }
+            ////if (playerController.isTabaco && !doingShake)
+            //if (playerController.isSmokePanelEffect)
+            //{
+            //    // StartCoroutine(CameraShake(1f));
+            //    StartCoroutine(HeartbeatShakeSequence());
+            //    //else StopCoroutine("HeartbeatShakeSequence");
+            //}
+            //else
+            //{
+            //    if(heartbeatShakeSequence != null) StopCoroutine(heartbeatShakeSequence);
+            //    playerController.isSmokePanelEffect = false;
+            //}
 
             if (playerController.paracaidas)
             {
@@ -912,16 +913,18 @@ public class PlayerMovementNew : MonoBehaviour
                 Camera.main.ResetProjectionMatrix();
             }
 
-            if (playerController.isSmokePanelEffect)
-            {
-                // StartCoroutine(CameraShake(1f));
-                StartCoroutine(HeartbeatShakeSequence());
-                //else StopCoroutine("HeartbeatShakeSequence");
-            }
-            else
-            {
-                if (heartbeatShakeSequence != null) StopCoroutine(heartbeatShakeSequence);
-            }
+            //if (playerController.isSmokePanelEffect)
+            //{
+            //    // StartCoroutine(CameraShake(1f));
+            //    StartCoroutine(HeartbeatShakeSequence());
+            //    //else StopCoroutine("HeartbeatShakeSequence");
+            //}
+            //else
+            //{
+            //    if (heartbeatShakeSequence != null) StopCoroutine(heartbeatShakeSequence);
+            //    playerController.isSmokePanelEffect = false;
+
+            //}
 
 
             if (isGrounded && !tapFloor)
@@ -1104,8 +1107,19 @@ public class PlayerMovementNew : MonoBehaviour
     }
     public void StartCameraShake(float tiempo)
     {
-        //StopAllCoroutines();
-        StartCoroutine(CameraShake(tiempo));
+        if(cameraShake != null)
+        {
+            StopCoroutine(cameraShake);
+        }
+        cameraShake = StartCoroutine(CameraShake(tiempo));
+    }
+    public void StartHearthBeathCameraShake(float tiempo)
+    {
+        if (heartbeatShakeSequence != null)
+        {
+            StopCoroutine(heartbeatShakeSequence);
+        }
+        heartbeatShakeSequence = StartCoroutine(CameraShake(tiempo));
     }
     private IEnumerator CameraShake(float tiempo)
     {
@@ -1117,6 +1131,7 @@ public class PlayerMovementNew : MonoBehaviour
         cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0;
         //doingShake = false;
     }
+
     private IEnumerator HeartbeatShakeSequence()
     {
         // Tres latidos
@@ -1429,7 +1444,7 @@ public class PlayerMovementNew : MonoBehaviour
     private IEnumerator PlayerDisolve()
     {
         float dissolveAmount = 0;
-        float duration = 1f;  // Duración total de la animación en segundos
+        float duration = .5f;  // Duración total de la animación en segundos
         float elapsedTime = 0;
 
         while (elapsedTime < duration)

@@ -23,8 +23,8 @@ public class LobbyManager : MonoBehaviour
     private Material playerMaterial;
 
 
-    public float elevationDistance = 2f; // Distancia de elevación
-    public float elevationDuration = 2f; // Duración de la elevación y cambio de opacidad
+    public float elevationDistance = 4f; // Distancia de elevación
+    public float elevationDuration = 4f; // Duración de la elevación y cambio de opacidad
     public float rotationDuration = 1f;  // Duración de la rotación
     private SpriteRenderer spriteRenderer;
 
@@ -63,7 +63,7 @@ public class LobbyManager : MonoBehaviour
         if (!UserData.terminoLobby)
         {
             audioPause.Pause(true);
-
+            playerMovementNew.inputsEnabled = false;
             if (videoPlayer != null)
             {
                 panelVideo.SetActive(true);
@@ -79,6 +79,7 @@ public class LobbyManager : MonoBehaviour
         }
         else
         {
+            playerMovementNew.inputsEnabled = true;
             panelHUD.SetActive(true);   
             panelVideo.SetActive(false);
         }
@@ -98,6 +99,10 @@ public class LobbyManager : MonoBehaviour
     }
     private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            OnVideoEnd(videoPlayer);
+        }
         //if (pasoIntro == false)
         if (!UserData.terminoLobby)
         {
@@ -252,7 +257,7 @@ public class LobbyManager : MonoBehaviour
         // Esperar un tiempo en la posición elevada y aplicar el efecto de disolución
         yield return StartCoroutine(PlayerDisolve());
         // Ajustar la posición al descender una unidad en el eje Y
-        playerController.transform.position = endPosition - new Vector3(6, 1, 0);
+        playerController.transform.position = endPosition - new Vector3(0, 3.5f, 0);
         // Aplicar la rotación final instantáneamente
         playerController.transform.rotation = Quaternion.Euler(0, -180, 0);
 
@@ -269,6 +274,7 @@ public class LobbyManager : MonoBehaviour
         playerMovementNew.anim.enabled = true;
         playerMovementNew.targetPosition = playerController.transform.position;
         playerController.GetComponent<GhostController>().enabled = true;
+        playerMovementNew.inputsEnabled = true;
 
         if (playerRigidbody != null)
         {
@@ -316,6 +322,8 @@ public class LobbyManager : MonoBehaviour
 
         // Asegurarse de que el valor final sea exactamente 1
         playerMaterial.SetFloat("_DissolveAmmount", 1);
+        spriteRenderer.sortingOrder = 2;
+
     }
 
     private IEnumerator PlayerSolidify()

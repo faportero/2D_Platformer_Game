@@ -58,6 +58,9 @@ public class UI_FeedbackSalud : MonoBehaviour
             case Salud.HealthType.Pescado:
                 image.sprite = feedbackSprites[8];
                 break;
+            case Salud.HealthType.Indestructible:
+                image.sprite = feedbackSprites[9];
+                break;
         }
     }
 }
