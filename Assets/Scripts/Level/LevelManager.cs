@@ -32,6 +32,7 @@ public class LevelManager : MonoBehaviour
     private void Awake()
     {
         playerMovementNew = FindAnyObjectByType<PlayerMovementNew>();
+       // fogPanel.SetActive(false);
        // if (newStartPos) playerController.transform.position = newStartPos.position;
         //uiCoins.coinCount = UserData.coins;
         //uiCoins.coinCountText.text = uiCoins.coinCount.ToString();
@@ -66,7 +67,7 @@ public class LevelManager : MonoBehaviour
 
                 InitFogTransition();
 
-                if (UserData.terminoTutorial)
+                if (UserData.terminoLimbo)
                 {
                     if (newStartPos) playerController.transform.position = newStartPos.position;
                     //print("Limboooo");
@@ -74,6 +75,11 @@ public class LevelManager : MonoBehaviour
                 break;
             case CurrentScene.Nivel1:
                 InitFogTransition();
+                if (UserData.terminoTutorial)
+                {
+                    if (newStartPos) playerController.transform.position = newStartPos.position;
+                    //print("Limboooo");
+                }
 
                 break;
             case CurrentScene.Nivel2:
@@ -97,14 +103,21 @@ public class LevelManager : MonoBehaviour
     {
         if (isFogTransition)
         {
-            fogPanel.SetActive(true);
+            //fogPanel.SetActive(true);
+            StartCoroutine(ShowFogPanel());
             fogPanel.transform.GetChild(0).gameObject.SetActive(true);
             fogPanel.transform.GetChild(0).GetComponent<Animator>().enabled = true;
             fogPanel.transform.GetChild(0).GetComponent<Animator>().Play("FogTransitionEnd");
             //fogPanel.GetComponent<UI_LoadingScene>().ShowOppener();
         }
     }
+    IEnumerator ShowFogPanel()
+    {
+        fogPanel.SetActive(true);
+        yield return new WaitForSecondsRealtime(5);
+        fogPanel.SetActive(false);
 
+    }
     public void GameOver()
     {
         Time.timeScale = 0;

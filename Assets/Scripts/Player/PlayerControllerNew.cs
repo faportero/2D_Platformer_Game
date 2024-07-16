@@ -24,6 +24,7 @@ public class PlayerControllerNew : MonoBehaviour
     [HideInInspector] public SpriteRenderer spriteRenderer;
     private PlayerMovementNew playerMovement;
     private GameObject currentItem;
+    private GameObject currenBadFloortItem;
     private GameObject currenPiece;
     [HideInInspector] public Salud currentItemSalud;
     [SerializeField] private GameObject enemyAttached;
@@ -76,7 +77,9 @@ public class PlayerControllerNew : MonoBehaviour
     private Vector3 targetPosition;
     private Vector3 targetPiecePosition;
     [HideInInspector]public bool isSmokePanelEffect;
-
+    public Coroutine enemyCameraShake;
+    private CinemachineVirtualCamera cm;
+    public bool doingEnemyShake;
     #endregion
     #region Unity Callbacks
     private void Awake()
@@ -98,6 +101,7 @@ public class PlayerControllerNew : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         audioPause = FindAnyObjectByType<AudioPause>();
         saludBar.healthFillBar.fillAmount = currentSalud;
+        cm = CameraManager.instance.currentCamera;
 
         if (ui_enemyAttachedBar) print(ui_enemyAttachedBar.gameObject.name);
         //saludBar.UpdateHealth(currentSalud);
@@ -180,7 +184,7 @@ public class PlayerControllerNew : MonoBehaviour
     {
         // ui_enemyAttachedBar = FindAnyObjectByType<UI_SaludAttachedBar>();
         //print("SaludActual: " + currentSalud + ". Boleano barrita: " + ui_enemyAttachedBar.startUpdateTimeCoroutine + ". Boleano efecto panel: " + isSmokePanelEffect);
-
+        print("Haciendo Enemy Shake: "+doingEnemyShake);
         targetPosition = GetWorldPositionFromUI(saludBar.GetComponent<RectTransform>());
         targetPosition = targetPosition + new Vector3(0, -1.25f, 0);
         
@@ -193,6 +197,10 @@ public class PlayerControllerNew : MonoBehaviour
         if(currenPiece != null && pieces != null && currenPiece.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasD)
             targetPiecePosition = GetWorldPositionFromUI(pieces[3].GetComponent<RectTransform>());
 
+        //if (!doingEnemyShake)
+        //{
+        //    StopAllCoroutines();  
+        //}
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -200,7 +208,8 @@ public class PlayerControllerNew : MonoBehaviour
 
         if (collision.tag == "Salud")
         {
-            
+
+           // doingEnemyShake = false;
             audioSource.Stop();
 
             currentSalud += saludAmount;
@@ -240,9 +249,16 @@ public class PlayerControllerNew : MonoBehaviour
                 ui_enemyAttachedBar.gameObject.transform.GetChild(1).gameObject.GetComponent<Image>().color = newColor;
                 if (enemyEffectCoroutine != null) StopCoroutine(enemyEffectCoroutine);
                 if (blinkCoroutine != null) StopCoroutine(blinkCoroutine);
-                if (playerMovement.heartbeatShakeSequence != null) StopCoroutine(playerMovement.heartbeatShakeSequence);
+                //if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
                 //if (ui_enemyAttachedBar.updateTimeCoroutine != null) StopCoroutine(ui_enemyAttachedBar.updateTimeCoroutine);
                 // ui_enemyAttachedBar.startUpdateTimeCoroutine = false;
+            }
+
+            if (doingEnemyShake) 
+            {
+               if(enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+                CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin = cm.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+                cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0;
             }
 
             startPosition = collision.ClosestPoint(transform.position);
@@ -267,54 +283,76 @@ public class PlayerControllerNew : MonoBehaviour
                 case 0:
                     isIndestructible = false;
                     playerMovement.Die();
+                   // doingEnemyShake = false;
+                    //if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
                     break;
                 case .1f:
                     isIndestructible = false;
                     GlowSpriteEffect.SetActive(false);
+                  //  doingEnemyShake = false;
+                   // if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
                     AdjustLuminance(0);
                     break;
                 case .2f:
                     isIndestructible = false;
                     GlowSpriteEffect.SetActive(false);
+                    //doingEnemyShake = false;
+                    //if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
                     AdjustLuminance(.2f);
                     break;
                 case .3f:
                     isIndestructible = false;
                     GlowSpriteEffect.SetActive(false);
+                    //doingEnemyShake = false;
+                    //if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
                     AdjustLuminance(.3f);
                     break;
                 case .4f:
                     isIndestructible = false;
                     GlowSpriteEffect.SetActive(false);
+                    //doingEnemyShake = false;
+                    //if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
                     AdjustLuminance(.4f);
                     break;
                 case .5f:
                     isIndestructible = false;
                     GlowSpriteEffect.SetActive(false);
+                    //doingEnemyShake = false;
+                    //if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
                     AdjustLuminance(.5f);
                     break;
                 case .6f:
                     isIndestructible = false;
                     GlowSpriteEffect.SetActive(false);
+                    //doingEnemyShake = false;
+                    //if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
                     AdjustLuminance(.6f);
                     break;
                 case .7f:
                     isIndestructible = false;
                     GlowSpriteEffect.SetActive(false);
+                    //doingEnemyShake = false;
+                    //if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
                     AdjustLuminance(.7f);
                     break;
                 case .8f:
                     isIndestructible = false;
                     GlowSpriteEffect.SetActive(false);
+                    //doingEnemyShake = false;
+                    //if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
                     AdjustLuminance(.8f);
                     break;
                 case .9f:
                     isIndestructible = false;
                     GlowSpriteEffect.SetActive(false);
+                    //doingEnemyShake = false;
+                    //if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
                     AdjustLuminance(.9f);
                     break;
                 case 1:
                     AdjustLuminance(1);
+                    //doingEnemyShake = false;
+                    //if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
                     StartCoroutine(Inmunidad());
 
                 //    //if (showInmunidadPanel)
@@ -327,7 +365,9 @@ public class PlayerControllerNew : MonoBehaviour
 
                     break;
                 default:
-                   // if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(1);
+                    // if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(1);
+                    //doingEnemyShake = false;
+                    //if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
                     AdjustLuminance(1);
                     break;
             }
@@ -389,7 +429,9 @@ public class PlayerControllerNew : MonoBehaviour
 
                     isIndestructible = false;
                     // effectPanel.SetActive(true);
-                    playerMovement.StartHearthBeathCameraShake(10);
+                    // StartEnemyCameraShake(10);
+
+                    enemyCameraShake = StartCoroutine(EnemyCameraShake(10));
                     CurrentEffectPanel(10);
                     ui_enemyAttachedBar.UpdateTime(10);
                     //enemyEffectCoroutine = StartCoroutine(CurrentEffect(10));
@@ -402,7 +444,9 @@ public class PlayerControllerNew : MonoBehaviour
 
                     isIndestructible = false;
                     // effectPanel.SetActive(true);
-                    playerMovement.StartHearthBeathCameraShake(9);
+                    // StartEnemyCameraShake(9);
+                    enemyCameraShake = StartCoroutine(EnemyCameraShake(9));
+
                     CurrentEffectPanel(9);
                     //enemyEffectCoroutine = StartCoroutine(CurrentEffect(8));
                     ui_enemyAttachedBar.UpdateTime(9);
@@ -413,8 +457,10 @@ public class PlayerControllerNew : MonoBehaviour
                     ui_IndestructibleBar.gameObject.SetActive(false);
 
                     isIndestructible = false;
-                   // effectPanel.SetActive(true);
-                    playerMovement.StartHearthBeathCameraShake(8);
+                    // effectPanel.SetActive(true);
+                    // StartEnemyCameraShake(8);
+                    enemyCameraShake = StartCoroutine(EnemyCameraShake(8));
+
                     CurrentEffectPanel(8);
                     //enemyEffectCoroutine = StartCoroutine(CurrentEffect(7));
                     ui_enemyAttachedBar.UpdateTime(8);
@@ -425,8 +471,10 @@ public class PlayerControllerNew : MonoBehaviour
                     ui_IndestructibleBar.gameObject.SetActive(false);
 
                     isIndestructible = false;
-                   // effectPanel.SetActive(true);
-                    playerMovement.StartHearthBeathCameraShake(7);
+                    // effectPanel.SetActive(true);
+                    // StartEnemyCameraShake(7);
+                    enemyCameraShake = StartCoroutine(EnemyCameraShake(7));
+
                     CurrentEffectPanel(7);
                     //enemyEffectCoroutine = StartCoroutine(CurrentEffect(7));
                     ui_enemyAttachedBar.UpdateTime(7);
@@ -437,8 +485,10 @@ public class PlayerControllerNew : MonoBehaviour
                     ui_IndestructibleBar.gameObject.SetActive(false);
 
                     isIndestructible = false;
-                  //  effectPanel.SetActive(true);
-                    playerMovement.StartHearthBeathCameraShake(6);
+                    //  effectPanel.SetActive(true);
+                    // StartEnemyCameraShake(6);
+                    enemyCameraShake = StartCoroutine(EnemyCameraShake(6));
+
                     CurrentEffectPanel(6);
                     //enemyEffectCoroutine = StartCoroutine(CurrentEffect(6));
                     ui_enemyAttachedBar.UpdateTime(6);
@@ -449,8 +499,10 @@ public class PlayerControllerNew : MonoBehaviour
                     ui_IndestructibleBar.gameObject.SetActive(false);
 
                     isIndestructible = false;
-                  //  effectPanel.SetActive(true);
-                    playerMovement.StartHearthBeathCameraShake(5);
+                    //  effectPanel.SetActive(true);
+                    //   StartEnemyCameraShake(5);
+                    enemyCameraShake = StartCoroutine(EnemyCameraShake(5));
+
                     CurrentEffectPanel(5);
                     //enemyEffectCoroutine = StartCoroutine(CurrentEffect(5));
                     ui_enemyAttachedBar.UpdateTime(5);
@@ -461,8 +513,10 @@ public class PlayerControllerNew : MonoBehaviour
                     ui_IndestructibleBar.gameObject.SetActive(false);
 
                     isIndestructible = false;
-                  //  effectPanel.SetActive(true);
-                    playerMovement.StartHearthBeathCameraShake(4);
+                    //  effectPanel.SetActive(true);
+                    //StartEnemyCameraShake(4);
+                    enemyCameraShake = StartCoroutine(EnemyCameraShake(4));
+
                     CurrentEffectPanel(4);
                     //enemyEffectCoroutine = StartCoroutine(CurrentEffect(4));
                     ui_enemyAttachedBar.UpdateTime(4);
@@ -473,8 +527,10 @@ public class PlayerControllerNew : MonoBehaviour
                     ui_IndestructibleBar.gameObject.SetActive(false);
 
                     isIndestructible = false;
-                   // effectPanel.SetActive(true);
-                    playerMovement.StartHearthBeathCameraShake(3);
+                    // effectPanel.SetActive(true);
+                    // StartEnemyCameraShake(3);
+                    enemyCameraShake = StartCoroutine(EnemyCameraShake(3));
+
                     CurrentEffectPanel(3);
                     //enemyEffectCoroutine = StartCoroutine(CurrentEffect(3));
                     ui_enemyAttachedBar.UpdateTime(3);
@@ -486,7 +542,9 @@ public class PlayerControllerNew : MonoBehaviour
 
                     isIndestructible = false;
                     //effectPanel.SetActive(true);
-                    playerMovement.StartHearthBeathCameraShake(2);
+                    // StartEnemyCameraShake(2);
+                    enemyCameraShake = StartCoroutine(EnemyCameraShake(2));
+
                     CurrentEffectPanel(2);
                     //enemyEffectCoroutine = StartCoroutine(CurrentEffect(2));
                     ui_enemyAttachedBar.UpdateTime(2);
@@ -587,28 +645,28 @@ public class PlayerControllerNew : MonoBehaviour
             currentSalud = Mathf.Clamp(currentSalud, 0f, 1);
             saludBar.healthFillBar.fillAmount = currentSalud;
 
-            currentItem = collision.gameObject;
+            currenBadFloortItem = collision.gameObject;
             StartCoroutine(HitBadFloor());
 
         }
 
-        if (collision.gameObject.CompareTag("Wall"))
-        {
-            collision.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
-            currentSalud -= saludAmount;
-            saludBar.UpdateHealth(-saludAmount);
-            currentSalud = Mathf.Clamp(currentSalud, 0f, 100);
-            saludBar.currentAdiccion = currentSalud;
-            StartBlinking(0);
-            StartCoroutine(DeactivateEnfasis());
+        //if (collision.gameObject.CompareTag("Wall"))
+        //{
+        //    collision.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+        //    currentSalud -= saludAmount;
+        //    saludBar.UpdateHealth(-saludAmount);
+        //    currentSalud = Mathf.Clamp(currentSalud, 0f, 100);
+        //    saludBar.currentAdiccion = currentSalud;
+        //    StartBlinking(0);
+        //    StartCoroutine(DeactivateEnfasis());
 
-            // if (isIndestructible)
-            // {
-            collision.gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
-            //collision.gameObject.GetComponent<Rigidbody2D>().simulated = true;
-            collision.gameObject.GetComponent<ExplodeOnClick>().Explode();
-            // }
-        }
+        //    // if (isIndestructible)
+        //    // {
+        //    collision.gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
+        //    //collision.gameObject.GetComponent<Rigidbody2D>().simulated = true;
+        //    collision.gameObject.GetComponent<ExplodeOnClick>().Explode();
+        //    // }
+        //}
     }
     public void FirstEnemyEffect()
     {
@@ -703,9 +761,11 @@ public class PlayerControllerNew : MonoBehaviour
             panelFeedbackBadFloor.SetActive(false);
 
             //playerMovement.rb.gravityScale = playerMovement.gravityScale;
-            playerMovement.rb.bodyType = RigidbodyType2D.Dynamic;
-
             StartCoroutine(ResetCollision());
+            playerMovement.rb.bodyType = RigidbodyType2D.Dynamic;
+            if(!playerMovement.isGrounded)playerMovement.anim.SetBool("Walk", true);   
+            else playerMovement.anim.SetBool("Jump", true);   
+
         }
         else
         {
@@ -713,8 +773,8 @@ public class PlayerControllerNew : MonoBehaviour
             playerMovement.rb.bodyType = RigidbodyType2D.Static;
 
             if(!isSmokePanelEffect)playerMovement.inputsEnabled = false;
-            playerMovement.direction = Vector2.zero;
             playerMovement.rb.bodyType = RigidbodyType2D.Static;
+            playerMovement.direction = Vector2.zero;
 
             panelFeedbackBadFloor.SetActive(true);
             StartBlinking(2);
@@ -762,7 +822,8 @@ public class PlayerControllerNew : MonoBehaviour
             panelFeedbackBadFloor.SetActive(false);   
             StartCoroutine(ResetCollision());
             playerMovement.rb.bodyType = RigidbodyType2D.Dynamic;
-
+            if (!playerMovement.isGrounded) playerMovement.anim.SetBool("Walk", true);
+            else playerMovement.anim.SetBool("Jump", true);
         }
 
 
@@ -771,10 +832,10 @@ public class PlayerControllerNew : MonoBehaviour
     private IEnumerator ResetCollision()
     {
         if (playerMovement.isFallingMode) playerMovement.rb.gravityScale = 1;
-        if(currentItem != null) currentItem.GetComponent<CompositeCollider2D>().isTrigger = true;
+        if(currenBadFloortItem != null) currenBadFloortItem.GetComponent<CompositeCollider2D>().isTrigger = true;
         yield return new WaitForSeconds(2);
         if (playerMovement.isFallingMode) playerMovement.rb.gravityScale = 0;
-        if (currentItem != null) currentItem.GetComponent<CompositeCollider2D>().isTrigger = false;
+        if (currenBadFloortItem != null) currenBadFloortItem.GetComponent<CompositeCollider2D>().isTrigger = false;
     }
     private void GetCompositeColliders2D()
     {
@@ -990,6 +1051,28 @@ public class PlayerControllerNew : MonoBehaviour
     }
     #endregion
     #region Blinking
+    public void StartEnemyCameraShake(float tiempo)
+    {
+
+        if (enemyCameraShake != null)
+        {
+            StopCoroutine(enemyCameraShake);
+            doingEnemyShake = false;
+        }
+        enemyCameraShake = StartCoroutine(EnemyCameraShake(tiempo)); 
+    }
+
+    private IEnumerator EnemyCameraShake(float tiempo)
+    {
+        doingEnemyShake = true;
+        CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin = cm.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 5;
+        print(". Duracion: " + tiempo);
+        yield return new WaitForSeconds(tiempo);
+        cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0;
+        doingEnemyShake = false;
+    }
+
     public void StartBlinking(float duration)
     {
 

@@ -18,7 +18,7 @@ public class Dialogue : MonoBehaviour
     [SerializeField] List<DialogueLine> dialogueLines;
     [SerializeField] float textSpeed;
     [SerializeField] Image characterImage; // El Image donde se mostrará la imagen del personaje
-
+    [SerializeField] GameObject continueBtn;
     private LobbyManager lobbyManager;
     private PlayerMovementNew playerMovement;
     private int index;
@@ -62,6 +62,8 @@ public class Dialogue : MonoBehaviour
         {
             if (typeLineCoroutine != null) StopCoroutine(typeLineCoroutine);
             textComponent.text = dialogueLines[index].line;
+            continueBtn.SetActive(true);
+
         }
     }
 
@@ -78,6 +80,7 @@ public class Dialogue : MonoBehaviour
 
     private IEnumerator TypeLine()
     {
+        continueBtn.SetActive(false);
         // Actualiza la imagen del personaje
         characterImage.sprite = dialogueLines[index].characterImage;
 
@@ -104,6 +107,8 @@ public class Dialogue : MonoBehaviour
             textComponent.text += c;
             yield return new WaitForSeconds(textSpeed);
         }
+        continueBtn.SetActive(true);
+
     }
 
     public void StartBlinkAnimation()

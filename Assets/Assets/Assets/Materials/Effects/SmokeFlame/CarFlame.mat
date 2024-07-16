@@ -55,9 +55,10 @@ Material:
     m_Ints: []
     m_Floats:
     - _BandsAmmount: 16.5
+    - _OpacityAmmount: 0.05
     - _QueueControl: 0
     - _QueueOffset: 0
     - _TimeSpeed: 5
     m_Colors:
-    - _FlameColor: {r: 1, g: 1, b: 1, a: 0}
+    - _FlameColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

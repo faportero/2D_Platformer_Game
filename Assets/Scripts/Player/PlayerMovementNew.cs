@@ -174,7 +174,7 @@ public class PlayerMovementNew : MonoBehaviour
         //print("Falling Movement ModeAmmount: "+fallingModeMovementAmmount);
         //print("Falling Velocity: "+fallingVelocity);
         // StartCoroutine(DieAnimation());
-
+        print("Clic Direction: " + clicDirection);
         //print(material.GetFloat("_DissolveAmmount"));
         if (canMove)
         {
@@ -263,15 +263,15 @@ public class PlayerMovementNew : MonoBehaviour
     }
     private  void GetDirecction()
     {
-        if (direction.x < 0 && transform.localScale.x > 0)
-        {
+        //if (direction.x < 0 && transform.localScale.x > 0)
+        //{
 
-            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-        }
-        else if (direction.x > 0 && transform.localScale.x < 0)
-        {
-            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-        }
+        //    transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        //}
+        //else if (direction.x > 0 && transform.localScale.x < 0)
+        //{
+        //    transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        //}
 
         if (isPC)
         {
@@ -323,7 +323,7 @@ public class PlayerMovementNew : MonoBehaviour
     {
         if (isFacingRight)
         {
-            Vector3 rotator = new Vector3(transform.rotation.x, 180f, transform.rotation.z);
+            Vector3 rotator = new Vector3(transform.rotation.x, -180f, transform.rotation.z);
             transform.rotation = Quaternion.Euler(rotator);
             isFacingRight = !isFacingRight;
 
@@ -443,15 +443,24 @@ public class PlayerMovementNew : MonoBehaviour
 
     public void TurnCheck()
     {
+      //  isFacingRight = !isFacingRight;
         GetDirecction();
         if (clicDirection > 0 && !isFacingRight)
         {
             Turn();
+           // isFacingRight = !isFacingRight;
+
         }
         else if (clicDirection < 0 && isFacingRight)
         {
             Turn();
+           // isFacingRight = !isFacingRight;
+
         }
+        //else if (clicDirection > 0 && isFacingRight)
+        //{
+        //    Turn();
+        //}
     }
     private IEnumerator MovetoTarget()
     {
@@ -623,8 +632,14 @@ public class PlayerMovementNew : MonoBehaviour
             //}
             //else
             //{
-            //    if(heartbeatShakeSequence != null) StopCoroutine(heartbeatShakeSequence);
+            //    if (heartbeatShakeSequence != null) StopCoroutine(heartbeatShakeSequence);
             //    playerController.isSmokePanelEffect = false;
+            //}
+            //if (playerController.isTabaco && !doingShake)
+
+            //if (!playerController.doingEnemyShake)
+            //{
+            //    if (playerController.enemyCameraShake != null) StopCoroutine(playerController.enemyCameraShake);
             //}
 
             if (playerController.paracaidas)
@@ -925,7 +940,10 @@ public class PlayerMovementNew : MonoBehaviour
             //    playerController.isSmokePanelEffect = false;
 
             //}
-
+            //if (!playerController.doingEnemyShake)
+            //{
+            //    if (playerController.enemyCameraShake != null) StopCoroutine(playerController.enemyCameraShake);
+            //}
 
             if (isGrounded && !tapFloor)
             {
@@ -1434,7 +1452,7 @@ public class PlayerMovementNew : MonoBehaviour
         playerController.vidaExtra = false;
         playerController.paracaidas = false;
         PlayerDisolve();
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(1f);
         //levelManager.ResetLevel();
         levelManager.GameOver();
         //canMove = false;

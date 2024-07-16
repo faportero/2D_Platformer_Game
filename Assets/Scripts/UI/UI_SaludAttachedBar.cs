@@ -52,7 +52,7 @@ public class UI_SaludAttachedBar : MonoBehaviour
         {
             elapsedTime += Time.deltaTime;
             healthFillBar.fillAmount = Mathf.Lerp(startFillAmount, targetFillAmount, elapsedTime / duration);
-            print("TiempoCorutina bar: " + elapsedTime + ". Duracion: " + duration);
+           // print("TiempoCorutina bar: " + elapsedTime + ". Duracion: " + duration);
             yield return null;
             //yield return new WaitForEndOfFrame();
         }
