@@ -708,6 +708,8 @@ public class PlayerControllerNew : MonoBehaviour
     private IEnumerator HitBadFloor()
     {
         playerMovement.isHitBadFloor = true;
+       // playerMovement.anim.SetBool("HitBadFloor", true);
+
         if (!playerMovement.isFallingMode)
         {
             StartCoroutine(DeactivateEnfasis());
@@ -718,7 +720,6 @@ public class PlayerControllerNew : MonoBehaviour
             panelFeedbackBadFloor.SetActive(true);
             StartBlinking(2);
             playerMovement.StartCameraShake(.1f);
-
 
             float shakeDuration = 0.25f;
             float shakeMagnitude = 1.5f;
@@ -763,8 +764,9 @@ public class PlayerControllerNew : MonoBehaviour
             //playerMovement.rb.gravityScale = playerMovement.gravityScale;
             StartCoroutine(ResetCollision());
             playerMovement.rb.bodyType = RigidbodyType2D.Dynamic;
+            playerMovement.anim.SetBool("HitBadFloor", false);
             if(!playerMovement.isGrounded)playerMovement.anim.SetBool("Walk", true);   
-            else playerMovement.anim.SetBool("Jump", true);   
+            else playerMovement.anim.SetBool("Jump", true);
 
         }
         else
@@ -822,6 +824,7 @@ public class PlayerControllerNew : MonoBehaviour
             panelFeedbackBadFloor.SetActive(false);   
             StartCoroutine(ResetCollision());
             playerMovement.rb.bodyType = RigidbodyType2D.Dynamic;
+            playerMovement.anim.SetBool("HitBadFloor", false);
             if (!playerMovement.isGrounded) playerMovement.anim.SetBool("Walk", true);
             else playerMovement.anim.SetBool("Jump", true);
         }

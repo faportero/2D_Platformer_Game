@@ -171,8 +171,11 @@ public class Portal : MonoBehaviour
     {
         if(collision.tag == "Player")
         {
+            playerMovementNew.isPortalEnter = true;
+            playerMovementNew.rb.bodyType = RigidbodyType2D.Static;
             playerMovementNew.isMoving = false; // Detener el movimiento
             playerMovementNew.anim.SetBool("SlowWalk", false); // Desactivar animación de caminar
+            playerMovementNew.anim.SetBool("Walk", false); // Desactivar animación de caminar
             LevelManager.isFogTransition = true;
                 SelectDimension();
             //if (Espejo.piezasRestantes != 0)

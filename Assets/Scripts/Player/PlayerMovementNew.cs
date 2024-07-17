@@ -31,7 +31,7 @@ public class PlayerMovementNew : MonoBehaviour
     private GhostController ghostController;
     [HideInInspector] public CameraFollowObject cameraFollowObject;
     public GameObject cameraFollowGo;
-    [HideInInspector]public Coroutine heartbeatShakeSequence, cameraShake;
+    [HideInInspector]public Coroutine heartbeatShakeSequence, cameraShake, currentMovementCoroutine;
 
     [Header("Level Colisions")]
     [SerializeField] private List<FallingLevelColliders> fallingColliders;
@@ -108,6 +108,7 @@ public class PlayerMovementNew : MonoBehaviour
     public bool tutorialActive;
     public bool isHitBadFloor;
     public bool isLeftClick;
+    public bool isPortalEnter;
     [HideInInspector] public bool isMoving;
 
 
@@ -263,15 +264,15 @@ public class PlayerMovementNew : MonoBehaviour
     }
     private  void GetDirecction()
     {
-        //if (direction.x < 0 && transform.localScale.x > 0)
-        //{
+        if (direction.x < 0 && transform.localScale.x > 0)
+        {
 
-        //    transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-        //}
-        //else if (direction.x > 0 && transform.localScale.x < 0)
-        //{
-        //    transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-        //}
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        }
+        else if (direction.x > 0 && transform.localScale.x < 0)
+        {
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        }
 
         if (isPC)
         {
@@ -348,6 +349,7 @@ public class PlayerMovementNew : MonoBehaviour
 
     //}
 
+
     private void TapMovement()
     {
         if (!isMoving) // Verifica si el personaje no está en movimiento
@@ -357,7 +359,14 @@ public class PlayerMovementNew : MonoBehaviour
                 rb.gravityScale = gravityScale;
                 direction = new Vector2(x, y);
                 TurnCheck();
-                StartCoroutine(MoveFixedDistance()); // Inicia la corrutina para mover una distancia fija
+
+                // Detener la corrutina actual si existe
+                if (currentMovementCoroutine != null)
+                {
+                    StopCoroutine(currentMovementCoroutine);
+                }
+
+                currentMovementCoroutine = StartCoroutine(MoveFixedDistance()); // Inicia la corrutina para mover una distancia fija
             }
         }
     }
@@ -392,6 +401,13 @@ public class PlayerMovementNew : MonoBehaviour
         while (Vector2.Distance(rb.position, endPosition) > 0.1f)
         {
             rb.position = Vector2.MoveTowards(rb.position, endPosition, clickMoveSpeed * Time.deltaTime);
+
+            // Salir del bucle si se inicia un nuevo movimiento
+            if (!isMoving)
+            {
+                yield break;
+            }
+
             yield return null;
         }
 
@@ -400,8 +416,6 @@ public class PlayerMovementNew : MonoBehaviour
         anim.Play("Idle");
         isMoving = false; // Marca el fin del movimiento
     }
-
-
     private bool DetectTap()
     {
         if (isPC)
@@ -497,9 +511,12 @@ public class PlayerMovementNew : MonoBehaviour
         //    anim.SetBool("Jump", true);
 
         //}
+
+
+
         if (!isHitBadFloor)
         {
-            Walk();
+           if(!isPortalEnter) Walk();
         }
         else
         {
@@ -507,7 +524,9 @@ public class PlayerMovementNew : MonoBehaviour
             anim.SetBool("Jump", false);
             anim.SetBool("Roll", false);
             anim.SetBool("SlowFall", false);
-            anim.Play("Idle");
+            anim.SetBool("HitBadFloor", true);
+            //anim.Play("Idle");
+            //anim.Play("HitBadFloor");
         }
         if (isGrounded && !isHitBadFloor)
         {
@@ -520,10 +539,12 @@ public class PlayerMovementNew : MonoBehaviour
             anim.SetBool("Jump", false);
             anim.SetBool("Roll", false);
             anim.SetBool("SlowFall", false);
-            anim.Play("Idle");
+            anim.SetBool("HitBadFloor", true);
+            //anim.Play("Idle");
+            // anim.Play("HitBadFloor");
 
         }
-        else if(!isGrounded && !isHitBadFloor) 
+        else if (!isGrounded && !isHitBadFloor)
         {
             anim.SetBool("Jump", true);
         }

@@ -14,7 +14,7 @@ public class SwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     private float pressTime = 0f;
     public float pressThreshold = 0.05f; // Tiempo mínimo de presión para considerarla un "press and hold"
     [HideInInspector] public Button btnPause;
-
+    private PlayerMovementNew playerMovementNew;
     public float tapThreshold = 10f; // Umbral de distancia para considerar un tap
 
     // Enumeración para las direcciones del swipe
@@ -48,6 +48,7 @@ public class SwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
                              // IsPressing = true;
         Invoke("Pressing", .5f);
         pressTime = Time.time;
+        playerMovementNew.isMoving = false;
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -106,6 +107,7 @@ public class SwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     private void Start()
     {
         btnPause = transform.parent.GetComponentInChildren<Button>();
+        playerMovementNew = FindAnyObjectByType<PlayerMovementNew>();
     }
     private void Update()
     {

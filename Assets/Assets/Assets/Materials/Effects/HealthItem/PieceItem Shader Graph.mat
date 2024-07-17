@@ -42,7 +42,7 @@ Material:
     - _TimeSpeed: 0.5
     - _Trickness: 0.07
     m_Colors:
-    - _Color: {r: 0.95805883, g: 0, b: 1, a: 0}
+    - _Color: {r: 1, g: 0.7474121, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &5817756872536015965
 MonoBehaviour:
