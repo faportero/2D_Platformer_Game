@@ -25,6 +25,7 @@ public class PlayerControllerNew : MonoBehaviour
     private PlayerMovementNew playerMovement;
     private GameObject currentItem;
     private GameObject currenBadFloortItem;
+    private GameObject currenBadFloortDestructibleItem;
     private GameObject currenPiece;
     [HideInInspector] public Salud currentItemSalud;
     [SerializeField] private GameObject enemyAttached;
@@ -616,7 +617,8 @@ public class PlayerControllerNew : MonoBehaviour
         {
             if (isIndestructible)
             {
-                collision.gameObject.SetActive(false);
+                currenBadFloortDestructibleItem = collision.gameObject;
+                currenBadFloortDestructibleItem.SetActive(false);
                 playerMovement.StartCameraShake(.1f);
                 Vector2 contactPoint = collision.ClosestPoint(transform.position);
                 ExplodeObject.SetActive(true);
@@ -631,10 +633,18 @@ public class PlayerControllerNew : MonoBehaviour
         }
     }
 
+    private IEnumerator ResetHitBadFloorDestructible()
+    {
+        currenBadFloortDestructibleItem.SetActive(false);
+        yield return new WaitForSeconds(1f);
+        currenBadFloortDestructibleItem.SetActive(true);
+
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "BadFloor")
         {
+
             if(playerMovement.doingRoll)
             {
 
@@ -646,6 +656,7 @@ public class PlayerControllerNew : MonoBehaviour
             saludBar.healthFillBar.fillAmount = currentSalud;
 
             currenBadFloortItem = collision.gameObject;
+
             StartCoroutine(HitBadFloor());
 
         }

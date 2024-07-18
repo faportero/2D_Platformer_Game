@@ -60,11 +60,13 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _SmallRadius: 0.07
+    - _TimeSpeed: 0.59
     m_Colors:
-    - _CircleColor: {r: 1, g: 0.3539886, b: 0, a: 0}
-    - _PortalColor: {r: 0, g: 0.990566, b: 0.88202375, a: 0}
-    - _RibbonColor: {r: 0.29209545, g: 0.20216268, b: 0.5566038, a: 1}
-    - _SparksColor: {r: 0.98039216, g: 0.62326765, b: 0, a: 0}
+    - _CircleColor: {r: 1, g: 0.4146728, b: 0, a: 0}
+    - _PortalColor: {r: 0.43075827, g: 0.66569936, b: 0.754717, a: 0}
+    - _RibbonColor: {r: 0.40051818, g: 0.3513706, b: 0.5283019, a: 1}
+    - _SmallCirclesColor: {r: 0.26673195, g: 0.52218306, b: 0.6981132, a: 1}
+    - _SparksColor: {r: 0.98039216, g: 0.4519187, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &2465306595548235251
 MonoBehaviour:
