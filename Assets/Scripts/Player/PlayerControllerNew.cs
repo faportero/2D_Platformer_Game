@@ -72,13 +72,14 @@ public class PlayerControllerNew : MonoBehaviour
     private Coroutine coroutineFeedback;
     private Coroutine takeSaludAnim;
     private Coroutine activarEnfasis;
+    public Coroutine enemyCameraShake;
+    public Coroutine inmunidadCoroutine;
 
     [Header("Intern Variables")]
     private Vector3 startPosition;
     private Vector3 targetPosition;
     private Vector3 targetPiecePosition;
     [HideInInspector]public bool isSmokePanelEffect;
-    public Coroutine enemyCameraShake;
     private CinemachineVirtualCamera cm;
     public bool doingEnemyShake;
     #endregion
@@ -94,9 +95,6 @@ public class PlayerControllerNew : MonoBehaviour
     private void Start()
     {
 
-        // if(!ui_enemyAttachedBar) ui_enemyAttachedBar = FindFirstObjectByType<UI_SaludAttachedBar>();
-        // if (!ui_enemyAttachedBar) ui_enemyAttachedBar = GameObject.FindGameObjectWithTag("EnemyAttachedBar").GetComponent<UI_SaludAttachedBar>();
-        // ui_enemyAttachedBar = FindAnyObjectByType<UI_SaludAttachedBar>();
         playerMovement = GetComponent<PlayerMovementNew>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
@@ -105,69 +103,50 @@ public class PlayerControllerNew : MonoBehaviour
         cm = CameraManager.instance.currentCamera;
 
         if (ui_enemyAttachedBar) print(ui_enemyAttachedBar.gameObject.name);
-        //saludBar.UpdateHealth(currentSalud);
-        //print("Current Salud: " + currentSalud);
-        //print("Fill Amount: " + saludBar.healthFillBar.fillAmount);
-
-        //if(levelManager.currentScene == LevelManager.CurrentScene.Nivel1 && NewStartPosition != null && TutorialManager.endTutorial)
-        //{
-        //   transform.position = new Vector3(NewStartPosition.transform.position.x, transform.position.y, transform.position.z);
-        //}
 
         switch (currentSalud)
         {
             case 0:
-                // ui_enemyAttachedBar.UpdateTime(999999999);
-                isIndestructible = false;
+              
                 break;
             case .1f:
-                isIndestructible = false;
-                GlowSpriteEffect.SetActive(false);
+                
                 AdjustLuminance(0);
                 break;
             case .2f:
-                isIndestructible = false;
-                GlowSpriteEffect.SetActive(false);
+               
                 AdjustLuminance(.2f);
                 break;
             case .3f:
-                isIndestructible = false;
-                GlowSpriteEffect.SetActive(false);
+               
                 AdjustLuminance(.3f);
                 break;
             case .4f:
-                isIndestructible = false;
-                GlowSpriteEffect.SetActive(false);
+               
                 AdjustLuminance(.4f);
                 break;
             case .5f:
-                isIndestructible = false;
-                GlowSpriteEffect.SetActive(false);
+              
                 AdjustLuminance(.5f);
                 break;
             case .6f:
-                isIndestructible = false;
-                GlowSpriteEffect.SetActive(false);
+               
                 AdjustLuminance(.6f);
                 break;
             case .7f:
-                isIndestructible = false;
-                GlowSpriteEffect.SetActive(false);
+             
                 AdjustLuminance(.7f);
                 break;
             case .8f:
-                isIndestructible = false;
-                GlowSpriteEffect.SetActive(false);
+              
                 AdjustLuminance(.8f);
                 break;
             case .9f:
-                isIndestructible = false;
-                GlowSpriteEffect.SetActive(false);
+               
                 AdjustLuminance(.9f);
                 break;
             case 1:
-                //isIndestructible = true;
-                //GlowSpriteEffect.SetActive(true);
+               
                 AdjustLuminance(1);
                 break;
             default:
@@ -183,8 +162,7 @@ public class PlayerControllerNew : MonoBehaviour
 
     private void Update()
     {
-        // ui_enemyAttachedBar = FindAnyObjectByType<UI_SaludAttachedBar>();
-        //print("SaludActual: " + currentSalud + ". Boleano barrita: " + ui_enemyAttachedBar.startUpdateTimeCoroutine + ". Boleano efecto panel: " + isSmokePanelEffect);
+              //print("SaludActual: " + currentSalud + ". Boleano barrita: " + ui_enemyAttachedBar.startUpdateTimeCoroutine + ". Boleano efecto panel: " + isSmokePanelEffect);
         print("Haciendo Enemy Shake: "+doingEnemyShake);
         targetPosition = GetWorldPositionFromUI(saludBar.GetComponent<RectTransform>());
         targetPosition = targetPosition + new Vector3(0, -1.25f, 0);
@@ -198,10 +176,24 @@ public class PlayerControllerNew : MonoBehaviour
         if(currenPiece != null && pieces != null && currenPiece.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasD)
             targetPiecePosition = GetWorldPositionFromUI(pieces[3].GetComponent<RectTransform>());
 
-        //if (!doingEnemyShake)
+        //if (currentSalud > .9f)
         //{
-        //    StopAllCoroutines();  
+        //    currentItemSalud.healthType = Salud.HealthType.Indestructible;
+        //    ui_FeedbackSalud.AssignFeedbackSprite();
+        //    inmunidadCoroutine = StartCoroutine(Inmunidad());
+        //    ui_IndestructibleBar.gameObject.SetActive(true);
+        //    ui_IndestructibleBar.UpdateTime(10);
+        //    return;
         //}
+        //else
+        //{
+
+        //    if(inmunidadCoroutine != null) StopCoroutine(inmunidadCoroutine);
+        //    ui_IndestructibleBar.gameObject.SetActive(false);
+        //    ui_IndestructibleBar.UpdateTime(0);
+        //    return;
+        //}
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -210,7 +202,7 @@ public class PlayerControllerNew : MonoBehaviour
         if (collision.tag == "Salud")
         {
 
-           // doingEnemyShake = false;
+         
             audioSource.Stop();
 
             currentSalud += saludAmount;
@@ -225,19 +217,20 @@ public class PlayerControllerNew : MonoBehaviour
             currentItemSalud = collision.GetComponent<Salud>();
             ui_FeedbackSalud.AssignFeedbackSprite();
 
-            if(currentSalud > .9f)
-            {
-                ui_IndestructibleBar.gameObject.SetActive(true);
-                ui_IndestructibleBar.UpdateTime(10);
-                currentItemSalud.healthType = Salud.HealthType.Indestructible;
-                ui_FeedbackSalud.AssignFeedbackSprite();
+            //if (currentSalud > .9f)
+            //{
+            //    currentItemSalud.healthType = Salud.HealthType.Indestructible;
+            //    ui_FeedbackSalud.AssignFeedbackSprite();
+            //    inmunidadCoroutine = StartCoroutine(Inmunidad());
+            //    ui_IndestructibleBar.gameObject.SetActive(true);
+            //    ui_IndestructibleBar.UpdateTime(10);
 
-            }
-            else
-            {
-                ui_IndestructibleBar.gameObject.SetActive(false);
+            //}
+            //else
+            //{
+            //    ui_IndestructibleBar.gameObject.SetActive(false);
 
-            }
+            //}
 
             collision.GetComponent<BoxCollider2D>().enabled = false;
 
@@ -282,111 +275,67 @@ public class PlayerControllerNew : MonoBehaviour
             switch (currentSalud)
             {
                 case 0:
-                    isIndestructible = false;
+                   
                     playerMovement.Die();
-                   // doingEnemyShake = false;
-                    //if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+                 
                     break;
                 case .1f:
-                    isIndestructible = false;
-                    GlowSpriteEffect.SetActive(false);
-                  //  doingEnemyShake = false;
-                   // if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+                 
                     AdjustLuminance(0);
                     break;
                 case .2f:
-                    isIndestructible = false;
-                    GlowSpriteEffect.SetActive(false);
-                    //doingEnemyShake = false;
-                    //if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+               
                     AdjustLuminance(.2f);
                     break;
                 case .3f:
-                    isIndestructible = false;
-                    GlowSpriteEffect.SetActive(false);
-                    //doingEnemyShake = false;
-                    //if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+                 
                     AdjustLuminance(.3f);
                     break;
                 case .4f:
-                    isIndestructible = false;
-                    GlowSpriteEffect.SetActive(false);
-                    //doingEnemyShake = false;
-                    //if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+                   
                     AdjustLuminance(.4f);
                     break;
                 case .5f:
-                    isIndestructible = false;
-                    GlowSpriteEffect.SetActive(false);
-                    //doingEnemyShake = false;
-                    //if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+                   
                     AdjustLuminance(.5f);
                     break;
                 case .6f:
-                    isIndestructible = false;
-                    GlowSpriteEffect.SetActive(false);
-                    //doingEnemyShake = false;
-                    //if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+                   
                     AdjustLuminance(.6f);
                     break;
                 case .7f:
-                    isIndestructible = false;
-                    GlowSpriteEffect.SetActive(false);
-                    //doingEnemyShake = false;
-                    //if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+                 
                     AdjustLuminance(.7f);
                     break;
                 case .8f:
-                    isIndestructible = false;
-                    GlowSpriteEffect.SetActive(false);
-                    //doingEnemyShake = false;
-                    //if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+                  
                     AdjustLuminance(.8f);
                     break;
                 case .9f:
-                    isIndestructible = false;
-                    GlowSpriteEffect.SetActive(false);
-                    //doingEnemyShake = false;
-                    //if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+                  
                     AdjustLuminance(.9f);
                     break;
                 case 1:
                     AdjustLuminance(1);
-                    //doingEnemyShake = false;
-                    //if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
-                    StartCoroutine(Inmunidad());
-
-                //    //if (showInmunidadPanel)
-                //    //{  
-                //    //    audioPause.Pause(true);
-                //    //    playerMovement.swipeDetector.gameObject.SetActive(false);
-                //    //    panelInmunidadTuto.SetActive(true);
-                //    //    showInmunidadPanel = false;
-                //    //}
-
+                    currentItemSalud.healthType = Salud.HealthType.Indestructible;
+                    ui_FeedbackSalud.AssignFeedbackSprite();
+                    inmunidadCoroutine = StartCoroutine(Inmunidad());
+                    ui_IndestructibleBar.gameObject.SetActive(true);
+                    ui_IndestructibleBar.UpdateTime(10);
                     break;
                 default:
-                    // if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(1);
-                    //doingEnemyShake = false;
-                    //if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+
                     AdjustLuminance(1);
                     break;
             }
 
-            if (currentSalud > 90) spriteRenderer.material = materials[1];
 
            // return;
         }
 
         if (collision.tag == "Enemy")
         {
-            //ui_enemyAttachedBar.gameObject.transform.parent.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
-           // print( ui_enemyAttachedBar.gameObject.transform.parent.gameObject.name);
-            //ui_enemyAttachedBar.gameObject.transform.GetChild(1).gameObject.GetComponent<Image>().color = Color.white;
-            //enemyAttached.SetActive(true);
-            //if (ui_enemyAttachedBar) ui_enemyAttachedBar.UpdateTime(5);
 
-            //enemyAttached.SetActive(true);
             collision.GetComponent<EnemyNew>().Effect();
             collision.gameObject.SetActive(false);
 
@@ -394,8 +343,14 @@ public class PlayerControllerNew : MonoBehaviour
             currentSalud = Mathf.Clamp(currentSalud, 0f, 1);
             saludBar.healthFillBar.fillAmount = currentSalud;
             currentSalud = (float)Math.Round(currentSalud, 1);
-            //print("Current Salud: " + currentSalud);
-            //print("Fill Amount: " + saludBar.healthFillBar.fillAmount);
+
+            //if (currentSalud < .9f)
+            //{
+            //    if (inmunidadCoroutine != null) StopCoroutine(inmunidadCoroutine);
+            //    ui_IndestructibleBar.gameObject.SetActive(false);
+            //    ui_IndestructibleBar.UpdateTime(0);
+
+            //}
 
             if (currentSalud < .1f)
             {
@@ -410,7 +365,6 @@ public class PlayerControllerNew : MonoBehaviour
                 panelFeedback.SetActive(false);
                 if (takeSaludAnim != null) StopCoroutine(takeSaludAnim);
                 if (activarEnfasis != null) StopCoroutine(activarEnfasis);
-                ui_IndestructibleBar.gameObject.SetActive(false);
 
             }
 
@@ -421,139 +375,129 @@ public class PlayerControllerNew : MonoBehaviour
             switch (currentSalud)
             {
                 case 0:
-                    //playerMovement.Die();
-                    //isIndestructible = false;
+
                     break;
                 case .1f:
 
-                    ui_IndestructibleBar.gameObject.SetActive(false);
+                    if (isIndestructible)
+                    {
+                        StopCoroutine(inmunidadCoroutine);
+                        ui_IndestructibleBar.gameObject.SetActive(false);
+                        GlowSpriteEffect.SetActive(false);
 
-                    isIndestructible = false;
-                    // effectPanel.SetActive(true);
-                    // StartEnemyCameraShake(10);
+                    }
 
                     enemyCameraShake = StartCoroutine(EnemyCameraShake(10));
                     CurrentEffectPanel(10);
                     ui_enemyAttachedBar.UpdateTime(10);
-                    //enemyEffectCoroutine = StartCoroutine(CurrentEffect(10));
-                    GlowSpriteEffect.SetActive(false);
                     AdjustLuminance(.1f);
-
                     break;
                 case .2f:
-                    ui_IndestructibleBar.gameObject.SetActive(false);
+                    if (isIndestructible)
+                    {
+                        StopCoroutine(inmunidadCoroutine);
+                        ui_IndestructibleBar.gameObject.SetActive(false);
+                        GlowSpriteEffect.SetActive(false);
 
-                    isIndestructible = false;
-                    // effectPanel.SetActive(true);
-                    // StartEnemyCameraShake(9);
+                    }
+
                     enemyCameraShake = StartCoroutine(EnemyCameraShake(9));
-
                     CurrentEffectPanel(9);
-                    //enemyEffectCoroutine = StartCoroutine(CurrentEffect(8));
                     ui_enemyAttachedBar.UpdateTime(9);
-                    GlowSpriteEffect.SetActive(false);
                     AdjustLuminance(.2f);
                     break;
                 case .3f:
-                    ui_IndestructibleBar.gameObject.SetActive(false);
+                    if (isIndestructible)
+                    {
+                        StopCoroutine(inmunidadCoroutine);
+                        ui_IndestructibleBar.gameObject.SetActive(false);
+                        GlowSpriteEffect.SetActive(false);
 
-                    isIndestructible = false;
-                    // effectPanel.SetActive(true);
-                    // StartEnemyCameraShake(8);
+                    }
                     enemyCameraShake = StartCoroutine(EnemyCameraShake(8));
-
                     CurrentEffectPanel(8);
-                    //enemyEffectCoroutine = StartCoroutine(CurrentEffect(7));
                     ui_enemyAttachedBar.UpdateTime(8);
-                    GlowSpriteEffect.SetActive(false);
                     AdjustLuminance(.3f);
                     break;
                 case .4f:
-                    ui_IndestructibleBar.gameObject.SetActive(false);
+                    if (isIndestructible)
+                    {
+                        StopCoroutine(inmunidadCoroutine);
+                        ui_IndestructibleBar.gameObject.SetActive(false);
+                        GlowSpriteEffect.SetActive(false);
 
-                    isIndestructible = false;
-                    // effectPanel.SetActive(true);
-                    // StartEnemyCameraShake(7);
+                    }
                     enemyCameraShake = StartCoroutine(EnemyCameraShake(7));
-
-                    CurrentEffectPanel(7);
-                    //enemyEffectCoroutine = StartCoroutine(CurrentEffect(7));
+                    CurrentEffectPanel(7);                  
                     ui_enemyAttachedBar.UpdateTime(7);
-                    GlowSpriteEffect.SetActive(false);
                     AdjustLuminance(.4f);
                     break;
                 case .5f:
-                    ui_IndestructibleBar.gameObject.SetActive(false);
+                    if (isIndestructible)
+                    {
+                        StopCoroutine(inmunidadCoroutine);
+                        ui_IndestructibleBar.gameObject.SetActive(false);
+                        GlowSpriteEffect.SetActive(false);
 
-                    isIndestructible = false;
-                    //  effectPanel.SetActive(true);
-                    // StartEnemyCameraShake(6);
+                    }
                     enemyCameraShake = StartCoroutine(EnemyCameraShake(6));
-
-                    CurrentEffectPanel(6);
-                    //enemyEffectCoroutine = StartCoroutine(CurrentEffect(6));
+                    CurrentEffectPanel(6);                    
                     ui_enemyAttachedBar.UpdateTime(6);
-                    GlowSpriteEffect.SetActive(false);
                     AdjustLuminance(.5f);
                     break;
                 case .6f:
-                    ui_IndestructibleBar.gameObject.SetActive(false);
+                    if (isIndestructible)
+                    {
+                        StopCoroutine(inmunidadCoroutine);
+                        ui_IndestructibleBar.gameObject.SetActive(false);
+                        GlowSpriteEffect.SetActive(false);
 
-                    isIndestructible = false;
-                    //  effectPanel.SetActive(true);
-                    //   StartEnemyCameraShake(5);
+                    }
                     enemyCameraShake = StartCoroutine(EnemyCameraShake(5));
-
-                    CurrentEffectPanel(5);
-                    //enemyEffectCoroutine = StartCoroutine(CurrentEffect(5));
+                    CurrentEffectPanel(5); 
                     ui_enemyAttachedBar.UpdateTime(5);
-                    GlowSpriteEffect.SetActive(false);
                     AdjustLuminance(.6f);
                     break;
                 case .7f:
-                    ui_IndestructibleBar.gameObject.SetActive(false);
+                    if (isIndestructible)
+                    {
+                        StopCoroutine(inmunidadCoroutine);
+                        ui_IndestructibleBar.gameObject.SetActive(false);
+                        GlowSpriteEffect.SetActive(false);
 
-                    isIndestructible = false;
-                    //  effectPanel.SetActive(true);
-                    //StartEnemyCameraShake(4);
+                    }
                     enemyCameraShake = StartCoroutine(EnemyCameraShake(4));
-
-                    CurrentEffectPanel(4);
-                    //enemyEffectCoroutine = StartCoroutine(CurrentEffect(4));
-                    ui_enemyAttachedBar.UpdateTime(4);
-                    GlowSpriteEffect.SetActive(false);
+                    CurrentEffectPanel(4);                  
+                    ui_enemyAttachedBar.UpdateTime(4);                   
                     AdjustLuminance(.7f);
                     break;
                 case .8f:
-                    ui_IndestructibleBar.gameObject.SetActive(false);
+                    if (isIndestructible)
+                    {
+                        StopCoroutine(inmunidadCoroutine);
+                        ui_IndestructibleBar.gameObject.SetActive(false);
+                        GlowSpriteEffect.SetActive(false);
 
-                    isIndestructible = false;
-                    // effectPanel.SetActive(true);
-                    // StartEnemyCameraShake(3);
+                    }
                     enemyCameraShake = StartCoroutine(EnemyCameraShake(3));
-
-                    CurrentEffectPanel(3);
-                    //enemyEffectCoroutine = StartCoroutine(CurrentEffect(3));
+                    CurrentEffectPanel(3);                  
                     ui_enemyAttachedBar.UpdateTime(3);
-                    GlowSpriteEffect.SetActive(false);
                     AdjustLuminance(.8f);
                     break;
                 case .9f:
-                    ui_IndestructibleBar.gameObject.SetActive(false);
+                    if (isIndestructible)
+                    {
+                        StopCoroutine(inmunidadCoroutine);
+                        ui_IndestructibleBar.gameObject.SetActive(false);
+                        GlowSpriteEffect.SetActive(false);
 
-                    isIndestructible = false;
-                    //effectPanel.SetActive(true);
-                    // StartEnemyCameraShake(2);
+                    }
                     enemyCameraShake = StartCoroutine(EnemyCameraShake(2));
-
-                    CurrentEffectPanel(2);
-                    //enemyEffectCoroutine = StartCoroutine(CurrentEffect(2));
+                    CurrentEffectPanel(2);             
                     ui_enemyAttachedBar.UpdateTime(2);
-                    GlowSpriteEffect.SetActive(false);
                     AdjustLuminance(.9f);
                     break;
                 case 1:
-
                     AdjustLuminance(1);
                     break;
                 default:
@@ -564,7 +508,7 @@ public class PlayerControllerNew : MonoBehaviour
             StartBlinking(0);
             StartCoroutine(DeactivateEnfasis());
 
-            if (currentSalud != 100) spriteRenderer.material = materials[0];
+           // if (currentSalud != 100) spriteRenderer.material = materials[0];
 
 
 
@@ -644,8 +588,7 @@ public class PlayerControllerNew : MonoBehaviour
     {
         if (collision.gameObject.tag == "BadFloor")
         {
-
-            if(playerMovement.doingRoll)
+            if (playerMovement.doingRoll)
             {
 
                 playerMovement.capsuleCollider.size = playerMovement.capsuleColliderSize;
@@ -656,6 +599,18 @@ public class PlayerControllerNew : MonoBehaviour
             saludBar.healthFillBar.fillAmount = currentSalud;
 
             currenBadFloortItem = collision.gameObject;
+
+            //if (currentSalud < .9f)
+            //{
+            //    if (inmunidadCoroutine != null) StopCoroutine(inmunidadCoroutine);
+            //    ui_IndestructibleBar.gameObject.SetActive(false);
+            //    ui_IndestructibleBar.UpdateTime(0);
+            //}
+            if (isIndestructible)
+            {
+                StopCoroutine(inmunidadCoroutine);
+                ui_IndestructibleBar.gameObject.SetActive(false);
+            }
 
             StartCoroutine(HitBadFloor());
 
@@ -925,13 +880,16 @@ public class PlayerControllerNew : MonoBehaviour
     private IEnumerator Inmunidad()
     {
         isIndestructible = true;
-        GlowSpriteEffect.SetActive(true);        
+        //spriteRenderer.material = materials[1];
+        GlowSpriteEffect.SetActive(true);
+
         GetCompositeColliders2D();
         SetAllCompositeCollidersTrigger(compositeColliders, true);
         yield return new WaitForSecondsRealtime(10);
-        isIndestructible = false;
         GlowSpriteEffect.SetActive(false);
-        spriteRenderer.material = materials[0];
+        ui_IndestructibleBar.gameObject.SetActive(false);
+        //spriteRenderer.material = materials[0];
+        isIndestructible = false;
         SetAllCompositeCollidersTrigger(compositeColliders, false);
 
 

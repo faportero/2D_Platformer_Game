@@ -71,7 +71,12 @@ public class TutorialPanel : MonoBehaviour
                 else if (interactionIndex == 2)
                 {
                     hand.SetActive(true);
-                    hand.SetActive(true); handAnim.Play("FallingTap Animation");
+                    hand.SetActive(true); handAnim.Play("FallingTap AnimationDe");
+                }
+                else if (interactionIndex == 3)
+                {
+                    hand.SetActive(true);
+                    hand.SetActive(true); handAnim.Play("FallingTap AnimationIz");
                 }
             }
         }

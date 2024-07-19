@@ -1,17 +1,24 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class Espejo : MonoBehaviour
 {
     [SerializeField] GameObject p1, p2, p3, p4, pm1, pm2, pm3, pm4, panelFeedback, GargolaBuena, GargolaMala, explodeObject;
     [SerializeField] UI_Piezas piezasPanel;
     [SerializeField] TextMeshPro textPanel;
+    public GameObject videoPlayerPlane;
+    public VideoPlayer videoPlayer;
+    public VideoClip[] videoClips;
+    [SerializeField] private CinemachineVirtualCamera camera1, camera2;
+
     private ParticleSystem explodePartycle;
-    private static int countPiezas;
-    private int maxPiezas = 4;
+    private static int countPiezas = 4;
+    private int maxPiezas = 4, countVideoClips;
     [HideInInspector] public static int piezasRestantes;
     public static bool isChecked, isComplete;
 
@@ -19,12 +26,28 @@ public class Espejo : MonoBehaviour
     private void Start()
     {
         explodePartycle = explodeObject.GetComponent<ParticleSystem>();
+        videoPlayer.loopPointReached += OnVideoEnd;
+
         // CheckEspejoPieces();
         //CheckEspejoPiecesInit();
     }
     private void Update()
     {
         CheckEspejoPiecesInit();
+    }
+    void OnVideoEnd(VideoPlayer vp)
+    {
+        // Lógica para cambiar al juego
+        countVideoClips++;
+        transform.GetChild(0).gameObject.SetActive(true);
+    }
+    private IEnumerator ShowVideoPanel()
+    {
+        CameraManager.instance.SingleSwapCamera(camera1);
+        videoPlayerPlane.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        videoPlayer.clip = videoClips[countVideoClips];
+        videoPlayer.Play();
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -50,7 +73,8 @@ public class Espejo : MonoBehaviour
                 textPanel.text = "¡Fragmentos Complatos!";
                 //panelFeedback.SetActive(false);
                 print("Piezas complatas");
-                if(!isComplete)StartCoroutine(AnimacionGargolas());
+               // StartCoroutine(ShowVideoPanel());
+                //if(!isComplete)StartCoroutine(AnimacionGargolas());
             }
         }
     }

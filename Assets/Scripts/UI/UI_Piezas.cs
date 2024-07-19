@@ -14,7 +14,8 @@ public class UI_Piezas : MonoBehaviour
     }
     private void Update()
     {
-        CheckPieces();        
+        CheckPieces();
+        CheckEspejoPiecesInit();
     }
     private void CheckPieces()
     {
@@ -43,6 +44,35 @@ public class UI_Piezas : MonoBehaviour
         {
             //piezaD.GetComponent<Image>().color = Color.red;
             piezaD.SetActive(true);
+        }
+    }
+    private void CheckEspejoPiecesInit()
+    {
+        if (LevelManager.usedPA)
+        {
+
+            piezaA.GetComponent<SwitchSprite>().SwitchNewSprite();
+
+        }
+        if (LevelManager.usedPB)
+        {
+
+            piezaB.GetComponent<SwitchSprite>().SwitchNewSprite();
+
+
+        }
+        if (LevelManager.usedPC)
+        {
+
+            piezaC.GetComponent<SwitchSprite>().SwitchNewSprite();
+
+         
+        }
+        if (LevelManager.usedPD)
+        {
+
+            piezaD.GetComponent<SwitchSprite>().SwitchNewSprite();
+
         }
     }
 

@@ -22,6 +22,7 @@ public class UI_IndestructibleBar : MonoBehaviour
     {
         healthFillBar = transform.GetChild(0).GetComponent<Image>();      
     }
+   
 
     public void UpdateTime(float duration)
     {
@@ -33,12 +34,12 @@ public class UI_IndestructibleBar : MonoBehaviour
             startUpdateTimeCoroutine = false;
 
         }
-        updateTimeCoroutine = StartCoroutine(UpdateTimeEffect(duration));
+        if(!startUpdateTimeCoroutine) updateTimeCoroutine = StartCoroutine(UpdateTimeEffect(duration));
     }
 
     private IEnumerator UpdateTimeEffect(float duration)
     {
-        //startUpdateTimeCoroutine = true;
+        startUpdateTimeCoroutine = true;
 
         startFillAmount = 1;
         targetFillAmount = currentTimeEffect / maxTimeEffect;
@@ -50,5 +51,7 @@ public class UI_IndestructibleBar : MonoBehaviour
             yield return null;
         }
         Color newColor = new Color(1, 1, 1, 0);
+        startUpdateTimeCoroutine = false;
+
     }
 }
