@@ -41,9 +41,9 @@ public class LevelManager : MonoBehaviour
         //playerController.vidaExtra = UserData.vidaExtra;
         //playerController.saltoDoble = UserData.saltoDoble;
         //playerController.paracaidas = UserData.paracaidas;
-        print("TerminoLobby: " + UserData.terminoLobby);
-        print("TerminoLimbo: " + UserData.terminoLimbo);
-        print("TerminoNivel1: " + UserData.terminoNivel1);
+        //print("TerminoLobby: " + UserData.terminoLobby);
+        //print("TerminoLimbo: " + UserData.terminoLimbo);
+        //print("TerminoNivel1: " + UserData.terminoNivel1);
         switch (currentScene)
         {
             case CurrentScene.Lobby:
@@ -151,19 +151,19 @@ public class LevelManager : MonoBehaviour
     {
         if (usedPA)
         {
-            piezasNivel[0].SetActive(false);
+           if (piezasNivel[0] != null) piezasNivel[0].SetActive(false);
         }
         if (usedPB)
         {
-            piezasNivel[1].SetActive(false);
+            if (piezasNivel[1] != null) piezasNivel[1].SetActive(false);
         }
         if (usedPC)
         {
-            piezasNivel[2].SetActive(false);
+            if (piezasNivel[2] != null) piezasNivel[2].SetActive(false);
         }
         if (usedPD)
         {
-            piezasNivel[3].SetActive(false);
+            if (piezasNivel[3] != null) piezasNivel[3].SetActive(false);
         }
     }
 

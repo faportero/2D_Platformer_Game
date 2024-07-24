@@ -10,8 +10,17 @@ public class PortalAnimation : MonoBehaviour
     {
         if(collision.tag == "Player")
         {
+           // Time.timeScale = 0.5f;
             PortalAnimatorObject.SetActive(true);
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
         }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        //if (collision.tag == "Player")
+        //{
+        //    Time.timeScale = 1;
+          
+        //}
     }
 }

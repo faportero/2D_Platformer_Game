@@ -9,6 +9,7 @@ public class Ente : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Material material;
     public bool isGargolaEnte;
+
     private void Awake()
     {
         
@@ -33,6 +34,7 @@ public class Ente : MonoBehaviour
     {
         if(collision.tag == "Player")
         {
+            transform.GetChild(0).gameObject.SetActive(true);
             playerMovementNew.isMoving = false; // Detener el movimiento
             playerMovementNew.anim.SetBool("SlowWalk", false); // Desactivar animación de caminar
             StartCoroutine(PlayerDisolve());
@@ -51,7 +53,7 @@ public class Ente : MonoBehaviour
             dissolveAmount = Mathf.Lerp(1, 0, elapsedTime / duration);
             material.SetFloat("_DissolveAmmount", dissolveAmount);
             elapsedTime += Time.deltaTime;
-            print(material.GetFloat("_DissolveAmmount"));
+          //  print(material.GetFloat("_DissolveAmmount"));
             yield return null;  // Esperar al siguiente frame
         }
 

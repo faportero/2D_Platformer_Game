@@ -8,7 +8,7 @@ using UnityEngine.Video;
 
 public class Espejo : MonoBehaviour
 {
-    [SerializeField] GameObject p1, p2, p3, p4, pm1, pm2, pm3, pm4, panelFeedback, GargolaBuena, GargolaMala, explodeObject;
+    [SerializeField] GameObject p1, p2, p3, p4, pm1, pm2, pm3, pm4, panelFeedback, panelHUD, GargolaBuena, GargolaMala, explodeObject, PiezasRecuerdoBueno;
     [SerializeField] UI_Piezas piezasPanel;
     [SerializeField] TextMeshPro textPanel;
     public GameObject videoPlayerPlane;
@@ -18,36 +18,96 @@ public class Espejo : MonoBehaviour
 
     private ParticleSystem explodePartycle;
     private static int countPiezas = 4;
-    private int maxPiezas = 4, countVideoClips;
+    public int maxPiezas = 4, countVideoClips;
     [HideInInspector] public static int piezasRestantes;
     public static bool isChecked, isComplete;
+   private DialogueGargolas dialogueGargolas;
+    private PlayerControllerNew playerController;
+    [HideInInspector]public PlayerMovementNew playerMovement;
+    private bool isFacingRight;
+    public bool terminoVideo;
 
-
+    private void Awake()
+    {
+        playerController = FindAnyObjectByType<PlayerControllerNew>();
+        playerMovement = FindAnyObjectByType<PlayerMovementNew>();
+        dialogueGargolas = FindAnyObjectByType<DialogueGargolas>();
+    }
     private void Start()
     {
         explodePartycle = explodeObject.GetComponent<ParticleSystem>();
         videoPlayer.loopPointReached += OnVideoEnd;
 
         // CheckEspejoPieces();
-        //CheckEspejoPiecesInit();
+        CheckEspejoPiecesInit();
     }
     private void Update()
     {
-        CheckEspejoPiecesInit();
+        //CheckEspejoPiecesInit();
     }
-    void OnVideoEnd(VideoPlayer vp)
+    public void OnVideoEnd(VideoPlayer vp)
     {
         // Lógica para cambiar al juego
+        terminoVideo = true;
         countVideoClips++;
-        transform.GetChild(0).gameObject.SetActive(true);
+        if(countVideoClips == 1) transform.GetChild(0).gameObject.SetActive(true);
+        playerMovement.transform.localScale = new Vector3(playerMovement.transform.localScale.x, playerMovement.transform.localScale.y, playerMovement.transform.localScale.z);
+
+        // if (countVideoClips >= 1) SwitchPlayerTransform();
     }
+    //IEnumerator EsperaAnim()
+    //{
+    //    if (heartbBeatCoroutine != null) StopCoroutine(heartbBeatCoroutine);
+    //    anim.enabled = true;
+    //    anim.Play("Heartbeat");
+    //    AnimationClip animacion = anim.runtimeAnimatorController.animationClips[0];
+    //    yield return new WaitForSecondsRealtime(animacion.averageDuration);
+    //    anim.enabled = false;
+    //}
     private IEnumerator ShowVideoPanel()
     {
+        playerMovement.inputsEnabled = false;
+        panelHUD.SetActive(false);
+        yield return new WaitForSeconds(.5f);
+
+        PiezasRecuerdoBueno.GetComponent<Animator>().enabled = true;
+        AnimationClip animacion = PiezasRecuerdoBueno.GetComponent<Animator>().runtimeAnimatorController.animationClips[0];
+        yield return new WaitForSecondsRealtime(animacion.averageDuration);
+
         CameraManager.instance.SingleSwapCamera(camera1);
-        videoPlayerPlane.SetActive(true);
         yield return new WaitForSeconds(2f);
+
+       //transform.GetChild(0).gameObject.SetActive(true);
+
+        Vector2 targetPosition = playerMovement.rb.position + new Vector2(playerMovement.rb.position.x + 1000, playerMovement.rb.position.y);
+        playerMovement.rb.position = Vector3.MoveTowards(playerMovement.rb.position, targetPosition, .5f * Time.deltaTime);
+        playerMovement.anim.SetBool("SlowWalk", true);
+        yield return new WaitWhile(() => playerMovement.rb.position.x == targetPosition.x);
+        //SwitchPlayerTransform();
+
+        PiezasRecuerdoBueno.SetActive(false);
+
+       playerMovement.transform.localScale = new Vector3(-playerMovement.transform.localScale.x, playerMovement.transform.localScale.y, playerMovement.transform.localScale.z);
+
+        videoPlayerPlane.SetActive(true);
         videoPlayer.clip = videoClips[countVideoClips];
         videoPlayer.Play();
+
+    }
+    public void SwitchPlayerTransform()
+    {
+        if (isFacingRight)
+        {
+            Vector3 rotator = new Vector3(transform.rotation.x, -180f, transform.rotation.z);
+            transform.rotation = Quaternion.Euler(rotator);
+            isFacingRight = !isFacingRight;   
+        }
+        else
+        {
+            Vector3 rotator = new Vector3(transform.rotation.x, 0, transform.rotation.z);
+            transform.rotation = Quaternion.Euler(rotator);
+            isFacingRight = !isFacingRight;
+        }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -73,12 +133,11 @@ public class Espejo : MonoBehaviour
                 textPanel.text = "¡Fragmentos Complatos!";
                 //panelFeedback.SetActive(false);
                 print("Piezas complatas");
-               // StartCoroutine(ShowVideoPanel());
+                StartCoroutine(ShowVideoPanel());
                 //if(!isComplete)StartCoroutine(AnimacionGargolas());
             }
         }
     }
-
 
     private void ShowFeedbackPanel()
     {
@@ -155,7 +214,8 @@ public class Espejo : MonoBehaviour
             //p1.GetComponent<SpriteRenderer>().color = Color.red;
             //piezasPanel.piezaA.GetComponent<Image>().color = Color.black;
             p1.SetActive(true);
-            piezasPanel.piezaA.GetComponent<SwitchSprite>().SwitchNewSprite();
+            pm1.SetActive(false);
+            //piezasPanel.piezaA.GetComponent<SwitchSprite>().SwitchNewSprite();
             //piezasPanel.piezaA.SetActive(false);
         }
         if (LevelManager.usedPB)
@@ -163,7 +223,8 @@ public class Espejo : MonoBehaviour
             //p2.GetComponent<SpriteRenderer>().color = Color.red;
             //piezasPanel.piezaB.GetComponent<Image>().color = Color.black;
             p2.SetActive(true);
-            piezasPanel.piezaB.GetComponent<SwitchSprite>().SwitchNewSprite();
+            pm2.SetActive(false);
+            //piezasPanel.piezaB.GetComponent<SwitchSprite>().SwitchNewSprite();
 
             // piezasPanel.piezaB.SetActive(false);
         }
@@ -172,7 +233,8 @@ public class Espejo : MonoBehaviour
             //p3.GetComponent<SpriteRenderer>().color = Color.red;
             //piezasPanel.piezaC.GetComponent<Image>().color = Color.black;
             p3.SetActive(true);
-            piezasPanel.piezaC.GetComponent<SwitchSprite>().SwitchNewSprite();
+            pm3.SetActive(false);
+            //piezasPanel.piezaC.GetComponent<SwitchSprite>().SwitchNewSprite();
 
             //piezasPanel.piezaC.SetActive(false);
         }
@@ -181,7 +243,8 @@ public class Espejo : MonoBehaviour
             //p4.GetComponent<SpriteRenderer>().color = Color.red;
             //piezasPanel.piezaD.GetComponent<Image>().color = Color.black;
             p4.SetActive(true);
-            piezasPanel.piezaD.GetComponent<SwitchSprite>().SwitchNewSprite();
+            pm4.SetActive(false);
+            //piezasPanel.piezaD.GetComponent<SwitchSprite>().SwitchNewSprite();
 
             //piezasPanel.piezaD.SetActive(false);
         }

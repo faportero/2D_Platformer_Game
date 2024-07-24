@@ -48,7 +48,7 @@ public class Piezas : MonoBehaviour
 
     private IEnumerator PiecedAnim(float delay)
     {
-        //gameObject.SetActive(true);
+        gameObject.SetActive(true);
         LoadTransforms();
         yield return new WaitForSeconds(delay);
         Vector3 startScale = Vector3.zero;

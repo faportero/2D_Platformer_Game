@@ -8,13 +8,18 @@ public class SwitchSprite : MonoBehaviour
     [SerializeField] Sprite _newSprite;
     private Image _spriteRenderer;
 
-    private void Start()
+    private void Awake()
     {
         _spriteRenderer = GetComponent<Image>();
+    }
+    private void Start()
+    {
+       // _spriteRenderer = GetComponent<Image>();
     }
     public void SwitchNewSprite()
     {
         _spriteRenderer.sprite = _newSprite;
+  
     }
 
 }

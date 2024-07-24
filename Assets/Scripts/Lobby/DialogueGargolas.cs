@@ -5,9 +5,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [System.Serializable]
-public struct DialogueGargolasLine
+public struct DialogueLineGargola
 {
     public string line;
+    public AudioClip audioClip;
     public Sprite characterImage;
     public bool isPlayerSpeaking;
 }
@@ -15,13 +16,15 @@ public struct DialogueGargolasLine
 public class DialogueGargolas : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI textComponent;
-    [SerializeField] List<DialogueLine> dialogueLines;
+    [SerializeField] List<DialogueLineGargola> dialogueLines;
     [SerializeField] float textSpeed;
     [SerializeField] Image characterImage; // El Image donde se mostrará la imagen del personaje
     [SerializeField] GameObject continueBtn;
     private LobbyManager lobbyManager;
     private PlayerMovementNew playerMovement;
-    private int index;
+    public int index;
+    public int countDialogue;
+   
 
     private Coroutine blinkCoroutine; // Corrutina para el efecto de "pestañeo"
     [HideInInspector] public Coroutine typeLineCoroutine;
@@ -83,6 +86,12 @@ public class DialogueGargolas : MonoBehaviour
         continueBtn.SetActive(false);
         // Actualiza la imagen del personaje
         characterImage.sprite = dialogueLines[index].characterImage;
+
+        if (dialogueLines[index].audioClip != null)
+        {
+            GetComponent<AudioSource>().Stop();
+            GetComponent<AudioSource>().PlayOneShot(dialogueLines[index].audioClip);
+        }
 
         // Alineación de la imagen y el texto según quien hable
         if (dialogueLines[index].isPlayerSpeaking)
@@ -179,7 +188,7 @@ public class DialogueGargolas : MonoBehaviour
         else
         {
             gameObject.SetActive(false);
-            lobbyManager.PaneoCamera();
+            //lobbyManager.PaneoCamera();
         }
     }
 }

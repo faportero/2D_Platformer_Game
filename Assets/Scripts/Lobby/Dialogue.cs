@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public struct DialogueLine
 {
     public string line;
+    public AudioClip audioClip;
     public Sprite characterImage;
     public bool isPlayerSpeaking;
 }
@@ -83,6 +84,12 @@ public class Dialogue : MonoBehaviour
         continueBtn.SetActive(false);
         // Actualiza la imagen del personaje
         characterImage.sprite = dialogueLines[index].characterImage;
+
+        if (dialogueLines[index].audioClip != null)
+        {
+            GetComponent<AudioSource>().Stop();
+            GetComponent<AudioSource>().PlayOneShot(dialogueLines[index].audioClip);
+        }
 
         // Alineación de la imagen y el texto según quien hable
         if (dialogueLines[index].isPlayerSpeaking)
