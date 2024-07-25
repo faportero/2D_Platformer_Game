@@ -37,7 +37,7 @@ public class Gargola : MonoBehaviour
     void OnVideoEnd(VideoPlayer vp)
     {
         // Lógica para cambiar al juego
-        CameraManager.instance.SingleSwapCamera(camera1);
+        CameraManager.instance.SingleSwapCamera(camera1,2f);
         playerMovementNew.inputsEnabled = true;
 
     }
@@ -59,7 +59,7 @@ public class Gargola : MonoBehaviour
             playerMovementNew.anim.SetBool("SlowWalk", false);
             //playerMovementNew.targetPosition = new Vector3(playerMovementNew.transform.position.x, playerMovementNew.transform.position.y, 0);
             playerMovementNew.targetPosition = playerController.transform.position;
-            CameraManager.instance.SingleSwapCamera(camera2);
+            CameraManager.instance.SingleSwapCamera(camera2, 2);
 
             if (LimboManager.countVideosWatched != 3)
             {

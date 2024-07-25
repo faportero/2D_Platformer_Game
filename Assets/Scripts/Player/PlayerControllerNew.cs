@@ -102,7 +102,7 @@ public class PlayerControllerNew : MonoBehaviour
         saludBar.healthFillBar.fillAmount = currentSalud;
         cm = CameraManager.instance.currentCamera;
 
-        if (ui_enemyAttachedBar) print(ui_enemyAttachedBar.gameObject.name);
+        //if (ui_enemyAttachedBar) print(ui_enemyAttachedBar.gameObject.name);
 
         switch (currentSalud)
         {
@@ -163,7 +163,7 @@ public class PlayerControllerNew : MonoBehaviour
     private void Update()
     {
               //print("SaludActual: " + currentSalud + ". Boleano barrita: " + ui_enemyAttachedBar.startUpdateTimeCoroutine + ". Boleano efecto panel: " + isSmokePanelEffect);
-        print("Haciendo Enemy Shake: "+doingEnemyShake);
+      //  print("Haciendo Enemy Shake: "+doingEnemyShake);
         targetPosition = GetWorldPositionFromUI(saludBar.GetComponent<RectTransform>());
         targetPosition = targetPosition + new Vector3(0, -1.25f, 0);
         

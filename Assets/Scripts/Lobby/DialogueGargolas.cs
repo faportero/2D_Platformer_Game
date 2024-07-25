@@ -24,6 +24,7 @@ public class DialogueGargolas : MonoBehaviour
     private PlayerMovementNew playerMovement;
     public int index;
     public int countDialogue;
+    [SerializeField] Espejo espejo;
    
 
     private Coroutine blinkCoroutine; // Corrutina para el efecto de "pestañeo"
@@ -189,6 +190,8 @@ public class DialogueGargolas : MonoBehaviour
         {
             gameObject.SetActive(false);
             //lobbyManager.PaneoCamera();
+            espejo.StartCoroutine(espejo.AnimacionGargolas());
+            
         }
     }
 }

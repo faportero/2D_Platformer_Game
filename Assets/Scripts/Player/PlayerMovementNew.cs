@@ -175,7 +175,7 @@ public class PlayerMovementNew : MonoBehaviour
         //print("Falling Movement ModeAmmount: "+fallingModeMovementAmmount);
         //print("Falling Velocity: "+fallingVelocity);
         // StartCoroutine(DieAnimation());
-        print("Clic Direction: " + clicDirection);
+        //print("Clic Direction: " + clicDirection);
         //print(material.GetFloat("_DissolveAmmount"));
         if (canMove)
         {
@@ -291,7 +291,7 @@ public class PlayerMovementNew : MonoBehaviour
         }
         else if (!isPC)
         {
-            print("entro al modo tap");
+           // print("entro al modo tap");
             if (Input.touchCount > 0 || swipeDetector.TapPerformed == true)
             {
                 Touch touch = Input.GetTouch(0);

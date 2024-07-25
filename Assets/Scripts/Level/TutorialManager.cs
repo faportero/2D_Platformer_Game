@@ -28,7 +28,7 @@ public class TutorialManager : MonoBehaviour, IPointerDownHandler, IPointerUpHan
         playerMovementNew = FindAnyObjectByType<PlayerMovementNew>();
         audioPause = FindAnyObjectByType<AudioPause>();
         swipeDetector = playerMovementNew.swipeDetector;
-        print(swipeDetector.gameObject.name);
+      //  print(swipeDetector.gameObject.name);
        // print(canvasSwipe.name);
     }
     public void ActiveTutorial(bool pause)

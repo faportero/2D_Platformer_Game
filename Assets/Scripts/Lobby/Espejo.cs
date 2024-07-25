@@ -8,30 +8,33 @@ using UnityEngine.Video;
 
 public class Espejo : MonoBehaviour
 {
-    [SerializeField] GameObject p1, p2, p3, p4, pm1, pm2, pm3, pm4, panelFeedback, panelHUD, GargolaBuena, GargolaMala, explodeObject, PiezasRecuerdoBueno;
+    [SerializeField] GameObject p1, p2, p3, p4, pm1, pm2, pm3, pm4, panelFeedback, panelHUD, GargolaBuena, GargolaMala, explodeObject, PiezasRecuerdoMalo, PiezasRecuerdoBueno;
+    public GameObject triggerParteFinal;
     [SerializeField] UI_Piezas piezasPanel;
     [SerializeField] TextMeshPro textPanel;
     public GameObject videoPlayerPlane;
     public VideoPlayer videoPlayer;
     public VideoClip[] videoClips;
-    [SerializeField] private CinemachineVirtualCamera camera1, camera2;
+    public CinemachineVirtualCamera cameraPlayer, cameraVideo, cameraGeneral;
 
     private ParticleSystem explodePartycle;
-    private static int countPiezas = 4;
-    public int maxPiezas = 4, countVideoClips;
+    private static int countPiezas = 0;
+    public int maxPiezas = 0, countVideoClips;
     [HideInInspector] public static int piezasRestantes;
     public static bool isChecked, isComplete;
-   private DialogueGargolas dialogueGargolas;
+    public GameObject panelDialogueGargolas;
     private PlayerControllerNew playerController;
     [HideInInspector]public PlayerMovementNew playerMovement;
-    private bool isFacingRight;
+    private bool isFacingRight = true;
     public bool terminoVideo;
+    private bool isPlaying;
+    private Vector3 targetPosition;
 
     private void Awake()
     {
         playerController = FindAnyObjectByType<PlayerControllerNew>();
         playerMovement = FindAnyObjectByType<PlayerMovementNew>();
-        dialogueGargolas = FindAnyObjectByType<DialogueGargolas>();
+       // dialogueGargolas = FindAnyObjectByType<DialogueGargolas>();
     }
     private void Start()
     {
@@ -40,74 +43,103 @@ public class Espejo : MonoBehaviour
 
         // CheckEspejoPieces();
         CheckEspejoPiecesInit();
+        
+
+
     }
     private void Update()
     {
-        //CheckEspejoPiecesInit();
+        if (isPlaying && !explodePartycle.isPlaying)
+        {
+            explodeObject.SetActive(false);
+            isPlaying = false;
+        }
     }
     public void OnVideoEnd(VideoPlayer vp)
     {
         // Lógica para cambiar al juego
         terminoVideo = true;
         countVideoClips++;
-        if(countVideoClips == 1) transform.GetChild(0).gameObject.SetActive(true);
-        playerMovement.transform.localScale = new Vector3(playerMovement.transform.localScale.x, playerMovement.transform.localScale.y, playerMovement.transform.localScale.z);
+        CameraManager.instance.SingleSwapCamera(cameraGeneral, 1f);
 
-        // if (countVideoClips >= 1) SwitchPlayerTransform();
+
+        if (countVideoClips == 1) StartCoroutine(ActivateEnte());
+        if (countVideoClips > 1) 
+        {
+           // panelDialogueGargolas.SetActive(true);
+            panelDialogueGargolas.GetComponent<DialogueGargolas>().OnButtonDown();
+
+        }
+
     }
-    //IEnumerator EsperaAnim()
-    //{
-    //    if (heartbBeatCoroutine != null) StopCoroutine(heartbBeatCoroutine);
-    //    anim.enabled = true;
-    //    anim.Play("Heartbeat");
-    //    AnimationClip animacion = anim.runtimeAnimatorController.animationClips[0];
-    //    yield return new WaitForSecondsRealtime(animacion.averageDuration);
-    //    anim.enabled = false;
-    //}
-    private IEnumerator ShowVideoPanel()
+
+    public IEnumerator ShowVideoPanel()
     {
-        playerMovement.inputsEnabled = false;
-        panelHUD.SetActive(false);
+        //Desactiva Input
+        isFacingRight = false;
+        playerMovement.transform.localScale = new Vector3(-playerMovement.transform.localScale.x, playerMovement.transform.localScale.y, playerMovement.transform.localScale.z);
+        //playerMovement.inputsEnabled = false;
         yield return new WaitForSeconds(.5f);
+        panelHUD.SetActive(false);//Desactiva HUD
 
-        PiezasRecuerdoBueno.GetComponent<Animator>().enabled = true;
-        AnimationClip animacion = PiezasRecuerdoBueno.GetComponent<Animator>().runtimeAnimatorController.animationClips[0];
+
+
+        //Camina fuera del espejo
+        //isFacingRight = false;
+        //Vector3 targetPosition = playerMovement.transform.position + new Vector3(playerMovement.transform.position.x + 2000, playerMovement.transform.position.y, playerMovement.transform.position.z);
+
+        //playerMovement.transform.position = Vector3.MoveTowards(playerMovement.transform.position, targetPosition, 2f * Time.deltaTime);
+        //playerMovement.anim.SetBool("SlowWalk", true);
+        //yield return new WaitWhile(() => playerMovement.transform.position.x == targetPosition.x);
+        //targetPosition = Vector3.zero;
+        //playerMovement.inputsEnabled = false;
+
+
+        //Animacion piezas
+        PiezasRecuerdoMalo.GetComponent<Animator>().enabled = true;
+        AnimationClip animacion = PiezasRecuerdoMalo.GetComponent<Animator>().runtimeAnimatorController.animationClips[0];
         yield return new WaitForSecondsRealtime(animacion.averageDuration);
+        // yield return new WaitForSeconds(1);
 
-        CameraManager.instance.SingleSwapCamera(camera1);
+        //Mira hacia video
+        //playerMovement.transform.localScale = new Vector3(-playerMovement.transform.localScale.x, playerMovement.transform.localScale.y, playerMovement.transform.localScale.z);
+        SwitchPlayerTransform(false);
+
+        //Cambia a camara de video
+        CameraManager.instance.SingleSwapCamera(cameraVideo, 1f);
         yield return new WaitForSeconds(2f);
 
-       //transform.GetChild(0).gameObject.SetActive(true);
-
-        Vector2 targetPosition = playerMovement.rb.position + new Vector2(playerMovement.rb.position.x + 1000, playerMovement.rb.position.y);
-        playerMovement.rb.position = Vector3.MoveTowards(playerMovement.rb.position, targetPosition, .5f * Time.deltaTime);
-        playerMovement.anim.SetBool("SlowWalk", true);
-        yield return new WaitWhile(() => playerMovement.rb.position.x == targetPosition.x);
-        //SwitchPlayerTransform();
-
-        PiezasRecuerdoBueno.SetActive(false);
-
-       playerMovement.transform.localScale = new Vector3(-playerMovement.transform.localScale.x, playerMovement.transform.localScale.y, playerMovement.transform.localScale.z);
-
+        //Reproduce video
+        PiezasRecuerdoMalo.SetActive(false);//desactiva imagen de recuerdo bueno
         videoPlayerPlane.SetActive(true);
         videoPlayer.clip = videoClips[countVideoClips];
         videoPlayer.Play();
 
     }
-    public void SwitchPlayerTransform()
+    private IEnumerator ActivateEnte()
     {
-        if (isFacingRight)
-        {
-            Vector3 rotator = new Vector3(transform.rotation.x, -180f, transform.rotation.z);
-            transform.rotation = Quaternion.Euler(rotator);
-            isFacingRight = !isFacingRight;   
-        }
-        else
-        {
-            Vector3 rotator = new Vector3(transform.rotation.x, 0, transform.rotation.z);
-            transform.rotation = Quaternion.Euler(rotator);
-            isFacingRight = !isFacingRight;
-        }
+        SwitchPlayerTransform(true);
+        yield return new WaitForSeconds(1);
+        transform.GetChild(0).gameObject.SetActive(true);
+        panelDialogueGargolas.GetComponent<Animator>().enabled = true;
+        //playerMovement.transform.localScale = new Vector3(playerMovement.transform.localScale.x, playerMovement.transform.localScale.y, playerMovement.transform.localScale.z);
+    }
+    public void SwitchPlayerTransform(bool isFacingRight)
+    {
+        //if (isFacingRight)
+        //{
+        //    playerMovement.transform.localScale = new Vector3(playerMovement.transform.localScale.x, playerMovement.transform.localScale.y, playerMovement.transform.localScale.z);
+        //   // playerMovement.gameObject.GetComponent<SpriteRenderer>().flipX = false;
+        //   // isFacingRight = !isFacingRight;   
+        //   // isFacingRight = false;   
+        //}
+        //else
+        //{
+        //    playerMovement.transform.localScale = new Vector3(-playerMovement.transform.localScale.x, playerMovement.transform.localScale.y, playerMovement.transform.localScale.z);
+        //    //playerMovement.gameObject.GetComponent<SpriteRenderer>().flipX = true;
+        //    //  isFacingRight = !isFacingRight;
+        //    //  isFacingRight = true;
+        //}
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -132,9 +164,11 @@ public class Espejo : MonoBehaviour
             {
                 textPanel.text = "¡Fragmentos Complatos!";
                 //panelFeedback.SetActive(false);
-                print("Piezas complatas");
-                StartCoroutine(ShowVideoPanel());
+                // print("Piezas complatas");
+                //   if(targetPosition == Vector3.zero) targetPosition = playerMovement.transform.position + new Vector3(playerMovement.transform.position.x + 2000, playerMovement.transform.position.y, playerMovement.transform.position.z);
+                //  StartCoroutine(ShowVideoPanel());
                 //if(!isComplete)StartCoroutine(AnimacionGargolas());
+                triggerParteFinal.SetActive(true);
             }
         }
     }
@@ -249,10 +283,22 @@ public class Espejo : MonoBehaviour
             //piezasPanel.piezaD.SetActive(false);
         }
     }
-    IEnumerator AnimacionGargolas()
+    public void CreateExplosion()
     {
-        explodeObject.SetActive(true);
-        explodePartycle.Play();
+        // Verifica si la partícula ya está en reproducción para evitar iniciarla múltiples veces
+        if (!isPlaying)
+        {
+            explodeObject.SetActive(true);
+            explodePartycle.Play();
+            isPlaying = true;
+        }
+    }
+
+    public IEnumerator AnimacionGargolas()
+    {
+
+
+        CreateExplosion();
         // Escala inicial y final para la animación
         Vector3 scaleInicialMala = GargolaMala.transform.localScale;
         Vector3 scaleFinalMala = Vector3.zero;
@@ -287,6 +333,10 @@ public class Espejo : MonoBehaviour
         // Activar GargolaBuena antes de iniciar su animación de escala
         GargolaBuena.SetActive(true);
 
+        //Intercambiar Recuerdos de espejo
+        videoPlayerPlane.SetActive(false);
+        PiezasRecuerdoBueno.SetActive(true);
+
         // Animación de GargolaBuena apareciendo
         tiempoInicio = Time.time;
         tiempoPasado = 0f;
@@ -302,6 +352,13 @@ public class Espejo : MonoBehaviour
         // Asegurarse de que termine en su escala final
         GargolaBuena.transform.localScale = scaleFinalBuena;
         explodeObject.SetActive(false);
+        playerMovement.inputsEnabled = true;
         isComplete = true;
+        CameraManager.instance.SingleSwapCamera(cameraPlayer, 3f);
+       // playerMovement.transform.localScale = new Vector3(playerMovement.transform.localScale.x, playerMovement.transform.localScale.y, playerMovement.transform.localScale.z);
+
+        SwitchPlayerTransform(true);
+        triggerParteFinal.SetActive(false);
+
     }
 }

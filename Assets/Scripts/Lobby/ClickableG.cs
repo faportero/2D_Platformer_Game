@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Video;
@@ -16,10 +17,12 @@ public class ClickableG : MonoBehaviour, IPointerDownHandler
     public void OnVideoEnd(VideoPlayer vp)
     {
         // Lógica para cambiar al juego
-       
-        dialogue.OnButtonDown();
-
-        espejo.playerMovement.transform.localScale = new Vector3(espejo.playerMovement.transform.localScale.x, espejo.playerMovement.transform.localScale.y, espejo.playerMovement.transform.localScale.z);
+        //espejo.SwitchPlayerTransform();
+        //dialogue.OnButtonDown();
+        // espejo.playerMovement.transform.localScale = new Vector3(espejo.playerMovement.transform.localScale.x, espejo.playerMovement.transform.localScale.y, espejo.playerMovement.transform.localScale.z);
+        espejo.SwitchPlayerTransform(true);
+        espejo.panelDialogueGargolas.GetComponent<Animator>().enabled = true;
+        espejo.panelDialogueGargolas.GetComponent<Animator>().Play("Show Animation");
 
     }
     public void OnPointerDown(PointerEventData eventData)
@@ -28,11 +31,20 @@ public class ClickableG : MonoBehaviour, IPointerDownHandler
         {
             //espejo.SwitchPlayerTransform();
             //espejo.countVideoClips++;
-            espejo.playerMovement.transform.localScale = new Vector3(-espejo.playerMovement.transform.localScale.x, espejo.playerMovement.transform.localScale.y, espejo.playerMovement.transform.localScale.z);
-            espejo. videoPlayer.clip = espejo.videoClips[espejo.countVideoClips];
-            espejo.videoPlayer.Play();
+            StartCoroutine(ChangeVideoCameraandPlayVideo());
         }
     }
 
+    private IEnumerator ChangeVideoCameraandPlayVideo()
+    {
+        CameraManager.instance.SingleSwapCamera(espejo.cameraVideo, 1f);
+        espejo.SwitchPlayerTransform(false);
+      //  espejo.playerMovement.transform.localScale = new Vector3(-espejo.playerMovement.transform.localScale.x, espejo.playerMovement.transform.localScale.y, espejo.playerMovement.transform.localScale.z);
+        yield return new WaitForSeconds(.1f);
+        espejo.videoPlayer.clip = espejo.videoClips[espejo.countVideoClips];
+        espejo.videoPlayer.Play();
+        gameObject.SetActive(false);
+        espejo.panelDialogueGargolas.GetComponent<Animator>().Play("Hide Animation");
 
+    }
 }

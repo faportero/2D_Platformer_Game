@@ -17,10 +17,10 @@ public class UI_Piezas : MonoBehaviour
         CheckPieces();
        CheckEspejoPiecesInit();
 
-        print("PlayerControllerNew.piezaA: " + PlayerControllerNew.piezaA + ". LevelManager.usedPA: " + LevelManager.usedPA);
-        print("PlayerControllerNew.piezaB: " + PlayerControllerNew.piezaB + ". LevelManager.usedPA: " + LevelManager.usedPB);
-        print("PlayerControllerNew.piezaC: " + PlayerControllerNew.piezaC + ". LevelManager.usedPA: " + LevelManager.usedPC);
-        print("PlayerControllerNew.piezaD: " + PlayerControllerNew.piezaD + ". LevelManager.usedPA: " + LevelManager.usedPD);
+        //print("PlayerControllerNew.piezaA: " + PlayerControllerNew.piezaA + ". LevelManager.usedPA: " + LevelManager.usedPA);
+        //print("PlayerControllerNew.piezaB: " + PlayerControllerNew.piezaB + ". LevelManager.usedPA: " + LevelManager.usedPB);
+        //print("PlayerControllerNew.piezaC: " + PlayerControllerNew.piezaC + ". LevelManager.usedPA: " + LevelManager.usedPC);
+        //print("PlayerControllerNew.piezaD: " + PlayerControllerNew.piezaD + ". LevelManager.usedPA: " + LevelManager.usedPD);
     }
     private void CheckPieces()
     {

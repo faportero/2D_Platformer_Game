@@ -189,17 +189,27 @@ public class CameraManager : MonoBehaviour
             framingTransposer = currentCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
         }
     }
-    public void SingleSwapCamera(CinemachineVirtualCamera newCamera)
+   public void SingleSwapCamera(CinemachineVirtualCamera newCamera, float time)
+{
+    if (currentCamera != null)
     {
-        if (currentCamera != null)
-        {
-            currentCamera.enabled = false;
-            //currentCamera.GetComponent<CinemachineBrain>().m_CustomBlends = blend;
-        }   
-        newCamera.enabled = true;
-        currentCamera = newCamera;
-        framingTransposer = currentCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
-       
+        currentCamera.enabled = false;
     }
+
+    newCamera.enabled = true;
+    currentCamera = newCamera;
+    framingTransposer = currentCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+
+    // Obtener el CinemachineBrain de la cámara principal (Main Camera)
+    CinemachineBrain cinemachineBrain = Camera.main.GetComponent<CinemachineBrain>();
+    if (cinemachineBrain != null)
+    {
+        cinemachineBrain.m_DefaultBlend.m_Time = time;
+    }
+    else
+    {
+        Debug.LogWarning("CinemachineBrain no encontrado en la cámara principal (Main Camera). Asegúrate de que la cámara principal tenga un componente CinemachineBrain.");
+    }
+}
     #endregion
 }

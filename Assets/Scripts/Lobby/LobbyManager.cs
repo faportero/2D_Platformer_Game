@@ -14,6 +14,7 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] private GameObject tapPanel;
     [SerializeField] private GameObject RelojPanel;
     [SerializeField] private Transform newPlayerPos;
+    [SerializeField] private GameObject portalInicio;
 
     [SerializeField] private SwipeDetector swipeDetector;
     [SerializeField] private CinemachineVirtualCamera cameraInit,camera2;
@@ -82,6 +83,7 @@ public class LobbyManager : MonoBehaviour
             playerMovementNew.inputsEnabled = true;
             panelHUD.SetActive(true);   
             panelVideo.SetActive(false);
+            portalInicio.SetActive(true);
         }
 
         //else if(pasoIntro == true)
@@ -292,7 +294,7 @@ public class LobbyManager : MonoBehaviour
         StartCoroutine(PlayerDisolve());
         yield return new WaitForSeconds(1);
         RelojPanel.SetActive(true);
-        CameraManager.instance.SingleSwapCamera(camera2);
+        CameraManager.instance.SingleSwapCamera(camera2, 5);
         yield return new WaitForSeconds(5);
         //playerMovementNew.rb.position = newPlayerPos.position;
         playerMovementNew.transform.position = new Vector3(newPlayerPos.position.x, newPlayerPos.position.y, 0);
