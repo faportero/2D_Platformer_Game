@@ -20,7 +20,8 @@ public class ActivateFinalPartLimbo : MonoBehaviour
     {
         if(collision.tag == "Player")
         {
-            espejo.StartCoroutine(espejo.ShowVideoPanel()); 
+            espejo.StartCoroutine(espejo.ShowVideoPanel());
+            collision.enabled = false;
         }
     }
 }

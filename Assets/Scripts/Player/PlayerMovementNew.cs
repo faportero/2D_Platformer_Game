@@ -1525,7 +1525,7 @@ public class PlayerMovementNew : MonoBehaviour
             yield return new WaitForSeconds(.05f);
            // yield return null;
         }
-        Die();
+       // Die();
     }
     #endregion
 }

@@ -132,16 +132,21 @@ public class LevelManager : MonoBehaviour
             {  
                 UI_MensajeHabilidades.SetActive(true);
             }
+            else
+            {
+                ResetLevel();
+
+            }
         }
     }
 
     public void ResetLevel()
     {
-        UserData.coins = uiCoins.coinCount;
-        UserData.escudo = playerController.escudo;
-        UserData.saltoDoble = playerController.saltoDoble;
-        UserData.vidaExtra = playerController.vidaExtra;
-        UserData.paracaidas = playerController.paracaidas;
+        //UserData.coins = uiCoins.coinCount;
+        //UserData.escudo = playerController.escudo;
+        //UserData.saltoDoble = playerController.saltoDoble;
+        //UserData.vidaExtra = playerController.vidaExtra;
+        //UserData.paracaidas = playerController.paracaidas;
         // SceneManager.LoadScene("Nivel_1");
        // UserData.terminoLobby = true;
         SceneManager.LoadScene("Lobby2");

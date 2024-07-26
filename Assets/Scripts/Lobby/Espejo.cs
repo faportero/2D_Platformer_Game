@@ -77,7 +77,7 @@ public class Espejo : MonoBehaviour
     {
         //Desactiva Input
         isFacingRight = false;
-        playerMovement.transform.localScale = new Vector3(-playerMovement.transform.localScale.x, playerMovement.transform.localScale.y, playerMovement.transform.localScale.z);
+        //playerMovement.transform.localScale = new Vector3(-playerMovement.transform.localScale.x, playerMovement.transform.localScale.y, playerMovement.transform.localScale.z);
         //playerMovement.inputsEnabled = false;
         yield return new WaitForSeconds(.5f);
         panelHUD.SetActive(false);//Desactiva HUD

@@ -276,7 +276,7 @@ public class PlayerControllerNew : MonoBehaviour
             {
                 case 0:
                    
-                    playerMovement.Die();
+                    //playerMovement.Die();
                  
                     break;
                 case .1f:
@@ -597,6 +597,12 @@ public class PlayerControllerNew : MonoBehaviour
             currentSalud -= saludAmount;
             currentSalud = Mathf.Clamp(currentSalud, 0f, 1);
             saludBar.healthFillBar.fillAmount = currentSalud;
+
+            if (currentSalud < .1f)
+            {
+                playerMovement.Die();
+                return;
+            }
 
             currenBadFloortItem = collision.gameObject;
 
