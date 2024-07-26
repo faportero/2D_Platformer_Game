@@ -40,7 +40,7 @@ public class ClickableG : MonoBehaviour, IPointerDownHandler
         CameraManager.instance.SingleSwapCamera(espejo.cameraVideo, 1f);
         espejo.SwitchPlayerTransform(false);
       //  espejo.playerMovement.transform.localScale = new Vector3(-espejo.playerMovement.transform.localScale.x, espejo.playerMovement.transform.localScale.y, espejo.playerMovement.transform.localScale.z);
-        yield return new WaitForSeconds(.1f);
+        yield return new WaitForSeconds(.01f);
         espejo.videoPlayer.clip = espejo.videoClips[espejo.countVideoClips];
         espejo.videoPlayer.Play();
         gameObject.SetActive(false);

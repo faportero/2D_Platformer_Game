@@ -117,6 +117,8 @@ public class PlayerMovementNew : MonoBehaviour
     private void Awake()
 
     {
+        //if (UserData.terminoTutorial) inputsEnabled = true;
+        
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         //cm = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
@@ -326,7 +328,7 @@ public class PlayerMovementNew : MonoBehaviour
         {
             Vector3 rotator = new Vector3(transform.rotation.x, -180f, transform.rotation.z);
             transform.rotation = Quaternion.Euler(rotator);
-            isFacingRight = !isFacingRight;
+           // isFacingRight = !isFacingRight;
 
             cameraFollowObject.CallTurn();
         }
@@ -334,7 +336,7 @@ public class PlayerMovementNew : MonoBehaviour
         {
             Vector3 rotator = new Vector3(transform.rotation.x, 0, transform.rotation.z);
             transform.rotation = Quaternion.Euler(rotator);
-            isFacingRight = !isFacingRight;
+          //  isFacingRight = !isFacingRight;
 
             cameraFollowObject.CallTurn();
         }
@@ -459,6 +461,8 @@ public class PlayerMovementNew : MonoBehaviour
     {
       //  isFacingRight = !isFacingRight;
         GetDirecction();
+        if (clicDirection > 0) isFacingRight = false;
+        else isFacingRight = true;
         if (clicDirection > 0 && !isFacingRight)
         {
             Turn();

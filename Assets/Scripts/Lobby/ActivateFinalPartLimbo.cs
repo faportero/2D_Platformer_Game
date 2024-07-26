@@ -21,7 +21,8 @@ public class ActivateFinalPartLimbo : MonoBehaviour
         if(collision.tag == "Player")
         {
             espejo.StartCoroutine(espejo.ShowVideoPanel());
-            collision.enabled = false;
+            gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            //collision.enabled = false;
         }
     }
 }

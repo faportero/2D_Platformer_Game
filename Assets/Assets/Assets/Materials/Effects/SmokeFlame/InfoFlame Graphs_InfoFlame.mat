@@ -60,6 +60,6 @@ Material:
     - _QueueOffset: 0
     - _TimeSpeed: 10
     m_Colors:
-    - _FlameColor: {r: 0.78867924, g: 0.78867924, b: 0.78867924, a: 0}
+    - _FlameColor: {r: 0, g: 0, b: 0, a: 0}
     - _SparksColor: {r: 1, g: 0.56518203, b: 0, a: 1}
   m_BuildTextureStacks: []
