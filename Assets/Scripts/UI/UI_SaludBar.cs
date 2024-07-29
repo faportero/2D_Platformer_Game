@@ -11,7 +11,7 @@ public class UI_SaludBar : MonoBehaviour
     public float currentAdiccion = 0;
     private float fillSpeed = 1f;
     public Image healthFillBar;
-    [SerializeField] private Gradient colorGradient;
+    public Gradient colorGradient;
     private float duration = 3;
     private float targetFillAmount;
     private float startFillAmount;

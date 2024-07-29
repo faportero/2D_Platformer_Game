@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,15 +20,16 @@ public class Dialogue : MonoBehaviour
     [SerializeField] List<DialogueLine> dialogueLines;
     [SerializeField] float textSpeed;
     [SerializeField] Image characterImage; // El Image donde se mostrará la imagen del personaje
-    [SerializeField] GameObject continueBtn;
+    [SerializeField] GameObject continueBtn, backBtn, cambiarDestino;
     private LobbyManager lobbyManager;
     private PlayerMovementNew playerMovement;
     private int index;
 
     private Coroutine blinkCoroutine; // Corrutina para el efecto de "pestañeo"
-    [HideInInspector] public Coroutine typeLineCoroutine;
+    [HideInInspector] public Coroutine typeLineCoroutine, autoAdvanceDialogue;
 
     private bool wasPreviousPlayerSpeaking;
+    private bool firstTime = true;
 
     private void Awake()
     {
@@ -51,10 +53,13 @@ public class Dialogue : MonoBehaviour
     private void Update()
     {
         playerMovement.anim.SetBool("SlowWalk", false);
+        print("FirstTimeDialogue: " + firstTime);
     }
 
     public void OnButtonDown()
     {
+        if (autoAdvanceDialogue != null) StopCoroutine(autoAdvanceDialogue);
+
         if (textComponent.text == dialogueLines[index].line)
         {
             NextLine();
@@ -64,10 +69,30 @@ public class Dialogue : MonoBehaviour
             if (typeLineCoroutine != null) StopCoroutine(typeLineCoroutine);
             textComponent.text = dialogueLines[index].line;
             continueBtn.SetActive(true);
+            backBtn.SetActive(true);
 
         }
     }
+    public void OnBackButtonDown()
+    {
+        if (index > 0)
+        {
+            index--;
+            if (typeLineCoroutine != null)
+            {
+                StopCoroutine(typeLineCoroutine);
+            }
+            textComponent.text = string.Empty;
+            typeLineCoroutine = StartCoroutine(TypeLine());
+        }
+    }
+    public void OnChangeButtonDown()
+    {
+        if (autoAdvanceDialogue != null) StopCoroutine(autoAdvanceDialogue);
 
+        gameObject.SetActive(false);
+        lobbyManager.PaneoCamera();
+    }
     private void StartDialogue()
     {
         index = 0;
@@ -77,11 +102,34 @@ public class Dialogue : MonoBehaviour
             StopCoroutine(typeLineCoroutine);
         }
         typeLineCoroutine = StartCoroutine(TypeLine());
-    }
 
+        if (firstTime)
+        {
+            autoAdvanceDialogue =  StartCoroutine(AutoAdvanceDialogue());
+        }
+        else
+        {
+           // continueBtn.SetActive(true);
+           // backBtn.SetActive(true);
+        }
+    }
+    private IEnumerator AutoAdvanceDialogue()
+    {
+        while (index < dialogueLines.Count)
+        {
+            yield return new WaitForSeconds(dialogueLines[index].line.Length * textSpeed);
+            if (dialogueLines[index].audioClip != null)
+            {
+                yield return new WaitUntil(() => !GetComponent<AudioSource>().isPlaying);
+            }
+            NextLine();
+        }
+        firstTime = false;
+    }
     private IEnumerator TypeLine()
     {
-        continueBtn.SetActive(false);
+       // continueBtn.SetActive(false);
+       // backBtn.SetActive(false);
         // Actualiza la imagen del personaje
         characterImage.sprite = dialogueLines[index].characterImage;
 
@@ -114,7 +162,8 @@ public class Dialogue : MonoBehaviour
             textComponent.text += c;
             yield return new WaitForSeconds(textSpeed);
         }
-        continueBtn.SetActive(true);
+        //continueBtn.SetActive(true);
+        //backBtn.SetActive(true);
 
     }
 
@@ -185,8 +234,12 @@ public class Dialogue : MonoBehaviour
         }
         else
         {
-            gameObject.SetActive(false);
-            lobbyManager.PaneoCamera();
+            //Aqui termina los dialogos
+            //firstTime = false;
+            StopCoroutine(autoAdvanceDialogue);
+            backBtn.SetActive(true);
+            continueBtn.SetActive(true);
+            cambiarDestino.SetActive(true);
         }
     }
 }

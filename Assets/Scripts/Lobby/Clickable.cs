@@ -9,8 +9,18 @@ public class Clickable : MonoBehaviour, IPointerDownHandler
     {
         if (dialogue.gameObject.activeSelf)
         {
-            dialogue.OnButtonDown();
-           // dialogue.StartBlinkAnimation();
+            if(gameObject.name == "ButtonNext")
+            {
+                 dialogue.OnButtonDown();
+            }
+            else if (gameObject.name == "ButtonBack")
+            {
+                 dialogue.OnBackButtonDown();
+            }
+            else if (gameObject.name == "ButtonCambiar")
+            {
+                dialogue.OnChangeButtonDown();
+            }
         }
     }
 

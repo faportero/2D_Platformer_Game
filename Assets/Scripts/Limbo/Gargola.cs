@@ -26,13 +26,18 @@ public class Gargola : MonoBehaviour
     }
     private void Update()
     {
-        if(Input.GetKeyUp(KeyCode.L))
-        {
-            videoPlayer.Stop();
-            OnVideoEnd(videoPlayer);
+        //if(Input.GetKeyUp(KeyCode.L))
+        //{
+        //    videoPlayer.Stop();
+        //    OnVideoEnd(videoPlayer);
 
-        }
+        //}
 
+    }
+    public void SkipVideo()
+    {
+        videoPlayer.Stop();
+        OnVideoEnd(videoPlayer);
     }
     void OnVideoEnd(VideoPlayer vp)
     {

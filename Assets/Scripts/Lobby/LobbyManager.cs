@@ -99,12 +99,18 @@ public class LobbyManager : MonoBehaviour
         //}
 
     }
+    public void SkipInitVideo()
+    {
+        videoPlayer.Stop();
+        OnVideoEnd(videoPlayer);
+    }
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.K))
-        {
-            OnVideoEnd(videoPlayer);
-        }
+        
+        //if(Input.GetKeyDown(KeyCode.K))
+        //{
+        //    OnVideoEnd(videoPlayer);
+        //}
         //if (pasoIntro == false)
         if (!UserData.terminoLobby)
         {

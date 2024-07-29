@@ -11,6 +11,7 @@ public class PlayerControllerNew : MonoBehaviour
     #region Variables
     [Header("Class References")]
     [SerializeField] private GameObject GlowSpriteEffect;
+    [SerializeField] private GameObject GlowHealthSpriteEffect;
     [SerializeField] private GameObject effectPanel;
     [SerializeField] private GameObject panelFeedback;
     [SerializeField] private GameObject panelFeedbackBadFloor;
@@ -100,6 +101,7 @@ public class PlayerControllerNew : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         audioPause = FindAnyObjectByType<AudioPause>();
         saludBar.healthFillBar.fillAmount = currentSalud;
+        saludBar.healthFillBar.color = saludBar.colorGradient.Evaluate(currentSalud);
         cm = CameraManager.instance.currentCamera;
 
         //if (ui_enemyAttachedBar) print(ui_enemyAttachedBar.gameObject.name);
@@ -208,6 +210,8 @@ public class PlayerControllerNew : MonoBehaviour
             currentSalud += saludAmount;
             currentSalud = Mathf.Clamp(currentSalud, 0f, 1);
             saludBar.healthFillBar.fillAmount = currentSalud;
+            saludBar.healthFillBar.color = saludBar.colorGradient.Evaluate(currentSalud);
+
             currentSalud = (float)Math.Round(currentSalud, 1);
 
             //print("Current Salud: "+currentSalud);
@@ -342,6 +346,7 @@ public class PlayerControllerNew : MonoBehaviour
             currentSalud -= saludAmount;
             currentSalud = Mathf.Clamp(currentSalud, 0f, 1);
             saludBar.healthFillBar.fillAmount = currentSalud;
+            saludBar.healthFillBar.color = saludBar.colorGradient.Evaluate(currentSalud);
             currentSalud = (float)Math.Round(currentSalud, 1);
 
             //if (currentSalud < .9f)
@@ -597,6 +602,9 @@ public class PlayerControllerNew : MonoBehaviour
             currentSalud -= saludAmount;
             currentSalud = Mathf.Clamp(currentSalud, 0f, 1);
             saludBar.healthFillBar.fillAmount = currentSalud;
+            saludBar.healthFillBar.color = saludBar.colorGradient.Evaluate(currentSalud);
+            currentSalud = (float)Math.Round(currentSalud, 1);
+
 
             if (currentSalud < .1f)
             {
@@ -981,6 +989,7 @@ public class PlayerControllerNew : MonoBehaviour
     }
     private IEnumerator TakeSaludAnim()
      {
+        GlowHealthSpriteEffect.SetActive(true);
         Vector3 startPosition = currentItem.transform.position;
         //targetPosition = GetWorldPositionFromUI(saludBar.GetComponent<RectTransform>());
         
@@ -1007,6 +1016,8 @@ public class PlayerControllerNew : MonoBehaviour
         // Asegurarse de que el valor final sea el targetPosition
         currentItem.transform.position = targetPosition;
         currentItem.SetActive(false);
+        GlowHealthSpriteEffect.SetActive(false);
+
     }
 
     private Vector3 GetWorldPositionFromUI(RectTransform uiElement)
