@@ -3,11 +3,13 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class UI_IndestructibleBar : MonoBehaviour
 {
     public AnimationCurve curve;
-    public Image healthFillBar;
+    //public Image healthFillBar;
+    public UnityEngine.UI.Slider healthFillBar;
     [SerializeField] private Gradient colorGradient;
     private float maxTimeEffect = 100;
     public float currentTimeEffect;
@@ -20,7 +22,8 @@ public class UI_IndestructibleBar : MonoBehaviour
 
     private void Start()
     {
-        healthFillBar = transform.GetChild(0).GetComponent<Image>();      
+        //healthFillBar = transform.GetChild(0).GetComponent<Image>();      
+       // healthFillBar = transform.GetChild(0).GetComponent<Image>();      
     }
    
 
@@ -47,7 +50,8 @@ public class UI_IndestructibleBar : MonoBehaviour
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
-            healthFillBar.fillAmount = Mathf.Lerp(startFillAmount, targetFillAmount, elapsedTime / duration);
+            //healthFillBar.fillAmount = Mathf.Lerp(startFillAmount, targetFillAmount, elapsedTime / duration);
+            healthFillBar.value = Mathf.Lerp(startFillAmount, targetFillAmount, elapsedTime / duration);
             yield return null;
         }
         Color newColor = new Color(1, 1, 1, 0);

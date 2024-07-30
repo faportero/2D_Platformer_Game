@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Rompecabezas : MonoBehaviour
 {
+    [SerializeField] private UI_Animation cPiece;
     public enum RompecabezasType
     {
         RompecabezasA,
@@ -49,7 +50,8 @@ public class Rompecabezas : MonoBehaviour
     {
         if(collision != null && collision.tag == "Player")
         {
-            //RompecabezasDie();       
+            //RompecabezasDie();
+            cPiece.StartAnimation();
         }
     }
 

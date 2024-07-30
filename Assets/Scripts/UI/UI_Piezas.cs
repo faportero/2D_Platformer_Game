@@ -34,21 +34,25 @@ public class UI_Piezas : MonoBehaviour
             // piezaA.GetComponent<Image>().color = Color.red;
             //playerControllerNew.TakePiece();
             piezaA.SetActive(true);
+            //cPiezaA.GetComponent<UI_Animation>().StartAnimation();
         }
         if (PlayerControllerNew.piezaB && !LevelManager.usedPB)
         {
             //piezaB.GetComponent<Image>().color = Color.red;
             piezaB.SetActive(true);
+            //cPiezaB.GetComponent<UI_Animation>().StartAnimation();
         }
         if (PlayerControllerNew.piezaC && !LevelManager.usedPC)
         {
             //piezaC.GetComponent<Image>().color = Color.red;
             piezaC.SetActive(true);
+           // cPiezaC.GetComponent<UI_Animation>().StartAnimation();
         }
         if (PlayerControllerNew.piezaD && !LevelManager.usedPD)
         {
             //piezaD.GetComponent<Image>().color = Color.red;
             piezaD.SetActive(true);
+           // cPiezaD.GetComponent<UI_Animation>().StartAnimation();
         }
     }
     private void CheckEspejoPiecesInit()

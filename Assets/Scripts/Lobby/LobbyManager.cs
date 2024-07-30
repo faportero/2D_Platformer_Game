@@ -183,7 +183,7 @@ public class LobbyManager : MonoBehaviour
 
 
        
-        float shakeMagnitude = 100f;
+        float shakeMagnitude = 60;
         float inertiaDuration = .2f;
         float returnDuration = 15f;
         Transform cameraTarget;

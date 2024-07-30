@@ -1,0 +1,5 @@
+D:/sincronizar/Fabian/Juegos Serios/Undo/Unity/UNDO_V1/.utmp/Debug/1l2p425e/armeabi-v7a/CMakeFiles/edit_cache.dir
+D:/sincronizar/Fabian/Juegos Serios/Undo/Unity/UNDO_V1/.utmp/Debug/1l2p425e/armeabi-v7a/CMakeFiles/rebuild_cache.dir
+D:/sincronizar/Fabian/Juegos Serios/Undo/Unity/UNDO_V1/.utmp/Debug/1l2p425e/armeabi-v7a/FramePacing/CMakeFiles/swappywrapper.dir
+D:/sincronizar/Fabian/Juegos Serios/Undo/Unity/UNDO_V1/.utmp/Debug/1l2p425e/armeabi-v7a/FramePacing/CMakeFiles/edit_cache.dir
+D:/sincronizar/Fabian/Juegos Serios/Undo/Unity/UNDO_V1/.utmp/Debug/1l2p425e/armeabi-v7a/FramePacing/CMakeFiles/rebuild_cache.dir

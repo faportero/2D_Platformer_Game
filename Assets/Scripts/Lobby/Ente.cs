@@ -35,6 +35,7 @@ public class Ente : MonoBehaviour
         if(collision.tag == "Player")
         {
             transform.GetChild(0).gameObject.SetActive(true);
+            transform.GetChild(1).gameObject.SetActive(true);
             playerMovementNew.isMoving = false; // Detener el movimiento
             playerMovementNew.anim.SetBool("SlowWalk", false); // Desactivar animación de caminar
             StartCoroutine(PlayerDisolve());

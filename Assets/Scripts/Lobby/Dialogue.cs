@@ -20,7 +20,7 @@ public class Dialogue : MonoBehaviour
     [SerializeField] List<DialogueLine> dialogueLines;
     [SerializeField] float textSpeed;
     [SerializeField] Image characterImage; // El Image donde se mostrará la imagen del personaje
-    [SerializeField] GameObject continueBtn, backBtn, cambiarDestino;
+    [SerializeField] GameObject continueBtn, backBtn, cambiarDestinoBtn;
     private LobbyManager lobbyManager;
     private PlayerMovementNew playerMovement;
     private int index;
@@ -54,11 +54,15 @@ public class Dialogue : MonoBehaviour
     {
         playerMovement.anim.SetBool("SlowWalk", false);
         print("FirstTimeDialogue: " + firstTime);
+        //if (textComponent.text == dialogueLines[index].line) continueBtn.GetComponent<Button>().interactable = false;
+        //else continueBtn.GetComponent<Button>().interactable = true;
+        //if (textComponent.text == dialogueLines[0].line) backBtn.GetComponent<Button>().interactable = false;
+        //else backBtn.GetComponent<Button>().interactable = true;
     }
 
     public void OnButtonDown()
     {
-        if (autoAdvanceDialogue != null) StopCoroutine(autoAdvanceDialogue);
+     //   if (autoAdvanceDialogue != null) StopCoroutine(autoAdvanceDialogue);
 
         if (textComponent.text == dialogueLines[index].line)
         {
@@ -88,7 +92,7 @@ public class Dialogue : MonoBehaviour
     }
     public void OnChangeButtonDown()
     {
-        if (autoAdvanceDialogue != null) StopCoroutine(autoAdvanceDialogue);
+      //  if (autoAdvanceDialogue != null) StopCoroutine(autoAdvanceDialogue);
 
         gameObject.SetActive(false);
         lobbyManager.PaneoCamera();
@@ -239,7 +243,7 @@ public class Dialogue : MonoBehaviour
             StopCoroutine(autoAdvanceDialogue);
             backBtn.SetActive(true);
             continueBtn.SetActive(true);
-            cambiarDestino.SetActive(true);
+            cambiarDestinoBtn.SetActive(true);
         }
     }
 }

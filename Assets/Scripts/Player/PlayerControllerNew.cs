@@ -211,8 +211,9 @@ public class PlayerControllerNew : MonoBehaviour
             currentSalud = Mathf.Clamp(currentSalud, 0f, 1);
             saludBar.healthFillBar.fillAmount = currentSalud;
             saludBar.healthFillBar.color = saludBar.colorGradient.Evaluate(currentSalud);
-
             currentSalud = (float)Math.Round(currentSalud, 1);
+
+            saludBar.transform.GetChild(0).GetComponent<UI_Animation>().StartAnimation();
 
             //print("Current Salud: "+currentSalud);
             //print("Fill Amount: " + saludBar.healthFillBar.fillAmount);
