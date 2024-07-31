@@ -23,6 +23,7 @@ public class Dialogue : MonoBehaviour
     [SerializeField] GameObject continueBtn, backBtn, cambiarDestinoBtn;
     private LobbyManager lobbyManager;
     private PlayerMovementNew playerMovement;
+    private LevelManager levelManager;  
     private int index;
 
     private Coroutine blinkCoroutine; // Corrutina para el efecto de "pestañeo"
@@ -35,6 +36,7 @@ public class Dialogue : MonoBehaviour
     {
         playerMovement = FindAnyObjectByType<PlayerMovementNew>();
         lobbyManager = FindAnyObjectByType<LobbyManager>();
+        levelManager = FindAnyObjectByType<LevelManager>();
     }
 
     private void OnEnable()
@@ -96,6 +98,8 @@ public class Dialogue : MonoBehaviour
 
         gameObject.SetActive(false);
         lobbyManager.PaneoCamera();
+        //if (levelManager.currentScene == LevelManager.CurrentScene.Lobby) lobbyManager.PaneoCamera();
+       // else if (levelManager.currentScene == LevelManager.CurrentScene.Limbo) ;
     }
     private void StartDialogue()
     {

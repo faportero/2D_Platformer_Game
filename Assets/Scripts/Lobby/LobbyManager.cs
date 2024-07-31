@@ -57,6 +57,8 @@ public class LobbyManager : MonoBehaviour
         playerMovementNew = FindAnyObjectByType<PlayerMovementNew>();
         spriteRenderer = playerController.GetComponent<SpriteRenderer>();
         spriteRenderer.color = new Color(1, 1, 1, 0);
+        playerMaterial.SetFloat("_DissolveAmmount", 0);
+
         // Obtener el componente VideoPlayer del objeto actual
 
 
@@ -81,7 +83,7 @@ public class LobbyManager : MonoBehaviour
         else
         {
             playerMovementNew.inputsEnabled = true;
-            panelHUD.SetActive(true);   
+           // panelHUD.SetActive(true);   
             panelVideo.SetActive(false);
             portalInicio.SetActive(true);
         }
@@ -309,7 +311,7 @@ public class LobbyManager : MonoBehaviour
         playerMovementNew.inputsEnabled = true;
         //playerMovementNew.anim.SetBool("SlowWalk", true);
         StartCoroutine(PlayerSolidify());
-        panelHUD.SetActive(true);
+      //  panelHUD.SetActive(true);
 
         PlayerPrefs.SetInt("pasoIntro", 1);
     }

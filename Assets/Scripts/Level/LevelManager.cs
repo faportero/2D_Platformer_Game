@@ -27,13 +27,17 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject fogPanel;
     [SerializeField] private Transform newStartPos;
     public static bool usedPA, usedPB, usedPC, usedPD, isFogTransition;
+    private Material playerMaterial;
+
     //[SerializeField] private UI_Piezas uiPiezas;
-        
+
     private void Awake()
     {
         playerMovementNew = FindAnyObjectByType<PlayerMovementNew>();
-       // fogPanel.SetActive(false);
-       // if (newStartPos) playerController.transform.position = newStartPos.position;
+        playerMaterial = playerMovementNew.GetComponent<SpriteRenderer>().material;
+
+        // fogPanel.SetActive(false);
+        // if (newStartPos) playerController.transform.position = newStartPos.position;
         //uiCoins.coinCount = UserData.coins;
         //uiCoins.coinCountText.text = uiCoins.coinCount.ToString();
 
@@ -114,9 +118,28 @@ public class LevelManager : MonoBehaviour
     IEnumerator ShowFogPanel()
     {
         fogPanel.SetActive(true);
-        yield return new WaitForSecondsRealtime(5);
+        yield return new WaitForSecondsRealtime(4);
+        if(currentScene != CurrentScene.Limbo)StartCoroutine(PlayerSolidify());
+        else playerMaterial.SetFloat("_DissolveAmmount", 0);        
         fogPanel.SetActive(false);
 
+    }
+    private IEnumerator PlayerSolidify()
+    {
+        float dissolveAmount = 1;
+        float duration = 2f;  // Duración total de la animación en segundos
+        float elapsedTime = 0;
+
+        while (elapsedTime < duration)
+        {
+            dissolveAmount = Mathf.Lerp(1, 0, elapsedTime / duration);
+            playerMaterial.SetFloat("_DissolveAmmount", dissolveAmount);
+            elapsedTime += Time.deltaTime;
+            yield return null;  // Esperar al siguiente frame
+        }
+
+        // Asegurarse de que el valor final sea exactamente 0
+        playerMaterial.SetFloat("_DissolveAmmount", 0);
     }
     public void GameOver()
     {

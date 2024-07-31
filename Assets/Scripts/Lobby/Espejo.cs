@@ -59,17 +59,18 @@ public class Espejo : MonoBehaviour
     {
         // Lógica para cambiar al juego
         terminoVideo = true;
-        countVideoClips++;
+      //  countVideoClips++;
         CameraManager.instance.SingleSwapCamera(cameraGeneral, 1f);
+        playerMovement.inputsEnabled = true;
 
 
-        if (countVideoClips == 1) StartCoroutine(ActivateEnte());
-        if (countVideoClips > 1) 
-        {
-           // panelDialogueGargolas.SetActive(true);
-            panelDialogueGargolas.GetComponent<DialogueGargolas>().OnButtonDown();
+        //if (countVideoClips == 1) StartCoroutine(ActivateEnte());
+        //if (countVideoClips > 1) 
+        //{
+        //   // panelDialogueGargolas.SetActive(true);
+        //    panelDialogueGargolas.GetComponent<DialogueGargolas>().OnButtonDown();
 
-        }
+        //}
 
     }
 
@@ -111,9 +112,9 @@ public class Espejo : MonoBehaviour
 
         //Reproduce video
         PiezasRecuerdoMalo.SetActive(false);//desactiva imagen de recuerdo bueno
-        videoPlayerPlane.SetActive(true);
-        videoPlayer.clip = videoClips[countVideoClips];
-        videoPlayer.Play();
+        //videoPlayerPlane.SetActive(true);
+        //videoPlayer.clip = videoClips[countVideoClips];
+        //videoPlayer.Play();
 
     }
     private IEnumerator ActivateEnte()
@@ -168,7 +169,8 @@ public class Espejo : MonoBehaviour
                 //   if(targetPosition == Vector3.zero) targetPosition = playerMovement.transform.position + new Vector3(playerMovement.transform.position.x + 2000, playerMovement.transform.position.y, playerMovement.transform.position.z);
                 //  StartCoroutine(ShowVideoPanel());
                 //if(!isComplete)StartCoroutine(AnimacionGargolas());
-                triggerParteFinal.SetActive(true);
+                //triggerParteFinal.SetActive(true);
+                StartCoroutine(ActivateEnte());
             }
         }
     }
@@ -352,13 +354,17 @@ public class Espejo : MonoBehaviour
         // Asegurarse de que termine en su escala final
         GargolaBuena.transform.localScale = scaleFinalBuena;
         explodeObject.SetActive(false);
-        playerMovement.inputsEnabled = true;
+       // playerMovement.inputsEnabled = true;
         isComplete = true;
-        CameraManager.instance.SingleSwapCamera(cameraPlayer, 3f);
+        CameraManager.instance.SingleSwapCamera(cameraPlayer, 1f);
        // playerMovement.transform.localScale = new Vector3(playerMovement.transform.localScale.x, playerMovement.transform.localScale.y, playerMovement.transform.localScale.z);
 
         SwitchPlayerTransform(true);
         triggerParteFinal.SetActive(false);
+
+        videoPlayerPlane.SetActive(true);
+        videoPlayer.clip = videoClips[countVideoClips];
+        videoPlayer.Play();
 
     }
 }

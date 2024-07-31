@@ -20,6 +20,7 @@ public class Clickable : MonoBehaviour, IPointerDownHandler
             else if (gameObject.name == "ButtonCambiar")
             {
                 dialogue.OnChangeButtonDown();
+                gameObject.SetActive(false);
             }
         }
     }

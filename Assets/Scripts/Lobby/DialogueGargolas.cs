@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,7 +20,7 @@ public class DialogueGargolas : MonoBehaviour
     [SerializeField] List<DialogueLineGargola> dialogueLines;
     [SerializeField] float textSpeed;
     [SerializeField] Image characterImage; // El Image donde se mostrará la imagen del personaje
-    [SerializeField] GameObject continueBtn;
+    [SerializeField] GameObject continueBtn, backBtn, conrinueBtn, cambiarDestinoBtn;
     private LobbyManager lobbyManager;
     private PlayerMovementNew playerMovement;
     public int index;
@@ -28,9 +29,10 @@ public class DialogueGargolas : MonoBehaviour
    
 
     private Coroutine blinkCoroutine; // Corrutina para el efecto de "pestañeo"
-    [HideInInspector] public Coroutine typeLineCoroutine;
+    [HideInInspector] public Coroutine typeLineCoroutine, autoAdvanceDialogue;
 
     private bool wasPreviousPlayerSpeaking;
+    private bool firstTime = true;
 
     private void Awake()
     {
@@ -54,10 +56,17 @@ public class DialogueGargolas : MonoBehaviour
     private void Update()
     {
         playerMovement.anim.SetBool("SlowWalk", false);
+        print("FirstTimeDialogue: " + firstTime);
+        //if (textComponent.text == dialogueLines[index].line) continueBtn.GetComponent<Button>().interactable = false;
+        //else continueBtn.GetComponent<Button>().interactable = true;
+        //if (textComponent.text == dialogueLines[0].line) backBtn.GetComponent<Button>().interactable = false;
+        //else backBtn.GetComponent<Button>().interactable = true;
     }
 
     public void OnButtonDown()
     {
+        //   if (autoAdvanceDialogue != null) StopCoroutine(autoAdvanceDialogue);
+
         if (textComponent.text == dialogueLines[index].line)
         {
             NextLine();
@@ -67,10 +76,54 @@ public class DialogueGargolas : MonoBehaviour
             if (typeLineCoroutine != null) StopCoroutine(typeLineCoroutine);
             textComponent.text = dialogueLines[index].line;
             continueBtn.SetActive(true);
+            backBtn.SetActive(true);
 
         }
     }
+    public void OnBackButtonDown()
+    {
+        if (index > 0)
+        {
+            index--;
+            if (typeLineCoroutine != null)
+            {
+                StopCoroutine(typeLineCoroutine);
+            }
+            textComponent.text = string.Empty;
+            typeLineCoroutine = StartCoroutine(TypeLine());
+        }
+    }
+    public void OnChangeButtonDown()
+    {
+        //  if (autoAdvanceDialogue != null) StopCoroutine(autoAdvanceDialogue);
 
+       // gameObject.SetActive(false);
+
+        espejo.StartCoroutine(espejo.AnimacionGargolas());
+        //autoAdvanceDialogue = StartCoroutine(AutoAdvanceDialogue());
+        // NextLine();
+        StartCoroutine(TypeLastLine());
+
+
+        // lobbyManager.PaneoCamera();
+        //if (levelManager.currentScene == LevelManager.CurrentScene.Lobby) lobbyManager.PaneoCamera();
+        // else if (levelManager.currentScene == LevelManager.CurrentScene.Limbo) ;
+    }
+
+    private IEnumerator TypeLastLine()
+    {
+        backBtn.GetComponent<Button>().interactable = false;
+       // continueBtn.GetComponent<Button>().interactable = false;
+
+        // backBtn.SetActive(false);
+        //conrinueBtn.SetActive(false);
+        yield return new WaitForSeconds(2); 
+        index++;
+        typeLineCoroutine = StartCoroutine(TypeLine());
+        yield return new WaitForSecondsRealtime(15);
+        gameObject.SetActive(false);
+        
+    }
     private void StartDialogue()
     {
         index = 0;
@@ -80,11 +133,34 @@ public class DialogueGargolas : MonoBehaviour
             StopCoroutine(typeLineCoroutine);
         }
         typeLineCoroutine = StartCoroutine(TypeLine());
-    }
 
+        if (firstTime)
+        {
+            autoAdvanceDialogue = StartCoroutine(AutoAdvanceDialogue());
+        }
+        else
+        {
+            // continueBtn.SetActive(true);
+            // backBtn.SetActive(true);
+        }
+    }
+    private IEnumerator AutoAdvanceDialogue()
+    {
+        while (index < dialogueLines.Count)
+        {
+            yield return new WaitForSeconds(dialogueLines[index].line.Length * textSpeed);
+            if (dialogueLines[index].audioClip != null)
+            {
+                yield return new WaitUntil(() => !GetComponent<AudioSource>().isPlaying);
+            }
+            NextLine();
+        }
+        firstTime = false;
+    }
     private IEnumerator TypeLine()
     {
-        continueBtn.SetActive(false);
+        // continueBtn.SetActive(false);
+        // backBtn.SetActive(false);
         // Actualiza la imagen del personaje
         characterImage.sprite = dialogueLines[index].characterImage;
 
@@ -117,7 +193,8 @@ public class DialogueGargolas : MonoBehaviour
             textComponent.text += c;
             yield return new WaitForSeconds(textSpeed);
         }
-        continueBtn.SetActive(true);
+        //continueBtn.SetActive(true);
+        //backBtn.SetActive(true);
 
     }
 
@@ -168,7 +245,7 @@ public class DialogueGargolas : MonoBehaviour
 
     private void NextLine()
     {
-        if (index < dialogueLines.Count - 1)
+        if (index < dialogueLines.Count - 2)
         {
             index++;
             textComponent.text = string.Empty;
@@ -188,10 +265,33 @@ public class DialogueGargolas : MonoBehaviour
         }
         else
         {
-            gameObject.SetActive(false);
-            //lobbyManager.PaneoCamera();
-            espejo.StartCoroutine(espejo.AnimacionGargolas());
-            
+            // Aquí termina los diálogos
+            StopCoroutine(autoAdvanceDialogue);
+
+            // Modificaciones
+            // if (index == dialogueLines.Count - 1) // Si estamos en la penúltima línea
+            // {
+            //   StartCoroutine(WaitForAudioAndActivateButton());
+            //}
+            cambiarDestinoBtn.SetActive(true);
+           // backBtn.SetActive(true);
+
+            // Desactivar continueBtn
+            continueBtn.GetComponent<Button>().interactable = false;
         }
+    }
+    private IEnumerator WaitForAudioAndActivateButton()
+    {
+        // Esperar a que se reproduzca el audio de la penúltima línea
+        if (dialogueLines[index].audioClip != null)
+        {
+            yield return new WaitUntil(() => !GetComponent<AudioSource>().isPlaying);
+        }
+
+        // Activar cambiarDestinoBtn
+        cambiarDestinoBtn.SetActive(true);
+
+        // Desactivar continueBtn
+        continueBtn.GetComponent<Button>().interactable = false;
     }
 }
