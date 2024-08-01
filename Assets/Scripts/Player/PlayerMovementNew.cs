@@ -322,7 +322,7 @@ public class PlayerMovementNew : MonoBehaviour
     }
     #endregion
     #region TapMode
-    private void Turn()
+    public void Turn()
     {
         if (isFacingRight)
         {
@@ -341,7 +341,29 @@ public class PlayerMovementNew : MonoBehaviour
             cameraFollowObject.CallTurn();
         }
     }
+    public void TurnCheck()
+    {
+        //  isFacingRight = !isFacingRight;
+        GetDirecction();
+        if (clicDirection > 0) isFacingRight = false;
+        else isFacingRight = true;
+        if (clicDirection > 0 && !isFacingRight)
+        {
+            Turn();
+            // isFacingRight = !isFacingRight;
 
+        }
+        else if (clicDirection < 0 && isFacingRight)
+        {
+            Turn();
+            // isFacingRight = !isFacingRight;
+
+        }
+        //else if (clicDirection > 0 && isFacingRight)
+        //{
+        //    Turn();
+        //}
+    }
     //private void TapMovement()
     //{
     //    rb.gravityScale = gravityScale;
@@ -457,29 +479,7 @@ public class PlayerMovementNew : MonoBehaviour
         return false; // No se detectó un clic o toque
     }
 
-    public void TurnCheck()
-    {
-      //  isFacingRight = !isFacingRight;
-        GetDirecction();
-        if (clicDirection > 0) isFacingRight = false;
-        else isFacingRight = true;
-        if (clicDirection > 0 && !isFacingRight)
-        {
-            Turn();
-           // isFacingRight = !isFacingRight;
 
-        }
-        else if (clicDirection < 0 && isFacingRight)
-        {
-            Turn();
-           // isFacingRight = !isFacingRight;
-
-        }
-        //else if (clicDirection > 0 && isFacingRight)
-        //{
-        //    Turn();
-        //}
-    }
     private IEnumerator MovetoTarget()
     {
         //anim.SetBool("Walk", false);

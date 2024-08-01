@@ -55,7 +55,7 @@ public class Dialogue : MonoBehaviour
     private void Update()
     {
         playerMovement.anim.SetBool("SlowWalk", false);
-        print("FirstTimeDialogue: " + firstTime);
+        //print("FirstTimeDialogue: " + firstTime);
         //if (textComponent.text == dialogueLines[index].line) continueBtn.GetComponent<Button>().interactable = false;
         //else continueBtn.GetComponent<Button>().interactable = true;
         //if (textComponent.text == dialogueLines[0].line) backBtn.GetComponent<Button>().interactable = false;

@@ -42,7 +42,7 @@ Material:
     - _Opacity: 0.65
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _TimeSpeed: 5
+    - _TimeSpeed: 3
     m_Colors:
     - _LightColor: {r: 0.6981132, g: 0, b: 0.057823684, a: 1}
   m_BuildTextureStacks: []

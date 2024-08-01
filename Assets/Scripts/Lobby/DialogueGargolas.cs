@@ -26,7 +26,7 @@ public class DialogueGargolas : MonoBehaviour
     public int index;
     public int countDialogue;
     [SerializeField] Espejo espejo;
-   
+    [SerializeField] Ente ente;
 
     private Coroutine blinkCoroutine; // Corrutina para el efecto de "pestañeo"
     [HideInInspector] public Coroutine typeLineCoroutine, autoAdvanceDialogue;
@@ -56,7 +56,7 @@ public class DialogueGargolas : MonoBehaviour
     private void Update()
     {
         playerMovement.anim.SetBool("SlowWalk", false);
-        print("FirstTimeDialogue: " + firstTime);
+       // print("FirstTimeDialogue: " + firstTime);
         //if (textComponent.text == dialogueLines[index].line) continueBtn.GetComponent<Button>().interactable = false;
         //else continueBtn.GetComponent<Button>().interactable = true;
         //if (textComponent.text == dialogueLines[0].line) backBtn.GetComponent<Button>().interactable = false;
@@ -98,8 +98,10 @@ public class DialogueGargolas : MonoBehaviour
         //  if (autoAdvanceDialogue != null) StopCoroutine(autoAdvanceDialogue);
 
        // gameObject.SetActive(false);
-
+       GetComponent<AudioSource>().Stop();
         espejo.StartCoroutine(espejo.AnimacionGargolas());
+        playerMovement.isFacingRight = true;
+        playerMovement.Turn();
         //autoAdvanceDialogue = StartCoroutine(AutoAdvanceDialogue());
         // NextLine();
         StartCoroutine(TypeLastLine());
@@ -120,8 +122,12 @@ public class DialogueGargolas : MonoBehaviour
         yield return new WaitForSeconds(2); 
         index++;
         typeLineCoroutine = StartCoroutine(TypeLine());
-        yield return new WaitForSecondsRealtime(15);
-        gameObject.SetActive(false);
+        yield return new WaitForSecondsRealtime(11);
+        GetComponent<Animator>().Play("Hide Animation");
+        ente.EnteDisolve();
+        playerMovement.isMoving = true;
+        playerMovement.inputsEnabled = true;
+       // gameObject.SetActive(false);
         
     }
     private void StartDialogue()

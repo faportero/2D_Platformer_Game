@@ -100,8 +100,8 @@ public class PlayerControllerNew : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
         audioPause = FindAnyObjectByType<AudioPause>();
-        saludBar.healthFillBar.fillAmount = currentSalud;
-        saludBar.healthFillBar.color = saludBar.colorGradient.Evaluate(currentSalud);
+        if(saludBar != null)saludBar.healthFillBar.fillAmount = currentSalud;
+        if (saludBar != null) saludBar.healthFillBar.color = saludBar.colorGradient.Evaluate(currentSalud);
         cm = CameraManager.instance.currentCamera;
 
         //if (ui_enemyAttachedBar) print(ui_enemyAttachedBar.gameObject.name);
@@ -166,8 +166,8 @@ public class PlayerControllerNew : MonoBehaviour
     {
               //print("SaludActual: " + currentSalud + ". Boleano barrita: " + ui_enemyAttachedBar.startUpdateTimeCoroutine + ". Boleano efecto panel: " + isSmokePanelEffect);
       //  print("Haciendo Enemy Shake: "+doingEnemyShake);
-        targetPosition = GetWorldPositionFromUI(saludBar.GetComponent<RectTransform>());
-        targetPosition = targetPosition + new Vector3(0, -1.25f, 0);
+        if(targetPosition != null && saludBar != null)targetPosition = GetWorldPositionFromUI(saludBar.GetComponent<RectTransform>());
+        if (targetPosition != null && saludBar != null) targetPosition = targetPosition + new Vector3(0, -1.25f, 0);
         
         if(currenPiece != null && pieces != null && currenPiece.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasA)
             targetPiecePosition = GetWorldPositionFromUI(pieces[0].GetComponent<RectTransform>());
@@ -685,6 +685,10 @@ public class PlayerControllerNew : MonoBehaviour
         // Asegurarse de que el valor final sea el targetPosition
         currenPiece.transform.position = targetPiecePosition;
         currenPiece.SetActive(false);
+    }
+    public void StartHitBadFloor()
+    {
+        StartCoroutine(HitBadFloor());
     }
     private IEnumerator HitBadFloor()
     {

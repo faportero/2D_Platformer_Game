@@ -13,6 +13,7 @@ public class Espejo : MonoBehaviour
     [SerializeField] UI_Piezas piezasPanel;
     [SerializeField] TextMeshPro textPanel;
     public GameObject videoPlayerPlane;
+    
     public VideoPlayer videoPlayer;
     public VideoClip[] videoClips;
     public CinemachineVirtualCamera cameraPlayer, cameraVideo, cameraGeneral;
@@ -43,8 +44,6 @@ public class Espejo : MonoBehaviour
 
         // CheckEspejoPieces();
         CheckEspejoPiecesInit();
-        
-
 
     }
     private void Update()
@@ -60,7 +59,7 @@ public class Espejo : MonoBehaviour
         // Lógica para cambiar al juego
         terminoVideo = true;
       //  countVideoClips++;
-        CameraManager.instance.SingleSwapCamera(cameraGeneral, 1f);
+        //CameraManager.instance.SingleSwapCamera(cameraGeneral, 1f);
         playerMovement.inputsEnabled = true;
 
 
@@ -158,7 +157,7 @@ public class Espejo : MonoBehaviour
                 piezasRestantes = maxPiezas - countPiezas;
                 textPanel.text = "Vuelve al lugar donde todo empezó, te faltan: " + piezasRestantes + " fragmentos";
 
-                print("Te faltan " + piezasRestantes);
+                //print("Te faltan " + piezasRestantes);
                 Invoke("ShowFeedbackPanel", 2);
             }
             else
@@ -171,6 +170,7 @@ public class Espejo : MonoBehaviour
                 //if(!isComplete)StartCoroutine(AnimacionGargolas());
                 //triggerParteFinal.SetActive(true);
                 StartCoroutine(ActivateEnte());
+                GetComponent<BoxCollider2D>().enabled = false;
             }
         }
     }
@@ -356,15 +356,15 @@ public class Espejo : MonoBehaviour
         explodeObject.SetActive(false);
        // playerMovement.inputsEnabled = true;
         isComplete = true;
-        CameraManager.instance.SingleSwapCamera(cameraPlayer, 1f);
        // playerMovement.transform.localScale = new Vector3(playerMovement.transform.localScale.x, playerMovement.transform.localScale.y, playerMovement.transform.localScale.z);
 
+        CameraManager.instance.SingleSwapCamera(cameraPlayer, 1f);
         SwitchPlayerTransform(true);
         triggerParteFinal.SetActive(false);
 
-        videoPlayerPlane.SetActive(true);
-        videoPlayer.clip = videoClips[countVideoClips];
-        videoPlayer.Play();
+        //videoPlayerPlane.SetActive(true);
+        //videoPlayer.clip = videoClips[countVideoClips];
+        //videoPlayer.Play();
 
     }
 }

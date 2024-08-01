@@ -70,6 +70,9 @@
         },
         {
             "m_Id": "ca565cbdc86c41279dc27dc55e3e2e6c"
+        },
+        {
+            "m_Id": "ae4cb398248246918841e0d3fce67769"
         }
     ],
     "m_GroupDatas": [],
@@ -314,6 +317,9 @@
             },
             {
                 "m_Id": "bc09cca6ab304f72a88e677c918fb3f0"
+            },
+            {
+                "m_Id": "ae4cb398248246918841e0d3fce67769"
             }
         ]
     },
@@ -920,6 +926,21 @@
 {
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "43e2593a67204d9aa223ca58d10edad4",
+    "m_Id": 0,
+    "m_DisplayName": "Alpha Clip Threshold",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "AlphaClipThreshold",
+    "m_StageCapability": 2,
+    "m_Value": 0.5,
+    "m_DefaultValue": 0.5,
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "46f80ec5cfb64953884714923e144734",
     "m_Id": 5,
     "m_DisplayName": "G",
@@ -1517,6 +1538,40 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.BlockNode",
+    "m_ObjectId": "ae4cb398248246918841e0d3fce67769",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "SurfaceDescription.AlphaClipThreshold",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "43e2593a67204d9aa223ca58d10edad4"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_SerializedDescriptor": "SurfaceDescription.AlphaClipThreshold"
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
     "m_ObjectId": "b0209495c8a74fd18e2f658f5862e34d",
     "m_Id": 0,
@@ -1697,12 +1752,12 @@
     "m_ActiveSubTarget": {
         "m_Id": "ce1523ac708b4afc851f9bb2519f218f"
     },
-    "m_AllowMaterialOverride": false,
+    "m_AllowMaterialOverride": true,
     "m_SurfaceType": 1,
     "m_ZTestMode": 4,
     "m_ZWriteControl": 0,
     "m_AlphaMode": 0,
-    "m_RenderFace": 2,
+    "m_RenderFace": 0,
     "m_AlphaClip": false,
     "m_CastShadows": true,
     "m_ReceiveShadows": true,

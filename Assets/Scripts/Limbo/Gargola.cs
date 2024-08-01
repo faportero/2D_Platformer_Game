@@ -8,7 +8,7 @@ using UnityEngine.Video;
 
 public class Gargola : MonoBehaviour
 {
-    public GameObject videoPlayerPlane, viajarBtn, canvasFog;
+    public GameObject videoPlayerPlane, viajarBtn, skipBtn, canvasFog;
     private Collider2D solidObjectCol;
     public VideoPlayer videoPlayer;
     [SerializeField] private string nivel;
@@ -50,12 +50,15 @@ public class Gargola : MonoBehaviour
     {
         // Lógica para cambiar al juego
         CameraManager.instance.SingleSwapCamera(camera1,2f);
-        playerMovementNew.inputsEnabled = true;
+        //playerMovementNew.inputsEnabled = true;
+        UserData.terminoVideoVortex1 = true;
+        if (UserData.terminoVideoVortex1) SelectDimension();
 
     }
     public void ShowVideo()
     {
-        CameraManager.instance.SingleSwapCamera(camera2, 2);
+        if (UserData.terminoVideoVortex1) skipBtn.SetActive(true);
+            CameraManager.instance.SingleSwapCamera(camera2, 2);
         playerMovementNew.isMoving = false;
         //playerMovementNew.inputsEnabled = false;
         playerMovementNew.targetPosition = playerMovementNew.transform.position;
@@ -68,6 +71,7 @@ public class Gargola : MonoBehaviour
     private IEnumerator ShowVideoPanel()
     {
         //GetComponent<Collider2D>().enabled = false;
+        GetComponent<VortexAnimation>().enabled = true;
         yield return new WaitForSeconds(2);
         animatorVideo.enabled = true;
         videoPlayerPlane.SetActive(true);
@@ -81,7 +85,9 @@ public class Gargola : MonoBehaviour
         playerMovementNew.isMoving = false;
         playerMovementNew.inputsEnabled = false;
         playerMovementNew.targetPosition = playerMovementNew.transform.position;
-        SkipVideo();
+        videoPlayer.Stop();
+        //OnVideoEnd(videoPlayer);
+        //SkipVideo();
         StopAllCoroutines();
         StartCoroutine(SwitchScene());
         Espejo.isChecked = false;
@@ -128,11 +134,11 @@ public class Gargola : MonoBehaviour
             if (progress == .9f)
             {
                 //textoCarga.text = "100 %";
-                yield return new WaitForSecondsRealtime(1f);
+                yield return new WaitForSecondsRealtime(3f);
                 //anim.Play("AnimacionSalida");
                 //yield return new WaitForSecondsRealtime(animacion.averageDuration / Mathf.Abs(anim.GetFloat("ExitSpeed")));
                 //isLoading = false;
-                UserData.terminoNivel1 = true;
+               // UserData.terminoNivel1 = true;
                 asyncOperation.allowSceneActivation = true;
             }
         }
@@ -162,6 +168,7 @@ public class Gargola : MonoBehaviour
             ////    videoPlayerPlane.GetComponent<Animator>().Play("IdlePlayer");
             ////    videoPlayer.Play();
             ////}
+            //GetComponent<VortexAnimation>().enabled = true;
             viajarBtn.SetActive(true);
         }
 
