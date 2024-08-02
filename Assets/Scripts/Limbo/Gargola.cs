@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using UnityEngine.Video;
 
 public class Gargola : MonoBehaviour
@@ -18,7 +19,15 @@ public class Gargola : MonoBehaviour
     private Animator animatorVideo;
     private float progress;
     private Material playerMaterial;
+    private SwipeDetector swipeDetector;
+    public enum VortexType
+    {
+        Vortex1,
+        Vortex2,
+        Vortex3        
+    }
 
+    public VortexType vortexType;
     private void Start()
     {
         playerMovementNew = FindAnyObjectByType<PlayerMovementNew>();
@@ -29,6 +38,9 @@ public class Gargola : MonoBehaviour
 
         playerMaterial = playerMovementNew.GetComponent<SpriteRenderer>().material;
 
+        swipeDetector = playerMovementNew.swipeDetector;
+
+        AssignEspejoType();
     }
     private void Update()
     {
@@ -40,7 +52,23 @@ public class Gargola : MonoBehaviour
         //}
 
     }
-    public void SkipVideo()
+    public void AssignEspejoType()
+    {
+        switch (vortexType)
+        {
+            case VortexType.Vortex1:
+                viajarBtn.GetComponent<Button>().interactable = true;
+                break;
+            case VortexType.Vortex2:
+                viajarBtn.GetComponent<Button>().interactable = false;         
+                break;
+            case VortexType.Vortex3:
+                viajarBtn.GetComponent<Button>().interactable = false;           
+                break;
+
+        }
+    }
+        public void SkipVideo()
     {
 
         videoPlayer.Stop();
@@ -53,15 +81,16 @@ public class Gargola : MonoBehaviour
         //playerMovementNew.inputsEnabled = true;
         UserData.terminoVideoVortex1 = true;
         if (UserData.terminoVideoVortex1) SelectDimension();
+        playerMovementNew.inputsEnabled = true;
 
     }
     public void ShowVideo()
     {
         if (UserData.terminoVideoVortex1) skipBtn.SetActive(true);
             CameraManager.instance.SingleSwapCamera(camera2, 2);
-        playerMovementNew.isMoving = false;
-        //playerMovementNew.inputsEnabled = false;
         playerMovementNew.targetPosition = playerMovementNew.transform.position;
+        playerMovementNew.isMoving = false;
+        //swipeDetector.enabled = false;
         playerMovementNew.anim.SetBool("SlowWalk", false);
         playerMovementNew.anim.SetBool("Turn", true);
         StartCoroutine(ShowVideoPanel());
@@ -77,6 +106,7 @@ public class Gargola : MonoBehaviour
         videoPlayerPlane.SetActive(true);
         yield return new WaitForSeconds(.5f);
         videoPlayer.Play();
+        playerMovementNew.inputsEnabled = false;
     }
 
 

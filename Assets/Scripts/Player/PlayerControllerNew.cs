@@ -195,7 +195,8 @@ public class PlayerControllerNew : MonoBehaviour
         //    ui_IndestructibleBar.UpdateTime(0);
         //    return;
         //}
-
+        //print("Es indestructible: " + isIndestructible);
+        //print("GlowSprite acttive: " + GlowSpriteEffect.activeSelf + "Es indestructible: " + isIndestructible);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -324,6 +325,7 @@ public class PlayerControllerNew : MonoBehaviour
                     AdjustLuminance(1);
                     currentItemSalud.healthType = Salud.HealthType.Indestructible;
                     ui_FeedbackSalud.AssignFeedbackSprite();
+
                     inmunidadCoroutine = StartCoroutine(Inmunidad());
                     ui_IndestructibleBar.gameObject.SetActive(true);
                     ui_IndestructibleBar.UpdateTime(10);
@@ -621,6 +623,8 @@ public class PlayerControllerNew : MonoBehaviour
             //    ui_IndestructibleBar.gameObject.SetActive(false);
             //    ui_IndestructibleBar.UpdateTime(0);
             //}
+
+
             if (isIndestructible)
             {
                 StopCoroutine(inmunidadCoroutine);

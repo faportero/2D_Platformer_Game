@@ -151,45 +151,73 @@ public class CameraManager : MonoBehaviour
 
     public void SwapCamera(CinemachineVirtualCamera cameraFromLeft, CinemachineVirtualCamera cameraFromRight, Vector2 triggerExitDirection)
     {
-        //print(triggerExitDirection);
-        //print(currentCamera);
-        if (currentCamera == cameraFromLeft && triggerExitDirection.y < 0 && triggerExitDirection.x < 0)
+        //print("currentCamera.name: "+ currentCamera.name + ". TriggerExitDirection: "+ triggerExitDirection + ". CamLeft: " + cameraFromLeft.name + ". CamRight: " + cameraFromRight.name);
+      //  print(currentCamera.name);
+        //if (currentCamera == cameraFromLeft && triggerExitDirection.y < 0 && triggerExitDirection.x < 0)
+        //{
+        //    cameraFromLeft.enabled = false;
+        //    cameraFromRight.enabled = true;
+
+        //    currentCamera = cameraFromRight;
+        //    framingTransposer = currentCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+        //}
+
+        //else if (currentCamera == cameraFromRight && triggerExitDirection.y > 0)
+        //{
+        //    cameraFromLeft.enabled = true;
+        //    cameraFromRight.enabled = false;
+
+        //    currentCamera = cameraFromRight;
+        //    framingTransposer = currentCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+        //}
+
+        //else if (currentCamera == cameraFromLeft && triggerExitDirection.x > 0 && triggerExitDirection.y < 0)
+        //{
+        //    cameraFromLeft.enabled = false;
+        //    cameraFromRight.enabled = true;
+
+        //    currentCamera = cameraFromRight;
+        //    framingTransposer = currentCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+        //}
+
+        //else if (currentCamera == cameraFromRight && triggerExitDirection.x < 0) 
+        //{
+        //    cameraFromLeft.enabled = true;
+        //    cameraFromRight.enabled = false;
+
+        //    currentCamera = cameraFromRight;
+        //    framingTransposer = currentCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+        //}
+
+
+        if (currentCamera == cameraFromLeft && triggerExitDirection.x > 0)
         {
-            cameraFromLeft.enabled = false;
             cameraFromRight.enabled = true;
+            cameraFromLeft.enabled = false;
 
             currentCamera = cameraFromRight;
             framingTransposer = currentCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
         }
-
-        else if (currentCamera == cameraFromRight && triggerExitDirection.y > 0)
+        else if (currentCamera == cameraFromRight && triggerExitDirection.x < 0)
         {
             cameraFromLeft.enabled = true;
             cameraFromRight.enabled = false;
 
-            currentCamera = cameraFromRight;
+            currentCamera = cameraFromLeft;
             framingTransposer = currentCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
         }
 
-        else if (currentCamera == cameraFromLeft && triggerExitDirection.x > 0 && triggerExitDirection.y < 0)
+        else if (currentCamera == cameraFromLeft && triggerExitDirection.y < 0)
         {
-            cameraFromLeft.enabled = false;
             cameraFromRight.enabled = true;
+            cameraFromLeft.enabled = false;
 
             currentCamera = cameraFromRight;
             framingTransposer = currentCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
         }
 
-        else if (currentCamera == cameraFromRight && triggerExitDirection.x < 0) 
-        {
-            cameraFromLeft.enabled = true;
-            cameraFromRight.enabled = false;
-
-            currentCamera = cameraFromRight;
-            framingTransposer = currentCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
-        }
     }
-   public void SingleSwapCamera(CinemachineVirtualCamera newCamera, float time)
+    public void SingleSwapCamera(CinemachineVirtualCamera newCamera, float time)
 {
     if (currentCamera != null)
     {

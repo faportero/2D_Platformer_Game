@@ -185,6 +185,7 @@ public class PlayerMovementNew : MonoBehaviour
             {
                 case MovementMode.TapMode:
                     //TapMovement();
+                    print("Inputs:" + inputsEnabled + ". Moving: " + isMoving);
 
                     isFallingMode = false;
                     if (inputsEnabled)
@@ -200,8 +201,9 @@ public class PlayerMovementNew : MonoBehaviour
                     break;
 
                 case MovementMode.RunnerMode:
+                  
 
-                        isFallingMode = false;
+                    isFallingMode = false;
 
                     float clampedHorizontalSpeed = Mathf.Clamp(rb.velocity.x, 0, 11);
                     rb.velocity = new Vector2(clampedHorizontalSpeed, rb.velocity.y);

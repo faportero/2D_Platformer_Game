@@ -31,9 +31,9 @@ public class DialogueGargolas : MonoBehaviour
     private Coroutine blinkCoroutine; // Corrutina para el efecto de "pestañeo"
     [HideInInspector] public Coroutine typeLineCoroutine, autoAdvanceDialogue;
 
-    private bool wasPreviousPlayerSpeaking;
+    private bool wasPreviousPlayerSpeaking, cambiarDestino;
     private bool firstTime = true;
-
+    
     private void Awake()
     {
         playerMovement = FindAnyObjectByType<PlayerMovementNew>();
@@ -56,11 +56,25 @@ public class DialogueGargolas : MonoBehaviour
     private void Update()
     {
         playerMovement.anim.SetBool("SlowWalk", false);
-       // print("FirstTimeDialogue: " + firstTime);
+        // print("FirstTimeDialogue: " + firstTime);
         //if (textComponent.text == dialogueLines[index].line) continueBtn.GetComponent<Button>().interactable = false;
         //else continueBtn.GetComponent<Button>().interactable = true;
         //if (textComponent.text == dialogueLines[0].line) backBtn.GetComponent<Button>().interactable = false;
         //else backBtn.GetComponent<Button>().interactable = true;
+
+        //if (!dialogueLines[index].isPlayerSpeaking)
+            // Activar cambiarDestinoBtn solo si isPlayerSpeaking es falso
+            if (!dialogueLines[index].isPlayerSpeaking && !GetComponent<AudioSource>().isPlaying)
+            {
+                if(autoAdvanceDialogue != null) StopCoroutine(autoAdvanceDialogue);
+                cambiarDestinoBtn.SetActive(true);
+            }
+            else 
+            {
+                cambiarDestinoBtn.SetActive(false);
+            }
+
+       // print("Inputs:" + playerMovement.inputsEnabled + ". Moving: " + playerMovement.isMoving);
     }
 
     public void OnButtonDown()
@@ -89,27 +103,71 @@ public class DialogueGargolas : MonoBehaviour
             {
                 StopCoroutine(typeLineCoroutine);
             }
+
+            if (firstTime)
+            {
+                autoAdvanceDialogue = StartCoroutine(AutoAdvanceDialogue());
+            }
+
             textComponent.text = string.Empty;
             typeLineCoroutine = StartCoroutine(TypeLine());
         }
     }
     public void OnChangeButtonDown()
     {
-        //  if (autoAdvanceDialogue != null) StopCoroutine(autoAdvanceDialogue);
+        // //  if (autoAdvanceDialogue != null) StopCoroutine(autoAdvanceDialogue);
 
-       // gameObject.SetActive(false);
-       GetComponent<AudioSource>().Stop();
-        espejo.StartCoroutine(espejo.AnimacionGargolas());
-        playerMovement.isFacingRight = true;
-        playerMovement.Turn();
+        //// gameObject.SetActive(false);
+        //GetComponent<AudioSource>().Stop();
+        // espejo.StartCoroutine(espejo.AnimacionGargolas());
+        // playerMovement.isFacingRight = true;
+        // playerMovement.Turn();
+        // //autoAdvanceDialogue = StartCoroutine(AutoAdvanceDialogue());
+        // // NextLine();
+        // StartCoroutine(TypeLastLine());
+
+
+        // // lobbyManager.PaneoCamera();
+        // //if (levelManager.currentScene == LevelManager.CurrentScene.Lobby) lobbyManager.PaneoCamera();
+        // // else if (levelManager.currentScene == LevelManager.CurrentScene.Limbo) ;
+
+
+        //// Comportamiento actual
+        //GetComponent<AudioSource>().Stop();
+        //espejo.StartCoroutine(espejo.AnimacionGargolas());
+        //playerMovement.isFacingRight = true;
+        //playerMovement.Turn();
+        //StartCoroutine(TypeLastLine());
+
+        if (!cambiarDestino) 
+        { 
+            NextLine();
+            //autoAdvanceDialogue = StartCoroutine(AutoAdvanceDialogue());
+           // return;
+        }
+        else
+        {
+            GetComponent<AudioSource>().Stop();
+            espejo.StartCoroutine(espejo.AnimacionGargolas());
+            playerMovement.isFacingRight = true;
+            playerMovement.Turn();
+            StartCoroutine(TypeLastLine());
+           // return;
+        }
         //autoAdvanceDialogue = StartCoroutine(AutoAdvanceDialogue());
-        // NextLine();
-        StartCoroutine(TypeLastLine());
+
+        //if(cambiarDestino)
+        //{
+        //    GetComponent<AudioSource>().Stop();
+        //    espejo.StartCoroutine(espejo.AnimacionGargolas());
+        //    playerMovement.isFacingRight = true;
+        //    playerMovement.Turn();
+        //    StartCoroutine(TypeLastLine());
+        //}
 
 
-        // lobbyManager.PaneoCamera();
-        //if (levelManager.currentScene == LevelManager.CurrentScene.Lobby) lobbyManager.PaneoCamera();
-        // else if (levelManager.currentScene == LevelManager.CurrentScene.Limbo) ;
+
+
     }
 
     private IEnumerator TypeLastLine()
@@ -127,6 +185,7 @@ public class DialogueGargolas : MonoBehaviour
         ente.EnteDisolve();
         playerMovement.isMoving = true;
         playerMovement.inputsEnabled = true;
+        espejo.panelHUD.SetActive(true);
        // gameObject.SetActive(false);
         
     }
@@ -152,6 +211,7 @@ public class DialogueGargolas : MonoBehaviour
     }
     private IEnumerator AutoAdvanceDialogue()
     {
+
         while (index < dialogueLines.Count)
         {
             yield return new WaitForSeconds(dialogueLines[index].line.Length * textSpeed);
@@ -159,10 +219,14 @@ public class DialogueGargolas : MonoBehaviour
             {
                 yield return new WaitUntil(() => !GetComponent<AudioSource>().isPlaying);
             }
+
+
+
             NextLine();
         }
         firstTime = false;
     }
+
     private IEnumerator TypeLine()
     {
         // continueBtn.SetActive(false);
@@ -201,6 +265,8 @@ public class DialogueGargolas : MonoBehaviour
         }
         //continueBtn.SetActive(true);
         //backBtn.SetActive(true);
+
+
 
     }
 
@@ -251,10 +317,15 @@ public class DialogueGargolas : MonoBehaviour
 
     private void NextLine()
     {
+        if (!dialogueLines[index].isPlayerSpeaking) autoAdvanceDialogue = StartCoroutine(AutoAdvanceDialogue());
+        else if(autoAdvanceDialogue != null) StopCoroutine(autoAdvanceDialogue);
+
         if (index < dialogueLines.Count - 2)
         {
             index++;
             textComponent.text = string.Empty;
+          
+          //  cambiarDestinoBtn.SetActive(true);
 
             // Verificar si el interlocutor ha cambiado
             if (dialogueLines[index].isPlayerSpeaking != wasPreviousPlayerSpeaking)
@@ -279,12 +350,24 @@ public class DialogueGargolas : MonoBehaviour
             // {
             //   StartCoroutine(WaitForAudioAndActivateButton());
             //}
-            cambiarDestinoBtn.SetActive(true);
+            //cambiarDestinoBtn.SetActive(true);
+            cambiarDestino = true;
            // backBtn.SetActive(true);
 
             // Desactivar continueBtn
             continueBtn.GetComponent<Button>().interactable = false;
         }
+
+        //// Activar el botón cambiarDestinoBtn si no es el jugador hablando
+        //if (!dialogueLines[index].isPlayerSpeaking)
+        //{
+        //    cambiarDestinoBtn.SetActive(true);
+        //}
+        //else
+        //{
+        //    cambiarDestinoBtn.SetActive(false);
+
+        //}
     }
     private IEnumerator WaitForAudioAndActivateButton()
     {

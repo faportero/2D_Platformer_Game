@@ -8,8 +8,9 @@ using UnityEngine.Video;
 
 public class Espejo : MonoBehaviour
 {
-    [SerializeField] GameObject p1, p2, p3, p4, pm1, pm2, pm3, pm4, panelFeedback, panelHUD, GargolaBuena, GargolaMala, explodeObject, PiezasRecuerdoMalo, PiezasRecuerdoBueno;
-    public GameObject triggerParteFinal;
+    [SerializeField] GameObject p1, p2, p3, p4, pm1, pm2, pm3, pm4, panelFeedback, GargolaBuena, GargolaMala, explodeObject, PiezasRecuerdoMalo, PiezasRecuerdoBueno;
+
+    public GameObject triggerParteFinal, panelHUD;
     [SerializeField] UI_Piezas piezasPanel;
     [SerializeField] TextMeshPro textPanel;
     public GameObject videoPlayerPlane;
@@ -121,6 +122,7 @@ public class Espejo : MonoBehaviour
         SwitchPlayerTransform(true);
         yield return new WaitForSeconds(1);
         transform.GetChild(0).gameObject.SetActive(true);
+        panelHUD.SetActive(false);//Desactiva HUD
         panelDialogueGargolas.GetComponent<Animator>().enabled = true;
         //playerMovement.transform.localScale = new Vector3(playerMovement.transform.localScale.x, playerMovement.transform.localScale.y, playerMovement.transform.localScale.z);
     }
@@ -361,7 +363,7 @@ public class Espejo : MonoBehaviour
         CameraManager.instance.SingleSwapCamera(cameraPlayer, 1f);
         SwitchPlayerTransform(true);
         triggerParteFinal.SetActive(false);
-
+       // panelHUD.SetActive(true);
         //videoPlayerPlane.SetActive(true);
         //videoPlayer.clip = videoClips[countVideoClips];
         //videoPlayer.Play();
