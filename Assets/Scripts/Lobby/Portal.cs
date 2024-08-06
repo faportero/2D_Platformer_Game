@@ -50,6 +50,8 @@ public class Portal : MonoBehaviour
 
     private IEnumerator PlayerDisolve()
     {
+        AudioManager.Instance.PlaySfx("Dissolve");
+
         float dissolveAmount = 0;
         float duration = 1f;  // Duración total de la animación en segundos
         float elapsedTime = 0;
@@ -67,6 +69,9 @@ public class Portal : MonoBehaviour
     }
     private IEnumerator SwitchScene()
     {
+        AudioManager.Instance.PlaySfx("Fog_Transition");
+
+
         playerMovementNew.canMove = false;
         //FogTransicion
         LevelManager.isFogTransition = true;
@@ -165,6 +170,7 @@ public class Portal : MonoBehaviour
 
         }
         //canvasFog.SetActive(false);
+       
 
     }
     private void OnTriggerEnter2D(Collider2D collision)

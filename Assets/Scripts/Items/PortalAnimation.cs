@@ -12,6 +12,7 @@ public class PortalAnimation : MonoBehaviour
         {
            // Time.timeScale = 0.5f;
             PortalAnimatorObject.SetActive(true);
+            AudioManager.Instance.PlaySfx("Portal_Appear");
             //gameObject.SetActive(false);
         }
     }

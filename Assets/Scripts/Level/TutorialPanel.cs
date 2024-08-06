@@ -51,12 +51,14 @@ public class TutorialPanel : MonoBehaviour
             //playerMovementNew.tutorialActive = true;
             audioPause.Pause(true);
             panelTutorial.SetActive(true);
+            panelTutorial.GetComponent<UI_PanelDissolve>().enabled = true;
 
             if (isInteractive)
             {
                // playerMovementNew.inputsEnabled = true;
                 audioPause.Pause(true);
                 panelTutorial.SetActive(true);
+
                 if (PanelDetectInput != null) PanelDetectInput.SetActive(true);
                 if (interactionIndex == 0)
                 {
@@ -79,6 +81,7 @@ public class TutorialPanel : MonoBehaviour
                     hand.SetActive(true); handAnim.Play("FallingTap AnimationIz");
                 }
             }
+            AudioManager.Instance.PlaySfx("Item_info");
         }
     }
 }

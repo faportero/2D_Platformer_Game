@@ -105,7 +105,8 @@ public class TutorialManager : MonoBehaviour, IPointerDownHandler, IPointerUpHan
                     audioPause.Pause(false);
                     playerMovementNew.tutorialActive = true;
                     playerMovementNew.inputsEnabled = true;
-                    gameObject.transform.parent.gameObject.SetActive(false);
+                    //gameObject.transform.parent.gameObject.SetActive(false);
+                    gameObject.transform.parent.GetComponent<UI_PanelDissolve>().StartDissolve();
                     hand.SetActive(false);
                     playerMovementNew.DoRoll();
                     swipeDetector.gameObject.transform.parent.gameObject.SetActive(true);
@@ -119,7 +120,8 @@ public class TutorialManager : MonoBehaviour, IPointerDownHandler, IPointerUpHan
                     audioPause.Pause(false);
                     playerMovementNew.tutorialActive = true;
                     playerMovementNew.inputsEnabled = true;
-                    gameObject.transform.parent.gameObject.SetActive(false);
+                    //gameObject.transform.parent.gameObject.SetActive(false);
+                    gameObject.transform.parent.GetComponent<UI_PanelDissolve>().StartDissolve();
                     hand.SetActive(false);
                     playerMovementNew.DoRoll();
                     swipeDetector.gameObject.transform.parent.gameObject.SetActive(true);
@@ -169,7 +171,9 @@ public class TutorialManager : MonoBehaviour, IPointerDownHandler, IPointerUpHan
                     audioPause.Pause(false);
                     playerMovementNew.tutorialActive = true;
                     playerMovementNew.inputsEnabled = true;
-                    gameObject.transform.parent.gameObject.SetActive(false);
+                    //gameObject.transform.parent.gameObject.SetActive(false);
+                    gameObject.transform.parent.GetComponent<UI_PanelDissolve>().StartDissolve();
+
                     hand.SetActive(false);
                     playerMovementNew.DoRoll();
                     playerMovementNew.swipeDetector.gameObject.GetComponent<UnityEngine.UI.Image>().raycastTarget = true;
@@ -182,7 +186,9 @@ public class TutorialManager : MonoBehaviour, IPointerDownHandler, IPointerUpHan
                     audioPause.Pause(false);
                     playerMovementNew.tutorialActive = true;
                     playerMovementNew.inputsEnabled = true;
-                    gameObject.transform.parent.gameObject.SetActive(false);
+                    //gameObject.transform.parent.gameObject.SetActive(false);
+                    gameObject.transform.parent.GetComponent<UI_PanelDissolve>().StartDissolve();
+
                     hand.SetActive(false);
                     playerMovementNew.DoRoll();
                     playerMovementNew.swipeDetector.gameObject.GetComponent<UnityEngine.UI.Image>().raycastTarget = true;

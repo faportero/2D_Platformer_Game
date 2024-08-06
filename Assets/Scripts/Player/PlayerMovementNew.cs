@@ -597,6 +597,7 @@ public class PlayerMovementNew : MonoBehaviour
 
                         StartCoroutine(Jump(0));
                         jumpBufferCounter = 0;
+
                     }
                     else
                     {
@@ -621,6 +622,7 @@ public class PlayerMovementNew : MonoBehaviour
                         {
                             StartCoroutine(Jump(0));
                             canDoubleJump = false;
+
                         }
                     }
                 }
@@ -1045,6 +1047,7 @@ public class PlayerMovementNew : MonoBehaviour
     private void TapFloor()
     {
         anim.SetBool("Jump", false);
+        AudioManager.Instance.PlaySfx("Fall");
     }
     public void DoRoll()
     {
@@ -1488,6 +1491,8 @@ public class PlayerMovementNew : MonoBehaviour
     }
     private IEnumerator PlayerDisolve()
     {
+        AudioManager.Instance.PlaySfx("Dissolve");
+
         float dissolveAmount = 0;
         float duration = .5f;  // Duración total de la animación en segundos
         float elapsedTime = 0;

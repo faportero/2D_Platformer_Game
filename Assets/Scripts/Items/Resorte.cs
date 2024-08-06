@@ -33,4 +33,9 @@ public class Resorte : MonoBehaviour
         rb.velocity = Vector3.zero;
         rb.AddForce(Vector3.up * ammount, ForceMode2D.Impulse);
     }
+
+    public void SpringSound()
+    {
+        AudioManager.Instance.PlaySfx("Resorte");
+    }
 }

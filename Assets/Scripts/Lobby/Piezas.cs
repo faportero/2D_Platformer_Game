@@ -70,6 +70,8 @@ public class Piezas : MonoBehaviour
             yield return null;
         }
         transform.position = targetPosition;
+
+        AudioManager.Instance.PlaySfx("Espejo_pieza");
     }
     private void SelectType()
     {

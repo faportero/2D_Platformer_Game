@@ -46,6 +46,8 @@ public class Ente : MonoBehaviour
 
     private IEnumerator PlayerSolidify()
     {
+        AudioManager.Instance.PlaySfx("Solidify");
+
         float dissolveAmount = 0;
         float duration = 2f;  // Duración total de la animación en segundos
         float elapsedTime = 0;
@@ -70,6 +72,8 @@ public class Ente : MonoBehaviour
     }
     private IEnumerator PlayerDisolve()
     {
+        AudioManager.Instance.PlaySfx("Dissolve");
+
         float dissolveAmount = 0;
         float duration = .5f;  // Duración total de la animación en segundos
         float elapsedTime = 0;

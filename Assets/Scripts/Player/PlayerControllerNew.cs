@@ -206,7 +206,7 @@ public class PlayerControllerNew : MonoBehaviour
         {
 
          
-            audioSource.Stop();
+            //audioSource.Stop();
 
             currentSalud += saludAmount;
             currentSalud = Mathf.Clamp(currentSalud, 0f, 1);
@@ -322,6 +322,10 @@ public class PlayerControllerNew : MonoBehaviour
                     AdjustLuminance(.9f);
                     break;
                 case 1:
+
+                    AudioManager.Instance.PlaySfx("Indestructible");
+
+
                     AdjustLuminance(1);
                     currentItemSalud.healthType = Salud.HealthType.Indestructible;
                     ui_FeedbackSalud.AssignFeedbackSprite();
@@ -329,6 +333,7 @@ public class PlayerControllerNew : MonoBehaviour
                     inmunidadCoroutine = StartCoroutine(Inmunidad());
                     ui_IndestructibleBar.gameObject.SetActive(true);
                     ui_IndestructibleBar.UpdateTime(10);
+
                     break;
                 default:
 
@@ -336,8 +341,9 @@ public class PlayerControllerNew : MonoBehaviour
                     break;
             }
 
+            AudioManager.Instance.PlaySfx("Item_Bueno");
 
-           // return;
+            // return;
         }
 
         if (collision.tag == "Enemy")
@@ -392,6 +398,7 @@ public class PlayerControllerNew : MonoBehaviour
                         StopCoroutine(inmunidadCoroutine);
                         ui_IndestructibleBar.gameObject.SetActive(false);
                         GlowSpriteEffect.SetActive(false);
+                        AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
 
                     }
 
@@ -406,6 +413,7 @@ public class PlayerControllerNew : MonoBehaviour
                         StopCoroutine(inmunidadCoroutine);
                         ui_IndestructibleBar.gameObject.SetActive(false);
                         GlowSpriteEffect.SetActive(false);
+                        AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
 
                     }
 
@@ -420,6 +428,7 @@ public class PlayerControllerNew : MonoBehaviour
                         StopCoroutine(inmunidadCoroutine);
                         ui_IndestructibleBar.gameObject.SetActive(false);
                         GlowSpriteEffect.SetActive(false);
+                        AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
 
                     }
                     enemyCameraShake = StartCoroutine(EnemyCameraShake(8));
@@ -433,6 +442,7 @@ public class PlayerControllerNew : MonoBehaviour
                         StopCoroutine(inmunidadCoroutine);
                         ui_IndestructibleBar.gameObject.SetActive(false);
                         GlowSpriteEffect.SetActive(false);
+                        AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
 
                     }
                     enemyCameraShake = StartCoroutine(EnemyCameraShake(7));
@@ -446,6 +456,7 @@ public class PlayerControllerNew : MonoBehaviour
                         StopCoroutine(inmunidadCoroutine);
                         ui_IndestructibleBar.gameObject.SetActive(false);
                         GlowSpriteEffect.SetActive(false);
+                        AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
 
                     }
                     enemyCameraShake = StartCoroutine(EnemyCameraShake(6));
@@ -459,6 +470,7 @@ public class PlayerControllerNew : MonoBehaviour
                         StopCoroutine(inmunidadCoroutine);
                         ui_IndestructibleBar.gameObject.SetActive(false);
                         GlowSpriteEffect.SetActive(false);
+                        AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
 
                     }
                     enemyCameraShake = StartCoroutine(EnemyCameraShake(5));
@@ -472,6 +484,7 @@ public class PlayerControllerNew : MonoBehaviour
                         StopCoroutine(inmunidadCoroutine);
                         ui_IndestructibleBar.gameObject.SetActive(false);
                         GlowSpriteEffect.SetActive(false);
+                        AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
 
                     }
                     enemyCameraShake = StartCoroutine(EnemyCameraShake(4));
@@ -485,6 +498,7 @@ public class PlayerControllerNew : MonoBehaviour
                         StopCoroutine(inmunidadCoroutine);
                         ui_IndestructibleBar.gameObject.SetActive(false);
                         GlowSpriteEffect.SetActive(false);
+                        AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
 
                     }
                     enemyCameraShake = StartCoroutine(EnemyCameraShake(3));
@@ -498,6 +512,7 @@ public class PlayerControllerNew : MonoBehaviour
                         StopCoroutine(inmunidadCoroutine);
                         ui_IndestructibleBar.gameObject.SetActive(false);
                         GlowSpriteEffect.SetActive(false);
+                        AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
 
                     }
                     enemyCameraShake = StartCoroutine(EnemyCameraShake(2));
@@ -516,7 +531,10 @@ public class PlayerControllerNew : MonoBehaviour
             StartBlinking(0);
             StartCoroutine(DeactivateEnfasis());
 
-           // if (currentSalud != 100) spriteRenderer.material = materials[0];
+            AudioManager.Instance.PlaySfx("Item_Malo");
+
+
+            // if (currentSalud != 100) spriteRenderer.material = materials[0];
 
 
 
@@ -563,6 +581,8 @@ public class PlayerControllerNew : MonoBehaviour
 
             }
 
+            AudioManager.Instance.PlaySfx("Item_Pieza");
+
         }
 
         if (collision.tag == "BadFloor")
@@ -580,6 +600,7 @@ public class PlayerControllerNew : MonoBehaviour
                 Destroy(explodeInstance, particleSystem.main.duration);
                 ExplodeObject.SetActive(false);
 
+                AudioManager.Instance.PlaySfx("SuperHitWall");
             }
 
         }
@@ -629,9 +650,13 @@ public class PlayerControllerNew : MonoBehaviour
             {
                 StopCoroutine(inmunidadCoroutine);
                 ui_IndestructibleBar.gameObject.SetActive(false);
+                AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+
             }
 
             StartCoroutine(HitBadFloor());
+
+            AudioManager.Instance.PlaySfx("HitWall");
 
         }
 
@@ -902,7 +927,10 @@ public class PlayerControllerNew : MonoBehaviour
 
     private IEnumerator Inmunidad()
     {
+        AudioManager.Instance.PlayMusic("Indestructible_loop",0);
+
         isIndestructible = true;
+
         //spriteRenderer.material = materials[1];
         GlowSpriteEffect.SetActive(true);
 
@@ -914,7 +942,7 @@ public class PlayerControllerNew : MonoBehaviour
         //spriteRenderer.material = materials[0];
         isIndestructible = false;
         SetAllCompositeCollidersTrigger(compositeColliders, false);
-
+        AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
 
     }
     private void CurrentEffectPanel(float delay)
@@ -930,11 +958,12 @@ public class PlayerControllerNew : MonoBehaviour
     private IEnumerator CurrentEffect(float delay)
     {
         isSmokePanelEffect = true;
-        audioSource.Play();
+        //audioSource.Play();
+        AudioManager.Instance.PlaySfx("Tos");
         effectPanel.SetActive(true);
         //effectPanel.GetComponent<Animator>().SetBool("Smoke", true);
         yield return new WaitForSeconds(delay);
-        audioSource.Stop();
+        //audioSource.Stop();
         effectPanel.SetActive(false);
         //enemyAttached.SetActive(false);
         isDrugged = false;

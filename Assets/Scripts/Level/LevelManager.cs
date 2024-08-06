@@ -53,7 +53,7 @@ public class LevelManager : MonoBehaviour
             case CurrentScene.Lobby:
 
                 InitFogTransition();
-
+                
                 if (UserData.terminoLobby)
                 {
                     if (newStartPos)
@@ -70,6 +70,7 @@ public class LevelManager : MonoBehaviour
             case CurrentScene.Limbo:
 
                 InitFogTransition();
+                AudioManager.Instance.PlayMusic("Bg_Limbo", 0);
 
                 if (UserData.terminoLimbo)
                 {
@@ -79,6 +80,7 @@ public class LevelManager : MonoBehaviour
                 break;
             case CurrentScene.Nivel1:
                 InitFogTransition();
+                AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
                 if (UserData.terminoTutorial)
                 {
                     if (newStartPos) playerController.transform.position = newStartPos.position;
@@ -113,12 +115,13 @@ public class LevelManager : MonoBehaviour
             fogPanel.transform.GetChild(0).GetComponent<Animator>().enabled = true;
             fogPanel.transform.GetChild(0).GetComponent<Animator>().Play("FogTransitionEnd");
             //fogPanel.GetComponent<UI_LoadingScene>().ShowOppener();
+
         }
     }
     IEnumerator ShowFogPanel()
     {
         fogPanel.SetActive(true);
-        yield return new WaitForSecondsRealtime(4);
+        yield return new WaitForSecondsRealtime(6);
         if(currentScene != CurrentScene.Limbo)StartCoroutine(PlayerSolidify());
         else playerMaterial.SetFloat("_DissolveAmmount", 0);        
         fogPanel.SetActive(false);
@@ -126,6 +129,9 @@ public class LevelManager : MonoBehaviour
     }
     private IEnumerator PlayerSolidify()
     {
+        AudioManager.Instance.PlaySfx("Solidify");
+
+
         float dissolveAmount = 1;
         float duration = 2f;  // Duración total de la animación en segundos
         float elapsedTime = 0;

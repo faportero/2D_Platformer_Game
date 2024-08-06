@@ -292,6 +292,8 @@ public class Espejo : MonoBehaviour
         // Verifica si la partícula ya está en reproducción para evitar iniciarla múltiples veces
         if (!isPlaying)
         {
+            AudioManager.Instance.PlaySfx("Espejo_explocion");
+
             explodeObject.SetActive(true);
             explodePartycle.Play();
             isPlaying = true;

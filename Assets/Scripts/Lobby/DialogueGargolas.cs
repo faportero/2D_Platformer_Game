@@ -138,6 +138,7 @@ public class DialogueGargolas : MonoBehaviour
         //playerMovement.isFacingRight = true;
         //playerMovement.Turn();
         //StartCoroutine(TypeLastLine());
+        AudioManager.Instance.PlaySfx("btn_entendido");
 
         if (!cambiarDestino) 
         { 

@@ -70,7 +70,11 @@ public class LobbyManager : MonoBehaviour
             if (videoPlayer != null)
             {
                 panelVideo.SetActive(true);
+                
+                string videoPath = System.IO.Path.Combine(Application.streamingAssetsPath, "Introtest.mp4");
+                videoPlayer.url = videoPath;
                 videoPlayer.Play();
+
                 // Suscribirse al evento loopPointReached para saber cuándo termina el video
                 videoPlayer.loopPointReached += OnVideoEnd;
             }
@@ -160,7 +164,8 @@ public class LobbyManager : MonoBehaviour
         // Por ejemplo, puedes desactivar el objeto VideoPlayerObject y activar otro objeto del juego
         PaneoCameraInit();
        // StartCoroutine(AnimatePlayer());
-        audioPause.Pause(false);   
+        audioPause.Pause(false);
+        AudioManager.Instance.PlayMusic("Bg_Lobby", 1);
     }
 
     
@@ -299,6 +304,7 @@ public class LobbyManager : MonoBehaviour
 
     private IEnumerator ChangePlayerPosition()
     {
+        AudioManager.Instance.PlaySfx("HourGlassTransition");
         StartCoroutine(PlayerDisolve());
         yield return new WaitForSeconds(1);
         RelojPanel.SetActive(true);
@@ -318,6 +324,8 @@ public class LobbyManager : MonoBehaviour
 
     private IEnumerator PlayerDisolve()
     {
+        AudioManager.Instance.PlaySfx("Dissolve");
+
         float dissolveAmount = 0;
         float duration = 1f;  // Duración total de la animación en segundos
         float elapsedTime = 0;
@@ -338,6 +346,9 @@ public class LobbyManager : MonoBehaviour
 
     private IEnumerator PlayerSolidify()
     {
+        AudioManager.Instance.PlaySfx("Solidify");
+
+
         float dissolveAmount = 1;
         float duration = 2f;  // Duración total de la animación en segundos
         float elapsedTime = 0;

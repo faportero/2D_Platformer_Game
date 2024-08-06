@@ -70,7 +70,7 @@ public class Gargola : MonoBehaviour
     }
         public void SkipVideo()
     {
-
+        
         videoPlayer.Stop();
         OnVideoEnd(videoPlayer);
     }
@@ -94,7 +94,10 @@ public class Gargola : MonoBehaviour
         playerMovementNew.anim.SetBool("SlowWalk", false);
         playerMovementNew.anim.SetBool("Turn", true);
         StartCoroutine(ShowVideoPanel());
-        videoPlayer.Play();
+
+
+
+       // videoPlayer.Play();
 
     }
     private IEnumerator ShowVideoPanel()
@@ -105,6 +108,10 @@ public class Gargola : MonoBehaviour
         animatorVideo.enabled = true;
         videoPlayerPlane.SetActive(true);
         yield return new WaitForSeconds(.5f);
+
+        AudioManager.Instance.ToggleMusic();
+        AudioManager.Instance.ToggleSFX();
+
         videoPlayer.Play();
         playerMovementNew.inputsEnabled = false;
     }
@@ -125,6 +132,8 @@ public class Gargola : MonoBehaviour
 
     private IEnumerator PlayerDisolve()
     {
+        AudioManager.Instance.PlaySfx("Dissolve");
+
         float dissolveAmount = 0;
         float duration = 1f;  // Duración total de la animación en segundos
         float elapsedTime = 0;
@@ -142,9 +151,13 @@ public class Gargola : MonoBehaviour
     }
     private IEnumerator SwitchScene()
     {
-       // playerMovementNew.isMoving = false;
+        AudioManager.Instance.PlaySfx("Fog_Transition");
+
+        // playerMovementNew.isMoving = false;
         //playerMovementNew.canMove = false;
         //FogTransicion
+
+
         yield return new WaitForSecondsRealtime(1.5f);
         StartCoroutine(PlayerDisolve());
 

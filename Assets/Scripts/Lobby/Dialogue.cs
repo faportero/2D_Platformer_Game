@@ -64,7 +64,8 @@ public class Dialogue : MonoBehaviour
 
     public void OnButtonDown()
     {
-     //   if (autoAdvanceDialogue != null) StopCoroutine(autoAdvanceDialogue);
+        //   if (autoAdvanceDialogue != null) StopCoroutine(autoAdvanceDialogue);
+        AudioManager.Instance.PlaySfx("btn_normal");
 
         if (textComponent.text == dialogueLines[index].line)
         {
@@ -81,6 +82,8 @@ public class Dialogue : MonoBehaviour
     }
     public void OnBackButtonDown()
     {
+        AudioManager.Instance.PlaySfx("btn_normal");
+
         if (index > 0)
         {
             index--;
@@ -94,7 +97,8 @@ public class Dialogue : MonoBehaviour
     }
     public void OnChangeButtonDown()
     {
-      //  if (autoAdvanceDialogue != null) StopCoroutine(autoAdvanceDialogue);
+        //  if (autoAdvanceDialogue != null) StopCoroutine(autoAdvanceDialogue);
+        AudioManager.Instance.PlaySfx("btn_viajar");
 
         gameObject.SetActive(false);
         lobbyManager.PaneoCamera();
@@ -186,6 +190,7 @@ public class Dialogue : MonoBehaviour
 
     private IEnumerator BlinkEffect()
     {
+        AudioManager.Instance.PlaySfx("Panel_blink");
         // Escala inicial
         Vector3 originalScale = transform.localScale;
 
