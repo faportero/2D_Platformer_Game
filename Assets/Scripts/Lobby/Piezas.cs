@@ -48,6 +48,7 @@ public class Piezas : MonoBehaviour
 
     private IEnumerator PiecedAnim(float delay)
     {
+        AudioManager.Instance.PlaySfx("Espejo_pieza");
         gameObject.SetActive(true);
         LoadTransforms();
         yield return new WaitForSeconds(delay);
@@ -71,7 +72,6 @@ public class Piezas : MonoBehaviour
         }
         transform.position = targetPosition;
 
-        AudioManager.Instance.PlaySfx("Espejo_pieza");
     }
     private void SelectType()
     {

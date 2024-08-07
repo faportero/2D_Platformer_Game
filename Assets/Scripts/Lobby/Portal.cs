@@ -41,7 +41,7 @@ public class Portal : MonoBehaviour
         //espejo = FindAnyObjectByType<Espejo>();
     }
 
-    private void SelectDimension()
+    public void SelectDimension()
     {
         StopAllCoroutines();
         StartCoroutine(SwitchScene());
@@ -182,7 +182,9 @@ public class Portal : MonoBehaviour
             playerMovementNew.isMoving = false; // Detener el movimiento
             playerMovementNew.anim.SetBool("SlowWalk", false); // Desactivar animación de caminar
             playerMovementNew.anim.SetBool("Walk", false); // Desactivar animación de caminar
+
             LevelManager.isFogTransition = true;
+            PortalAnimation.firstShowPanel = false;
                 SelectDimension();
             //if (Espejo.piezasRestantes != 0)
             //{

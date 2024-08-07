@@ -45,6 +45,7 @@ public class Espejo : MonoBehaviour
 
         // CheckEspejoPieces();
         CheckEspejoPiecesInit();
+        if(countPiezas == maxPiezas) GetComponent<BoxCollider2D>().enabled = false;
 
     }
     private void Update()

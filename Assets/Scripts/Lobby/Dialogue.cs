@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -28,6 +29,9 @@ public class Dialogue : MonoBehaviour
 
     private Coroutine blinkCoroutine; // Corrutina para el efecto de "pestañeo"
     [HideInInspector] public Coroutine typeLineCoroutine, autoAdvanceDialogue;
+
+    public AudioMixerSnapshot paused;
+    public AudioMixerSnapshot unpaused;
 
     private bool wasPreviousPlayerSpeaking;
     private bool firstTime = true;
@@ -98,7 +102,9 @@ public class Dialogue : MonoBehaviour
     public void OnChangeButtonDown()
     {
         //  if (autoAdvanceDialogue != null) StopCoroutine(autoAdvanceDialogue);
-        AudioManager.Instance.PlaySfx("btn_viajar");
+        unpaused.TransitionTo(.5f);
+
+        AudioManager.Instance.PlaySfx("btn_normal");
 
         gameObject.SetActive(false);
         lobbyManager.PaneoCamera();
@@ -107,6 +113,8 @@ public class Dialogue : MonoBehaviour
     }
     private void StartDialogue()
     {
+        paused.TransitionTo(.5f);
+
         index = 0;
         wasPreviousPlayerSpeaking = dialogueLines[index].isPlayerSpeaking; // Inicializar con el primer valor
         if (typeLineCoroutine != null)
@@ -148,6 +156,7 @@ public class Dialogue : MonoBehaviour
         if (dialogueLines[index].audioClip != null)
         {
             GetComponent<AudioSource>().Stop();
+            //GetComponent<AudioSource>().PlayOneShot(dialogueLines[index].audioClip);
             GetComponent<AudioSource>().PlayOneShot(dialogueLines[index].audioClip);
         }
 

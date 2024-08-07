@@ -18,6 +18,7 @@ public class LevelManager : MonoBehaviour
 
     public PlayerControllerNew playerController;
     private PlayerMovementNew playerMovementNew;
+    [SerializeField] private GameObject panelHUD;
     [SerializeField] private GameObject UI_Habilidades;
     [SerializeField] private GameObject UI_MensajeHabilidades;
     [SerializeField] private GameObject UI_CurrentEffect;
@@ -28,7 +29,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private Transform newStartPos;
     public static bool usedPA, usedPB, usedPC, usedPD, isFogTransition;
     private Material playerMaterial;
-
+    private float progress;
     //[SerializeField] private UI_Piezas uiPiezas;
 
     private void Awake()
@@ -53,11 +54,14 @@ public class LevelManager : MonoBehaviour
             case CurrentScene.Lobby:
 
                 InitFogTransition();
-                
+
                 if (UserData.terminoLobby)
                 {
                     if (newStartPos)
                     {
+                        AudioManager.Instance.PlayMusic("Bg_Lobby", 0);
+                        //AudioManager.Instance.ToggleMusic();
+
                         playerController.transform.position = newStartPos.position;
                         Vector3 rotator = new Vector3(transform.rotation.x, 0, transform.rotation.z);
                         playerController.transform.rotation = Quaternion.Euler(rotator);
@@ -74,6 +78,8 @@ public class LevelManager : MonoBehaviour
 
                 if (UserData.terminoLimbo)
                 {
+                    //AudioManager.Instance.ToggleMusic();
+
                     if (newStartPos) playerController.transform.position = newStartPos.position;
                     //print("Limboooo");
                 }
@@ -83,6 +89,7 @@ public class LevelManager : MonoBehaviour
                 AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
                 if (UserData.terminoTutorial)
                 {
+                   // AudioManager.Instance.ToggleMusic();
                     if (newStartPos) playerController.transform.position = newStartPos.position;
                     //print("Limboooo");
                 }
@@ -121,7 +128,7 @@ public class LevelManager : MonoBehaviour
     IEnumerator ShowFogPanel()
     {
         fogPanel.SetActive(true);
-        yield return new WaitForSecondsRealtime(6);
+        yield return new WaitForSecondsRealtime(4);
         if(currentScene != CurrentScene.Limbo)StartCoroutine(PlayerSolidify());
         else playerMaterial.SetFloat("_DissolveAmmount", 0);        
         fogPanel.SetActive(false);
@@ -147,10 +154,29 @@ public class LevelManager : MonoBehaviour
         // Asegurarse de que el valor final sea exactamente 0
         playerMaterial.SetFloat("_DissolveAmmount", 0);
     }
+    private IEnumerator PlayerDisolve()
+    {
+        AudioManager.Instance.PlaySfx("Dissolve");
+
+        float dissolveAmount = 0;
+        float duration = 1f;  // Duración total de la animación en segundos
+        float elapsedTime = 0;
+
+        while (elapsedTime < duration)
+        {
+            dissolveAmount = Mathf.Lerp(0, 1, elapsedTime / duration);
+            playerMaterial.SetFloat("_DissolveAmmount", dissolveAmount);
+            elapsedTime += Time.deltaTime;
+            yield return null;  // Esperar al siguiente frame
+        }
+
+        // Asegurarse de que el valor final sea exactamente 1
+        playerMaterial.SetFloat("_DissolveAmmount", 1);
+    }
     public void GameOver()
     {
-        Time.timeScale = 0;
-
+        //Time.timeScale = 0;
+        print("isDrugged: "+playerController.isDrugged + ". isDie:"+playerController.isDie);
         if (playerController != null)
         {
             //if (!playerController.isDrugged && playerController.isDie)
@@ -158,11 +184,14 @@ public class LevelManager : MonoBehaviour
             //    UI_Habilidades.SetActive(true);
             //}
              if (playerController.isDrugged && playerController.isDie)
-            {  
+            {
+                Time.timeScale = 0;
                 UI_MensajeHabilidades.SetActive(true);
+                if(panelHUD != null) panelHUD.SetActive(false);
             }
             else
             {
+                
                 ResetLevel();
 
             }
@@ -177,10 +206,34 @@ public class LevelManager : MonoBehaviour
         //UserData.vidaExtra = playerController.vidaExtra;
         //UserData.paracaidas = playerController.paracaidas;
         // SceneManager.LoadScene("Nivel_1");
-       // UserData.terminoLobby = true;
-        SceneManager.LoadScene("Lobby2");
+        // UserData.terminoLobby = true;
+        // SceneManager.LoadScene("Nivel_1");
+        SelectDimension();
+    }
+    public void SelectDimension()
+    {
+        //StopAllCoroutines();
+        StartCoroutine(SwitchScene());
     }
 
+    private IEnumerator SwitchScene()
+    {
+        Time.timeScale = 1;
+
+        AudioManager.Instance.PlaySfx("Fog_Transition");
+
+        playerMovementNew.canMove = false;
+        //FogTransicion
+        LevelManager.isFogTransition = true;
+        fogPanel.SetActive(true);
+        fogPanel.transform.GetChild(0).gameObject.SetActive(true);
+        fogPanel.transform.GetChild(0).GetComponent<Animator>().enabled = true;
+        fogPanel.transform.GetChild(0).GetComponent<Animator>().Play("FogTransition");
+        StartCoroutine(PlayerDisolve());
+        yield return new WaitForSecondsRealtime(5);
+        SceneManager.LoadScene("Nivel_1");
+
+    }
     private void CheckLevelPieces()
     {
         if (usedPA)

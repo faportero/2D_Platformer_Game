@@ -205,7 +205,7 @@ public class PlayerControllerNew : MonoBehaviour
         if (collision.tag == "Salud")
         {
 
-         
+            isDrugged = false;
             //audioSource.Stop();
 
             currentSalud += saludAmount;
@@ -329,7 +329,7 @@ public class PlayerControllerNew : MonoBehaviour
                     AdjustLuminance(1);
                     currentItemSalud.healthType = Salud.HealthType.Indestructible;
                     ui_FeedbackSalud.AssignFeedbackSprite();
-
+                    if(inmunidadCoroutine != null) StopCoroutine(inmunidadCoroutine);
                     inmunidadCoroutine = StartCoroutine(Inmunidad());
                     ui_IndestructibleBar.gameObject.SetActive(true);
                     ui_IndestructibleBar.UpdateTime(10);
@@ -348,6 +348,7 @@ public class PlayerControllerNew : MonoBehaviour
 
         if (collision.tag == "Enemy")
         {
+            isDrugged = true;
 
             collision.GetComponent<EnemyNew>().Effect();
             collision.gameObject.SetActive(false);
@@ -372,7 +373,6 @@ public class PlayerControllerNew : MonoBehaviour
                 return;
             }
 
-            isDrugged = true;
 
             if (isShowPanel)
             {

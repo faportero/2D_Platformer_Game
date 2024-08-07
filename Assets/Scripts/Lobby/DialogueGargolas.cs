@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -33,7 +34,9 @@ public class DialogueGargolas : MonoBehaviour
 
     private bool wasPreviousPlayerSpeaking, cambiarDestino;
     private bool firstTime = true;
-    
+    public AudioMixerSnapshot paused;
+    public AudioMixerSnapshot unpaused;
+
     private void Awake()
     {
         playerMovement = FindAnyObjectByType<PlayerMovementNew>();
@@ -67,13 +70,15 @@ public class DialogueGargolas : MonoBehaviour
             if (!dialogueLines[index].isPlayerSpeaking && !GetComponent<AudioSource>().isPlaying)
             {
                 if(autoAdvanceDialogue != null) StopCoroutine(autoAdvanceDialogue);
+                //wasPreviousPlayerSpeaking = !dialogueLines[index].isPlayerSpeaking; // Actualizar el valor
                 cambiarDestinoBtn.SetActive(true);
+
             }
             else 
             {
                 cambiarDestinoBtn.SetActive(false);
             }
-
+        print("PlayerSpeaking: "+ dialogueLines[index].isPlayerSpeaking+ ". Audio reproduciendo: " + GetComponent<AudioSource>().isPlaying + ". WasPreviousPlayer: "+ wasPreviousPlayerSpeaking); 
        // print("Inputs:" + playerMovement.inputsEnabled + ". Moving: " + playerMovement.isMoving);
     }
 
@@ -138,7 +143,8 @@ public class DialogueGargolas : MonoBehaviour
         //playerMovement.isFacingRight = true;
         //playerMovement.Turn();
         //StartCoroutine(TypeLastLine());
-        AudioManager.Instance.PlaySfx("btn_entendido");
+        AudioManager.Instance.PlaySfx("btn_normal");
+        //AudioManager.Instance.PlaySfx("btn_entendido");
 
         if (!cambiarDestino) 
         { 
@@ -187,11 +193,16 @@ public class DialogueGargolas : MonoBehaviour
         playerMovement.isMoving = true;
         playerMovement.inputsEnabled = true;
         espejo.panelHUD.SetActive(true);
-       // gameObject.SetActive(false);
-        
+
+        unpaused.TransitionTo(.5f);
+
+        // gameObject.SetActive(false);
+
     }
     private void StartDialogue()
     {
+        paused.TransitionTo(.5f);
+
         index = 0;
         wasPreviousPlayerSpeaking = dialogueLines[index].isPlayerSpeaking; // Inicializar con el primer valor
         if (typeLineCoroutine != null)
@@ -220,9 +231,6 @@ public class DialogueGargolas : MonoBehaviour
             {
                 yield return new WaitUntil(() => !GetComponent<AudioSource>().isPlaying);
             }
-
-
-
             NextLine();
         }
         firstTime = false;

@@ -42,6 +42,7 @@ public class UI_IndestructibleBar : MonoBehaviour
 
     private IEnumerator UpdateTimeEffect(float duration)
     {
+        //duration = 10;
         startUpdateTimeCoroutine = true;
 
         startFillAmount = 1;

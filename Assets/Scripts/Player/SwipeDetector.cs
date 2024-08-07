@@ -52,7 +52,7 @@ public class SwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
         if (playJumpSound)
         {
-            if(!playerMovementNew.isHitBadFloor && playerMovementNew.inputsEnabled && playerMovementNew.canMove)AudioManager.Instance.PlaySfx("Jump");
+            if(playerMovementNew.movementMode == PlayerMovementNew.MovementMode.RunnerMode && !playerMovementNew.isHitBadFloor && playerMovementNew.inputsEnabled && playerMovementNew.canMove)AudioManager.Instance.PlaySfx("Jump");
             playJumpSound = false;
         }
 

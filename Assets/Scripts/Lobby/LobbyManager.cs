@@ -89,7 +89,7 @@ public class LobbyManager : MonoBehaviour
             playerMovementNew.inputsEnabled = true;
            // panelHUD.SetActive(true);   
             panelVideo.SetActive(false);
-            portalInicio.SetActive(true);
+            if(portalInicio != null) portalInicio.SetActive(true);
         }
 
         //else if(pasoIntro == true)
@@ -165,7 +165,7 @@ public class LobbyManager : MonoBehaviour
         PaneoCameraInit();
        // StartCoroutine(AnimatePlayer());
         audioPause.Pause(false);
-        AudioManager.Instance.PlayMusic("Bg_Lobby", 1);
+        AudioManager.Instance.PlayMusic("Bg_Lobby", 0);
     }
 
     

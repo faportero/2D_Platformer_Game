@@ -185,7 +185,7 @@ public class PlayerMovementNew : MonoBehaviour
             {
                 case MovementMode.TapMode:
                     //TapMovement();
-                    print("Inputs:" + inputsEnabled + ". Moving: " + isMoving);
+                   // print("Inputs:" + inputsEnabled + ". Moving: " + isMoving);
 
                     isFallingMode = false;
                     if (inputsEnabled)
@@ -1452,6 +1452,7 @@ public class PlayerMovementNew : MonoBehaviour
     #region Die
     public void Die()
     {
+        AudioManager.Instance.PlaySfx("Die");
         StartCoroutine(Diying());
         //if (!canMove)
         //{
@@ -1465,7 +1466,7 @@ public class PlayerMovementNew : MonoBehaviour
         //float startValue = material.GetFloat("_DissolveAmmount");
         // anim.Play("Die");
         // material.SetFloat("_DissolveAmmount", Mathf.Lerp(0, 1, Time.deltaTime * .5f));
-        StartCoroutine(PlayerDisolve());
+        //StartCoroutine(PlayerDisolve());
         // Buscar todos los objetos activos con el nombre "Ghost(Clone)"
         GameObject[] objetosGhost = GameObject.FindGameObjectsWithTag("Ghost");
 
@@ -1481,8 +1482,8 @@ public class PlayerMovementNew : MonoBehaviour
         playerController.saltoDoble = false;
         playerController.vidaExtra = false;
         playerController.paracaidas = false;
-        PlayerDisolve();
-        yield return new WaitForSeconds(1f);
+        //PlayerDisolve();
+        yield return new WaitForSeconds(.2f);
         //levelManager.ResetLevel();
         levelManager.GameOver();
         //canMove = false;

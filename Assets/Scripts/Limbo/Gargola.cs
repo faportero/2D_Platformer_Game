@@ -77,11 +77,12 @@ public class Gargola : MonoBehaviour
     void OnVideoEnd(VideoPlayer vp)
     {
         // Lógica para cambiar al juego
+        UserData.terminoVideoVortex1 = true;
         CameraManager.instance.SingleSwapCamera(camera1,2f);
         //playerMovementNew.inputsEnabled = true;
-        UserData.terminoVideoVortex1 = true;
         if (UserData.terminoVideoVortex1) SelectDimension();
-        playerMovementNew.inputsEnabled = true;
+        //playerMovementNew.inputsEnabled = true;
+        if (!InputManager.isPC) swipeDetector.enabled = true;
 
     }
     public void ShowVideo()
@@ -90,7 +91,7 @@ public class Gargola : MonoBehaviour
             CameraManager.instance.SingleSwapCamera(camera2, 2);
         playerMovementNew.targetPosition = playerMovementNew.transform.position;
         playerMovementNew.isMoving = false;
-        //swipeDetector.enabled = false;
+        if(!InputManager.isPC)swipeDetector.enabled = false;
         playerMovementNew.anim.SetBool("SlowWalk", false);
         playerMovementNew.anim.SetBool("Turn", true);
         StartCoroutine(ShowVideoPanel());
@@ -110,10 +111,10 @@ public class Gargola : MonoBehaviour
         yield return new WaitForSeconds(.5f);
 
         AudioManager.Instance.ToggleMusic();
-        AudioManager.Instance.ToggleSFX();
+        //AudioManager.Instance.ToggleSFX();
 
         videoPlayer.Play();
-        playerMovementNew.inputsEnabled = false;
+        //playerMovementNew.inputsEnabled = false;
     }
 
 
@@ -151,7 +152,7 @@ public class Gargola : MonoBehaviour
     }
     private IEnumerator SwitchScene()
     {
-        AudioManager.Instance.PlaySfx("Fog_Transition");
+        AudioManager.Instance.ToggleMusic();
 
         // playerMovementNew.isMoving = false;
         //playerMovementNew.canMove = false;
@@ -167,6 +168,7 @@ public class Gargola : MonoBehaviour
         canvasFog.transform.GetChild(0).gameObject.SetActive(true);
         canvasFog.transform.GetChild(0).GetComponent<Animator>().enabled = true;
         canvasFog.transform.GetChild(0).GetComponent<Animator>().Play("FogTransition");
+        AudioManager.Instance.PlaySfx("Fog_Transition");
 
         AsyncOperation asyncOperation;
         asyncOperation = SceneManager.LoadSceneAsync(nivel);
@@ -183,6 +185,7 @@ public class Gargola : MonoBehaviour
                 //isLoading = false;
                // UserData.terminoNivel1 = true;
                 asyncOperation.allowSceneActivation = true;
+                AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
             }
         }
     }

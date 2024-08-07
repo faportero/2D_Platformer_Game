@@ -24,6 +24,6 @@ public class PlayerAnimationSounds : MonoBehaviour
     }
     public void RollSound()
     {
-        if (!playerMovementNew.isHitBadFloor && playerMovementNew.inputsEnabled && playerMovementNew.canMove) AudioManager.Instance.PlaySfx("Roll");
+        if (playerMovementNew.movementMode == PlayerMovementNew.MovementMode.RunnerMode && !playerMovementNew.isHitBadFloor && playerMovementNew.inputsEnabled && playerMovementNew.canMove) AudioManager.Instance.PlaySfx("Roll");
     }
 }

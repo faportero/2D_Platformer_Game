@@ -5,14 +5,15 @@ using UnityEngine;
 public class PortalAnimation : MonoBehaviour
 {
     [SerializeField] GameObject PortalAnimatorObject;
-
+    public static bool firstShowPanel;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.tag == "Player")
         {
            // Time.timeScale = 0.5f;
             PortalAnimatorObject.SetActive(true);
-            AudioManager.Instance.PlaySfx("Portal_Appear");
+            firstShowPanel = true;
+            if (firstShowPanel)AudioManager.Instance.PlaySfx("Portal_Appear");
             //gameObject.SetActive(false);
         }
     }
