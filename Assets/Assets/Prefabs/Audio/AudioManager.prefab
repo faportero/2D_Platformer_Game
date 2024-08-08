@@ -629,7 +629,7 @@ MonoBehaviour:
   - name: btn_normal
     clip: {fileID: 8300000, guid: e56c18e9629a46048807327502e969ad, type: 3}
   - name: btn_viajar
-    clip: {fileID: 8300000, guid: c03425b94d65e5b42997887a9af8b44b, type: 3}
+    clip: {fileID: 8300000, guid: 69ff408957609574584439aa1fe561d2, type: 3}
   - name: btn_entendido
     clip: {fileID: 8300000, guid: 94acb362e65e7db4ba96c23adda9f42e, type: 3}
   - name: Die

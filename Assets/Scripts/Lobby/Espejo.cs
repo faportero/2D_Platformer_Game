@@ -20,7 +20,7 @@ public class Espejo : MonoBehaviour
     public CinemachineVirtualCamera cameraPlayer, cameraVideo, cameraGeneral;
 
     private ParticleSystem explodePartycle;
-    private static int countPiezas = 0;
+    public static int countPiezas = 0;
     public int maxPiezas = 0, countVideoClips;
     [HideInInspector] public static int piezasRestantes;
     public static bool isChecked, isComplete;
@@ -161,7 +161,7 @@ public class Espejo : MonoBehaviour
                 textPanel.text = "Vuelve al lugar donde todo empezó, te faltan: " + piezasRestantes + " fragmentos";
 
                 //print("Te faltan " + piezasRestantes);
-                Invoke("ShowFeedbackPanel", 2);
+                //Invoke("ShowFeedbackPanel", 2);
             }
             else
             {

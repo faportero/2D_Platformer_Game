@@ -17,7 +17,7 @@ public class UI_Animation : MonoBehaviour, IMaterialModifier
 
     void OnValidate()
     {
-        GetComponent<Image>().SetMaterialDirty();
+        //GetComponent<Image>().SetMaterialDirty();
     }
 
     void Update()

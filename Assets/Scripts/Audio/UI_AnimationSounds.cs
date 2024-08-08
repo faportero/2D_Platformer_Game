@@ -22,7 +22,7 @@ public class UI_AnimationSounds : MonoBehaviour
 
     public void ButtonEntendidoSound()
     {
-        AudioManager.Instance.PlaySfx("btn_entendido");
+        AudioManager.Instance.PlaySfx("btn_normal");
     }
 
 }
