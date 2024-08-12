@@ -33,7 +33,7 @@ public class TutorialPanel : MonoBehaviour
     }
     public void ActivePingPongOBjectl(bool active)
     {
-        pingPongObject.GetComponent<PingPongScaleAnimation>().enabled = active;
+        if(pingPongObject != null) pingPongObject.GetComponent<PingPongScaleAnimation>().enabled = active;
     }
     public void StopPingPongOBjectl()
     {

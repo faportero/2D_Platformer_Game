@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -39,8 +40,8 @@ public class SwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     private bool playJumpSound = true;
     public void OnPointerDown(PointerEventData eventData)
     {
-        
-         if(Input.GetMouseButtonDown(0)) isJumping = true;
+
+        if (Input.GetMouseButtonDown(0)) isJumping = true;
 
         startPosition = eventData.position;
         isSwiping = true;
@@ -60,6 +61,7 @@ public class SwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
     public void OnPointerUp(PointerEventData eventData)
     {
+        //if (playerMovementNew.isHitBadFloor)return;
          playJumpSound = true;
 
          isJumping = false;

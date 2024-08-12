@@ -202,6 +202,8 @@ public class PlayerMovementNew : MonoBehaviour
 
                 case MovementMode.RunnerMode:
                   
+                    
+                    
 
                     isFallingMode = false;
 
@@ -209,9 +211,10 @@ public class PlayerMovementNew : MonoBehaviour
                     rb.velocity = new Vector2(clampedHorizontalSpeed, rb.velocity.y);
 
 
-                    LerpYDamping();
+                        LerpYDamping();
                         RunnerMovement();
                         CheckGround();
+                    
                    
                     break;
                 case MovementMode.FallingMode:
@@ -1397,18 +1400,19 @@ public class PlayerMovementNew : MonoBehaviour
     #region FlappyMode
     private void FlappyMovement()
     {
-        rb.gravityScale = gravityScale;
-        direction = new Vector2(1, 1);
+        //rb.gravityScale = gravityScale;
+        rb.gravityScale = 8f;
+        direction = new Vector2(.75f, 1);
         Walk();
-
+        print(rb.gravityScale);
         anim.SetBool("Flappy", true);
         if (isPC)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            //if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetMouseButtonDown(0))
             {
                 rb.velocity = new Vector2(rb.velocity.x, 0);
                 rb.velocity += Vector2.up * jumpFlappyStrength;
-
             }
         }
         else if (!isPC)

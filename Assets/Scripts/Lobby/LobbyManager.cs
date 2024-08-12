@@ -187,9 +187,10 @@ public class LobbyManager : MonoBehaviour
     {
         //CameraManager.instance.SingleSwapCamera(cameraInit);
         //yield return new WaitForSeconds(5);
+        //panelHUD.SetActive(true);
 
 
-       
+
         float shakeMagnitude = 60;
         float inertiaDuration = .2f;
         float returnDuration = 15f;

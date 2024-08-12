@@ -5,10 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Lobby2.unity
     guid: d8f307064a046c94b8f871601b4da13c
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Limbo_N1.unity
     guid: d4cf07aa38b650746ab750c27b43b466
   - enabled: 1

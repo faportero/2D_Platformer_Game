@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class PreventScreenLock : MonoBehaviour
 {
+    private void Update()
+    {
+        float fps = 1.0f / Time.deltaTime;
+        Debug.Log("Frame Rate: " + fps);
+    }
     void Start()
     {
         // Evitar que la pantalla se apague
