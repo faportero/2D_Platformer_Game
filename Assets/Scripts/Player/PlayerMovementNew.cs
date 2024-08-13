@@ -244,7 +244,7 @@ public class PlayerMovementNew : MonoBehaviour
         if (movementMode == MovementMode.FlappyMode)
         {
 
-            transform.rotation = Quaternion.Euler(0, 0, rb.velocity.y * .75f);
+            transform.rotation = Quaternion.Euler(0, 0, rb.velocity.y * 1.5f);
         }
     }
 
@@ -533,6 +533,8 @@ public class PlayerMovementNew : MonoBehaviour
             anim.SetBool("Jump", false);
             anim.SetBool("Roll", false);
             anim.SetBool("SlowFall", false);
+            anim.SetBool("Flappy", false);
+
             anim.SetBool("HitBadFloor", true);
             //anim.Play("Idle");
             //anim.Play("HitBadFloor");
@@ -541,9 +543,13 @@ public class PlayerMovementNew : MonoBehaviour
         {
             anim.SetBool("Walk", true);
             anim.SetBool("Jump", false);
+            anim.SetBool("Flappy", false);
+
         }
         else if (!isGrounded && isHitBadFloor)
         {
+            anim.SetBool("Flappy", false);
+
             anim.SetBool("Walk", false);
             anim.SetBool("Jump", false);
             anim.SetBool("Roll", false);
@@ -1401,7 +1407,7 @@ public class PlayerMovementNew : MonoBehaviour
     private void FlappyMovement()
     {
         //rb.gravityScale = gravityScale;
-        rb.gravityScale = 8f;
+        //rb.gravityScale = 4f;
         direction = new Vector2(.75f, 1);
         Walk();
         print(rb.gravityScale);

@@ -849,52 +849,49 @@ public class PlayerControllerNew : MonoBehaviour
     }
     private IEnumerator ResetCollision()
     {
+        // Si el jugador está en modo de caída, restablecemos la gravedad
         if (playerMovement.isFallingMode) playerMovement.rb.gravityScale = 1;
 
         if (currenBadFloortItem != null)
         {
-            Collider2D collider = currenBadFloortItem.GetComponent<Collider2D>();
-            if (collider != null)
+            // Obtener todos los colliders del objeto
+            Collider2D[] colliders = currenBadFloortItem.GetComponents<Collider2D>();
+
+            // Verificar que al menos un collider esté presente
+            if (colliders.Length > 0)
             {
-                CompositeCollider2D compositeCollider = currenBadFloortItem.GetComponent<CompositeCollider2D>();
-                if (compositeCollider != null)
-                {
-                    foreach (Collider2D childCollider in currenBadFloortItem.GetComponentsInChildren<Collider2D>())
-                    {
-                        childCollider.isTrigger = true;
-                    }
-                }
-                else
+                // Establecer isTrigger a true para todos los colliders
+                foreach (Collider2D collider in colliders)
                 {
                     collider.isTrigger = true;
                 }
             }
         }
 
+        // Espera durante 2 segundos
         yield return new WaitForSeconds(2);
 
+        // Restablecer la gravedad si el jugador estaba en modo de caída
         if (playerMovement.isFallingMode) playerMovement.rb.gravityScale = 0;
 
         if (currenBadFloortItem != null)
         {
-            Collider2D collider = currenBadFloortItem.GetComponent<Collider2D>();
-            if (collider != null)
+            // Obtener todos los colliders del objeto
+            Collider2D[] colliders = currenBadFloortItem.GetComponents<Collider2D>();
+
+            // Verificar que al menos un collider esté presente
+            if (colliders.Length > 0)
             {
-                CompositeCollider2D compositeCollider = currenBadFloortItem.GetComponent<CompositeCollider2D>();
-                if (compositeCollider != null)
-                {
-                    foreach (Collider2D childCollider in currenBadFloortItem.GetComponentsInChildren<Collider2D>())
-                    {
-                        childCollider.isTrigger = false;
-                    }
-                }
-                else
+                // Restablecer isTrigger a false para todos los colliders
+                foreach (Collider2D collider in colliders)
                 {
                     collider.isTrigger = false;
                 }
             }
         }
     }
+
+
 
     private void GetCompositeColliders2D()
     {

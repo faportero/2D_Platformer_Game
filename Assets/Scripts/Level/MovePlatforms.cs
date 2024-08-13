@@ -7,7 +7,7 @@ public class MovePlatforms : MonoBehaviour
     [SerializeField] private float distance = 5f;
     [SerializeField] private float speed = 2f;
     [SerializeField] private float offset = 0f; // Tiempo de inicio aleatorio
-
+    private Rigidbody2D rb2D;
     private Vector3 startPosition;
     private Vector3 endPosition;
 
@@ -19,6 +19,8 @@ public class MovePlatforms : MonoBehaviour
         // Iniciar la corrutina con un retraso aleatorio basado en el offset
       //  StartCoroutine(StartDelayedMovement(Random.Range(0f, offset)));
         StartCoroutine(StartDelayedMovement(offset));
+
+        rb2D = GetComponent<Rigidbody2D>();
     }
 
     private IEnumerator StartDelayedMovement(float delay)
@@ -50,5 +52,32 @@ public class MovePlatforms : MonoBehaviour
             }
             transform.position = startPosition;
         }
+    }
+    private void EnablePhysics()
+    {
+        if (rb2D != null)
+        {
+            rb2D.simulated = true; // Para Rigidbody2D, activa la simulación
+            // rb2D.isKinematic = false; // Asegúrate de que no sea kinemático si necesitas que interactúe con la física
+        }
+    }
+
+    private void DisablePhysics()
+    {
+        if (rb2D != null)
+        {
+            rb2D.simulated = false; // Para Rigidbody2D, desactiva la simulación
+            // rb2D.isKinematic = true; // Opcional: marca como kinemático si quieres evitar que colisiones se resuelvan
+        }
+    }
+
+    private void OnBecameVisible()
+    {
+        EnablePhysics(); // Activar físicas cuando el objeto sea visible
+    }
+
+    private void OnBecameInvisible()
+    {
+        DisablePhysics(); // Desactivar físicas cuando el objeto no sea visible
     }
 }

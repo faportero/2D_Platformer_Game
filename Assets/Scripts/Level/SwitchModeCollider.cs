@@ -50,7 +50,10 @@ public class SwitchModeCollider : MonoBehaviour
             {
                 case PlayerMovementMode.TapMode:
                     initialCamOffset = camOffset.m_Offset;
-                    collision.GetComponent<PlayerMovementNew>().movementMode = MovementMode.TapMode;                   
+                    collision.GetComponent<PlayerMovementNew>().movementMode = MovementMode.TapMode;
+                    //collision.GetComponent<PlayerMovementNew>().anim.SetBool("Flappy", false);
+                    //collision.GetComponent<PlayerMovementNew>().anim.SetBool("Jump", true);
+
                     break;
                 case PlayerMovementMode.RunnerMode:
                     initialCamOffset = camOffset.m_Offset;
@@ -82,6 +85,14 @@ public class SwitchModeCollider : MonoBehaviour
                 case PlayerMovementMode.FlappyMode:
                     initialCamOffset = camOffset.m_Offset;
                     collision.GetComponent<PlayerMovementNew>().movementMode = MovementMode.FlappyMode;
+
+
+
+                    collision.GetComponent<PlayerMovementNew>().rb.gravityScale = 0;
+                    collision.GetComponent<PlayerMovementNew>().rb.velocity = Vector3.zero;
+                    collision.GetComponent<PlayerMovementNew>().rb.AddForce(Vector3.up * 20, ForceMode2D.Impulse);
+                    collision.GetComponent<PlayerMovementNew>().rb.gravityScale = 4;
+                  
                     break;
             }
 
