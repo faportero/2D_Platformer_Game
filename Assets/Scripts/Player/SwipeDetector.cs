@@ -37,7 +37,7 @@ public class SwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     // Propiedad para acceder a IsPressing de lectura y escritura
     public bool IsPressing = false;
 
-    private bool playJumpSound = true;
+    public bool playJumpSound = true;
     public void OnPointerDown(PointerEventData eventData)
     {
 
@@ -51,11 +51,11 @@ public class SwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         pressTime = Time.time;
         playerMovementNew.isMoving = false;
 
-        if (playJumpSound)
-        {
-            if(playerMovementNew.movementMode == PlayerMovementNew.MovementMode.RunnerMode && !playerMovementNew.isHitBadFloor && playerMovementNew.inputsEnabled && playerMovementNew.canMove)AudioManager.Instance.PlaySfx("Jump");
-            playJumpSound = false;
-        }
+        //if (playJumpSound)
+        //{
+        //    //if(playerMovementNew.movementMode == PlayerMovementNew.MovementMode.RunnerMode && !playerMovementNew.isHitBadFloor && playerMovementNew.inputsEnabled && playerMovementNew.canMove)AudioManager.Instance.PlaySfx("Jump");
+        //    playJumpSound = false;
+        //}
 
     }
 

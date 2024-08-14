@@ -95,7 +95,7 @@ public class PlayerControllerNew : MonoBehaviour
     }
     private void Start()
     {
-
+        levelManager = FindAnyObjectByType<LevelManager>();
         playerMovement = GetComponent<PlayerMovementNew>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
@@ -722,8 +722,10 @@ public class PlayerControllerNew : MonoBehaviour
     private IEnumerator HitBadFloor()
     {
         playerMovement.isHitBadFloor = true;
-       // playerMovement.anim.SetBool("HitBadFloor", true);
-       //playerMovement.inputsEnabled = false;
+        StartCoroutine(ResetCollision());
+
+        // playerMovement.anim.SetBool("HitBadFloor", true);
+        //playerMovement.inputsEnabled = false;
         if (!playerMovement.isFallingMode)
         {
             StartCoroutine(DeactivateEnfasis());
@@ -776,7 +778,6 @@ public class PlayerControllerNew : MonoBehaviour
             panelFeedbackBadFloor.SetActive(false);
 
             //playerMovement.rb.gravityScale = playerMovement.gravityScale;
-            StartCoroutine(ResetCollision());
             playerMovement.rb.bodyType = RigidbodyType2D.Dynamic;
             playerMovement.anim.SetBool("HitBadFloor", false);
             if(!playerMovement.isGrounded)playerMovement.anim.SetBool("Walk", true);   
@@ -837,7 +838,6 @@ public class PlayerControllerNew : MonoBehaviour
             playerMovement.inputsEnabled = true;
             playerMovement.isHitBadFloor = false;
             panelFeedbackBadFloor.SetActive(false);   
-            StartCoroutine(ResetCollision());
             playerMovement.rb.bodyType = RigidbodyType2D.Dynamic;
             playerMovement.anim.SetBool("HitBadFloor", false);
             if (!playerMovement.isGrounded) playerMovement.anim.SetBool("Walk", true);
@@ -998,8 +998,9 @@ public class PlayerControllerNew : MonoBehaviour
     {
         isSmokePanelEffect = true;
         //audioSource.Play();
-        AudioManager.Instance.PlaySfx("Tos");
+        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlaySfx("Tos");
         effectPanel.SetActive(true);
+        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) effectPanel.GetComponent<Animator>().Play("Alcohol");
         //effectPanel.GetComponent<Animator>().SetBool("Smoke", true);
         yield return new WaitForSeconds(delay);
         //audioSource.Stop();

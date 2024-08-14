@@ -504,7 +504,7 @@ public class PlayerMovementNew : MonoBehaviour
 
         rb.gravityScale = gravityScale;
         if (!doingSmash && !doingRoll && !playerController.isCannabis) direction = new Vector2(1.2f, 1);
-        else if (playerController.isCannabis) direction = new Vector2(.75f, 1);
+        else if (playerController.isCannabis) direction = new Vector2(1.0f, 1);
         else if (doingSmash) direction = new Vector2(smashVelocity, 0);
         else if (doingRoll && isGrounded) direction = new Vector2(2.5f, 0);
         if (anim.GetBool("SlowFall")) direction = new Vector2(slowFallGravity, .75f);
@@ -1027,8 +1027,10 @@ public class PlayerMovementNew : MonoBehaviour
     }
     private IEnumerator Jump(float delay)
     {
+
         if (!playerController.isCannabis)
         {
+            PlayJumpSound();
 
             StartCoroutine(SwitchCapsuleColliderSize());
             rb.velocity = new Vector2(rb.velocity.x, 0);
@@ -1040,6 +1042,9 @@ public class PlayerMovementNew : MonoBehaviour
             anim.SetBool("Walk", true);
             anim.SetBool("Jump", false);
             yield return new WaitForSeconds(delay);
+
+            PlayJumpSound();
+
             anim.SetBool("Walk", false);
             anim.SetBool("Jump", true);
             StartCoroutine(SwitchCapsuleColliderSize());
@@ -1048,6 +1053,14 @@ public class PlayerMovementNew : MonoBehaviour
             //if(canDoubleJump) canDoubleJump = false;
         }
 
+    }
+    private void PlayJumpSound()
+    {
+        if (swipeDetector.playJumpSound)
+        {
+            if (movementMode == MovementMode.RunnerMode && !isHitBadFloor && inputsEnabled && canMove) AudioManager.Instance.PlaySfx("Jump");
+            swipeDetector.playJumpSound = false;
+        }
     }
     public void EndJump()
     {
@@ -1408,6 +1421,18 @@ public class PlayerMovementNew : MonoBehaviour
     {
         //rb.gravityScale = gravityScale;
         //rb.gravityScale = 4f;
+        //print("Gravity "+rb.gravityScale);
+        //if (!playerController.isCannabis)
+        //{
+        //    rb.gravityScale = 4f;
+        //    jumpFlappyStrength = 10;
+        //}
+        //else
+        //{
+        //    rb.gravityScale = 1f;
+        //    jumpFlappyStrength = 6;
+
+        //}
         direction = new Vector2(.75f, 1);
         Walk();
         print(rb.gravityScale);
@@ -1417,8 +1442,17 @@ public class PlayerMovementNew : MonoBehaviour
             //if (Input.GetKeyDown(KeyCode.Space))
             if (Input.GetMouseButtonDown(0))
             {
-                rb.velocity = new Vector2(rb.velocity.x, 0);
-                rb.velocity += Vector2.up * jumpFlappyStrength;
+                StartCoroutine(FlapptyJump(0));
+
+                //if (!playerController.isCannabis)
+                //{
+                //    StartCoroutine(FlapptyJump(0));
+                //}
+                //else
+                //{
+                //    StartCoroutine(FlapptyJump(0.25f));
+
+                //}
             }
         }
         else if (!isPC)
@@ -1445,8 +1479,18 @@ public class PlayerMovementNew : MonoBehaviour
                     if (tapDuration < tapTimeThreshold && swipeDistance < swipeDistanceThreshold)
                     {
                         // Esto es un tap
-                        rb.velocity = new Vector2(rb.velocity.x, 0);
-                        rb.velocity += Vector2.up * jumpFlappyStrength;
+                        StartCoroutine(FlapptyJump(0));
+
+                        //if (!playerController.isCannabis)
+                        //{
+                        //    StartCoroutine(FlapptyJump(0));
+                        //}
+                        //else
+                        //{
+                        //    StartCoroutine(FlapptyJump(0.25f));
+
+                        //}
+
                     }
                     else
                     {
@@ -1457,6 +1501,16 @@ public class PlayerMovementNew : MonoBehaviour
                 }
             }
         }
+    }
+    public void DoFlappy()
+    {
+        StartCoroutine(FlapptyJump(0));
+    }
+    private IEnumerator FlapptyJump(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        rb.velocity = new Vector2(rb.velocity.x, 0);
+        rb.velocity += Vector2.up * jumpFlappyStrength;
     }
     #endregion
     #region Die

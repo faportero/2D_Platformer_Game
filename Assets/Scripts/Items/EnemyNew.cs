@@ -192,7 +192,8 @@ public class EnemyNew : MonoBehaviour
 
             case SustanceType.Alcohol:
                 //print("Alcoholllll");
-                PlayerControllerNew.isAlcohol = true;
+                PlayerControllerNew.isCannabis = true;
+                //PlayerControllerNew.isAlcohol = true;
                 effectPanel.GetComponent<Image>().color = new Color(1, 1, 0, .25f);
                 effectText.text = "Alcohol";
                 effectTextMensajeTitulo.text = "Alcohol";

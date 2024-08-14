@@ -96,7 +96,12 @@ public class LevelManager : MonoBehaviour
 
                 break;
             case CurrentScene.Nivel2:
-
+                InitFogTransition();
+                AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
+                //if (UserData.terminoTutorial)
+                //{
+                //    if (newStartPos) playerController.transform.position = newStartPos.position;
+                //}
                 break;
             case CurrentScene.Nivel3:
 
@@ -175,14 +180,10 @@ public class LevelManager : MonoBehaviour
     }
     public void GameOver()
     {
-        //Time.timeScale = 0;
         print("isDrugged: "+playerController.isDrugged + ". isDie:"+playerController.isDie);
         if (playerController != null)
         {
-            //if (!playerController.isDrugged && playerController.isDie)
-            //{                
-            //    UI_Habilidades.SetActive(true);
-            //}
+
              if (playerController.isDrugged && playerController.isDie)
             {
                 Time.timeScale = 0;
@@ -190,10 +191,8 @@ public class LevelManager : MonoBehaviour
                 if(panelHUD != null) panelHUD.SetActive(false);
             }
             else
-            {
-                
+            {                
                 ResetLevel();
-
             }
         }
     }
@@ -231,7 +230,8 @@ public class LevelManager : MonoBehaviour
         fogPanel.transform.GetChild(0).GetComponent<Animator>().Play("FogTransition");
         StartCoroutine(PlayerDisolve());
         yield return new WaitForSecondsRealtime(5);
-        SceneManager.LoadScene("Nivel_1");
+        if(currentScene == CurrentScene.Nivel1)SceneManager.LoadScene("Nivel_1");
+        else if(currentScene == CurrentScene.Nivel2)SceneManager.LoadScene("Nivel_2");
 
     }
     private void CheckLevelPieces()

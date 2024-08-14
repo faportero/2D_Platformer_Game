@@ -81,6 +81,9 @@ public class SwitchModeCollider : MonoBehaviour
                     collision.GetComponent<Rigidbody2D>().velocity += new Vector2(0, -collision.GetComponent<PlayerMovementNew>().fallingVelocity);
                     //collision.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
                     //Destroy(collision.GetComponent<Rigidbody2D>());
+
+                    collision.GetComponent<Transform>().transform.rotation = Quaternion.identity;
+
                     break;
                 case PlayerMovementMode.FlappyMode:
                     initialCamOffset = camOffset.m_Offset;
@@ -92,7 +95,6 @@ public class SwitchModeCollider : MonoBehaviour
                     collision.GetComponent<PlayerMovementNew>().rb.velocity = Vector3.zero;
                     collision.GetComponent<PlayerMovementNew>().rb.AddForce(Vector3.up * 20, ForceMode2D.Impulse);
                     collision.GetComponent<PlayerMovementNew>().rb.gravityScale = 4;
-                  
                     break;
             }
 

@@ -27,7 +27,7 @@ public class TutorialPanel : MonoBehaviour
 
         if (!TutorialManager.endTutorial)
         {
-            playerMovementNew.inputsEnabled = false;
+            //playerMovementNew.inputsEnabled = false;
             playerMovementNew.tutorialActive = true;
         }
     }
