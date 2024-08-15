@@ -10,5 +10,6 @@ public class UserData
 
 
     public static bool terminoLobby, terminoLimbo, terminoNivel1, terminoTutorial;
+    public static bool completoNivel1, completoNivel2, completoNivel3;
     public static bool terminoVideoInicio, terminoVideoVortex1;
 }

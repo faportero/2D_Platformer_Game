@@ -11,10 +11,10 @@ public class DieCollider : MonoBehaviour
     {
         if (collision.tag == "Player") 
         {
-            print(collision.gameObject);
+            //print(collision.gameObject);
             playerMovement.canMove = false;
             playerMovement.rb.velocity = Vector3.zero;
-            playerMovement.rb.gravityScale = 0;
+            //playerMovement.rb.gravityScale = 0;
             playerMovement.Die();
         }
     }

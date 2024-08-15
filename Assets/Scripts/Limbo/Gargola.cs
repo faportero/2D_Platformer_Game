@@ -40,7 +40,7 @@ public class Gargola : MonoBehaviour
 
         swipeDetector = playerMovementNew.swipeDetector;
 
-        AssignEspejoType();
+        AssignVortexType();
     }
     private void Update()
     {
@@ -52,7 +52,7 @@ public class Gargola : MonoBehaviour
         //}
 
     }
-    public void AssignEspejoType()
+    public void AssignVortexType()
     {
         switch (vortexType)
         {
@@ -60,12 +60,19 @@ public class Gargola : MonoBehaviour
                 viajarBtn.GetComponent<Button>().interactable = true;
                 break;
             case VortexType.Vortex2:
-                viajarBtn.GetComponent<Button>().interactable = false;         
+                if (UserData.completoNivel1)
+                {
+                    viajarBtn.GetComponent<Button>().interactable = true;
+                }
+
                 break;
             case VortexType.Vortex3:
-                viajarBtn.GetComponent<Button>().interactable = false;           
-                break;
+                if (UserData.completoNivel2)
+                {
+                    viajarBtn.GetComponent<Button>().interactable = true;
+                }
 
+                break;
         }
     }
         public void SkipVideo()
@@ -171,6 +178,19 @@ public class Gargola : MonoBehaviour
         AudioManager.Instance.PlaySfx("Fog_Transition");
 
         AsyncOperation asyncOperation;
+
+        //switch (vortexType)
+        //{
+        //    case VortexType.Vortex1:
+        //        asyncOperation = SceneManager.LoadSceneAsync(nivel);
+        //        break;
+        //    case VortexType.Vortex2:
+        //        asyncOperation = SceneManager.LoadSceneAsync(nivel);
+        //        break;
+        //    case VortexType.Vortex3:
+        //        asyncOperation = SceneManager.LoadSceneAsync(nivel);
+        //        break;
+        //}
         asyncOperation = SceneManager.LoadSceneAsync(nivel);
         asyncOperation.allowSceneActivation = false;
         while (!asyncOperation.isDone)
@@ -185,7 +205,8 @@ public class Gargola : MonoBehaviour
                 //isLoading = false;
                // UserData.terminoNivel1 = true;
                 asyncOperation.allowSceneActivation = true;
-                AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                //AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                //AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
             }
         }
     }

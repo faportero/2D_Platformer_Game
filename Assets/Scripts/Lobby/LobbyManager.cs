@@ -32,12 +32,16 @@ public class LobbyManager : MonoBehaviour
     public Transform portalPos;
 
     public static bool pasoIntro;
+
+
+
+    [SerializeField] private bool completoN1, completoN2, completoN3;
     private void Awake()
     {
         //if (PlayerPrefs.GetInt("pasoIntro") == 0) PlayerPrefs.SetInt("pasoIntro", 0);
         //PlayerPrefs.SetInt("pasoIntro", 0);
         PlayerPrefs.GetInt("pasoIntro");
-       // print("PasoIntro: " + PlayerPrefs.GetInt("pasoIntro"));
+        // print("PasoIntro: " + PlayerPrefs.GetInt("pasoIntro"));
         //if (PlayerPrefs.GetInt("pasoIntro") != 0)
         //if (pasoIntro)
         //{
@@ -47,7 +51,9 @@ public class LobbyManager : MonoBehaviour
         //{
         //    pasoIntro = false;
         //}
-
+        UserData.completoNivel1 = completoN1;
+        UserData.completoNivel2 = completoN2;
+        UserData.completoNivel3 = completoN3;
     }
     void Start()
     {
@@ -60,7 +66,7 @@ public class LobbyManager : MonoBehaviour
         playerMaterial.SetFloat("_DissolveAmmount", 0);
 
         // Obtener el componente VideoPlayer del objeto actual
-
+ 
 
         //if (pasoIntro == false)
         if (!UserData.terminoLobby)
@@ -112,7 +118,9 @@ public class LobbyManager : MonoBehaviour
     }
     private void Update()
     {
-        
+
+
+        print("N1: " + UserData.completoNivel1 + ". N2: " + UserData.completoNivel2 + ". N3: " + UserData.completoNivel3);
         //if(Input.GetKeyDown(KeyCode.K))
         //{
         //    OnVideoEnd(videoPlayer);

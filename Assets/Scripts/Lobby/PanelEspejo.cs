@@ -12,6 +12,7 @@ public class PanelEspejo : MonoBehaviour
             {
                 transform.GetChild(0).gameObject.SetActive(true);
                 transform.GetChild(0).GetComponent<UI_PanelDissolve>().StartSolidify();
+                transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<UI_PanelDissolve>().StartSolidify();
             }
             else
             {
@@ -24,6 +25,7 @@ public class PanelEspejo : MonoBehaviour
         if (Espejo.countPiezas != transform.parent.GetComponent<Espejo>().maxPiezas)
         {
             transform.GetChild(0).GetComponent<UI_PanelDissolve>().StartDissolve();
+            transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<UI_PanelDissolve>().StartDissolve();
         }
     }
 }

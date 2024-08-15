@@ -4,8 +4,8 @@ public class PreventScreenLock : MonoBehaviour
 {
     private void Update()
     {
-        float fps = 1.0f / Time.deltaTime;
-        Debug.Log("Frame Rate: " + fps);
+        //float fps = 1.0f / Time.deltaTime;
+        //Debug.Log("Frame Rate: " + fps);
     }
     void Start()
     {

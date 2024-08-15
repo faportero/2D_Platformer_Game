@@ -56,8 +56,9 @@ public class SwitchModeCollider : MonoBehaviour
 
                     break;
                 case PlayerMovementMode.RunnerMode:
-                    initialCamOffset = camOffset.m_Offset;
-                    collision.GetComponent<PlayerMovementNew>().movementMode = MovementMode.RunnerMode;                                      
+                    //initialCamOffset = camOffset.m_Offset;
+                    collision.GetComponent<PlayerMovementNew>().movementMode = MovementMode.RunnerMode;   
+                    collision.GetComponent<Transform>().transform.rotation = Quaternion.identity;
                     break;
                 case PlayerMovementMode.FallingMode:
                     //camOffset.m_Offset = new Vector3(initialCamOffset.x, -5, initialCamOffset.z);
@@ -82,7 +83,6 @@ public class SwitchModeCollider : MonoBehaviour
                     //collision.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
                     //Destroy(collision.GetComponent<Rigidbody2D>());
 
-                    collision.GetComponent<Transform>().transform.rotation = Quaternion.identity;
 
                     break;
                 case PlayerMovementMode.FlappyMode:

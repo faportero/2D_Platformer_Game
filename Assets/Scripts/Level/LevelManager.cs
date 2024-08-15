@@ -180,7 +180,7 @@ public class LevelManager : MonoBehaviour
     }
     public void GameOver()
     {
-        print("isDrugged: "+playerController.isDrugged + ". isDie:"+playerController.isDie);
+        //print("isDrugged: "+playerController.isDrugged + ". isDie:"+playerController.isDie);
         if (playerController != null)
         {
 

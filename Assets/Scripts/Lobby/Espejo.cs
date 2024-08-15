@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
+using static Gargola;
 
 public class Espejo : MonoBehaviour
 {
@@ -31,6 +32,15 @@ public class Espejo : MonoBehaviour
     public bool terminoVideo;
     private bool isPlaying;
     private Vector3 targetPosition;
+    [SerializeField] GameObject reintentarBtn;
+    public enum EspejoType
+    {
+        Espejo1,
+        Espejo2,
+        Espejo3
+    }
+
+    public EspejoType espejoType;
 
     private void Awake()
     {
@@ -47,6 +57,7 @@ public class Espejo : MonoBehaviour
         CheckEspejoPiecesInit();
         if(countPiezas == maxPiezas) GetComponent<BoxCollider2D>().enabled = false;
 
+        AssignEspejoType();
     }
     private void Update()
     {
@@ -54,6 +65,34 @@ public class Espejo : MonoBehaviour
         {
             explodeObject.SetActive(false);
             isPlaying = false;
+        }
+    }
+
+    public void AssignEspejoType()
+    {
+        switch (espejoType)
+        {
+            case EspejoType.Espejo1:
+                reintentarBtn.GetComponent<Button>().interactable = true;
+                break;
+            case EspejoType.Espejo2:
+                if (UserData.completoNivel1)
+                {
+                    GetComponent<BoxCollider2D>().enabled = true;
+                    panelFeedback.transform.parent.GetComponent<BoxCollider2D>().enabled = true;
+                    reintentarBtn.GetComponent<Button>().interactable = true;
+                }
+
+                break;
+            case EspejoType.Espejo3:
+                if (UserData.completoNivel2)
+                {
+                    GetComponent<BoxCollider2D>().enabled = true;
+                    panelFeedback.transform.parent.GetComponent<BoxCollider2D>().enabled = true;
+                    reintentarBtn.GetComponent<Button>().interactable = true;
+                }
+
+                break;
         }
     }
     public void OnVideoEnd(VideoPlayer vp)
@@ -165,6 +204,7 @@ public class Espejo : MonoBehaviour
             }
             else
             {
+                panelFeedback.SetActive(false);
                 textPanel.text = "¡Fragmentos Complatos!";
                 //panelFeedback.SetActive(false);
                 // print("Piezas complatas");
@@ -366,10 +406,14 @@ public class Espejo : MonoBehaviour
         CameraManager.instance.SingleSwapCamera(cameraPlayer, 1f);
         SwitchPlayerTransform(true);
         triggerParteFinal.SetActive(false);
-       // panelHUD.SetActive(true);
+        // panelHUD.SetActive(true);
         //videoPlayerPlane.SetActive(true);
         //videoPlayer.clip = videoClips[countVideoClips];
         //videoPlayer.Play();
+
+        if(espejoType == EspejoType.Espejo1)UserData.completoNivel1 = true;
+        if(espejoType == EspejoType.Espejo2)UserData.completoNivel2 = true;
+        if(espejoType == EspejoType.Espejo3)UserData.completoNivel3 = true;
 
     }
 }

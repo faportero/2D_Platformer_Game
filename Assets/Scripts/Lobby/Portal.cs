@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEditor;
 
 using UnityEngine;
@@ -12,7 +13,7 @@ public class Portal : MonoBehaviour
 {
     public string[] limbos;
 
-   [SerializeField] private enum Dimensions
+   [SerializeField] public enum Dimensions
     {
         Lobby,
         Limbo,
@@ -20,7 +21,7 @@ public class Portal : MonoBehaviour
         Nivel2,
         Nivel3,
     }
-    [SerializeField]  private Dimensions dimensions;
+    [SerializeField]  public Dimensions dimensions;
     [SerializeField] private GameObject panelFeedback;
     public GameObject canvasFog;
     private PlayerMovementNew playerMovementNew;
@@ -40,9 +41,14 @@ public class Portal : MonoBehaviour
         //canvasFog.SetActive(false);
         //espejo = FindAnyObjectByType<Espejo>();
     }
+    public void test()
+    {
+        print("waaaaaaaaa");
 
+    }
     public void SelectDimension()
     {
+
         StopAllCoroutines();
         StartCoroutine(SwitchScene());
         Espejo.isChecked = false;
@@ -66,6 +72,10 @@ public class Portal : MonoBehaviour
 
         // Asegurarse de que el valor final sea exactamente 1
         playerMaterial.SetFloat("_DissolveAmmount", 1);
+    }
+    public void SwitchSceneButton()
+    {
+        StartCoroutine(SwitchScene());
     }
     private IEnumerator SwitchScene()
     {

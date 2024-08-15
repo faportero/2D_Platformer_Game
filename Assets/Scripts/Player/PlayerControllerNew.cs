@@ -75,6 +75,7 @@ public class PlayerControllerNew : MonoBehaviour
     private Coroutine activarEnfasis;
     public Coroutine enemyCameraShake;
     public Coroutine inmunidadCoroutine;
+    public Coroutine resetCollision;
 
     [Header("Intern Variables")]
     private Vector3 startPosition;
@@ -195,7 +196,7 @@ public class PlayerControllerNew : MonoBehaviour
         //    ui_IndestructibleBar.UpdateTime(0);
         //    return;
         //}
-        //print("Es indestructible: " + isIndestructible);
+        //print("Es indestructible: " + isIndestructible + "Drogado. :" + isDrugged);
         //print("GlowSprite acttive: " + GlowSpriteEffect.activeSelf + "Es indestructible: " + isIndestructible);
     }
 
@@ -399,6 +400,8 @@ public class PlayerControllerNew : MonoBehaviour
                         ui_IndestructibleBar.gameObject.SetActive(false);
                         GlowSpriteEffect.SetActive(false);
                         AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                        isIndestructible = false;
+                        SetAllCompositeCollidersTrigger(compositeColliders, false);
 
                     }
 
@@ -414,7 +417,8 @@ public class PlayerControllerNew : MonoBehaviour
                         ui_IndestructibleBar.gameObject.SetActive(false);
                         GlowSpriteEffect.SetActive(false);
                         AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
-
+                        isIndestructible = false;
+                        SetAllCompositeCollidersTrigger(compositeColliders, false);
                     }
 
                     enemyCameraShake = StartCoroutine(EnemyCameraShake(9));
@@ -429,7 +433,8 @@ public class PlayerControllerNew : MonoBehaviour
                         ui_IndestructibleBar.gameObject.SetActive(false);
                         GlowSpriteEffect.SetActive(false);
                         AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
-
+                        isIndestructible = false;
+                        SetAllCompositeCollidersTrigger(compositeColliders, false);
                     }
                     enemyCameraShake = StartCoroutine(EnemyCameraShake(8));
                     CurrentEffectPanel(8);
@@ -443,7 +448,8 @@ public class PlayerControllerNew : MonoBehaviour
                         ui_IndestructibleBar.gameObject.SetActive(false);
                         GlowSpriteEffect.SetActive(false);
                         AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
-
+                        isIndestructible = false;
+                        SetAllCompositeCollidersTrigger(compositeColliders, false);
                     }
                     enemyCameraShake = StartCoroutine(EnemyCameraShake(7));
                     CurrentEffectPanel(7);                  
@@ -457,7 +463,8 @@ public class PlayerControllerNew : MonoBehaviour
                         ui_IndestructibleBar.gameObject.SetActive(false);
                         GlowSpriteEffect.SetActive(false);
                         AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
-
+                        isIndestructible = false;
+                        SetAllCompositeCollidersTrigger(compositeColliders, false);
                     }
                     enemyCameraShake = StartCoroutine(EnemyCameraShake(6));
                     CurrentEffectPanel(6);                    
@@ -471,7 +478,8 @@ public class PlayerControllerNew : MonoBehaviour
                         ui_IndestructibleBar.gameObject.SetActive(false);
                         GlowSpriteEffect.SetActive(false);
                         AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
-
+                        isIndestructible = false;
+                        SetAllCompositeCollidersTrigger(compositeColliders, false);
                     }
                     enemyCameraShake = StartCoroutine(EnemyCameraShake(5));
                     CurrentEffectPanel(5); 
@@ -485,7 +493,8 @@ public class PlayerControllerNew : MonoBehaviour
                         ui_IndestructibleBar.gameObject.SetActive(false);
                         GlowSpriteEffect.SetActive(false);
                         AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
-
+                        isIndestructible = false;
+                        SetAllCompositeCollidersTrigger(compositeColliders, false);
                     }
                     enemyCameraShake = StartCoroutine(EnemyCameraShake(4));
                     CurrentEffectPanel(4);                  
@@ -499,7 +508,8 @@ public class PlayerControllerNew : MonoBehaviour
                         ui_IndestructibleBar.gameObject.SetActive(false);
                         GlowSpriteEffect.SetActive(false);
                         AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
-
+                        isIndestructible = false;
+                        SetAllCompositeCollidersTrigger(compositeColliders, false);
                     }
                     enemyCameraShake = StartCoroutine(EnemyCameraShake(3));
                     CurrentEffectPanel(3);                  
@@ -513,7 +523,8 @@ public class PlayerControllerNew : MonoBehaviour
                         ui_IndestructibleBar.gameObject.SetActive(false);
                         GlowSpriteEffect.SetActive(false);
                         AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
-
+                        isIndestructible = false;
+                        SetAllCompositeCollidersTrigger(compositeColliders, false);
                     }
                     enemyCameraShake = StartCoroutine(EnemyCameraShake(2));
                     CurrentEffectPanel(2);             
@@ -722,8 +733,8 @@ public class PlayerControllerNew : MonoBehaviour
     private IEnumerator HitBadFloor()
     {
         playerMovement.isHitBadFloor = true;
-        StartCoroutine(ResetCollision());
-
+        //StartCoroutine(ResetCollision());
+        ResetCollisionHitBadFloor();
         // playerMovement.anim.SetBool("HitBadFloor", true);
         //playerMovement.inputsEnabled = false;
         if (!playerMovement.isFallingMode)
@@ -847,49 +858,66 @@ public class PlayerControllerNew : MonoBehaviour
 
 
     }
+    public void ResetCollisionHitBadFloor()
+    {
+        if(resetCollision != null)
+        {
+            StopCoroutine(resetCollision);
+        }
+        resetCollision = StartCoroutine(ResetCollision());
+    }
     private IEnumerator ResetCollision()
     {
-        // Si el jugador está en modo de caída, restablecemos la gravedad
         if (playerMovement.isFallingMode) playerMovement.rb.gravityScale = 1;
-
-        if (currenBadFloortItem != null)
-        {
-            // Obtener todos los colliders del objeto
-            Collider2D[] colliders = currenBadFloortItem.GetComponents<Collider2D>();
-
-            // Verificar que al menos un collider esté presente
-            if (colliders.Length > 0)
-            {
-                // Establecer isTrigger a true para todos los colliders
-                foreach (Collider2D collider in colliders)
-                {
-                    collider.isTrigger = true;
-                }
-            }
-        }
-
-        // Espera durante 2 segundos
+        if (currenBadFloortItem != null) currenBadFloortItem.GetComponent<CompositeCollider2D>().isTrigger = true;
         yield return new WaitForSeconds(2);
-
-        // Restablecer la gravedad si el jugador estaba en modo de caída
         if (playerMovement.isFallingMode) playerMovement.rb.gravityScale = 0;
-
-        if (currenBadFloortItem != null)
-        {
-            // Obtener todos los colliders del objeto
-            Collider2D[] colliders = currenBadFloortItem.GetComponents<Collider2D>();
-
-            // Verificar que al menos un collider esté presente
-            if (colliders.Length > 0)
-            {
-                // Restablecer isTrigger a false para todos los colliders
-                foreach (Collider2D collider in colliders)
-                {
-                    collider.isTrigger = false;
-                }
-            }
-        }
+        if (currenBadFloortItem != null) currenBadFloortItem.GetComponent<CompositeCollider2D>().isTrigger = false;
     }
+
+    //private IEnumerator ResetCollision()
+    //{
+    //    // Si el jugador está en modo de caída, restablecemos la gravedad
+    //    if (playerMovement.isFallingMode) playerMovement.rb.gravityScale = 1;
+
+    //    if (currenBadFloortItem != null)
+    //    {
+    //        // Obtener todos los colliders del objeto
+    //        Collider2D[] colliders = currenBadFloortItem.GetComponents<Collider2D>();
+
+    //        // Verificar que al menos un collider esté presente
+    //        if (colliders.Length > 0)
+    //        {
+    //            // Establecer isTrigger a true para todos los colliders
+    //            foreach (Collider2D collider in colliders)
+    //            {
+    //                collider.isTrigger = true;
+    //            }
+    //        }
+    //    }
+
+    //    // Espera durante 2 segundos
+    //    yield return new WaitForSeconds(2);
+
+    //    // Restablecer la gravedad si el jugador estaba en modo de caída
+    //    if (playerMovement.isFallingMode) playerMovement.rb.gravityScale = 0;
+
+    //    if (currenBadFloortItem != null)
+    //    {
+    //        // Obtener todos los colliders del objeto
+    //        Collider2D[] colliders = currenBadFloortItem.GetComponents<Collider2D>();
+
+    //        // Verificar que al menos un collider esté presente
+    //        if (colliders.Length > 0)
+    //        {
+    //            // Restablecer isTrigger a false para todos los colliders
+    //            foreach (Collider2D collider in colliders)
+    //            {
+    //                collider.isTrigger = false;
+    //            }
+    //        }
+    //    }
+    //}
 
 
 
