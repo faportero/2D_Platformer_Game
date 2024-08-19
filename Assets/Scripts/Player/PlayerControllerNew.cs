@@ -205,8 +205,8 @@ public class PlayerControllerNew : MonoBehaviour
 
         if (collision.tag == "Salud")
         {
-
             isDrugged = false;
+            isCannabis = false;
             //audioSource.Stop();
 
             currentSalud += saludAmount;
@@ -870,7 +870,7 @@ public class PlayerControllerNew : MonoBehaviour
     {
         if (playerMovement.isFallingMode) playerMovement.rb.gravityScale = 1;
         if (currenBadFloortItem != null) currenBadFloortItem.GetComponent<CompositeCollider2D>().isTrigger = true;
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(3);
         if (playerMovement.isFallingMode) playerMovement.rb.gravityScale = 0;
         if (currenBadFloortItem != null) currenBadFloortItem.GetComponent<CompositeCollider2D>().isTrigger = false;
     }

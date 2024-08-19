@@ -84,7 +84,9 @@ public class Gargola : MonoBehaviour
     void OnVideoEnd(VideoPlayer vp)
     {
         // Lógica para cambiar al juego
-        UserData.terminoVideoVortex1 = true;
+        if(vortexType == VortexType.Vortex1)UserData.terminoVideoVortex1 = true;
+        if(vortexType == VortexType.Vortex2)UserData.terminoVideoVortex2 = true;
+        if(vortexType == VortexType.Vortex3)UserData.terminoVideoVortex3 = true;
         CameraManager.instance.SingleSwapCamera(camera1,2f);
         //playerMovementNew.inputsEnabled = true;
         if (UserData.terminoVideoVortex1) SelectDimension();
@@ -94,8 +96,10 @@ public class Gargola : MonoBehaviour
     }
     public void ShowVideo()
     {
-        if (UserData.terminoVideoVortex1) skipBtn.SetActive(true);
-            CameraManager.instance.SingleSwapCamera(camera2, 2);
+        if (vortexType == VortexType.Vortex1 && UserData.terminoVideoVortex1) skipBtn.SetActive(true);
+        if (vortexType == VortexType.Vortex2 && UserData.terminoVideoVortex2) skipBtn.SetActive(true);
+        if (vortexType == VortexType.Vortex3 && UserData.terminoVideoVortex3) skipBtn.SetActive(true);
+        CameraManager.instance.SingleSwapCamera(camera2, 2);
         playerMovementNew.targetPosition = playerMovementNew.transform.position;
         playerMovementNew.isMoving = false;
         if(!InputManager.isPC)swipeDetector.enabled = false;

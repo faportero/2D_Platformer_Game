@@ -51,9 +51,9 @@ public class LobbyManager : MonoBehaviour
         //{
         //    pasoIntro = false;
         //}
-        UserData.completoNivel1 = completoN1;
-        UserData.completoNivel2 = completoN2;
-        UserData.completoNivel3 = completoN3;
+        //UserData.completoNivel1 = completoN1;
+        //UserData.completoNivel2 = completoN2;
+        //UserData.completoNivel3 = completoN3;
     }
     void Start()
     {

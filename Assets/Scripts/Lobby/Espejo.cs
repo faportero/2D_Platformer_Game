@@ -46,18 +46,41 @@ public class Espejo : MonoBehaviour
     {
         playerController = FindAnyObjectByType<PlayerControllerNew>();
         playerMovement = FindAnyObjectByType<PlayerMovementNew>();
-       // dialogueGargolas = FindAnyObjectByType<DialogueGargolas>();
+        // dialogueGargolas = FindAnyObjectByType<DialogueGargolas>();
+        AssignEspejoType();
     }
     private void Start()
     {
+
+
         explodePartycle = explodeObject.GetComponent<ParticleSystem>();
         videoPlayer.loopPointReached += OnVideoEnd;
 
         // CheckEspejoPieces();
         CheckEspejoPiecesInit();
-        if(countPiezas == maxPiezas) GetComponent<BoxCollider2D>().enabled = false;
+        //if(countPiezas == maxPiezas) GetComponent<BoxCollider2D>().enabled = false;
 
-        AssignEspejoType();
+
+        if (espejoType == EspejoType.Espejo1 && UserData.completoNivel1)
+        {
+            GargolaMala.SetActive(false);
+            GargolaBuena.SetActive(true);
+            PiezasRecuerdoBueno.SetActive(true);
+        }
+        if (espejoType == EspejoType.Espejo2 && UserData.completoNivel2)
+        {
+            GargolaMala.SetActive(false);
+            GargolaBuena.SetActive(true);
+            PiezasRecuerdoBueno.SetActive(true);
+        }
+        if (espejoType == EspejoType.Espejo3 && UserData.completoNivel3)
+        {
+            GargolaMala.SetActive(false);
+            GargolaBuena.SetActive(true);
+            PiezasRecuerdoBueno.SetActive(true);
+        }
+
+
     }
     private void Update()
     {
@@ -74,8 +97,17 @@ public class Espejo : MonoBehaviour
         {
             case EspejoType.Espejo1:
                 reintentarBtn.GetComponent<Button>().interactable = true;
-                break;
+                if (UserData.completoNivel1)
+                {
+                    GetComponent<BoxCollider2D>().enabled = false;
+                }
+
+                    break;
             case EspejoType.Espejo2:
+                if (UserData.completoNivel2)
+                {
+                    GetComponent<BoxCollider2D>().enabled = false;
+                }
                 if (UserData.completoNivel1)
                 {
                     GetComponent<BoxCollider2D>().enabled = true;
@@ -87,6 +119,10 @@ public class Espejo : MonoBehaviour
             case EspejoType.Espejo3:
                 if (UserData.completoNivel2)
                 {
+                    if (UserData.completoNivel3)
+                    {
+                        GetComponent<BoxCollider2D>().enabled = false;
+                    }
                     GetComponent<BoxCollider2D>().enabled = true;
                     panelFeedback.transform.parent.GetComponent<BoxCollider2D>().enabled = true;
                     reintentarBtn.GetComponent<Button>().interactable = true;
@@ -118,22 +154,9 @@ public class Espejo : MonoBehaviour
     {
         //Desactiva Input
         isFacingRight = false;
-        //playerMovement.transform.localScale = new Vector3(-playerMovement.transform.localScale.x, playerMovement.transform.localScale.y, playerMovement.transform.localScale.z);
-        //playerMovement.inputsEnabled = false;
+
         yield return new WaitForSeconds(.5f);
         panelHUD.SetActive(false);//Desactiva HUD
-
-
-
-        //Camina fuera del espejo
-        //isFacingRight = false;
-        //Vector3 targetPosition = playerMovement.transform.position + new Vector3(playerMovement.transform.position.x + 2000, playerMovement.transform.position.y, playerMovement.transform.position.z);
-
-        //playerMovement.transform.position = Vector3.MoveTowards(playerMovement.transform.position, targetPosition, 2f * Time.deltaTime);
-        //playerMovement.anim.SetBool("SlowWalk", true);
-        //yield return new WaitWhile(() => playerMovement.transform.position.x == targetPosition.x);
-        //targetPosition = Vector3.zero;
-        //playerMovement.inputsEnabled = false;
 
 
         //Animacion piezas
@@ -152,9 +175,6 @@ public class Espejo : MonoBehaviour
 
         //Reproduce video
         PiezasRecuerdoMalo.SetActive(false);//desactiva imagen de recuerdo bueno
-        //videoPlayerPlane.SetActive(true);
-        //videoPlayer.clip = videoClips[countVideoClips];
-        //videoPlayer.Play();
 
     }
     private IEnumerator ActivateEnte()
@@ -187,34 +207,40 @@ public class Espejo : MonoBehaviour
     {
         if(collision.tag == "Player")
         {
-           // if (!isComplete) StartCoroutine(AnimacionGargolas());
-
-            // StartCoroutine(AnimacionGargolas());
-
-            CheckEspejoPieces();
-            isChecked = true;
-            if(countPiezas != maxPiezas)
+            if (espejoType == EspejoType.Espejo1 && UserData.completoNivel1)
             {
-                //CheckEspejoPieces();
-                piezasRestantes = maxPiezas - countPiezas;
-                textPanel.text = "Vuelve al lugar donde todo empezó, te faltan: " + piezasRestantes + " fragmentos";
+                GetComponent<Collider2D>().enabled = false;
 
-                //print("Te faltan " + piezasRestantes);
-                //Invoke("ShowFeedbackPanel", 2);
             }
-            else
+            if (espejoType == EspejoType.Espejo2 && UserData.completoNivel2)
             {
-                panelFeedback.SetActive(false);
-                textPanel.text = "¡Fragmentos Complatos!";
-                //panelFeedback.SetActive(false);
-                // print("Piezas complatas");
-                //   if(targetPosition == Vector3.zero) targetPosition = playerMovement.transform.position + new Vector3(playerMovement.transform.position.x + 2000, playerMovement.transform.position.y, playerMovement.transform.position.z);
-                //  StartCoroutine(ShowVideoPanel());
-                //if(!isComplete)StartCoroutine(AnimacionGargolas());
-                //triggerParteFinal.SetActive(true);
-                StartCoroutine(ActivateEnte());
-                GetComponent<BoxCollider2D>().enabled = false;
+                GetComponent<Collider2D>().enabled = false;
+
             }
+            if (espejoType == EspejoType.Espejo3 && UserData.completoNivel3)
+            {
+                GetComponent<Collider2D>().enabled = false;
+
+            }
+            else 
+            {
+                CheckEspejoPieces();
+                isChecked = true;
+                if (countPiezas != maxPiezas)
+                {
+                    piezasRestantes = maxPiezas - countPiezas;
+                    textPanel.text = "Vuelve al lugar donde todo empezó, te faltan: " + piezasRestantes + " fragmentos";
+                }
+                else
+                {
+                    panelFeedback.SetActive(false);
+                    textPanel.text = "¡Fragmentos Complatos!";
+
+                    StartCoroutine(ActivateEnte());
+                    GetComponent<BoxCollider2D>().enabled = false;
+                }
+            }
+            
         }
     }
 
@@ -228,11 +254,7 @@ public class Espejo : MonoBehaviour
     {
         if (PlayerControllerNew.piezaA && !LevelManager.usedPA)
         {
-            //PlayerControllerNew.piezaA = false;
-            //p1.GetComponent<SpriteRenderer>().color = Color.red;
-            //piezasPanel.piezaA.GetComponent<Image>().color = Color.black;      
             p1.SetActive(true);
-            //piezasPanel.piezaA.SetActive(false);
             pm1.SetActive(false);
             piezasPanel.piezaA.GetComponent<SwitchSprite>().SwitchNewSprite();
             p1.GetComponent<Piezas>().ShowPiece(.1f);
@@ -242,13 +264,8 @@ public class Espejo : MonoBehaviour
         }
         if (PlayerControllerNew.piezaB && !LevelManager.usedPB)
         {
-            //PlayerControllerNew.piezaB = false;
-            //p2.GetComponent<SpriteRenderer>().color = Color.red;
-            //piezasPanel.piezaB.GetComponent<Image>().color = Color.black;           
             p2.SetActive(true);
-            // piezasPanel.piezaB.SetActive(false);
             pm2.SetActive(false);
-
             piezasPanel.piezaB.GetComponent<SwitchSprite>().SwitchNewSprite();
             p2.GetComponent<Piezas>().ShowPiece(.2f);
             countPiezas++;
@@ -257,13 +274,9 @@ public class Espejo : MonoBehaviour
         }
         if (PlayerControllerNew.piezaC && !LevelManager.usedPC)
         {
-            // PlayerControllerNew.piezaC = false;
-            //p3.GetComponent<SpriteRenderer>().color = Color.red;
-            //piezasPanel.piezaC.GetComponent<Image>().color = Color.black;           
             p3.SetActive(true);
             pm3.SetActive(false);
-
-            // piezasPanel.piezaC.SetActive(false);
+            piezasPanel.piezaC.SetActive(false);
             piezasPanel.piezaC.GetComponent<SwitchSprite>().SwitchNewSprite();
             p3.GetComponent<Piezas>().ShowPiece(.3f);
             countPiezas++;
@@ -272,13 +285,8 @@ public class Espejo : MonoBehaviour
         }
         if (PlayerControllerNew.piezaD && !LevelManager.usedPD)
         {
-            // PlayerControllerNew.piezaD = false;
-            //p4.GetComponent<SpriteRenderer>().color = Color.red;
-            //piezasPanel.piezaD.GetComponent<Image>().color = Color.black;           
             p4.SetActive(true);
-            //piezasPanel.piezaD.SetActive(false);
             pm4.SetActive(false);
-
             piezasPanel.piezaD.GetComponent<SwitchSprite>().SwitchNewSprite();
             p4.GetComponent<Piezas>().ShowPiece(.4f);
             countPiezas++;
@@ -290,42 +298,25 @@ public class Espejo : MonoBehaviour
     {
         if (LevelManager.usedPA)
         {
-            //p1.GetComponent<SpriteRenderer>().color = Color.red;
-            //piezasPanel.piezaA.GetComponent<Image>().color = Color.black;
+           
             p1.SetActive(true);
             pm1.SetActive(false);
-            //piezasPanel.piezaA.GetComponent<SwitchSprite>().SwitchNewSprite();
-            //piezasPanel.piezaA.SetActive(false);
+           
         }
         if (LevelManager.usedPB)
         {
-            //p2.GetComponent<SpriteRenderer>().color = Color.red;
-            //piezasPanel.piezaB.GetComponent<Image>().color = Color.black;
             p2.SetActive(true);
             pm2.SetActive(false);
-            //piezasPanel.piezaB.GetComponent<SwitchSprite>().SwitchNewSprite();
-
-            // piezasPanel.piezaB.SetActive(false);
         }
         if (LevelManager.usedPC)
         {
-            //p3.GetComponent<SpriteRenderer>().color = Color.red;
-            //piezasPanel.piezaC.GetComponent<Image>().color = Color.black;
             p3.SetActive(true);
             pm3.SetActive(false);
-            //piezasPanel.piezaC.GetComponent<SwitchSprite>().SwitchNewSprite();
-
-            //piezasPanel.piezaC.SetActive(false);
         }
         if (LevelManager.usedPD)
         {
-            //p4.GetComponent<SpriteRenderer>().color = Color.red;
-            //piezasPanel.piezaD.GetComponent<Image>().color = Color.black;
             p4.SetActive(true);
             pm4.SetActive(false);
-            //piezasPanel.piezaD.GetComponent<SwitchSprite>().SwitchNewSprite();
-
-            //piezasPanel.piezaD.SetActive(false);
         }
     }
     public void CreateExplosion()
@@ -406,14 +397,23 @@ public class Espejo : MonoBehaviour
         CameraManager.instance.SingleSwapCamera(cameraPlayer, 1f);
         SwitchPlayerTransform(true);
         triggerParteFinal.SetActive(false);
-        // panelHUD.SetActive(true);
-        //videoPlayerPlane.SetActive(true);
-        //videoPlayer.clip = videoClips[countVideoClips];
-        //videoPlayer.Play();
 
         if(espejoType == EspejoType.Espejo1)UserData.completoNivel1 = true;
         if(espejoType == EspejoType.Espejo2)UserData.completoNivel2 = true;
         if(espejoType == EspejoType.Espejo3)UserData.completoNivel3 = true;
+       
+        GetComponent<BoxCollider2D>().enabled = false;
+        panelFeedback.transform.parent.gameObject.GetComponent<BoxCollider2D>().enabled = false;
+        countPiezas = 0;
 
+        LevelManager.usedPA = false;
+        LevelManager.usedPB = false;
+        LevelManager.usedPC = false;
+        LevelManager.usedPD = false;
+
+        PlayerControllerNew.piezaA = false;
+        PlayerControllerNew.piezaB = false;
+        PlayerControllerNew.piezaC = false;
+        PlayerControllerNew.piezaD = false;
     }
 }

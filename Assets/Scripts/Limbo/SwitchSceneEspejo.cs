@@ -56,7 +56,7 @@ public class SwitchSceneEspejo : MonoBehaviour
         //    progress = asyncOperation.progress;
         //    if (progress == .9f)
         //    {
-        //        yield return new WaitForSecondsRealtime(3f);
+        //        yield return new WaitForSecondsRealtime(4.5f);
         //        asyncOperation.allowSceneActivation = true;
         //        AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
         //    }

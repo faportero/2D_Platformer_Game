@@ -38,6 +38,11 @@ public class SwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     public bool IsPressing = false;
 
     public bool playJumpSound = true;
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
     public void OnPointerDown(PointerEventData eventData)
     {
 

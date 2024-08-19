@@ -83,6 +83,7 @@ public class UI_PanelDissolve : UI_Animation, IMaterialModifier
             yield return null; // Espera un frame antes de continuar
         }
 
+        yield return new WaitForSecondsRealtime(.2f);
         // Asegúrate de que el panel esté completamente disuelto
         currentDissolveAmount = 1f;
 
@@ -105,7 +106,7 @@ public class UI_PanelDissolve : UI_Animation, IMaterialModifier
             }
         }
 
-        gameObject.SetActive(false); // Desactiva el objeto al finalizar
+       if(!isWorldPanel) gameObject.SetActive(false); // Desactiva el objeto al finalizar
     }
 
     // Método para iniciar la solidificación
