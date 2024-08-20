@@ -1,0 +1,29 @@
+fileFormatVersion: 2
+guid: a589f1563631f1a40a5d531c61aa2b9f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - m_LightShader: {instanceID: 0}
+  - m_CoreBlitShader: {instanceID: 0}
+  - m_CoreBlitColorAndDepthPS: {instanceID: 0}
+  - m_BlitHDROverlay: {instanceID: 0}
+  - m_SamplingShader: {instanceID: 0}
+  - m_ProjectedShadowShader: {instanceID: 0}
+  - m_SpriteShadowShader: {instanceID: 0}
+  - m_SpriteUnshadowShader: {instanceID: 0}
+  - m_GeometryShadowShader: {instanceID: 0}
+  - m_GeometryUnshadowShader: {instanceID: 0}
+  - m_FallbackErrorShader: {instanceID: 0}
+  - m_PostProcessData: {instanceID: 0}
+  - m_FallOffLookup: {instanceID: 0}
+  - m_DefaultCustomMaterial: {instanceID: 0}
+  - m_DefaultLitMaterial: {instanceID: 0}
+  - m_DefaultUnlitMaterial: {instanceID: 0}
+  - m_DefaultMaskMaterial: {instanceID: 0}
+  - postProcessMaterial: {fileID: -876546973899608171, guid: 2f3aff13c7a69f24aa20233199422aa7, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

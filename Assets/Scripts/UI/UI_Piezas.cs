@@ -14,7 +14,7 @@ public class UI_Piezas : MonoBehaviour
     }
     private void Update()
     {
-        CheckPieces();
+       CheckPieces();
        CheckEspejoPiecesInit();
 
         //print("PlayerControllerNew.piezaA: " + PlayerControllerNew.piezaA + ". LevelManager.usedPA: " + LevelManager.usedPA);
@@ -64,6 +64,8 @@ public class UI_Piezas : MonoBehaviour
             piezaA.GetComponent<SwitchSprite>().SwitchNewSprite();
 
         }
+        else piezaA.SetActive(false);
+
         if (LevelManager.usedPB)
         {
             piezaB.SetActive(true);
@@ -72,6 +74,9 @@ public class UI_Piezas : MonoBehaviour
 
 
         }
+        
+        else piezaB.SetActive(false);
+        
         if (LevelManager.usedPC)
         {
             piezaC.SetActive(true);
@@ -80,6 +85,8 @@ public class UI_Piezas : MonoBehaviour
 
          
         }
+        else piezaC.SetActive(false);
+
         if (LevelManager.usedPD)
         {
             piezaD.SetActive(true);
@@ -87,6 +94,7 @@ public class UI_Piezas : MonoBehaviour
             piezaD.GetComponent<SwitchSprite>().SwitchNewSprite();
 
         }
+        else piezaD.SetActive(false);
     }
 
 }

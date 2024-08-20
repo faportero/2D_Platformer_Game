@@ -195,8 +195,8 @@ public class PlayerMovementNew : MonoBehaviour
                     }
                     else
                     {
-                        anim.SetBool("SlowWalk", false);
-                        anim.Play("Idle");
+                        //anim.SetBool("SlowWalk", false);
+                        //anim.Play("Idle");
                     }
                     break;
 
@@ -612,7 +612,7 @@ public class PlayerMovementNew : MonoBehaviour
                     {
                         canSmash = false;
                         canDoubleJump = false;
-                        StartCoroutine(Jump(.5f));
+                        StartCoroutine(Jump(.25f));
                         jumpBufferCounter = 0;
                     }
 
@@ -829,7 +829,7 @@ public class PlayerMovementNew : MonoBehaviour
                                 {
                                     canSmash = false;
                                     canDoubleJump = false;
-                                    StartCoroutine(Jump(.5f));
+                                    StartCoroutine(Jump(.25f));
                                 }
 
                                 if (playerController.isAlcohol && !doingRoll)

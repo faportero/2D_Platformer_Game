@@ -18,6 +18,7 @@ public class PanelEspejo : MonoBehaviour
             {
                 playerMovementNew.swipeDetector.gameObject.SetActive(false);
                 transform.GetChild(0).gameObject.SetActive(true);
+                transform.GetChild(0).GetChild(1).GetChild(0).gameObject.SetActive(true);
                 transform.GetChild(0).GetComponent<UI_PanelDissolve>().StartSolidify();
                 transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<UI_PanelDissolve>().StartSolidify();
             }

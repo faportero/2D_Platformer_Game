@@ -106,7 +106,8 @@ public class UI_PanelDissolve : UI_Animation, IMaterialModifier
             }
         }
 
-       if(!isWorldPanel) gameObject.SetActive(false); // Desactiva el objeto al finalizar
+       gameObject.SetActive(false); // Desactiva el objeto al finalizar
+       //if(!isWorldPanel) gameObject.SetActive(false); // Desactiva el objeto al finalizar
     }
 
     // Método para iniciar la solidificación

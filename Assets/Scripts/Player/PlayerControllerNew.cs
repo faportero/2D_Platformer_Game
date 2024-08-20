@@ -50,12 +50,14 @@ public class PlayerControllerNew : MonoBehaviour
     [SerializeField] GameObject[] pieces;
     [HideInInspector] public Color color;
     [SerializeField] GameObject NewStartPosition;
-
+    [SerializeField] Material postMaterial;
+    private RendererSwitcher rendererSwitcher;
 
     private Image healthFillBar;
     private List<CompositeCollider2D> compositeColliders = new List<CompositeCollider2D>();
 
     [Header("Bools")]
+    public static int previousLevel;
     public float currentSalud = 0;
     public bool isDie = false;
     public bool isCannabis, isCocaMetaHero, isPsilo, isAlcohol, isTabaco;
@@ -66,7 +68,7 @@ public class PlayerControllerNew : MonoBehaviour
     private bool isIndestructible;
     public static bool piezaA, piezaB, piezaC, piezaD;
     public static bool showInmunidadPanel = true, showPocaVidePanel = true, showPiezasPanel = true;
-
+    public bool isPostEffect;
     [Header("Coroutines")]
     private Coroutine blinkCoroutine;
     private Coroutine enemyEffectCoroutine;
@@ -84,6 +86,8 @@ public class PlayerControllerNew : MonoBehaviour
     [HideInInspector]public bool isSmokePanelEffect;
     private CinemachineVirtualCamera cm;
     public bool doingEnemyShake;
+    private bool takingPiece;
+    private bool takingSalud;
     #endregion
     #region Unity Callbacks
     private void Awake()
@@ -104,8 +108,11 @@ public class PlayerControllerNew : MonoBehaviour
         if(saludBar != null)saludBar.healthFillBar.fillAmount = currentSalud;
         if (saludBar != null) saludBar.healthFillBar.color = saludBar.colorGradient.Evaluate(currentSalud);
         cm = CameraManager.instance.currentCamera;
-
+        rendererSwitcher = GetComponent<RendererSwitcher>();
         //if (ui_enemyAttachedBar) print(ui_enemyAttachedBar.gameObject.name);
+        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) previousLevel = 1;
+        else if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) previousLevel = 2;
+        else if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) previousLevel = 3;
 
         switch (currentSalud)
         {
@@ -165,11 +172,19 @@ public class PlayerControllerNew : MonoBehaviour
 
     private void Update()
     {
-              //print("SaludActual: " + currentSalud + ". Boleano barrita: " + ui_enemyAttachedBar.startUpdateTimeCoroutine + ". Boleano efecto panel: " + isSmokePanelEffect);
-      //  print("Haciendo Enemy Shake: "+doingEnemyShake);
+        //print("SaludActual: " + currentSalud + ". Boleano barrita: " + ui_enemyAttachedBar.startUpdateTimeCoroutine + ". Boleano efecto panel: " + isSmokePanelEffect);
+        //  print("Haciendo Enemy Shake: "+doingEnemyShake);
+
+        if (takingSalud)
+        {
+
         if(targetPosition != null && saludBar != null)targetPosition = GetWorldPositionFromUI(saludBar.GetComponent<RectTransform>());
         if (targetPosition != null && saludBar != null) targetPosition = targetPosition + new Vector3(0, -1.25f, 0);
-        
+
+        }
+        if (takingPiece)
+        {
+
         if(currenPiece != null && pieces != null && currenPiece.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasA)
             targetPiecePosition = GetWorldPositionFromUI(pieces[0].GetComponent<RectTransform>());
         if(currenPiece != null && pieces != null && currenPiece.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasB)
@@ -178,6 +193,7 @@ public class PlayerControllerNew : MonoBehaviour
             targetPiecePosition = GetWorldPositionFromUI(pieces[2].GetComponent<RectTransform>());
         if(currenPiece != null && pieces != null && currenPiece.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasD)
             targetPiecePosition = GetWorldPositionFromUI(pieces[3].GetComponent<RectTransform>());
+        }
 
         //if (currentSalud > .9f)
         //{
@@ -262,6 +278,7 @@ public class PlayerControllerNew : MonoBehaviour
                 cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0;
             }
 
+
             startPosition = collision.ClosestPoint(transform.position);
             currentItem = collision.gameObject;
 
@@ -342,6 +359,8 @@ public class PlayerControllerNew : MonoBehaviour
                     break;
             }
 
+            rendererSwitcher.SwitchRenderer(rendererSwitcher.YourCamera, 0);
+
             AudioManager.Instance.PlaySfx("Item_Bueno");
 
             // return;
@@ -404,8 +423,8 @@ public class PlayerControllerNew : MonoBehaviour
                         SetAllCompositeCollidersTrigger(compositeColliders, false);
 
                     }
-
-                    enemyCameraShake = StartCoroutine(EnemyCameraShake(10));
+                  
+                    if(levelManager.currentScene == LevelManager.CurrentScene.Nivel1) enemyCameraShake = StartCoroutine(EnemyCameraShake(10)); 
                     CurrentEffectPanel(10);
                     ui_enemyAttachedBar.UpdateTime(10);
                     AdjustLuminance(.1f);
@@ -421,7 +440,7 @@ public class PlayerControllerNew : MonoBehaviour
                         SetAllCompositeCollidersTrigger(compositeColliders, false);
                     }
 
-                    enemyCameraShake = StartCoroutine(EnemyCameraShake(9));
+                    if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) enemyCameraShake = StartCoroutine(EnemyCameraShake(9));
                     CurrentEffectPanel(9);
                     ui_enemyAttachedBar.UpdateTime(9);
                     AdjustLuminance(.2f);
@@ -436,7 +455,7 @@ public class PlayerControllerNew : MonoBehaviour
                         isIndestructible = false;
                         SetAllCompositeCollidersTrigger(compositeColliders, false);
                     }
-                    enemyCameraShake = StartCoroutine(EnemyCameraShake(8));
+                    if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) enemyCameraShake = StartCoroutine(EnemyCameraShake(8));
                     CurrentEffectPanel(8);
                     ui_enemyAttachedBar.UpdateTime(8);
                     AdjustLuminance(.3f);
@@ -451,7 +470,7 @@ public class PlayerControllerNew : MonoBehaviour
                         isIndestructible = false;
                         SetAllCompositeCollidersTrigger(compositeColliders, false);
                     }
-                    enemyCameraShake = StartCoroutine(EnemyCameraShake(7));
+                    if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) enemyCameraShake = StartCoroutine(EnemyCameraShake(7));
                     CurrentEffectPanel(7);                  
                     ui_enemyAttachedBar.UpdateTime(7);
                     AdjustLuminance(.4f);
@@ -466,7 +485,7 @@ public class PlayerControllerNew : MonoBehaviour
                         isIndestructible = false;
                         SetAllCompositeCollidersTrigger(compositeColliders, false);
                     }
-                    enemyCameraShake = StartCoroutine(EnemyCameraShake(6));
+                    if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) enemyCameraShake = StartCoroutine(EnemyCameraShake(6));
                     CurrentEffectPanel(6);                    
                     ui_enemyAttachedBar.UpdateTime(6);
                     AdjustLuminance(.5f);
@@ -481,7 +500,7 @@ public class PlayerControllerNew : MonoBehaviour
                         isIndestructible = false;
                         SetAllCompositeCollidersTrigger(compositeColliders, false);
                     }
-                    enemyCameraShake = StartCoroutine(EnemyCameraShake(5));
+                    if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) enemyCameraShake = StartCoroutine(EnemyCameraShake(5));
                     CurrentEffectPanel(5); 
                     ui_enemyAttachedBar.UpdateTime(5);
                     AdjustLuminance(.6f);
@@ -496,7 +515,7 @@ public class PlayerControllerNew : MonoBehaviour
                         isIndestructible = false;
                         SetAllCompositeCollidersTrigger(compositeColliders, false);
                     }
-                    enemyCameraShake = StartCoroutine(EnemyCameraShake(4));
+                    if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) enemyCameraShake = StartCoroutine(EnemyCameraShake(4));
                     CurrentEffectPanel(4);                  
                     ui_enemyAttachedBar.UpdateTime(4);                   
                     AdjustLuminance(.7f);
@@ -511,7 +530,7 @@ public class PlayerControllerNew : MonoBehaviour
                         isIndestructible = false;
                         SetAllCompositeCollidersTrigger(compositeColliders, false);
                     }
-                    enemyCameraShake = StartCoroutine(EnemyCameraShake(3));
+                    if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) enemyCameraShake = StartCoroutine(EnemyCameraShake(3));
                     CurrentEffectPanel(3);                  
                     ui_enemyAttachedBar.UpdateTime(3);
                     AdjustLuminance(.8f);
@@ -526,7 +545,7 @@ public class PlayerControllerNew : MonoBehaviour
                         isIndestructible = false;
                         SetAllCompositeCollidersTrigger(compositeColliders, false);
                     }
-                    enemyCameraShake = StartCoroutine(EnemyCameraShake(2));
+                    if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) enemyCameraShake = StartCoroutine(EnemyCameraShake(2));
                     CurrentEffectPanel(2);             
                     ui_enemyAttachedBar.UpdateTime(2);
                     AdjustLuminance(.9f);
@@ -541,6 +560,8 @@ public class PlayerControllerNew : MonoBehaviour
 
             StartBlinking(0);
             StartCoroutine(DeactivateEnfasis());
+
+            //rendererSwitcher.SwitchRenderer(rendererSwitcher.YourCamera, 1);
 
             AudioManager.Instance.PlaySfx("Item_Malo");
 
@@ -703,6 +724,7 @@ public class PlayerControllerNew : MonoBehaviour
     }
     private IEnumerator TakePieceAnim()
     {
+        takingPiece = true;
         Vector3 startPosition = currenPiece.transform.position;
         Vector3 startScale = currenPiece.transform.localScale;
 
@@ -725,6 +747,7 @@ public class PlayerControllerNew : MonoBehaviour
         // Asegurarse de que el valor final sea el targetPosition
         currenPiece.transform.position = targetPiecePosition;
         currenPiece.SetActive(false);
+        takingPiece = false;
     }
     public void StartHitBadFloor()
     {
@@ -1026,13 +1049,32 @@ public class PlayerControllerNew : MonoBehaviour
     {
         isSmokePanelEffect = true;
         //audioSource.Play();
-        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlaySfx("Tos");
-        effectPanel.SetActive(true);
-        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) effectPanel.GetComponent<Animator>().Play("Alcohol");
+        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1)
+        {
+            AudioManager.Instance.PlaySfx("Tos");
+            effectPanel.SetActive(true);
+        }
+        //if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) effectPanel.GetComponent<Animator>().Play("Alcohol");
+        else if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2)
+        {
+            rendererSwitcher.SwitchRenderer(rendererSwitcher.YourCamera, 1);
+        }
+            
         //effectPanel.GetComponent<Animator>().SetBool("Smoke", true);
+
         yield return new WaitForSeconds(delay);
-        //audioSource.Stop();
-        effectPanel.SetActive(false);
+        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1)
+        {
+            effectPanel.SetActive(false);
+
+        }
+        //if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) effectPanel.GetComponent<Animator>().Play("Alcohol");
+        else if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2)
+        {
+            rendererSwitcher.SwitchRenderer(rendererSwitcher.YourCamera, 0);
+           
+        }
+
         //enemyAttached.SetActive(false);
         isDrugged = false;
         isCannabis = false;
@@ -1095,6 +1137,7 @@ public class PlayerControllerNew : MonoBehaviour
     }
     private IEnumerator TakeSaludAnim()
      {
+        takingSalud = true;
         GlowHealthSpriteEffect.SetActive(true);
         Vector3 startPosition = currentItem.transform.position;
         //targetPosition = GetWorldPositionFromUI(saludBar.GetComponent<RectTransform>());
@@ -1124,6 +1167,7 @@ public class PlayerControllerNew : MonoBehaviour
         currentItem.SetActive(false);
         GlowHealthSpriteEffect.SetActive(false);
 
+        takingSalud = false;
     }
 
     private Vector3 GetWorldPositionFromUI(RectTransform uiElement)
@@ -1305,5 +1349,15 @@ public class PlayerControllerNew : MonoBehaviour
     //    }
     //}
     #endregion
-
+    public void SetIntensity(bool isOn)
+    {
+        if (postMaterial != null)
+        {
+            postMaterial.SetFloat("_Intensity", isOn ? 1.0f : 0.0f);
+        }
+        else
+        {
+            Debug.LogWarning("Material no asignado en " + gameObject.name);
+        }
+    }
 }

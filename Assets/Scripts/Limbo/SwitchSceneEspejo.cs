@@ -81,4 +81,12 @@ public class SwitchSceneEspejo : MonoBehaviour
         // Asegurarse de que el valor final sea exactamente 1
         playerMaterial.SetFloat("_DissolveAmmount", 1);
     }
+    public void TurnAnimation()
+    {
+        playerMovementNew.isMoving = false;
+        playerMovementNew.inputsEnabled = false;
+        playerMovementNew.targetPosition = playerMovementNew.transform.position;
+        playerMovementNew.anim.SetBool("SlowWalk", false);
+        playerMovementNew.anim.SetBool("Turn", true);
+    }
 }

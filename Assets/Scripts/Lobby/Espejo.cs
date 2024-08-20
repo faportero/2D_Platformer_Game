@@ -57,7 +57,7 @@ public class Espejo : MonoBehaviour
         videoPlayer.loopPointReached += OnVideoEnd;
 
         // CheckEspejoPieces();
-        CheckEspejoPiecesInit();
+        if(countPiezas != maxPiezas) CheckEspejoPiecesInit();
         //if(countPiezas == maxPiezas) GetComponent<BoxCollider2D>().enabled = false;
 
 
@@ -100,18 +100,22 @@ public class Espejo : MonoBehaviour
                 if (UserData.completoNivel1)
                 {
                     GetComponent<BoxCollider2D>().enabled = false;
+                    panelFeedback.transform.parent.GetComponent<BoxCollider2D>().enabled = true;
+
                 }
 
-                    break;
+                break;
             case EspejoType.Espejo2:
                 if (UserData.completoNivel2)
                 {
                     GetComponent<BoxCollider2D>().enabled = false;
+                    panelFeedback.transform.parent.GetComponent<BoxCollider2D>().enabled = false;
+
                 }
                 if (UserData.completoNivel1)
                 {
                     GetComponent<BoxCollider2D>().enabled = true;
-                    panelFeedback.transform.parent.GetComponent<BoxCollider2D>().enabled = true;
+                    panelFeedback.transform.parent.GetComponent<BoxCollider2D>().enabled = false;
                     reintentarBtn.GetComponent<Button>().interactable = true;
                 }
 
@@ -122,6 +126,8 @@ public class Espejo : MonoBehaviour
                     if (UserData.completoNivel3)
                     {
                         GetComponent<BoxCollider2D>().enabled = false;
+                        panelFeedback.transform.parent.GetComponent<BoxCollider2D>().enabled = false;
+
                     }
                     GetComponent<BoxCollider2D>().enabled = true;
                     panelFeedback.transform.parent.GetComponent<BoxCollider2D>().enabled = true;
@@ -224,12 +230,15 @@ public class Espejo : MonoBehaviour
             }
             else 
             {
-                CheckEspejoPieces();
-                isChecked = true;
+                if (espejoType == EspejoType.Espejo1 && PlayerControllerNew.previousLevel == 1) CheckEspejoPieces();
+                else if (espejoType == EspejoType.Espejo2 && PlayerControllerNew.previousLevel == 2) CheckEspejoPieces();
+                else if (espejoType == EspejoType.Espejo3 && PlayerControllerNew.previousLevel == 3) CheckEspejoPieces();
+                //isChecked = true;
                 if (countPiezas != maxPiezas)
                 {
                     piezasRestantes = maxPiezas - countPiezas;
-                    textPanel.text = "Vuelve al lugar donde todo empezó, te faltan: " + piezasRestantes + " fragmentos";
+                    if(countPiezas <= 1) textPanel.text = "Vuelve al lugar donde todo empezó, te falta: " + piezasRestantes + " fragmento";
+                    else if(countPiezas > 1) textPanel.text = "Vuelve al lugar donde todo empezó, te faltan: " + piezasRestantes + " fragmentos";
                 }
                 else
                 {
@@ -296,6 +305,11 @@ public class Espejo : MonoBehaviour
     } 
     private void CheckEspejoPiecesInit()
     {
+        //switch (espejoType){
+        //    case EspejoType.Espejo1:
+                
+        //        break;
+        //}
         if (LevelManager.usedPA)
         {
            

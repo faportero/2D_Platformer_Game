@@ -100,9 +100,10 @@ public class Gargola : MonoBehaviour
         if (vortexType == VortexType.Vortex2 && UserData.terminoVideoVortex2) skipBtn.SetActive(true);
         if (vortexType == VortexType.Vortex3 && UserData.terminoVideoVortex3) skipBtn.SetActive(true);
         CameraManager.instance.SingleSwapCamera(camera2, 2);
-        playerMovementNew.targetPosition = playerMovementNew.transform.position;
-        playerMovementNew.isMoving = false;
         if(!InputManager.isPC)swipeDetector.enabled = false;
+        playerMovementNew.isMoving = false;
+        playerMovementNew.inputsEnabled = false;
+        playerMovementNew.targetPosition = playerMovementNew.transform.position;
         playerMovementNew.anim.SetBool("SlowWalk", false);
         playerMovementNew.anim.SetBool("Turn", true);
         StartCoroutine(ShowVideoPanel());
@@ -131,9 +132,9 @@ public class Gargola : MonoBehaviour
 
     public void SelectDimension()
     {
-        playerMovementNew.isMoving = false;
-        playerMovementNew.inputsEnabled = false;
-        playerMovementNew.targetPosition = playerMovementNew.transform.position;
+        //playerMovementNew.isMoving = false;
+        //playerMovementNew.inputsEnabled = false;
+        //playerMovementNew.targetPosition = playerMovementNew.transform.position;
         videoPlayer.Stop();
         //OnVideoEnd(videoPlayer);
         //SkipVideo();
@@ -221,25 +222,7 @@ public class Gargola : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            //solidObjectCol.enabled = false;
-            //playerMovementNew.inputsEnabled = false;
-            //playerMovementNew.anim.SetBool("SlowWalk", false);
-            //playerMovementNew.targetPosition = playerController.transform.position;
-            //CameraManager.instance.SingleSwapCamera(camera2, 2);
 
-            ////if (LimboManager.countVideosWatched != 3)
-            ////{
-            ////    StartCoroutine(ShowVideoPanel());
-            ////    videoPlayer.Play();
-            ////}
-            ////else if (LimboManager.countVideosWatched >= 3)
-            ////{
-            ////    videoPlayerPlane.SetActive(true);
-            ////    videoPlayerPlane.GetComponent<Animator>().enabled = true;
-            ////    videoPlayerPlane.GetComponent<Animator>().Play("IdlePlayer");
-            ////    videoPlayer.Play();
-            ////}
-            //GetComponent<VortexAnimation>().enabled = true;
             viajarBtn.SetActive(true);
         }
 
