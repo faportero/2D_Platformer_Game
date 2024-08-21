@@ -65,8 +65,12 @@ public class LobbyManager : MonoBehaviour
         spriteRenderer.color = new Color(1, 1, 1, 0);
         playerMaterial.SetFloat("_DissolveAmmount", 0);
 
+        //if(!UserData.terminoLobby)playerController.GetComponent<GhostController>().enabled = false;
+        //else playerController.GetComponent<GhostController>().enabled = true;
+        
+
         // Obtener el componente VideoPlayer del objeto actual
- 
+
 
         //if (pasoIntro == false)
         if (!UserData.terminoLobby)
@@ -240,11 +244,10 @@ public class LobbyManager : MonoBehaviour
     private IEnumerator AnimatePlayer()
     {
 
-
+        playerController.GetComponent<GhostController>().enabled = false;
         playerMovementNew.enabled = false;
         playerMovementNew.anim.enabled = false;
         Rigidbody2D playerRigidbody = playerController.GetComponent<Rigidbody2D>();
-        playerController.GetComponent<GhostController>().enabled = false;
 
         if (playerRigidbody != null)
         {

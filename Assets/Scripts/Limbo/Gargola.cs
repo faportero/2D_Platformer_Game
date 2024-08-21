@@ -122,7 +122,7 @@ public class Gargola : MonoBehaviour
         videoPlayerPlane.SetActive(true);
         yield return new WaitForSeconds(.5f);
 
-        AudioManager.Instance.ToggleMusic();
+        AudioManager.Instance.ToggleMusic(false);
         //AudioManager.Instance.ToggleSFX();
 
         videoPlayer.Play();
@@ -164,7 +164,7 @@ public class Gargola : MonoBehaviour
     }
     private IEnumerator SwitchScene()
     {
-        AudioManager.Instance.ToggleMusic();
+        //AudioManager.Instance.ToggleMusic();
 
         // playerMovementNew.isMoving = false;
         //playerMovementNew.canMove = false;

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BlockInputCollider : MonoBehaviour
 {
+    [SerializeField] private bool blockInput;
 private PlayerMovementNew playerMovementNew;
 
     private void Start()
@@ -14,7 +15,13 @@ private PlayerMovementNew playerMovementNew;
     {
         if(collision.tag == "Player")
         {
-            playerMovementNew.inputsEnabled = false;
+            BlockInput(blockInput);
         }
+    }
+    
+    private void BlockInput (bool value)
+    {
+        playerMovementNew.inputsEnabled = value;
+
     }
 }

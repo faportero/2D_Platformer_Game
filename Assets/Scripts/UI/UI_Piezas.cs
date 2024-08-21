@@ -7,10 +7,12 @@ public class UI_Piezas : MonoBehaviour
 {
     public GameObject piezaA, piezaB, piezaC, piezaD;
     private PlayerControllerNew playerControllerNew;
+    private LevelManager levelManager;
 
     private void Start()
     {
        playerControllerNew = FindAnyObjectByType<PlayerControllerNew>();
+       levelManager = FindAnyObjectByType<LevelManager>();
     }
     private void Update()
     {
@@ -29,72 +31,213 @@ public class UI_Piezas : MonoBehaviour
 
     private void ShowPanelPieces()
     {
-        if (PlayerControllerNew.piezaA && !LevelManager.usedPA)
+
+        switch (levelManager.currentScene)
         {
-            // piezaA.GetComponent<Image>().color = Color.red;
-            //playerControllerNew.TakePiece();
-            piezaA.SetActive(true);
-            //cPiezaA.GetComponent<UI_Animation>().StartAnimation();
+            case LevelManager.CurrentScene.Nivel1:
+                if(UserData.piezaA_N1 && !UserData.usedPiezaA_N1)
+                {
+                    piezaA.SetActive(true);
+                }
+                if (UserData.piezaB_N1 && !UserData.usedPiezaB_N1)
+                {
+                    piezaB.SetActive(true);
+                }
+                if (UserData.piezaC_N1 && !UserData.usedPiezaC_N1)
+                {
+                    piezaC.SetActive(true);
+                }
+                if (UserData.piezaD_N1 && !UserData.usedPiezaD_N1)
+                {
+                    piezaD.SetActive(true);
+                }
+                break;
+            case LevelManager.CurrentScene.Nivel2:
+                if (UserData.piezaA_N2 && !UserData.usedPiezaA_N2)
+                {
+                    piezaA.SetActive(true);
+                }
+                if (UserData.piezaB_N2 && !UserData.usedPiezaB_N2)
+                {
+                    piezaB.SetActive(true);
+                }
+                if (UserData.piezaC_N2 && !UserData.usedPiezaC_N2)
+                {
+                    piezaC.SetActive(true);
+                }
+                if (UserData.piezaD_N2 && !UserData.usedPiezaD_N2)
+                {
+                    piezaD.SetActive(true);
+                }
+                break;
+            case LevelManager.CurrentScene.Nivel3:
+                if (UserData.piezaA_N3 && !UserData.usedPiezaA_N3)
+                {
+                    piezaA.SetActive(true);
+                }
+                if (UserData.piezaB_N3 && !UserData.usedPiezaB_N3)
+                {
+                    piezaB.SetActive(true);
+                }
+                if (UserData.piezaC_N3 && !UserData.usedPiezaC_N3)
+                {
+                    piezaC.SetActive(true);
+                }
+                if (UserData.piezaD_N3 && !UserData.usedPiezaD_N3)
+                {
+                    piezaD.SetActive(true);
+                }
+                break;
         }
-        if (PlayerControllerNew.piezaB && !LevelManager.usedPB)
-        {
-            //piezaB.GetComponent<Image>().color = Color.red;
-            piezaB.SetActive(true);
-            //cPiezaB.GetComponent<UI_Animation>().StartAnimation();
-        }
-        if (PlayerControllerNew.piezaC && !LevelManager.usedPC)
-        {
-            //piezaC.GetComponent<Image>().color = Color.red;
-            piezaC.SetActive(true);
-           // cPiezaC.GetComponent<UI_Animation>().StartAnimation();
-        }
-        if (PlayerControllerNew.piezaD && !LevelManager.usedPD)
-        {
-            //piezaD.GetComponent<Image>().color = Color.red;
-            piezaD.SetActive(true);
-           // cPiezaD.GetComponent<UI_Animation>().StartAnimation();
-        }
+
+
+        //if (PlayerControllerNew.piezaA && !LevelManager.usedPA)
+        //{
+        //    // piezaA.GetComponent<Image>().color = Color.red;
+        //    //playerControllerNew.TakePiece();
+        //    piezaA.SetActive(true);
+        //    //cPiezaA.GetComponent<UI_Animation>().StartAnimation();
+        //}
+        //if (PlayerControllerNew.piezaB && !LevelManager.usedPB)
+        //{
+        //    //piezaB.GetComponent<Image>().color = Color.red;
+        //    piezaB.SetActive(true);
+        //    //cPiezaB.GetComponent<UI_Animation>().StartAnimation();
+        //}
+        //if (PlayerControllerNew.piezaC && !LevelManager.usedPC)
+        //{
+        //    //piezaC.GetComponent<Image>().color = Color.red;
+        //    piezaC.SetActive(true);
+        //   // cPiezaC.GetComponent<UI_Animation>().StartAnimation();
+        //}
+        //if (PlayerControllerNew.piezaD && !LevelManager.usedPD)
+        //{
+        //    //piezaD.GetComponent<Image>().color = Color.red;
+        //    piezaD.SetActive(true);
+        //   // cPiezaD.GetComponent<UI_Animation>().StartAnimation();
+        //}
     }
     private void CheckEspejoPiecesInit()
     {
-        if (LevelManager.usedPA)
-        {
-            piezaA.SetActive(true);
 
-            piezaA.GetComponent<SwitchSprite>().SwitchNewSprite();
+
+        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1 || levelManager.currentScene == LevelManager.CurrentScene.Limbo)
+        {
+
+
+            if (UserData.usedPiezaA_N1)
+            {
+                piezaA.SetActive(true);
+                piezaA.GetComponent<SwitchSprite>().SwitchNewSprite();
+            }
+            if (UserData.usedPiezaB_N1)
+            {
+                piezaB.SetActive(true);
+                piezaB.GetComponent<SwitchSprite>().SwitchNewSprite();
+            }
+            if (UserData.usedPiezaC_N1)
+            {
+                piezaC.SetActive(true);
+                piezaC.GetComponent<SwitchSprite>().SwitchNewSprite();
+            }
+            if (UserData.usedPiezaD_N1)
+            {
+                piezaD.SetActive(true);
+                piezaD.GetComponent<SwitchSprite>().SwitchNewSprite();
+            }
 
         }
-        else piezaA.SetActive(false);
 
-        if (LevelManager.usedPB)
+        else if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2 || levelManager.currentScene == LevelManager.CurrentScene.Limbo)
         {
-            piezaB.SetActive(true);
+            if (UserData.usedPiezaA_N2)
 
-            piezaB.GetComponent<SwitchSprite>().SwitchNewSprite();
-
+            {
+                piezaA.SetActive(true);
+                piezaA.GetComponent<SwitchSprite>().SwitchNewSprite();
+            }
+            if (UserData.usedPiezaB_N2)
+            {
+                piezaB.SetActive(true);
+                piezaB.GetComponent<SwitchSprite>().SwitchNewSprite();
+            }
+            if (UserData.usedPiezaC_N2)
+            {
+                piezaC.SetActive(true);
+                piezaC.GetComponent<SwitchSprite>().SwitchNewSprite();
+            }
+            if (UserData.usedPiezaD_N2)
+            {
+                piezaD.SetActive(true);
+                piezaD.GetComponent<SwitchSprite>().SwitchNewSprite();
+            }
 
         }
-        
-        else piezaB.SetActive(false);
-        
-        if (LevelManager.usedPC)
+
+        else if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3 || levelManager.currentScene == LevelManager.CurrentScene.Limbo)
         {
-            piezaC.SetActive(true);
 
-            piezaC.GetComponent<SwitchSprite>().SwitchNewSprite();
+            if (UserData.usedPiezaA_N3)
+            {
+                piezaA.SetActive(true);
+                piezaA.GetComponent<SwitchSprite>().SwitchNewSprite();
+            }
+            if (UserData.usedPiezaB_N3)
+            {
+                piezaB.SetActive(true);
+                piezaB.GetComponent<SwitchSprite>().SwitchNewSprite();
+            }
+            if (UserData.usedPiezaC_N3)
+            {
+                piezaC.SetActive(true);
+                piezaC.GetComponent<SwitchSprite>().SwitchNewSprite();
+            }
+            if (UserData.usedPiezaD_N3)
+            {
+                piezaD.SetActive(true);
+                piezaD.GetComponent<SwitchSprite>().SwitchNewSprite();
+            }
 
-         
         }
-        else piezaC.SetActive(false);
+    }
+        //if (LevelManager.usedPA)
+        //{
+        //    piezaA.SetActive(true);
 
-        if (LevelManager.usedPD)
-        {
-            piezaD.SetActive(true);
+        //    piezaA.GetComponent<SwitchSprite>().SwitchNewSprite();
 
-            piezaD.GetComponent<SwitchSprite>().SwitchNewSprite();
+        //}
+        ////else piezaA.SetActive(false);
 
-        }
-        else piezaD.SetActive(false);
+        //if (LevelManager.usedPB)
+        //{
+        //    piezaB.SetActive(true);
+
+        //    piezaB.GetComponent<SwitchSprite>().SwitchNewSprite();
+
+
+        //}
+
+        ////else piezaB.SetActive(false);
+
+        //if (LevelManager.usedPC)
+        //{
+        //    piezaC.SetActive(true);
+
+        //    piezaC.GetComponent<SwitchSprite>().SwitchNewSprite();
+
+
+        //}
+        ////else piezaC.SetActive(false);
+
+        //if (LevelManager.usedPD)
+        //{
+        //    piezaD.SetActive(true);
+
+        //    piezaD.GetComponent<SwitchSprite>().SwitchNewSprite();
+
+        //}
+        ////else piezaD.SetActive(false);
     }
 
-}
+

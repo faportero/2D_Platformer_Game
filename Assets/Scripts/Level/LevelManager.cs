@@ -87,10 +87,12 @@ public class LevelManager : MonoBehaviour
             case CurrentScene.Nivel1:
                 InitFogTransition();
                 AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                playerMovementNew.inputsEnabled = false;
                 if (UserData.terminoTutorial)
                 {
                    // AudioManager.Instance.ToggleMusic();
                     if (newStartPos) playerController.transform.position = newStartPos.position;
+                    playerMovementNew.inputsEnabled = true;
                     //print("Limboooo");
                 }
 
@@ -98,13 +100,28 @@ public class LevelManager : MonoBehaviour
             case CurrentScene.Nivel2:
                 InitFogTransition();
                 AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
+                if (UserData.terminoTutorial2)
+                {
+                    // AudioManager.Instance.ToggleMusic();
+                    if (newStartPos) playerController.transform.position = newStartPos.position;
+                    playerMovementNew.inputsEnabled = true;
+                    //print("Limboooo");
+                }
                 //if (UserData.terminoTutorial)
                 //{
                 //    if (newStartPos) playerController.transform.position = newStartPos.position;
                 //}
                 break;
             case CurrentScene.Nivel3:
-
+                InitFogTransition();
+                AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                if (UserData.terminoTutorial3)
+                {
+                    // AudioManager.Instance.ToggleMusic();
+                    if (newStartPos) playerController.transform.position = newStartPos.position;
+                    playerMovementNew.inputsEnabled = true;
+                    //print("Limboooo");
+                }
                 break;
 
             default:
@@ -116,6 +133,12 @@ public class LevelManager : MonoBehaviour
     {
         Time.timeScale = 1;
         if(piezasNivel != null) CheckLevelPieces();
+
+        if(currentScene != CurrentScene.Lobby)
+        {
+            AudioManager.Instance.ToggleMusic(true);
+        }
+
     }
     private void InitFogTransition()
     {
@@ -232,26 +255,89 @@ public class LevelManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(5);
         if(currentScene == CurrentScene.Nivel1)SceneManager.LoadScene("Nivel_1");
         else if(currentScene == CurrentScene.Nivel2)SceneManager.LoadScene("Nivel_2");
+        else if(currentScene == CurrentScene.Nivel2)SceneManager.LoadScene("Nivel_3");
 
     }
     private void CheckLevelPieces()
     {
-        if (usedPA)
+        switch (currentScene)
         {
-           if (piezasNivel[0] != null) piezasNivel[0].SetActive(false);
+            case CurrentScene.Nivel1:
+                if (UserData.usedPiezaA_N1)
+                {
+                    if (piezasNivel[0] != null) piezasNivel[0].SetActive(false);
+                }
+                if (UserData.usedPiezaB_N1)
+                {
+                    if (piezasNivel[1] != null) piezasNivel[1].SetActive(false);
+                }
+                if (UserData.usedPiezaC_N1)
+                {
+                    if (piezasNivel[2] != null) piezasNivel[2].SetActive(false);
+                }
+                if (UserData.usedPiezaD_N1)
+                {
+                    if (piezasNivel[3] != null) piezasNivel[3].SetActive(false);
+                }
+                break;
+
+            case CurrentScene.Nivel2:
+                if (UserData.usedPiezaA_N2)
+                {
+                    if (piezasNivel[0] != null) piezasNivel[0].SetActive(false);
+                }
+                if (UserData.usedPiezaB_N2)
+                {
+                    if (piezasNivel[1] != null) piezasNivel[1].SetActive(false);
+                }
+                if (UserData.usedPiezaC_N2)
+                {
+                    if (piezasNivel[2] != null) piezasNivel[2].SetActive(false);
+                }
+                if (UserData.usedPiezaD_N2)
+                {
+                    if (piezasNivel[3] != null) piezasNivel[3].SetActive(false);
+                }
+                break;
+
+            case CurrentScene.Nivel3:
+                if (UserData.usedPiezaA_N3)
+                {
+                    if (piezasNivel[0] != null) piezasNivel[0].SetActive(false);
+                }
+                if (UserData.usedPiezaB_N3)
+                {
+                    if (piezasNivel[1] != null) piezasNivel[1].SetActive(false);
+                }
+                if (UserData.usedPiezaC_N3)
+                {
+                    if (piezasNivel[2] != null) piezasNivel[2].SetActive(false);
+                }
+                if (UserData.usedPiezaD_N3)
+                {
+                    if (piezasNivel[3] != null) piezasNivel[3].SetActive(false);
+                }
+                break;
         }
-        if (usedPB)
-        {
-            if (piezasNivel[1] != null) piezasNivel[1].SetActive(false);
-        }
-        if (usedPC)
-        {
-            if (piezasNivel[2] != null) piezasNivel[2].SetActive(false);
-        }
-        if (usedPD)
-        {
-            if (piezasNivel[3] != null) piezasNivel[3].SetActive(false);
-        }
+
+
+
+        //if (usedPA)
+        //{
+        //   if (piezasNivel[0] != null) piezasNivel[0].SetActive(false);
+        //}
+        //if (usedPB)
+        //{
+        //    if (piezasNivel[1] != null) piezasNivel[1].SetActive(false);
+        //}
+        //if (usedPC)
+        //{
+        //    if (piezasNivel[2] != null) piezasNivel[2].SetActive(false);
+        //}
+        //if (usedPD)
+        //{
+        //    if (piezasNivel[3] != null) piezasNivel[3].SetActive(false);
+        //}
     }
 
 }

@@ -682,12 +682,12 @@ MonoBehaviour:
   pm2: {fileID: 4909296727696450166}
   pm3: {fileID: 3059467648753541038}
   pm4: {fileID: 8005321297774491442}
-  panelFeedback: {fileID: 4260125737869298640}
   GargolaBuena: {fileID: 6727174481535591836}
   GargolaMala: {fileID: 6369702673538378550}
   explodeObject: {fileID: 2124437743578919119}
   PiezasRecuerdoMalo: {fileID: 0}
   PiezasRecuerdoBueno: {fileID: 0}
+  panelFeedback: {fileID: 4260125737869298640}
   triggerParteFinal: {fileID: 0}
   panelHUD: {fileID: 0}
   piezasPanel: {fileID: 0}

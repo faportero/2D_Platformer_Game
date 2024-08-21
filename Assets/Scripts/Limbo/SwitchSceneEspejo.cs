@@ -28,7 +28,7 @@ public class SwitchSceneEspejo : MonoBehaviour
     }
     private IEnumerator SwitchScene()
     {
-        AudioManager.Instance.ToggleMusic();
+        //AudioManager.Instance.ToggleMusic();
 
         // playerMovementNew.isMoving = false;
         //playerMovementNew.canMove = false;

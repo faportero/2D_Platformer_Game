@@ -22,16 +22,16 @@ public class PlayerMovementNew : MonoBehaviour
     [Header("Components Reference")]
     [HideInInspector] public Rigidbody2D rb;
     [SerializeField] private LevelManager levelManager;
-    [HideInInspector]public CapsuleCollider2D capsuleCollider;
+    [HideInInspector] public CapsuleCollider2D capsuleCollider;
     [HideInInspector] public Animator anim;
     private CinemachineVirtualCamera cm;
     private SpriteRenderer spriteRenderer;
-   // private PlayerController playerController;
+    // private PlayerController playerController;
     private PlayerControllerNew playerController;
     private GhostController ghostController;
     [HideInInspector] public CameraFollowObject cameraFollowObject;
     public GameObject cameraFollowGo;
-    [HideInInspector]public Coroutine heartbeatShakeSequence, cameraShake, currentMovementCoroutine;
+    [HideInInspector] public Coroutine heartbeatShakeSequence, cameraShake, currentMovementCoroutine;
 
     [Header("Level Colisions")]
     [SerializeField] private List<FallingLevelColliders> fallingColliders;
@@ -43,8 +43,8 @@ public class PlayerMovementNew : MonoBehaviour
 
     [Header("Input")]
     public SwipeDetector swipeDetector;
-    [HideInInspector]public Vector2 direction;
-    
+    [HideInInspector] public Vector2 direction;
+
 
     [Header("Movement Parameters")]
     [HideInInspector] public float gravityScale;
@@ -70,10 +70,10 @@ public class PlayerMovementNew : MonoBehaviour
     [Header("Input Parameters")]
     [SerializeField] private float tapTimeThreshold = .3f;
     [SerializeField] private float swipeDistanceThreshold = 150;
-    [HideInInspector]public Vector2 capsuleColliderSize;
+    [HideInInspector] public Vector2 capsuleColliderSize;
     private Vector2 capsuleColliderOffset;
     private Vector3 screenPosition;
-    [HideInInspector]public Vector3 targetPosition;
+    [HideInInspector] public Vector3 targetPosition;
     private float x, y;
     private float xRaw, yRaw;
     private float tapStartTime;
@@ -88,7 +88,7 @@ public class PlayerMovementNew : MonoBehaviour
     public bool canMove = true;
     public bool isGrounded;
     public bool canRoll;
-    [HideInInspector]public Vector2 rbVelocityTemp;
+    [HideInInspector] public Vector2 rbVelocityTemp;
     public bool doingRoll;
     public bool canSmash;
     public bool doingSmash;
@@ -118,7 +118,7 @@ public class PlayerMovementNew : MonoBehaviour
 
     {
         //if (UserData.terminoTutorial) inputsEnabled = true;
-        
+
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         //cm = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
@@ -151,7 +151,7 @@ public class PlayerMovementNew : MonoBehaviour
         }
         else
         {
-            inputsEnabled = false;  
+            inputsEnabled = false;
         }
     }
     private void LerpYDamping()
@@ -185,7 +185,7 @@ public class PlayerMovementNew : MonoBehaviour
             {
                 case MovementMode.TapMode:
                     //TapMovement();
-                   // print("Inputs:" + inputsEnabled + ". Moving: " + isMoving);
+                    // print("Inputs:" + inputsEnabled + ". Moving: " + isMoving);
 
                     isFallingMode = false;
                     if (inputsEnabled)
@@ -201,9 +201,9 @@ public class PlayerMovementNew : MonoBehaviour
                     break;
 
                 case MovementMode.RunnerMode:
-                  
-                    
-                    
+
+
+
 
                     isFallingMode = false;
 
@@ -211,11 +211,11 @@ public class PlayerMovementNew : MonoBehaviour
                     rb.velocity = new Vector2(clampedHorizontalSpeed, rb.velocity.y);
 
 
-                        LerpYDamping();
-                        RunnerMovement();
-                        CheckGround();
-                    
-                   
+                    LerpYDamping();
+                    RunnerMovement();
+                    CheckGround();
+
+
                     break;
                 case MovementMode.FallingMode:
                     isFallingMode = true;
@@ -225,7 +225,7 @@ public class PlayerMovementNew : MonoBehaviour
                     rb.velocity = new Vector2(rb.velocity.x, clampedVerticalSpeed);
 
                     GetInputDirection();
-                    if(inputsEnabled)GetDirecction();
+                    if (inputsEnabled) GetDirecction();
                     //if(inputsEnabled)TurnCheck();
                     CheckGround();
                     FallingMovement();
@@ -269,7 +269,7 @@ public class PlayerMovementNew : MonoBehaviour
         }
 
     }
-    private  void GetDirecction()
+    private void GetDirecction()
     {
         if (direction.x < 0 && transform.localScale.x > 0)
         {
@@ -298,7 +298,7 @@ public class PlayerMovementNew : MonoBehaviour
         }
         else if (!isPC)
         {
-           // print("entro al modo tap");
+            // print("entro al modo tap");
             if (Input.touchCount > 0 || swipeDetector.TapPerformed == true)
             {
                 Touch touch = Input.GetTouch(0);
@@ -313,8 +313,8 @@ public class PlayerMovementNew : MonoBehaviour
                 clicDirection = clicDirection - transform.position.x;
             }
             swipeDetector.TapPerformed = false;
-        }   
-        
+        }
+
     }
     private void Walk()
     {
@@ -333,7 +333,7 @@ public class PlayerMovementNew : MonoBehaviour
         {
             Vector3 rotator = new Vector3(transform.rotation.x, -180f, transform.rotation.z);
             transform.rotation = Quaternion.Euler(rotator);
-           // isFacingRight = !isFacingRight;
+            // isFacingRight = !isFacingRight;
 
             cameraFollowObject.CallTurn();
         }
@@ -341,7 +341,7 @@ public class PlayerMovementNew : MonoBehaviour
         {
             Vector3 rotator = new Vector3(transform.rotation.x, 0, transform.rotation.z);
             transform.rotation = Quaternion.Euler(rotator);
-          //  isFacingRight = !isFacingRight;
+            //  isFacingRight = !isFacingRight;
 
             cameraFollowObject.CallTurn();
         }
@@ -498,7 +498,7 @@ public class PlayerMovementNew : MonoBehaviour
     #region RunnerMode
     private void RunnerMovement()
     {
-        
+
 
         //print("Anim: " + anim.GetBool("Roll") + "DoingRoll: " + doingRoll + "InputEnabled" + inputsEnabled + "SwipeDirection" + swipeDetector.swipeDirection);
 
@@ -525,7 +525,7 @@ public class PlayerMovementNew : MonoBehaviour
 
         if (!isHitBadFloor)
         {
-           if(!isPortalEnter) Walk();
+            if (!isPortalEnter) Walk();
         }
         else
         {
@@ -707,7 +707,7 @@ public class PlayerMovementNew : MonoBehaviour
             }
 
 
-           // if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S) && !doingRoll)
+            // if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S) && !doingRoll)
             if (Input.GetMouseButtonDown(1) && !doingRoll && inputsEnabled)
             {
                 if (!playerController.isCannabis)
@@ -772,7 +772,7 @@ public class PlayerMovementNew : MonoBehaviour
         {
             if (Time.timeScale == 0) return;
             // if (Input.touchCount > 0 && inputsEnabled)
-            if (Input.touchCount > 0 )
+            if (Input.touchCount > 0)
             {
                 if (Input.touchCount == 1 && inputsEnabled)
                 {
@@ -1096,7 +1096,7 @@ public class PlayerMovementNew : MonoBehaviour
             anim.SetBool("Roll", true);
             canRoll = true;
             rbVelocityTemp = rb.velocity;
-           rb.velocity += new Vector2(x, y).normalized * rollVelocity;
+            rb.velocity += new Vector2(x, y).normalized * rollVelocity;
             StartCoroutine(SwitchCapsuleColliderSize());
             StartCoroutine(PreRoll());
         }
@@ -1128,11 +1128,11 @@ public class PlayerMovementNew : MonoBehaviour
     private IEnumerator SwitchCapsuleColliderSize()
     {
         yield return new WaitForSeconds(.1f);
-       // capsuleCollider.size = capsuleColliderSize * new Vector2(1, 0.05f);
+        // capsuleCollider.size = capsuleColliderSize * new Vector2(1, 0.05f);
         capsuleCollider.size = new Vector2(.79f, 0.0001f);
         //if (doingRoll) capsuleCollider.offset = new Vector2(0,-.14f);
         yield return new WaitForSeconds(.3f);
-        capsuleCollider.size = capsuleColliderSize; 
+        capsuleCollider.size = capsuleColliderSize;
         capsuleCollider.offset = capsuleColliderOffset;
         //rb.velocity = rbVelocityTemp;
 
@@ -1140,7 +1140,7 @@ public class PlayerMovementNew : MonoBehaviour
     private void Smash(float x, float y)
     {
         ghostController.enabled = true;
-       // spriteRenderer.color = Color.red;
+        // spriteRenderer.color = Color.red;
         anim.SetBool("Smash", true);
         canSmash = true;
         rb.velocity = Vector2.zero;
@@ -1177,7 +1177,7 @@ public class PlayerMovementNew : MonoBehaviour
     }
     public void StartCameraShake(float tiempo)
     {
-        if(cameraShake != null)
+        if (cameraShake != null)
         {
             StopCoroutine(cameraShake);
         }
@@ -1224,7 +1224,7 @@ public class PlayerMovementNew : MonoBehaviour
     #region FallingMde
     private void FallingMovement()
     {
-        
+
         direction = new Vector2(x, 0);
 
         int movimientosIzquierda = 0;
@@ -1273,7 +1273,7 @@ public class PlayerMovementNew : MonoBehaviour
 
                     if (Input.GetMouseButtonDown(0))
                     {
-                       transform.localScale = new Vector3(-1, 1, 1);
+                        transform.localScale = new Vector3(-1, 1, 1);
                         Mover(Vector3.left + new Vector3(0, -.25f, 0));
                         movimientosIzquierda++;
                         movimientosDerecha = Mathf.Max(0, movimientosDerecha - 1);
@@ -1410,9 +1410,9 @@ public class PlayerMovementNew : MonoBehaviour
     }
     private void Mover(Vector2 direccion)
     {
-        
+
         //Vector3 nuevaPosicion = transform.position + new Vector3(direccion.x, direccion.y,0).normalized * fallingModeMovementAmmount;
-        Vector3 nuevaPosicion = new Vector3(rb.position.x, rb.position.y,0) + new Vector3(direccion.x, direccion.y,0).normalized * fallingModeMovementAmmount;
+        Vector3 nuevaPosicion = new Vector3(rb.position.x, rb.position.y, 0) + new Vector3(direccion.x, direccion.y, 0).normalized * fallingModeMovementAmmount;
         rb.DOMove(nuevaPosicion, .1f);
     }
     #endregion
@@ -1592,16 +1592,16 @@ public class PlayerMovementNew : MonoBehaviour
     private IEnumerator DieAnim2()
     {
         dissolveAmount = 0;
-        while (dissolveAmount<1)
+        while (dissolveAmount < 1)
         {
             dissolveAmount += .1f;
             material.SetFloat("_DissolveAmmount", dissolveAmount);
             print(material.GetFloat("_DissolveAmmount"));
 
             yield return new WaitForSeconds(.05f);
-           // yield return null;
+            // yield return null;
         }
-       // Die();
+        // Die();
     }
     #endregion
 }

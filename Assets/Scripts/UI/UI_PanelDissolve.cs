@@ -10,7 +10,7 @@ public class UI_PanelDissolve : UI_Animation, IMaterialModifier
     public AnimationCurve dissolveCurve; // Curva para la disolución
     public float solidifyDuration = .5f;  // Duración para solidificación
     public AnimationCurve solidifyCurve;  // Curva para la solidificación
-
+    private LevelManager levelManager;
     // Almacena el valor actual de disolución
     private float currentDissolveAmount = 0f;
     public bool isWorldPanel;
@@ -32,6 +32,7 @@ public class UI_PanelDissolve : UI_Animation, IMaterialModifier
     }
     private void Start()
     {
+        levelManager = FindAnyObjectByType<LevelManager>();
     }
 
     // Método para iniciar la disolución
@@ -106,8 +107,12 @@ public class UI_PanelDissolve : UI_Animation, IMaterialModifier
             }
         }
 
-       gameObject.SetActive(false); // Desactiva el objeto al finalizar
-       //if(!isWorldPanel) gameObject.SetActive(false); // Desactiva el objeto al finalizar
+
+        //gameObject.SetActive(false); // Desactiva el objeto al finalizar
+        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1 || levelManager.currentScene == LevelManager.CurrentScene.Nivel2 || levelManager.currentScene == LevelManager.CurrentScene.Nivel3)
+        {
+            if (!isWorldPanel) gameObject.SetActive(false); // Desactiva el objeto al finalizar
+        }
     }
 
     // Método para iniciar la solidificación

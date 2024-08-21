@@ -73,9 +73,9 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void ToggleMusic()
+    public void ToggleMusic(bool mute)
     {
-        musicSource1.mute = !musicSource1.mute;
+        musicSource1.mute = !mute;
        // musicSource2.mute = !musicSource2.mute;
     }
 

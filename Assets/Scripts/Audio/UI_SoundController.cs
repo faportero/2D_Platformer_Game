@@ -7,9 +7,9 @@ public class UI_SoundController : MonoBehaviour
 {
     public Slider _musicSlider, _sfxSlider, _dialogueSlider;
 
-    public void ToggleMusic()
+    public void ToggleMusic(bool mute)
     {
-        AudioManager.Instance.ToggleMusic();
+        AudioManager.Instance.ToggleMusic(mute);
     }
     public void ToggleSFX()
     {

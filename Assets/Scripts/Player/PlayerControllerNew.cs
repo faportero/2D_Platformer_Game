@@ -586,28 +586,40 @@ public class PlayerControllerNew : MonoBehaviour
             }
             currenPiece = collision.gameObject;
             if ( collision.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasA)
-            {                
-                piezaA = true;
+            {
+                if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) UserData.piezaA_N1 = true;
+                else if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) UserData.piezaA_N2 = true;
+                else if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) UserData.piezaA_N3 = true;
+               // piezaA = true;
                 StartCoroutine(TakePieceAnim());
                 piezasPanel.piezaA.SetActive(false);
             }
             if (collision.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasB)
             {
-                piezaB = true;
+                if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) UserData.piezaB_N1 = true;
+                else if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) UserData.piezaB_N2 = true;
+                else if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) UserData.piezaB_N3 = true;
+                //piezaB = true;
                 StartCoroutine(TakePieceAnim());
                 piezasPanel.piezaB.SetActive(false);
 
             }
             if (collision.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasC)
             {
-                piezaC = true;
+                if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) UserData.piezaC_N1 = true;
+                else if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) UserData.piezaC_N2 = true;
+                else if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) UserData.piezaC_N3 = true;
+                //piezaC = true;
                 StartCoroutine(TakePieceAnim());
                 piezasPanel.piezaC.SetActive(false);
 
             }
             if (collision.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasD)
             {
-                piezaD = true;
+                if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) UserData.piezaD_N1 = true;
+                else if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) UserData.piezaD_N2 = true;
+                else if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) UserData.piezaD_N3 = true;
+                //piezaD = true;
                 StartCoroutine(TakePieceAnim());
                 piezasPanel.piezaD.SetActive(false);
 
@@ -756,15 +768,15 @@ public class PlayerControllerNew : MonoBehaviour
     private IEnumerator HitBadFloor()
     {
         playerMovement.isHitBadFloor = true;
+        //playerMovement.inputsEnabled = false;
         //StartCoroutine(ResetCollision());
         ResetCollisionHitBadFloor();
         // playerMovement.anim.SetBool("HitBadFloor", true);
-        //playerMovement.inputsEnabled = false;
         if (!playerMovement.isFallingMode)
         {
             StartCoroutine(DeactivateEnfasis());
            // playerMovement.rb.gravityScale = 0;
-            if(!isSmokePanelEffect)playerMovement.inputsEnabled = false;
+            playerMovement.inputsEnabled = false;
             playerMovement.rb.bodyType = RigidbodyType2D.Static;
             playerMovement.direction = Vector2.zero;
             panelFeedbackBadFloor.SetActive(true);
@@ -814,7 +826,7 @@ public class PlayerControllerNew : MonoBehaviour
             //playerMovement.rb.gravityScale = playerMovement.gravityScale;
             playerMovement.rb.bodyType = RigidbodyType2D.Dynamic;
             playerMovement.anim.SetBool("HitBadFloor", false);
-            if(!playerMovement.isGrounded)playerMovement.anim.SetBool("Walk", true);   
+            if(playerMovement.isGrounded)playerMovement.anim.SetBool("Walk", true);   
             else playerMovement.anim.SetBool("Jump", true);
       // playerMovement.inputsEnabled = true;
 
@@ -824,7 +836,7 @@ public class PlayerControllerNew : MonoBehaviour
             StartCoroutine(DeactivateEnfasis());
             playerMovement.rb.bodyType = RigidbodyType2D.Static;
 
-            if(!isSmokePanelEffect)playerMovement.inputsEnabled = false;
+            playerMovement.inputsEnabled = false;
             playerMovement.rb.bodyType = RigidbodyType2D.Static;
             playerMovement.direction = Vector2.zero;
 
@@ -874,7 +886,7 @@ public class PlayerControllerNew : MonoBehaviour
             panelFeedbackBadFloor.SetActive(false);   
             playerMovement.rb.bodyType = RigidbodyType2D.Dynamic;
             playerMovement.anim.SetBool("HitBadFloor", false);
-            if (!playerMovement.isGrounded) playerMovement.anim.SetBool("Walk", true);
+            if (playerMovement.isGrounded) playerMovement.anim.SetBool("Walk", true);
             else playerMovement.anim.SetBool("Jump", true);
         }
 

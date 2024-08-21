@@ -32,12 +32,25 @@ public class PanelEspejo : MonoBehaviour
     {
         if (Espejo.countPiezas != transform.parent.GetComponent<Espejo>().maxPiezas)
         {
-            if(playerMovementNew != null)playerMovementNew.swipeDetector.gameObject.SetActive(true);
-            if (transform.GetChild(0).gameObject.activeSelf)
+            if (collision.tag == "Player")
             {
-                transform.GetChild(0).GetComponent<UI_PanelDissolve>().StartDissolve();
+
+                if (playerMovementNew != null) playerMovementNew.swipeDetector.gameObject.SetActive(true);
+                if (transform.GetChild(0).gameObject.activeSelf)
+                {
+                    transform.GetChild(0).GetComponent<UI_PanelDissolve>().StartDissolve();
+                }
+                if (transform.GetChild(0).GetChild(1).GetChild(0).gameObject.activeSelf)
+                {
+                    transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<UI_PanelDissolve>().StartDissolve();
+                }
+                Invoke("DeactivateReintentarPanel", .5f);
             }
-               if(transform.GetChild(0).GetChild(1).GetChild(0).gameObject.activeSelf) transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<UI_PanelDissolve>().StartDissolve();
         }
+    }
+    private void DeactivateReintentarPanel()
+    {
+        transform.GetChild(0).gameObject.SetActive(false);
+        transform.GetChild(0).GetChild(1).GetChild(0).gameObject.SetActive(false);
     }
 }
