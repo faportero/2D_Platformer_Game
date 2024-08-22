@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -45,12 +46,12 @@ public class UI_PanelDissolve : UI_Animation, IMaterialModifier
     // Corrutina que maneja la animación de disolución
     private IEnumerator DissolveCoroutine()
     {
-        currentDissolveAmount = 0f;
-
+        TextMeshProUGUI[] textItems = gameObject.GetComponentsInChildren<TextMeshProUGUI>();
         float timer = 0f;
         float initialAmount = 0f; // Valor inicial de disolución
 
-        // Animar de 0 a 1 usando la curva de disolución
+        currentDissolveAmount = 0f;
+
         while (timer < dissolveDuration)
         {
             // Actualizar el temporizador basado en el tipo de panel
@@ -59,6 +60,14 @@ public class UI_PanelDissolve : UI_Animation, IMaterialModifier
             float t = timer / dissolveDuration; // Normaliza el tiempo
             float curveValue = dissolveCurve.Evaluate(t); // Evalúa la curva
             currentDissolveAmount = Mathf.Lerp(initialAmount, 1f, curveValue); // Interpola entre 0 y 1
+
+            // Actualizar el color del texto
+            foreach (TextMeshProUGUI item in textItems)
+            {
+                Color newColor = item.color;
+                newColor.a = Mathf.Lerp(1f, 0f, curveValue); // Ajusta el valor alfa basado en la curva
+                item.color = newColor;
+            }
 
             if (isWorldPanel)
             {
@@ -85,8 +94,16 @@ public class UI_PanelDissolve : UI_Animation, IMaterialModifier
         }
 
         yield return new WaitForSecondsRealtime(.2f);
+
         // Asegúrate de que el panel esté completamente disuelto
         currentDissolveAmount = 1f;
+
+        foreach (TextMeshProUGUI item in textItems)
+        {
+            Color newColor = item.color;
+            newColor.a = 0f; // Asegúrate de que el alfa esté en 0
+            item.color = newColor;
+        }
 
         if (isWorldPanel)
         {
@@ -107,13 +124,15 @@ public class UI_PanelDissolve : UI_Animation, IMaterialModifier
             }
         }
 
-
-        //gameObject.SetActive(false); // Desactiva el objeto al finalizar
-        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1 || levelManager.currentScene == LevelManager.CurrentScene.Nivel2 || levelManager.currentScene == LevelManager.CurrentScene.Nivel3)
+        // Desactiva el objeto si aplica
+        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1 ||
+            levelManager.currentScene == LevelManager.CurrentScene.Nivel2 ||
+            levelManager.currentScene == LevelManager.CurrentScene.Nivel3)
         {
-            if (!isWorldPanel) gameObject.SetActive(false); // Desactiva el objeto al finalizar
+            if (!isWorldPanel) gameObject.SetActive(false);
         }
     }
+
 
     // Método para iniciar la solidificación
     public void StartSolidify()

@@ -397,6 +397,10 @@ public class PlayerMovementNew : MonoBehaviour
 
                 currentMovementCoroutine = StartCoroutine(MoveFixedDistance()); // Inicia la corrutina para mover una distancia fija
             }
+            else
+            {
+                anim.SetBool("SlowWalk", false);
+            }
         }
     }
 
@@ -445,7 +449,7 @@ public class PlayerMovementNew : MonoBehaviour
         anim.Play("Idle");
         isMoving = false; // Marca el fin del movimiento
     }
-    private bool DetectTap()
+    public bool DetectTap()
     {
         if (isPC)
         {
@@ -462,6 +466,7 @@ public class PlayerMovementNew : MonoBehaviour
                 clicDirection = clicDirection - transform.position.x;
                 return true; // Se detectó un clic
             }
+
         }
         else if (!isPC)
         {
