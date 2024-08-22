@@ -111,7 +111,7 @@ public class PlayerMovementNew : MonoBehaviour
     public bool isPortalEnter;
     [HideInInspector] public bool isMoving;
 
-
+    private Coroutine tapCoroutine;
     #endregion
     #region Unity Callbacks
     private void Awake()
@@ -496,31 +496,59 @@ public class PlayerMovementNew : MonoBehaviour
     }
     #endregion
     #region RunnerMode
-    private void RunnerMovement()
+    // Coroutine para manejar el tap si no se detectó un swipe
+    // Coroutine para manejar el tap si no se detectó un swipe
+    // Coroutine para manejar el tap si no se detectó un swipe
+    // Manejar swipe detectado
+    // Cambios en HandleSwipe y HandleTap
+    // Modificación en HandleSwipe para manejar la dirección Down sin restricciones
+    private void HandleSwipe()
     {
+        // Se permite el roll en cualquier momento, incluso en el aire, sin verificar `doingRoll`
+        if (swipeDetector.swipeDirection == SwipeDirection.Down && inputsEnabled)
+        {
+            swipeDetector.TapPerformed = false;
+            StartCoroutine(Roll(0, -1, playerController.isCannabis ? 0.25f : 0)); // Ajuste para el roll sin restricciones de estado
+            swipeDetector.swipeDirection = SwipeDirection.None;
+        }
+    }
 
+    // Modificación en HandleTap para gestionar el roll durante el salto
+    private IEnumerator HandleTap()
+    {
+        yield return new WaitForSeconds(0.05f); // Retardo corto para garantizar que no es un swipe
 
-        //print("Anim: " + anim.GetBool("Roll") + "DoingRoll: " + doingRoll + "InputEnabled" + inputsEnabled + "SwipeDirection" + swipeDetector.swipeDirection);
+        if (tapDetected && jumpBufferCounter > 0 && !playerController.isCocaMetaHero)
+        {
+            if (coyoteTimeCounter > 0)
+            {
+                swipeDetector.TapPerformed = false;
+                anim.SetBool("Jump", true);
+                canDoubleJump = true;
+                StartCoroutine(Jump(playerController.isCannabis || playerController.isAlcohol ? 0.25f : 0));
 
+                if (playerController.isAlcohol)
+                {
+                    // Se permite el roll sin restricciones de estado
+                    canDoubleJump = false;
+                    StartCoroutine(Roll(0, -1, 0));
+                }
+            }
+            else if (canDoubleJump && !isGrounded && !playerController.isCocaMetaHero)
+            {
+                StartCoroutine(Jump(0));
+                canDoubleJump = false;
+            }
+        }
+    }
+        private void RunnerMovement()
+    {
         rb.gravityScale = gravityScale;
         if (!doingSmash && !doingRoll && !playerController.isCannabis) direction = new Vector2(1.2f, 1);
         else if (playerController.isCannabis) direction = new Vector2(1.0f, 1);
         else if (doingSmash) direction = new Vector2(smashVelocity, 0);
         else if (doingRoll && isGrounded) direction = new Vector2(2.5f, 0);
         if (anim.GetBool("SlowFall")) direction = new Vector2(slowFallGravity, .75f);
-        //if (playerController.paracaidas) direction = new Vector2(slowFallGravity, 0);      
-
-        //Walk();
-        //if (isGrounded)
-        //{
-        //    anim.SetBool("Walk", true);
-        //}
-        //else
-        //{
-        //    anim.SetBool("Jump", true);
-
-        //}
-
 
 
         if (!isHitBadFloor)
@@ -536,8 +564,7 @@ public class PlayerMovementNew : MonoBehaviour
             anim.SetBool("Flappy", false);
 
             anim.SetBool("HitBadFloor", true);
-            //anim.Play("Idle");
-            //anim.Play("HitBadFloor");
+
         }
         if (isGrounded && !isHitBadFloor)
         {
@@ -555,16 +582,13 @@ public class PlayerMovementNew : MonoBehaviour
             anim.SetBool("Roll", false);
             anim.SetBool("SlowFall", false);
             anim.SetBool("HitBadFloor", true);
-            //anim.Play("Idle");
-            // anim.Play("HitBadFloor");
+
 
         }
         else if (!isGrounded && !isHitBadFloor)
         {
             anim.SetBool("Jump", true);
         }
-
-
 
 
         if (isGrounded)
@@ -580,7 +604,6 @@ public class PlayerMovementNew : MonoBehaviour
         if (isPC)
         {
             if (Time.timeScale == 0) return;
-            //if (Input.GetMouseButtonDown(0) && inputsEnabled)
             if (swipeDetector.isJumping && inputsEnabled)
             {
                 jumpBufferCounter = jumpBufferTime;
@@ -591,12 +614,10 @@ public class PlayerMovementNew : MonoBehaviour
             }
 
 
-            //if (Input.GetKeyDown(KeyCode.Space) && !playerController.isCocaMetaHero)
             if (jumpBufferCounter > 0 && !playerController.isCocaMetaHero)
             {
 
                 if (coyoteTimeCounter > 0)
-                //if (isGrounded)
                 {
                     anim.SetBool("Jump", true);
                     canDoubleJump = true;
@@ -620,7 +641,6 @@ public class PlayerMovementNew : MonoBehaviour
                     {
                         canDoubleJump = false;
                         StartCoroutine(Roll(0, -1, 0));
-                        //Roll(0, -1);
                     }
                 }
                 else if (playerController.saltoDoble)
@@ -638,7 +658,6 @@ public class PlayerMovementNew : MonoBehaviour
 
             }
             if (Input.GetMouseButtonUp(0)) coyoteTimeCounter = 0;
-            //if (Input.GetKeyUp(KeyCode.Space)) coyoteTimeCounter = 0;
 
             if (playerController.isCocaMetaHero)
             {
@@ -661,24 +680,6 @@ public class PlayerMovementNew : MonoBehaviour
                 Camera.main.ResetProjectionMatrix();
             }
 
-            ////if (playerController.isTabaco && !doingShake)
-            //if (playerController.isSmokePanelEffect)
-            //{
-            //    // StartCoroutine(CameraShake(1f));
-            //    StartCoroutine(HeartbeatShakeSequence());
-            //    //else StopCoroutine("HeartbeatShakeSequence");
-            //}
-            //else
-            //{
-            //    if (heartbeatShakeSequence != null) StopCoroutine(heartbeatShakeSequence);
-            //    playerController.isSmokePanelEffect = false;
-            //}
-            //if (playerController.isTabaco && !doingShake)
-
-            //if (!playerController.doingEnemyShake)
-            //{
-            //    if (playerController.enemyCameraShake != null) StopCoroutine(playerController.enemyCameraShake);
-            //}
 
             if (playerController.paracaidas)
             {
@@ -706,17 +707,13 @@ public class PlayerMovementNew : MonoBehaviour
                 }
             }
 
-
-            // if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S) && !doingRoll)
             if (Input.GetMouseButtonDown(1) && !doingRoll && inputsEnabled)
             {
                 if (!playerController.isCannabis)
                 {
                     if (!playerController.isAlcohol)
                     {
-                        //direction = direction * 1.5f;
                         StartCoroutine(Roll(0, -1, 0));
-                        //Roll(0, -1);
                     }
                     else
                     {
@@ -771,7 +768,6 @@ public class PlayerMovementNew : MonoBehaviour
         else if (!isPC)
         {
             if (Time.timeScale == 0) return;
-            // if (Input.touchCount > 0 && inputsEnabled)
             if (Input.touchCount > 0)
             {
                 if (Input.touchCount == 1 && inputsEnabled)
@@ -782,119 +778,33 @@ public class PlayerMovementNew : MonoBehaviour
                     if (touch.phase == TouchPhase.Began)
                     {
                         jumpBufferCounter = jumpBufferTime;
+                        tapDetected = true;
+                        tapStartTime = Time.time;
+                        tapStartPos = touch.position;
+
+                        if (tapCoroutine != null)
+                        {
+                            StopCoroutine(tapCoroutine);
+                        }
+                        tapCoroutine = StartCoroutine(HandleTap());
                     }
                     else
                     {
                         jumpBufferCounter -= Time.deltaTime;
                     }
 
-
-                    if (touch.phase == TouchPhase.Began)
+                    if (touch.phase == TouchPhase.Moved)
                     {
-                        tapDetected = true;
-                        tapStartTime = Time.time;
-                        tapStartPos = touch.position;
+                        Vector2 localPoint = touch.position;
+                        Vector2 deltaPoint = touch.deltaPosition * 10;
 
-
-                    }
-                    // Detectar el final del toque
-                    else if (touch.phase == TouchPhase.Ended && tapDetected)
-                    {
-                        //coyoteTimeCounter = 0;
-
-                        tapDetected = false;
-                        float tapEndTime = Time.time;
-                        Vector2 tapEndPos = touch.position;
-                        tapDuration = tapEndTime - tapStartTime;
-                        float swipeDistance = Vector2.Distance(tapStartPos, tapEndPos);
-
-
-                        if (jumpBufferCounter > 0 && tapDuration < tapTimeThreshold && swipeDistance < swipeDistanceThreshold && !playerController.isCocaMetaHero)
+                        if (Vector2.Distance(localPoint, deltaPoint) > swipeDistanceThreshold)
                         {
-                            // Esto es un tap
-                            //if (isGrounded)
-
-                            if (coyoteTimeCounter > 0)
-                            {
-
-                                swipeDetector.TapPerformed = false;
-                                anim.SetBool("Jump", true);
-                                canDoubleJump = true;
-                                if (!playerController.isCannabis && !playerController.isAlcohol)
-                                {
-                                    StartCoroutine(Jump(0));
-                                    jumpBufferCounter = 0;
-                                }
-                                else
-                                {
-                                    canSmash = false;
-                                    canDoubleJump = false;
-                                    StartCoroutine(Jump(.25f));
-                                }
-
-                                if (playerController.isAlcohol && !doingRoll)
-                                {
-                                    canDoubleJump = false;
-                                    StartCoroutine(Roll(0, -1, 0));
-                                    //Roll(0, -1);
-                                }
-                            }
-
-                            else if (playerController.saltoDoble)
-                            {
-                                if (jumpBufferCounter > 0 && !playerController.isCocaMetaHero)
-                                {
-                                    if (canDoubleJump)
-                                    {
-                                        //swipeDetector.TapPerformed = false;
-                                        StartCoroutine(Jump(0));
-                                        canDoubleJump = false;
-                                    }
-                                }
-                            }
+                            tapDetected = false; // Cancelar el tap
+                            HandleSwipe();
                         }
-                        else
-                        {
-                            // Esto es un swipe
-
-                            if (swipeDetector.swipeDirection == SwipeDirection.Down && inputsEnabled && !doingRoll)
-                            {
-                                swipeDetector.TapPerformed = false;
-                                if (!playerController.isCannabis)
-                                {
-                                    if (!playerController.isAlcohol)
-                                    {
-                                        StartCoroutine(Roll(0, -1, 0));
-                                        //Roll(0, -1);
-                                    }
-                                    else
-                                    {
-                                        if (isGrounded)
-                                        {
-                                            anim.SetBool("Jump", true);
-                                            canDoubleJump = false;
-                                            StartCoroutine(Jump(0));
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    StartCoroutine(Roll(0, -1, .25f));
-                                }
-
-
-                                swipeDetector.swipeDirection = SwipeDirection.None;
-                            }
-
-                            if (canSmash && swipeDetector.swipeDirection == SwipeDirection.Right && !doingSmash)
-                            {
-                                Smash(1, 0);
-                                swipeDetector.TapPerformed = false;
-                                swipeDetector.swipeDirection = SwipeDirection.None;
-                            }
-                        }
-                        if (!swipeDetector.IsPressing) coyoteTimeCounter = 0;
                     }
+
                 }
 
                 else if (Input.touchCount == 2)
@@ -966,23 +876,6 @@ public class PlayerMovementNew : MonoBehaviour
                 Camera.main.ResetProjectionMatrix();
             }
 
-            //if (playerController.isSmokePanelEffect)
-            //{
-            //    // StartCoroutine(CameraShake(1f));
-            //    StartCoroutine(HeartbeatShakeSequence());
-            //    //else StopCoroutine("HeartbeatShakeSequence");
-            //}
-            //else
-            //{
-            //    if (heartbeatShakeSequence != null) StopCoroutine(heartbeatShakeSequence);
-            //    playerController.isSmokePanelEffect = false;
-
-            //}
-            //if (!playerController.doingEnemyShake)
-            //{
-            //    if (playerController.enemyCameraShake != null) StopCoroutine(playerController.enemyCameraShake);
-            //}
-
             if (isGrounded && !tapFloor)
             {
                 TapFloor();
@@ -1012,25 +905,27 @@ public class PlayerMovementNew : MonoBehaviour
     #region RunnerMethods
     public void DoJump(float delay)
     {
-        //if (tutorialActive)
-        //    return;
-
         if (coyoteTimeCounter > 0)
         {
-            StartCoroutine(Jump(0));  // Iniciar el salto
+            StartCoroutine(Jump(0));
         }
         else if (playerController.saltoDoble && canDoubleJump)
         {
-            StartCoroutine(Jump(0));  // Iniciar el doble salto si está disponible
-            canDoubleJump = false;     // Desactivar el doble salto después de usarlo
+            StartCoroutine(Jump(0));
+            canDoubleJump = false;
         }
     }
+
+    // Modificación en Jump para resetear el estado de roll inmediatamente
     private IEnumerator Jump(float delay)
     {
-
         if (!playerController.isCannabis)
         {
             PlayJumpSound();
+            yield return new WaitForSeconds(delay);
+
+            // Reseteo inmediato para permitir el roll en cualquier momento
+            doingRoll = false;
 
             StartCoroutine(SwitchCapsuleColliderSize());
             rb.velocity = new Vector2(rb.velocity.x, 0);
@@ -1038,21 +933,19 @@ public class PlayerMovementNew : MonoBehaviour
         }
         else
         {
-
-            anim.SetBool("Walk", true);
-            anim.SetBool("Jump", false);
             yield return new WaitForSeconds(delay);
-
             PlayJumpSound();
 
             anim.SetBool("Walk", false);
             anim.SetBool("Jump", true);
+
+            // Reseteo inmediato para permitir el roll en cualquier momento
+            doingRoll = false;
+
             StartCoroutine(SwitchCapsuleColliderSize());
             rb.velocity = new Vector2(rb.velocity.x, 0);
             rb.velocity += Vector2.up * jumpStrength;
-            //if(canDoubleJump) canDoubleJump = false;
         }
-
     }
     private void PlayJumpSound()
     {
@@ -1073,54 +966,43 @@ public class PlayerMovementNew : MonoBehaviour
     }
     public void DoRoll()
     {
-        StartCoroutine(Roll(0, -1, 0));     // Iniciar el roll estándar
+        StartCoroutine(Roll(0, -1, 0));
     }
+
     private IEnumerator Roll(float x, float y, float time)
     {
-
-        if (!playerController.isCannabis)
-        {
-            anim.SetBool("Roll", true);
-            // Vector3 playerPosition = Camera.main.WorldToViewportPoint(transform.position);
-            //Camera.main.GetComponent<RippleEffect>().Emit(playerPosition);
-            //StartCoroutine(CameraShake());
-            canRoll = true;
-            rbVelocityTemp = rb.velocity;
-            rb.velocity += new Vector2(x, y).normalized * rollVelocity;
-            StartCoroutine(SwitchCapsuleColliderSize());
-            StartCoroutine(PreRoll());
-        }
-        else
-        {
-            yield return new WaitForSeconds(time);
-            anim.SetBool("Roll", true);
-            canRoll = true;
-            rbVelocityTemp = rb.velocity;
-            rb.velocity += new Vector2(x, y).normalized * rollVelocity;
-            StartCoroutine(SwitchCapsuleColliderSize());
-            StartCoroutine(PreRoll());
-        }
-
-    }
-    private IEnumerator PreRoll()
-    {
-        StartCoroutine(FloorRoll());
-        //rb.gravityScale = 0;
+        // Eliminar la condición para permitir el roll incluso si doingRoll es true
+        // Esto asegura que se pueda hacer roll sin restricciones de estado
+        // Eliminamos la condición: `if (!doingRoll)`
         doingRoll = true;
+        anim.SetBool("Roll", true);
 
-        yield return new WaitForSeconds(0.3f);
-        //rb.gravityScale = gravityScale;
+        rbVelocityTemp = rb.velocity;
+        rb.velocity = new Vector2(x, y).normalized * rollVelocity;
+
+        StartCoroutine(SwitchCapsuleColliderSize());
+        StartCoroutine(PreRoll());
+
+        yield return new WaitForSeconds(0.3f); // Duración del roll
         doingRoll = false;
         EndRoll();
     }
+
+    private IEnumerator PreRoll()
+    {
+        yield return null; // Eliminado cualquier lógica dependiente de estar en el suelo
+    }
+
     public void EndRoll()
     {
         anim.SetBool("Roll", false);
+        canRoll = true; // Permitir que se pueda hacer roll nuevamente
     }
     private IEnumerator FloorRoll()
     {
         yield return new WaitForSeconds(0.15f);
         if (isGrounded)
+       // if (coyoteTimeCounter > 0 && jumpBufferCounter > 0)
         {
             canRoll = false;
         }
