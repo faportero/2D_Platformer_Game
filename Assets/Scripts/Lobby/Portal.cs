@@ -79,7 +79,7 @@ public class Portal : MonoBehaviour
     }
     private IEnumerator SwitchScene()
     {
-        AudioManager.Instance.PlaySfx("Fog_Transition");
+        AudioManager.Instance.PlaySfx("Fog_Transition", true);
 
 
         playerMovementNew.canMove = false;

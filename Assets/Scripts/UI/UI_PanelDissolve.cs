@@ -1,52 +1,77 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Clase que maneja el disolverse y solidificarse de un panel
 public class UI_PanelDissolve : UI_Animation, IMaterialModifier
 {
-    // Duración de la animación y curvas de aceleración para disolver y solidificar
     public float dissolveDuration = .5f; // Duración para disolución
     public AnimationCurve dissolveCurve; // Curva para la disolución
     public float solidifyDuration = .5f;  // Duración para solidificación
     public AnimationCurve solidifyCurve;  // Curva para la solidificación
     private LevelManager levelManager;
-    // Almacena el valor actual de disolución
     private float currentDissolveAmount = 0f;
     public bool isWorldPanel;
-    // Método que modifica el material base para aplicar el efecto de disolución
+
+    private List<Material> materialsToAnimate = new List<Material>();
+    private List<TextMeshPro> worldPanelTexts = new List<TextMeshPro>();
+    private List<TextMeshProUGUI> uiTexts = new List<TextMeshProUGUI>();
+
+    private void Awake()
+    {
+        levelManager = FindFirstObjectByType<LevelManager>();
+
+        if (isWorldPanel)
+        {
+            var spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
+            foreach (var renderer in spriteRenderers)
+            {
+                if (renderer.material.HasProperty("_DissolveAmmount"))
+                {
+                    materialsToAnimate.Add(renderer.material);
+                }
+            }
+
+            worldPanelTexts.AddRange(GetComponentsInChildren<TextMeshPro>());
+        }
+        else
+        {
+            var images = GetComponentsInChildren<Image>();
+            foreach (var image in images)
+            {
+                if (image.material.HasProperty("_DissolveAmmount"))
+                {
+                    materialsToAnimate.Add(image.material);
+                }
+            }
+
+            uiTexts.AddRange(GetComponentsInChildren<TextMeshProUGUI>());
+        }
+    }
+
+    private void OnEnable()
+    {
+        StartSolidify(); // Inicia la solidificación al activar el panel
+    }
+
     public Material GetModifiedMaterial(Material baseMaterial)
     {
-        // Asegúrate de que el material tenga la propiedad "_DissolveAmount"
         if (baseMaterial.HasProperty("_DissolveAmmount"))
         {
-            // Establece el valor de disolución según el estado actual
             baseMaterial.SetFloat("_DissolveAmmount", currentDissolveAmount);
         }
         return baseMaterial;
     }
-    private void OnEnable()
-    {
-        StartSolidify(); // Inicia la disolución al comenzar
-        
-    }
-    private void Start()
-    {
-        levelManager = FindAnyObjectByType<LevelManager>();
-    }
 
-    // Método para iniciar la disolución
     public void StartDissolve()
     {
         StartCoroutine(DissolveCoroutine());
         AudioManager.Instance.PlaySfx("Panel_hide");
     }
 
-    // Corrutina que maneja la animación de disolución
     private IEnumerator DissolveCoroutine()
     {
-        TextMeshProUGUI[] textItems = gameObject.GetComponentsInChildren<TextMeshProUGUI>();
         float timer = 0f;
         float initialAmount = 0f; // Valor inicial de disolución
 
@@ -54,77 +79,67 @@ public class UI_PanelDissolve : UI_Animation, IMaterialModifier
 
         while (timer < dissolveDuration)
         {
-            // Actualizar el temporizador basado en el tipo de panel
             timer += isWorldPanel ? Time.deltaTime : Time.unscaledDeltaTime;
 
-            float t = timer / dissolveDuration; // Normaliza el tiempo
-            float curveValue = dissolveCurve.Evaluate(t); // Evalúa la curva
-            currentDissolveAmount = Mathf.Lerp(initialAmount, 1f, curveValue); // Interpola entre 0 y 1
+            float t = timer / dissolveDuration;
+            float curveValue = dissolveCurve.Evaluate(t);
+            currentDissolveAmount = Mathf.Lerp(initialAmount, 1f, curveValue);
 
-            // Actualizar el color del texto
-            foreach (TextMeshProUGUI item in textItems)
+            foreach (var material in materialsToAnimate)
             {
-                Color newColor = item.color;
-                newColor.a = Mathf.Lerp(1f, 0f, curveValue); // Ajusta el valor alfa basado en la curva
-                item.color = newColor;
+                material.SetFloat("_DissolveAmmount", currentDissolveAmount);
             }
 
             if (isWorldPanel)
             {
-                // Actualizar SpriteRenderer
-                var spriteRenderer = GetComponent<SpriteRenderer>();
-                if (spriteRenderer != null)
+                foreach (var text in worldPanelTexts)
                 {
-                    // Aplicar el valor de disolución al material existente
-                    spriteRenderer.material.SetFloat("_DissolveAmmount", currentDissolveAmount);
+                    var color = text.color;
+                    color.a = Mathf.Lerp(1f, 0f, curveValue);
+                    text.color = color;
                 }
             }
             else
             {
-                // Actualizar Image
-                var image = GetComponent<Image>();
-                if (image != null)
+                foreach (var text in uiTexts)
                 {
-                    // Aplicar el valor de disolución al material existente
-                    image.material.SetFloat("_DissolveAmmount", currentDissolveAmount);
+                    var color = text.color;
+                    color.a = Mathf.Lerp(1f, 0f, curveValue);
+                    text.color = color;
                 }
             }
 
-            yield return null; // Espera un frame antes de continuar
+            yield return null;
         }
 
         yield return new WaitForSecondsRealtime(.2f);
 
-        // Asegúrate de que el panel esté completamente disuelto
         currentDissolveAmount = 1f;
 
-        foreach (TextMeshProUGUI item in textItems)
+        foreach (var material in materialsToAnimate)
         {
-            Color newColor = item.color;
-            newColor.a = 0f; // Asegúrate de que el alfa esté en 0
-            item.color = newColor;
+            material.SetFloat("_DissolveAmmount", currentDissolveAmount);
         }
 
         if (isWorldPanel)
         {
-            // Actualizar SpriteRenderer
-            var spriteRenderer = GetComponent<SpriteRenderer>();
-            if (spriteRenderer != null)
+            foreach (var text in worldPanelTexts)
             {
-                spriteRenderer.material.SetFloat("_DissolveAmmount", currentDissolveAmount);
+                var color = text.color;
+                color.a = 0f;
+                text.color = color;
             }
         }
         else
         {
-            // Actualizar Image
-            var image = GetComponent<Image>();
-            if (image != null)
+            foreach (var text in uiTexts)
             {
-                image.material.SetFloat("_DissolveAmmount", currentDissolveAmount);
+                var color = text.color;
+                color.a = 0f;
+                text.color = color;
             }
         }
 
-        // Desactiva el objeto si aplica
         if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1 ||
             levelManager.currentScene == LevelManager.CurrentScene.Nivel2 ||
             levelManager.currentScene == LevelManager.CurrentScene.Nivel3)
@@ -133,78 +148,78 @@ public class UI_PanelDissolve : UI_Animation, IMaterialModifier
         }
     }
 
-
-    // Método para iniciar la solidificación
     public void StartSolidify()
     {
         StartCoroutine(SolidifyCoroutine());
         AudioManager.Instance.PlaySfx("Panel_show");
-
     }
 
-    // Corrutina que maneja la animación de solidificación
     private IEnumerator SolidifyCoroutine()
     {
+        float timer = 0f;
+        float initialAmount = 1f;
+
         currentDissolveAmount = 1f;
 
-        float timer = 0f;
-        float initialAmount = 1f; // Valor inicial de disolución
-
-        // Animar de 1 a 0 usando la curva de solidificación
         while (timer < solidifyDuration)
         {
-            // Actualizar el temporizador basado en el tipo de panel
             timer += isWorldPanel ? Time.deltaTime : Time.unscaledDeltaTime;
 
-            float t = timer / solidifyDuration; // Normaliza el tiempo
-            float curveValue = solidifyCurve.Evaluate(t); // Evalúa la curva
-            currentDissolveAmount = Mathf.Lerp(initialAmount, 0f, curveValue); // Interpola entre 1 y 0
+            float t = timer / solidifyDuration;
+            float curveValue = solidifyCurve.Evaluate(t);
+            currentDissolveAmount = Mathf.Lerp(initialAmount, 0f, curveValue);
+
+            foreach (var material in materialsToAnimate)
+            {
+                material.SetFloat("_DissolveAmmount", currentDissolveAmount);
+            }
 
             if (isWorldPanel)
             {
-                // Actualizar SpriteRenderer
-                var spriteRenderer = GetComponent<SpriteRenderer>();
-                if (spriteRenderer != null)
+                foreach (var text in worldPanelTexts)
                 {
-                    // Aplicar el valor de disolución al material existente
-                    spriteRenderer.material.SetFloat("_DissolveAmmount", currentDissolveAmount);
+                    var color = text.color;
+                    color.a = Mathf.Lerp(0f, 1f, curveValue);
+                    text.color = color;
                 }
             }
             else
             {
-                // Actualizar Image
-                var image = GetComponent<Image>();
-                if (image != null)
+                foreach (var text in uiTexts)
                 {
-                    // Aplicar el valor de disolución al material existente
-                    image.material.SetFloat("_DissolveAmmount", currentDissolveAmount);
+                    var color = text.color;
+                    color.a = Mathf.Lerp(0f, 1f, curveValue);
+                    text.color = color;
                 }
             }
 
-            yield return null; // Espera un frame antes de continuar
+            yield return null;
         }
 
-        // Asegúrate de que el panel esté completamente sólido
         currentDissolveAmount = 0f;
+
+        foreach (var material in materialsToAnimate)
+        {
+            material.SetFloat("_DissolveAmmount", currentDissolveAmount);
+        }
 
         if (isWorldPanel)
         {
-            // Actualizar SpriteRenderer
-            var spriteRenderer = GetComponent<SpriteRenderer>();
-            if (spriteRenderer != null)
+            foreach (var text in worldPanelTexts)
             {
-                spriteRenderer.material.SetFloat("_DissolveAmmount", currentDissolveAmount);
+                var color = text.color;
+                color.a = 1f;
+                text.color = color;
             }
         }
         else
         {
-            // Actualizar Image
-            var image = GetComponent<Image>();
-            if (image != null)
+            foreach (var text in uiTexts)
             {
-                image.material.SetFloat("_DissolveAmmount", currentDissolveAmount);
+                var color = text.color;
+                color.a = 1f;
+                text.color = color;
             }
         }
     }
-
 }

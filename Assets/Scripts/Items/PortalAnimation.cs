@@ -13,7 +13,7 @@ public class PortalAnimation : MonoBehaviour
            // Time.timeScale = 0.5f;
             PortalAnimatorObject.SetActive(true);
             firstShowPanel = true;
-            if (firstShowPanel)AudioManager.Instance.PlaySfx("Portal_Appear");
+            if (firstShowPanel)AudioManager.Instance.PlaySfx("Portal_Appear", true);
             //gameObject.SetActive(false);
         }
     }

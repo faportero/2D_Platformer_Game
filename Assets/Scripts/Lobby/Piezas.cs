@@ -48,7 +48,7 @@ public class Piezas : MonoBehaviour
 
     private IEnumerator PiecedAnim(float delay)
     {
-        AudioManager.Instance.PlaySfx("Espejo_pieza");
+        AudioManager.Instance.PlaySfx("Espejo_pieza", true);
         gameObject.SetActive(true);
         LoadTransforms();
         yield return new WaitForSeconds(delay);

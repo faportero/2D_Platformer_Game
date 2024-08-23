@@ -87,7 +87,7 @@ public class LevelManager : MonoBehaviour
             case CurrentScene.Nivel1:
                 InitFogTransition();
                 AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
-                //playerMovementNew.inputsEnabled = false;
+                playerMovementNew.inputsEnabled = false;
                 if (UserData.terminoTutorial)
                 {
                    // AudioManager.Instance.ToggleMusic();

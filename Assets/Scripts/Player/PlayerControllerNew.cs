@@ -361,7 +361,7 @@ public class PlayerControllerNew : MonoBehaviour
 
             rendererSwitcher.SwitchRenderer(rendererSwitcher.YourCamera, 0);
 
-            AudioManager.Instance.PlaySfx("Item_Bueno");
+            AudioManager.Instance.PlaySfx("Item_Bueno", true);
 
             // return;
         }
@@ -563,7 +563,7 @@ public class PlayerControllerNew : MonoBehaviour
 
             //rendererSwitcher.SwitchRenderer(rendererSwitcher.YourCamera, 1);
 
-            AudioManager.Instance.PlaySfx("Item_Malo");
+            AudioManager.Instance.PlaySfx("Item_Malo", true);
 
 
             // if (currentSalud != 100) spriteRenderer.material = materials[0];
@@ -625,7 +625,7 @@ public class PlayerControllerNew : MonoBehaviour
 
             }
 
-            AudioManager.Instance.PlaySfx("Item_Pieza");
+            AudioManager.Instance.PlaySfx("Item_Pieza", true);
 
         }
 
@@ -700,7 +700,7 @@ public class PlayerControllerNew : MonoBehaviour
 
             StartCoroutine(HitBadFloor());
 
-            AudioManager.Instance.PlaySfx("HitWall");
+            AudioManager.Instance.PlaySfx("HitWall", true);
 
         }
 
@@ -1044,7 +1044,10 @@ public class PlayerControllerNew : MonoBehaviour
         //spriteRenderer.material = materials[0];
         isIndestructible = false;
         SetAllCompositeCollidersTrigger(compositeColliders, false);
-        AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+        if(levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
+        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+
 
     }
     private void CurrentEffectPanel(float delay)

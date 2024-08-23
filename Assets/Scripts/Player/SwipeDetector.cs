@@ -40,7 +40,9 @@ public class SwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     public bool playJumpSound = true;
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        btnPause = transform.parent.GetComponentInChildren<Button>();
+        playerMovementNew = FindAnyObjectByType<PlayerMovementNew>();
+        //DontDestroyOnLoad(gameObject);
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -122,8 +124,7 @@ public class SwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     }
     private void Start()
     {
-        btnPause = transform.parent.GetComponentInChildren<Button>();
-        playerMovementNew = FindAnyObjectByType<PlayerMovementNew>();
+       
     }
     private void Update()
     {

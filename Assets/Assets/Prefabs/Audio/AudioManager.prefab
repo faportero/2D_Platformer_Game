@@ -577,6 +577,8 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: a9ae88b4f62459f48af3b6b9e4750632, type: 3}
   - name: Indestructible_loop
     clip: {fileID: 8300000, guid: d3968430926dc12439f5c59a6781e151, type: 3}
+  - name: Die_Panel
+    clip: {fileID: 8300000, guid: d3235582c152f2947a8ca34d9a4202da, type: 3}
   sfxSounds:
   - name: HourGlassTransition
     clip: {fileID: 8300000, guid: 9d8eeb4433ad7da40b14fe1a5a969bfd, type: 3}
@@ -636,6 +638,8 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 94acb362e65e7db4ba96c23adda9f42e, type: 3}
   - name: Die
     clip: {fileID: 8300000, guid: 0f127ecb05586064b9e478b352ed72e6, type: 3}
+  - name: Avion
+    clip: {fileID: 8300000, guid: fbdd709c56e644947824efa81b40bc34, type: 3}
   dialogueSounds: []
   musicSource1: {fileID: 768406074877280248}
   musicSource2: {fileID: 5876780549164642324}
