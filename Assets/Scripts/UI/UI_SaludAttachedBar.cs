@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class UI_SaludAttachedBar : MonoBehaviour
 {
     public AnimationCurve curve;
-    public Image healthFillBar;
+    //public Image healthFillBar;
+    public UnityEngine.UI.Slider healthFillBar;
     [SerializeField] private Gradient colorGradient;
     private float maxTimeEffect = 100;
     public float currentTimeEffect;
@@ -20,9 +21,10 @@ public class UI_SaludAttachedBar : MonoBehaviour
 
     private void Start()
     {
-        healthFillBar = transform.GetChild(1).GetComponent<Image>();
-        //UpdateTime(2);
+        //healthFillBar = transform.GetChild(0).GetComponent<Image>();      
+        // healthFillBar = transform.GetChild(0).GetComponent<Image>();      
     }
+
 
     public void UpdateTime(float duration)
     {
@@ -34,32 +36,26 @@ public class UI_SaludAttachedBar : MonoBehaviour
             startUpdateTimeCoroutine = false;
 
         }
-        if(!startUpdateTimeCoroutine) updateTimeCoroutine = StartCoroutine(UpdateTimeEffect(duration));
-        //if(gameObject.activeSelf && transform.parent.gameObject.activeSelf)updateTimeCoroutine = StartCoroutine(UpdateTimeEffect(duration));
-
+        if (!startUpdateTimeCoroutine) updateTimeCoroutine = StartCoroutine(UpdateTimeEffect(duration));
     }
 
     private IEnumerator UpdateTimeEffect(float duration)
     {
+        //duration = 10;
         startUpdateTimeCoroutine = true;
-        transform.parent.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
-        transform.GetChild(1).gameObject.GetComponent<Image>().color = Color.white;
 
-         startFillAmount = 1; 
-         targetFillAmount = currentTimeEffect / maxTimeEffect;
+        startFillAmount = 1;
+        targetFillAmount = currentTimeEffect / maxTimeEffect;
         float elapsedTime = 0;
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
-            healthFillBar.fillAmount = Mathf.Lerp(startFillAmount, targetFillAmount, elapsedTime / duration);
-           // print("TiempoCorutina bar: " + elapsedTime + ". Duracion: " + duration);
+            //healthFillBar.fillAmount = Mathf.Lerp(startFillAmount, targetFillAmount, elapsedTime / duration);
+            healthFillBar.value = Mathf.Lerp(startFillAmount, targetFillAmount, elapsedTime / duration);
             yield return null;
-            //yield return new WaitForEndOfFrame();
         }
-        // transform.parent.gameObject.SetActive(false);
-        Color newColor = new Color (1, 1, 1, 0);
-        transform.parent.gameObject.GetComponent<SpriteRenderer>().color = newColor;
-        transform.GetChild(1).gameObject.GetComponent<Image>().color = newColor;
+        Color newColor = new Color(1, 1, 1, 0);
         startUpdateTimeCoroutine = false;
+        gameObject.SetActive(false);
     }
 }

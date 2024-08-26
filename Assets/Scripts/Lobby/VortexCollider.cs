@@ -48,6 +48,7 @@ public class VortexCollider : MonoBehaviour
         // Reinicia el collider y la animación inmediatamente
         vortexCollider2D.enabled = false;
         playerMovementNew.anim.SetBool("Turn", false);
+        playerMovementNew.anim.SetBool("SlowWalk", true);
         // Reinicia el collider después de un breve retraso para permitir que el jugador se mueva
         Invoke("EnableCollider", .75f); // Ajusta el tiempo según sea necesario
     }

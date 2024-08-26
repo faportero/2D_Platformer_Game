@@ -63,6 +63,7 @@ public class AudioManager : MonoBehaviour
             {
                 // Reduce el volumen de envío para evitar el ducking.
                 audioMixer.SetFloat("SFXSendVolume", -40f);  // Volumen muy bajo para desactivar ducking.
+                triggerDuck = false;
             }
 
             sfxSource.PlayOneShot(s.clip);

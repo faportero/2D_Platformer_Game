@@ -135,7 +135,11 @@ public class EnemyNew : MonoBehaviour
         {
             case SustanceType.Cannabis:
                 //print("cannabisssss");
-                PlayerControllerNew.isCannabis = true;
+                PlayerControllerNew.isPsilo = true;
+                
+                //PlayerControllerNew.isCannabis = true;
+
+
                 effectPanel.GetComponent<Image>().color = new Color(0, 1, 0, .25f);
                 effectText.text = "Cannabis";
                 effectTextMensajeTitulo.text = "Cannabis";
@@ -145,7 +149,10 @@ public class EnemyNew : MonoBehaviour
 
             case SustanceType.Cocaina:
                 //print("Cocaa");
-                PlayerControllerNew.isCocaMetaHero = true;
+                PlayerControllerNew.isPsilo = true;
+                
+                //PlayerControllerNew.isCocaMetaHero = true;
+
                 effectPanel.GetComponent<Image>().color = new Color(1, 1, 1, .25f);
                 effectText.text = "Cocaina";
                 effectTextMensajeTitulo.text = "Cocaina";
@@ -154,7 +161,10 @@ public class EnemyNew : MonoBehaviour
                 break;
             case SustanceType.Extasis:
                 //print("Exta");
-                PlayerControllerNew.isCocaMetaHero = true;
+                PlayerControllerNew.isPsilo = true;
+                
+                //PlayerControllerNew.isCocaMetaHero = true;
+
                 effectPanel.GetComponent<Image>().color = new Color(1, 1, 1, .25f);
                 effectText.text = "Éxtasis";
                 effectTextMensajeTitulo.text = "Extasis";
@@ -163,7 +173,9 @@ public class EnemyNew : MonoBehaviour
                 break;
             case SustanceType.Metanfetamina:
                 //print("Metanfetamina");
-                PlayerControllerNew.isCocaMetaHero = true;
+                PlayerControllerNew.isPsilo = true;
+
+                //PlayerControllerNew.isCocaMetaHero = true;
                 effectPanel.GetComponent<Image>().color = new Color(1, 1, 1, .25f);
                 effectText.text = "Metanfetamina";
                 effectTextMensajeTitulo.text = "Metanfetamina";
@@ -171,8 +183,10 @@ public class EnemyNew : MonoBehaviour
                 dieEffectImage.sprite = spriteRenderers[3];
                 break;
             case SustanceType.Heroina:
-               // print("Heroinaaaa");
-                PlayerControllerNew.isCocaMetaHero = true;
+                // print("Heroinaaaa");
+                PlayerControllerNew.isPsilo = true;
+
+               // PlayerControllerNew.isCocaMetaHero = true;
                 effectPanel.GetComponent<Image>().color = new Color(1, 1, 1, .25f);
                 effectText.text = "Heroina";
                 effectTextMensajeTitulo.text = "Heroina";

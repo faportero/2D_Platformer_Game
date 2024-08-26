@@ -92,6 +92,7 @@ public class PlayerControllerNew : MonoBehaviour
     #region Unity Callbacks
     private void Awake()
     {
+        levelManager = FindAnyObjectByType<LevelManager>();
     }
     public void ActiveGamePanelsl(bool active)
     {
@@ -100,7 +101,6 @@ public class PlayerControllerNew : MonoBehaviour
     }
     private void Start()
     {
-        levelManager = FindAnyObjectByType<LevelManager>();
         playerMovement = GetComponent<PlayerMovementNew>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
@@ -261,10 +261,12 @@ public class PlayerControllerNew : MonoBehaviour
             {
                 effectPanel.SetActive(false);
                 //enemyAttached.SetActive(false);
-                Color newColor = new Color(1, 1, 1, 0);
-                ui_enemyAttachedBar.gameObject.transform.parent.gameObject.GetComponent<SpriteRenderer>().color = newColor;
-                ui_enemyAttachedBar.gameObject.transform.GetChild(1).gameObject.GetComponent<Image>().color = newColor;
-                if (enemyEffectCoroutine != null) StopCoroutine(enemyEffectCoroutine);
+
+                //Color newColor = new Color(1, 1, 1, 0);
+                //ui_enemyAttachedBar.gameObject.transform.parent.gameObject.GetComponent<SpriteRenderer>().color = newColor;
+                //ui_enemyAttachedBar.gameObject.transform.GetChild(1).gameObject.GetComponent<Image>().color = newColor;
+                ui_enemyAttachedBar.gameObject.SetActive(false);  
+                //if (enemyEffectCoroutine != null) StopCoroutine(enemyEffectCoroutine);
                 if (blinkCoroutine != null) StopCoroutine(blinkCoroutine);
                 //if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
                 //if (ui_enemyAttachedBar.updateTimeCoroutine != null) StopCoroutine(ui_enemyAttachedBar.updateTimeCoroutine);
@@ -295,6 +297,8 @@ public class PlayerControllerNew : MonoBehaviour
             activarEnfasis = StartCoroutine(ActivarEnfasis());
 
             ShowFeedback();
+
+            ui_enemyAttachedBar.gameObject.SetActive(false);
 
             switch (currentSalud)
             {
@@ -404,7 +408,7 @@ public class PlayerControllerNew : MonoBehaviour
 
             //StopCoroutine(ui_enemyAttachedBar.updateTimeCoroutine);
 
-
+            ui_enemyAttachedBar.gameObject.SetActive(true);
 
             switch (currentSalud)
             {
@@ -418,7 +422,9 @@ public class PlayerControllerNew : MonoBehaviour
                         StopCoroutine(inmunidadCoroutine);
                         ui_IndestructibleBar.gameObject.SetActive(false);
                         GlowSpriteEffect.SetActive(false);
-                        AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
                         isIndestructible = false;
                         SetAllCompositeCollidersTrigger(compositeColliders, false);
 
@@ -435,7 +441,9 @@ public class PlayerControllerNew : MonoBehaviour
                         StopCoroutine(inmunidadCoroutine);
                         ui_IndestructibleBar.gameObject.SetActive(false);
                         GlowSpriteEffect.SetActive(false);
-                        AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
                         isIndestructible = false;
                         SetAllCompositeCollidersTrigger(compositeColliders, false);
                     }
@@ -451,7 +459,9 @@ public class PlayerControllerNew : MonoBehaviour
                         StopCoroutine(inmunidadCoroutine);
                         ui_IndestructibleBar.gameObject.SetActive(false);
                         GlowSpriteEffect.SetActive(false);
-                        AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
                         isIndestructible = false;
                         SetAllCompositeCollidersTrigger(compositeColliders, false);
                     }
@@ -466,7 +476,9 @@ public class PlayerControllerNew : MonoBehaviour
                         StopCoroutine(inmunidadCoroutine);
                         ui_IndestructibleBar.gameObject.SetActive(false);
                         GlowSpriteEffect.SetActive(false);
-                        AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
                         isIndestructible = false;
                         SetAllCompositeCollidersTrigger(compositeColliders, false);
                     }
@@ -481,7 +493,9 @@ public class PlayerControllerNew : MonoBehaviour
                         StopCoroutine(inmunidadCoroutine);
                         ui_IndestructibleBar.gameObject.SetActive(false);
                         GlowSpriteEffect.SetActive(false);
-                        AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
                         isIndestructible = false;
                         SetAllCompositeCollidersTrigger(compositeColliders, false);
                     }
@@ -496,7 +510,9 @@ public class PlayerControllerNew : MonoBehaviour
                         StopCoroutine(inmunidadCoroutine);
                         ui_IndestructibleBar.gameObject.SetActive(false);
                         GlowSpriteEffect.SetActive(false);
-                        AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
                         isIndestructible = false;
                         SetAllCompositeCollidersTrigger(compositeColliders, false);
                     }
@@ -511,7 +527,9 @@ public class PlayerControllerNew : MonoBehaviour
                         StopCoroutine(inmunidadCoroutine);
                         ui_IndestructibleBar.gameObject.SetActive(false);
                         GlowSpriteEffect.SetActive(false);
-                        AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
                         isIndestructible = false;
                         SetAllCompositeCollidersTrigger(compositeColliders, false);
                     }
@@ -526,7 +544,9 @@ public class PlayerControllerNew : MonoBehaviour
                         StopCoroutine(inmunidadCoroutine);
                         ui_IndestructibleBar.gameObject.SetActive(false);
                         GlowSpriteEffect.SetActive(false);
-                        AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
                         isIndestructible = false;
                         SetAllCompositeCollidersTrigger(compositeColliders, false);
                     }
@@ -541,7 +561,9 @@ public class PlayerControllerNew : MonoBehaviour
                         StopCoroutine(inmunidadCoroutine);
                         ui_IndestructibleBar.gameObject.SetActive(false);
                         GlowSpriteEffect.SetActive(false);
-                        AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
                         isIndestructible = false;
                         SetAllCompositeCollidersTrigger(compositeColliders, false);
                     }
@@ -694,7 +716,9 @@ public class PlayerControllerNew : MonoBehaviour
             {
                 StopCoroutine(inmunidadCoroutine);
                 ui_IndestructibleBar.gameObject.SetActive(false);
-                AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
+                if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
 
             }
 
@@ -1045,7 +1069,7 @@ public class PlayerControllerNew : MonoBehaviour
         isIndestructible = false;
         SetAllCompositeCollidersTrigger(compositeColliders, false);
         if(levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
-        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
+        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
         if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
 
 
