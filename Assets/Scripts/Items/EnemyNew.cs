@@ -143,7 +143,7 @@ public class EnemyNew : MonoBehaviour
                 effectPanel.GetComponent<Image>().color = new Color(0, 1, 0, .25f);
                 effectText.text = "Cannabis";
                 effectTextMensajeTitulo.text = "Cannabis";
-                effectTextMensajeDesc.text = "El cannabis te hace mover mas lento";
+                effectTextMensajeDesc.text = "Las drogas distorsionan la realidad";
                 dieEffectImage.sprite = spriteRenderers[0];
                 break;
 
@@ -156,7 +156,7 @@ public class EnemyNew : MonoBehaviour
                 effectPanel.GetComponent<Image>().color = new Color(1, 1, 1, .25f);
                 effectText.text = "Cocaina";
                 effectTextMensajeTitulo.text = "Cocaina";
-                effectTextMensajeDesc.text = "La cocaina te hace saltar como loco";
+                effectTextMensajeDesc.text = "Las drogas distorsionan la realidad";
                 dieEffectImage.sprite = spriteRenderers[1];
                 break;
             case SustanceType.Extasis:
@@ -168,7 +168,7 @@ public class EnemyNew : MonoBehaviour
                 effectPanel.GetComponent<Image>().color = new Color(1, 1, 1, .25f);
                 effectText.text = "Éxtasis";
                 effectTextMensajeTitulo.text = "Extasis";
-                effectTextMensajeDesc.text = "El extasis te hace saltar como loco";
+                effectTextMensajeDesc.text = "Las drogas distorsionan la realidad";
                 dieEffectImage.sprite = spriteRenderers[2];
                 break;
             case SustanceType.Metanfetamina:
@@ -179,7 +179,7 @@ public class EnemyNew : MonoBehaviour
                 effectPanel.GetComponent<Image>().color = new Color(1, 1, 1, .25f);
                 effectText.text = "Metanfetamina";
                 effectTextMensajeTitulo.text = "Metanfetamina";
-                effectTextMensajeDesc.text = "La metanfetamina te hace saltar como loco";
+                effectTextMensajeDesc.text = "Las drogas distorsionan la realidad";
                 dieEffectImage.sprite = spriteRenderers[3];
                 break;
             case SustanceType.Heroina:
@@ -190,7 +190,7 @@ public class EnemyNew : MonoBehaviour
                 effectPanel.GetComponent<Image>().color = new Color(1, 1, 1, .25f);
                 effectText.text = "Heroina";
                 effectTextMensajeTitulo.text = "Heroina";
-                effectTextMensajeDesc.text = "La heroina te hace saltar como loco";
+                effectTextMensajeDesc.text = "Las drogas distorsionan la realidad";
                 dieEffectImage.sprite = spriteRenderers[4];
                 break;
 
@@ -200,7 +200,7 @@ public class EnemyNew : MonoBehaviour
                 effectPanel.GetComponent<Image>().color = new Color(.5f, 0, .75f, .25f);
                 effectText.text = "Psilocibina";
                 effectTextMensajeTitulo.text = "Psilocibina";
-                effectTextMensajeDesc.text = "La psilocibina te altera la persepcion de la realidad";
+                effectTextMensajeDesc.text = "Las drogas distorsionan la realidad";
                 dieEffectImage.sprite = spriteRenderers[5];
                 break;
 

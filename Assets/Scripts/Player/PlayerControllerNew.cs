@@ -223,6 +223,7 @@ public class PlayerControllerNew : MonoBehaviour
         {
             isDrugged = false;
             isCannabis = false;
+            isPsilo = false;
             //audioSource.Stop();
 
             currentSalud += saludAmount;
@@ -1098,7 +1099,11 @@ public class PlayerControllerNew : MonoBehaviour
         {
             rendererSwitcher.SwitchRenderer(rendererSwitcher.YourCamera, 1);
         }
-            
+        else if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3)
+        {
+            rendererSwitcher.SwitchRenderer(rendererSwitcher.YourCamera, 2);
+        }
+
         //effectPanel.GetComponent<Animator>().SetBool("Smoke", true);
 
         yield return new WaitForSeconds(delay);
@@ -1108,7 +1113,7 @@ public class PlayerControllerNew : MonoBehaviour
 
         }
         //if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) effectPanel.GetComponent<Animator>().Play("Alcohol");
-        else if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2)
+        else if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2 || levelManager.currentScene == LevelManager.CurrentScene.Nivel3)
         {
             rendererSwitcher.SwitchRenderer(rendererSwitcher.YourCamera, 0);
            
