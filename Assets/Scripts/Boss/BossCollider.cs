@@ -6,6 +6,7 @@ public class BossCollider : MonoBehaviour
 {
     [SerializeField] GameObject boss;
     PlayerMovementNew playerMovementNew;
+    public static bool isBossLevel;
     private void Awake()
     {
         playerMovementNew = FindAnyObjectByType<PlayerMovementNew>();

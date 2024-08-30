@@ -467,7 +467,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 545440941, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -504,6 +504,8 @@ MonoBehaviour:
   - {fileID: 545440941, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
   - {fileID: 1957117115, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
   isRandom: 0
+  currentEffectTag: CurrentEffect
+  dieEffectTag: DieEffect
   sustanceType: 6
 --- !u!61 &6141851881483981681
 BoxCollider2D:

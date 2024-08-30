@@ -24,6 +24,9 @@ TagManager:
   - Fog
   - EnemyAttachedBar
   - Ghost
+  - CurrentEffect
+  - DieEffect
+  - TilesGrid
   layers:
   - Default
   - TransparentFX

@@ -83,7 +83,7 @@ public class PlayerControllerNew : MonoBehaviour
     private Vector3 startPosition;
     private Vector3 targetPosition;
     private Vector3 targetPiecePosition;
-    [HideInInspector]public bool isSmokePanelEffect;
+    [HideInInspector] public bool isSmokePanelEffect;
     private CinemachineVirtualCamera cm;
     public bool doingEnemyShake;
     private bool takingPiece;
@@ -105,7 +105,7 @@ public class PlayerControllerNew : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
         audioPause = FindAnyObjectByType<AudioPause>();
-        if(saludBar != null)saludBar.healthFillBar.fillAmount = currentSalud;
+        if (saludBar != null) saludBar.healthFillBar.fillAmount = currentSalud;
         if (saludBar != null) saludBar.healthFillBar.color = saludBar.colorGradient.Evaluate(currentSalud);
         cm = CameraManager.instance.currentCamera;
         rendererSwitcher = GetComponent<RendererSwitcher>();
@@ -117,46 +117,46 @@ public class PlayerControllerNew : MonoBehaviour
         switch (currentSalud)
         {
             case 0:
-              
+
                 break;
             case .1f:
-                
+
                 AdjustLuminance(0);
                 break;
             case .2f:
-               
+
                 AdjustLuminance(.2f);
                 break;
             case .3f:
-               
+
                 AdjustLuminance(.3f);
                 break;
             case .4f:
-               
+
                 AdjustLuminance(.4f);
                 break;
             case .5f:
-              
+
                 AdjustLuminance(.5f);
                 break;
             case .6f:
-               
+
                 AdjustLuminance(.6f);
                 break;
             case .7f:
-             
+
                 AdjustLuminance(.7f);
                 break;
             case .8f:
-              
+
                 AdjustLuminance(.8f);
                 break;
             case .9f:
-               
+
                 AdjustLuminance(.9f);
                 break;
             case 1:
-               
+
                 AdjustLuminance(1);
                 break;
             default:
@@ -178,21 +178,21 @@ public class PlayerControllerNew : MonoBehaviour
         if (takingSalud)
         {
 
-        if(targetPosition != null && saludBar != null)targetPosition = GetWorldPositionFromUI(saludBar.GetComponent<RectTransform>());
-        if (targetPosition != null && saludBar != null) targetPosition = targetPosition + new Vector3(0, -1.25f, 0);
+            if (targetPosition != null && saludBar != null) targetPosition = GetWorldPositionFromUI(saludBar.GetComponent<RectTransform>());
+            if (targetPosition != null && saludBar != null) targetPosition = targetPosition + new Vector3(0, -1.25f, 0);
 
         }
         if (takingPiece)
         {
 
-        if(currenPiece != null && pieces != null && currenPiece.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasA)
-            targetPiecePosition = GetWorldPositionFromUI(pieces[0].GetComponent<RectTransform>());
-        if(currenPiece != null && pieces != null && currenPiece.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasB)
-            targetPiecePosition = GetWorldPositionFromUI(pieces[1].GetComponent<RectTransform>());
-        if(currenPiece != null && pieces != null && currenPiece.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasC)
-            targetPiecePosition = GetWorldPositionFromUI(pieces[2].GetComponent<RectTransform>());
-        if(currenPiece != null && pieces != null && currenPiece.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasD)
-            targetPiecePosition = GetWorldPositionFromUI(pieces[3].GetComponent<RectTransform>());
+            if (currenPiece != null && pieces != null && currenPiece.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasA)
+                targetPiecePosition = GetWorldPositionFromUI(pieces[0].GetComponent<RectTransform>());
+            if (currenPiece != null && pieces != null && currenPiece.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasB)
+                targetPiecePosition = GetWorldPositionFromUI(pieces[1].GetComponent<RectTransform>());
+            if (currenPiece != null && pieces != null && currenPiece.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasC)
+                targetPiecePosition = GetWorldPositionFromUI(pieces[2].GetComponent<RectTransform>());
+            if (currenPiece != null && pieces != null && currenPiece.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasD)
+                targetPiecePosition = GetWorldPositionFromUI(pieces[3].GetComponent<RectTransform>());
         }
 
         //if (currentSalud > .9f)
@@ -266,7 +266,7 @@ public class PlayerControllerNew : MonoBehaviour
                 //Color newColor = new Color(1, 1, 1, 0);
                 //ui_enemyAttachedBar.gameObject.transform.parent.gameObject.GetComponent<SpriteRenderer>().color = newColor;
                 //ui_enemyAttachedBar.gameObject.transform.GetChild(1).gameObject.GetComponent<Image>().color = newColor;
-                ui_enemyAttachedBar.gameObject.SetActive(false);  
+                ui_enemyAttachedBar.gameObject.SetActive(false);
                 //if (enemyEffectCoroutine != null) StopCoroutine(enemyEffectCoroutine);
                 if (blinkCoroutine != null) StopCoroutine(blinkCoroutine);
                 //if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
@@ -274,9 +274,9 @@ public class PlayerControllerNew : MonoBehaviour
                 // ui_enemyAttachedBar.startUpdateTimeCoroutine = false;
             }
 
-            if (doingEnemyShake) 
+            if (doingEnemyShake)
             {
-               if(enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+                if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
                 CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin = cm.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
                 cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0;
             }
@@ -285,7 +285,7 @@ public class PlayerControllerNew : MonoBehaviour
             startPosition = collision.ClosestPoint(transform.position);
             currentItem = collision.gameObject;
 
-            if (takeSaludAnim != null) 
+            if (takeSaludAnim != null)
             {
                 StopCoroutine(takeSaludAnim);
             }
@@ -293,7 +293,7 @@ public class PlayerControllerNew : MonoBehaviour
 
             if (activarEnfasis != null)
             {
-                StopCoroutine (activarEnfasis);
+                StopCoroutine(activarEnfasis);
             }
             activarEnfasis = StartCoroutine(ActivarEnfasis());
 
@@ -304,44 +304,44 @@ public class PlayerControllerNew : MonoBehaviour
             switch (currentSalud)
             {
                 case 0:
-                   
+
                     //playerMovement.Die();
-                 
+
                     break;
                 case .1f:
-                 
+
                     AdjustLuminance(0);
                     break;
                 case .2f:
-               
+
                     AdjustLuminance(.2f);
                     break;
                 case .3f:
-                 
+
                     AdjustLuminance(.3f);
                     break;
                 case .4f:
-                   
+
                     AdjustLuminance(.4f);
                     break;
                 case .5f:
-                   
+
                     AdjustLuminance(.5f);
                     break;
                 case .6f:
-                   
+
                     AdjustLuminance(.6f);
                     break;
                 case .7f:
-                 
+
                     AdjustLuminance(.7f);
                     break;
                 case .8f:
-                  
+
                     AdjustLuminance(.8f);
                     break;
                 case .9f:
-                  
+
                     AdjustLuminance(.9f);
                     break;
                 case 1:
@@ -352,7 +352,7 @@ public class PlayerControllerNew : MonoBehaviour
                     AdjustLuminance(1);
                     currentItemSalud.healthType = Salud.HealthType.Indestructible;
                     ui_FeedbackSalud.AssignFeedbackSprite();
-                    if(inmunidadCoroutine != null) StopCoroutine(inmunidadCoroutine);
+                    if (inmunidadCoroutine != null) StopCoroutine(inmunidadCoroutine);
                     inmunidadCoroutine = StartCoroutine(Inmunidad());
                     ui_IndestructibleBar.gameObject.SetActive(true);
                     ui_IndestructibleBar.UpdateTime(10);
@@ -374,7 +374,7 @@ public class PlayerControllerNew : MonoBehaviour
         if (collision.tag == "Enemy")
         {
             isDrugged = true;
-
+            currentItem = collision.gameObject;
             collision.GetComponent<EnemyNew>().Effect();
             collision.gameObject.SetActive(false);
 
@@ -411,174 +411,662 @@ public class PlayerControllerNew : MonoBehaviour
 
             ui_enemyAttachedBar.gameObject.SetActive(true);
 
-            switch (currentSalud)
+
+            if (BossCollider.isBossLevel)
             {
-                case 0:
+                if (currentItem.GetComponent<EnemyNew>().sustanceType == EnemyNew.SustanceType.Tabaco)
+                {
+                    isAlcohol = false;
+                    isPsilo = false;
 
-                    break;
-                case .1f:
 
-                    if (isIndestructible)
+                    switch (currentSalud)
                     {
-                        StopCoroutine(inmunidadCoroutine);
-                        ui_IndestructibleBar.gameObject.SetActive(false);
-                        GlowSpriteEffect.SetActive(false);
-                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
-                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
-                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
-                        isIndestructible = false;
-                        SetAllCompositeCollidersTrigger(compositeColliders, false);
+                        case 0:
+                            break;
+                        case .1f:
 
-                    }
-                  
-                    if(levelManager.currentScene == LevelManager.CurrentScene.Nivel1) enemyCameraShake = StartCoroutine(EnemyCameraShake(10)); 
-                    CurrentEffectPanel(10);
-                    ui_enemyAttachedBar.UpdateTime(10);
-                    AdjustLuminance(.1f);
-                    break;
-                case .2f:
-                    if (isIndestructible)
-                    {
-                        StopCoroutine(inmunidadCoroutine);
-                        ui_IndestructibleBar.gameObject.SetActive(false);
-                        GlowSpriteEffect.SetActive(false);
-                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
-                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
-                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
-                        isIndestructible = false;
-                        SetAllCompositeCollidersTrigger(compositeColliders, false);
+                            if (isIndestructible)
+                            {
+                                StopCoroutine(inmunidadCoroutine);
+                                ui_IndestructibleBar.gameObject.SetActive(false);
+                                GlowSpriteEffect.SetActive(false);                                
+                                AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                                isIndestructible = false;
+                                SetAllCompositeCollidersTrigger(compositeColliders, false);
+
+                            }
+                            enemyCameraShake = StartCoroutine(EnemyCameraShake(10));
+                            CurrentEffectPanel(10);
+                            ui_enemyAttachedBar.UpdateTime(10);
+                            AdjustLuminance(.1f);
+                            break;
+                        case .2f:
+                            if (isIndestructible)
+                            {
+                                StopCoroutine(inmunidadCoroutine);
+                                ui_IndestructibleBar.gameObject.SetActive(false);
+                                GlowSpriteEffect.SetActive(false);
+                                AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                                isIndestructible = false;
+                                SetAllCompositeCollidersTrigger(compositeColliders, false);
+                            }
+
+                            enemyCameraShake = StartCoroutine(EnemyCameraShake(9));
+                            CurrentEffectPanel(9);
+                            ui_enemyAttachedBar.UpdateTime(9);
+                            AdjustLuminance(.2f);
+                            break;
+                        case .3f:
+                            if (isIndestructible)
+                            {
+                                StopCoroutine(inmunidadCoroutine);
+                                ui_IndestructibleBar.gameObject.SetActive(false);
+                                GlowSpriteEffect.SetActive(false);
+                                AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                                isIndestructible = false;
+                                SetAllCompositeCollidersTrigger(compositeColliders, false);
+                            }
+                            enemyCameraShake = StartCoroutine(EnemyCameraShake(8));
+                            CurrentEffectPanel(8);
+                            ui_enemyAttachedBar.UpdateTime(8);
+                            AdjustLuminance(.3f);
+                            break;
+                        case .4f:
+                            if (isIndestructible)
+                            {
+                                StopCoroutine(inmunidadCoroutine);
+                                ui_IndestructibleBar.gameObject.SetActive(false);
+                                GlowSpriteEffect.SetActive(false);
+                                AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                                isIndestructible = false;
+                                SetAllCompositeCollidersTrigger(compositeColliders, false);
+                            }
+                            enemyCameraShake = StartCoroutine(EnemyCameraShake(7));
+                            CurrentEffectPanel(7);
+                            ui_enemyAttachedBar.UpdateTime(7);
+                            AdjustLuminance(.4f);
+                            break;
+                        case .5f:
+                            if (isIndestructible)
+                            {
+                                StopCoroutine(inmunidadCoroutine);
+                                ui_IndestructibleBar.gameObject.SetActive(false);
+                                GlowSpriteEffect.SetActive(false);
+                                AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                                isIndestructible = false;
+                                SetAllCompositeCollidersTrigger(compositeColliders, false);
+                            }
+                            enemyCameraShake = StartCoroutine(EnemyCameraShake(6));
+                            CurrentEffectPanel(6);
+                            ui_enemyAttachedBar.UpdateTime(6);
+                            AdjustLuminance(.5f);
+                            break;
+                        case .6f:
+                            if (isIndestructible)
+                            {
+                                StopCoroutine(inmunidadCoroutine);
+                                ui_IndestructibleBar.gameObject.SetActive(false);
+                                GlowSpriteEffect.SetActive(false);
+                                AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                                isIndestructible = false;
+                                SetAllCompositeCollidersTrigger(compositeColliders, false);
+                            }
+                            enemyCameraShake = StartCoroutine(EnemyCameraShake(5));
+                            CurrentEffectPanel(5);
+                            ui_enemyAttachedBar.UpdateTime(5);
+                            AdjustLuminance(.6f);
+                            break;
+                        case .7f:
+                            if (isIndestructible)
+                            {
+                                StopCoroutine(inmunidadCoroutine);
+                                ui_IndestructibleBar.gameObject.SetActive(false);
+                                GlowSpriteEffect.SetActive(false);
+                                AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                                isIndestructible = false;
+                                SetAllCompositeCollidersTrigger(compositeColliders, false);
+                            }
+                            enemyCameraShake = StartCoroutine(EnemyCameraShake(4));
+                            CurrentEffectPanel(4);
+                            ui_enemyAttachedBar.UpdateTime(4);
+                            AdjustLuminance(.7f);
+                            break;
+                        case .8f:
+                            if (isIndestructible)
+                            {
+                                StopCoroutine(inmunidadCoroutine);
+                                ui_IndestructibleBar.gameObject.SetActive(false);
+                                GlowSpriteEffect.SetActive(false);
+                                AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                                isIndestructible = false;
+                                SetAllCompositeCollidersTrigger(compositeColliders, false);
+                            }
+                            enemyCameraShake = StartCoroutine(EnemyCameraShake(3));
+                            CurrentEffectPanel(3);
+                            ui_enemyAttachedBar.UpdateTime(3);
+                            AdjustLuminance(.8f);
+                            break;
+                        case .9f:
+                            if (isIndestructible)
+                            {
+                                StopCoroutine(inmunidadCoroutine);
+                                ui_IndestructibleBar.gameObject.SetActive(false);
+                                GlowSpriteEffect.SetActive(false);
+                                AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                                isIndestructible = false;
+                                SetAllCompositeCollidersTrigger(compositeColliders, false);
+                            }
+                            enemyCameraShake = StartCoroutine(EnemyCameraShake(2));
+                            CurrentEffectPanel(2);
+                            ui_enemyAttachedBar.UpdateTime(2);
+                            AdjustLuminance(.9f);
+                            break;
+                        case 1:
+                            AdjustLuminance(1);
+                            break;
+                        default:
+                            ui_enemyAttachedBar.UpdateTime(1);
+                            break;
                     }
 
-                    if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) enemyCameraShake = StartCoroutine(EnemyCameraShake(9));
-                    CurrentEffectPanel(9);
-                    ui_enemyAttachedBar.UpdateTime(9);
-                    AdjustLuminance(.2f);
-                    break;
-                case .3f:
-                    if (isIndestructible)
+                }
+                else if (currentItem.GetComponent<EnemyNew>().sustanceType == EnemyNew.SustanceType.Alcohol)
+                {
+                    isTabaco = false;
+                    isPsilo = false;
+                    
+                    switch (currentSalud)
                     {
-                        StopCoroutine(inmunidadCoroutine);
-                        ui_IndestructibleBar.gameObject.SetActive(false);
-                        GlowSpriteEffect.SetActive(false);
-                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
-                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
-                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
-                        isIndestructible = false;
-                        SetAllCompositeCollidersTrigger(compositeColliders, false);
+                        case 0:
+                            break;
+                        case .1f:
+
+                            if (isIndestructible)
+                            {
+                                StopCoroutine(inmunidadCoroutine);
+                                ui_IndestructibleBar.gameObject.SetActive(false);
+                                GlowSpriteEffect.SetActive(false);
+                                AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                                isIndestructible = false;
+                                SetAllCompositeCollidersTrigger(compositeColliders, false);
+
+                            }
+                            if(enemyCameraShake != null)StopCoroutine(enemyCameraShake);
+                            CurrentEffectPanel(10);
+                            ui_enemyAttachedBar.UpdateTime(10);
+                            AdjustLuminance(.1f);
+                            break;
+                        case .2f:
+                            if (isIndestructible)
+                            {
+                                StopCoroutine(inmunidadCoroutine);
+                                ui_IndestructibleBar.gameObject.SetActive(false);
+                                GlowSpriteEffect.SetActive(false);
+                                AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                                isIndestructible = false;
+                                SetAllCompositeCollidersTrigger(compositeColliders, false);
+                            }
+                            if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+
+
+                            CurrentEffectPanel(9);
+                            ui_enemyAttachedBar.UpdateTime(9);
+                            AdjustLuminance(.2f);
+                            break;
+                        case .3f:
+                            if (isIndestructible)
+                            {
+                                StopCoroutine(inmunidadCoroutine);
+                                ui_IndestructibleBar.gameObject.SetActive(false);
+                                GlowSpriteEffect.SetActive(false);
+                                AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                                isIndestructible = false;
+                                SetAllCompositeCollidersTrigger(compositeColliders, false);
+                            }
+                            if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+
+
+                            CurrentEffectPanel(8);
+                            ui_enemyAttachedBar.UpdateTime(8);
+                            AdjustLuminance(.3f);
+                            break;
+                        case .4f:
+                            if (isIndestructible)
+                            {
+                                StopCoroutine(inmunidadCoroutine);
+                                ui_IndestructibleBar.gameObject.SetActive(false);
+                                GlowSpriteEffect.SetActive(false);
+                                AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                                isIndestructible = false;
+                                SetAllCompositeCollidersTrigger(compositeColliders, false);
+                            }
+                            if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+
+
+                            CurrentEffectPanel(7);
+                            ui_enemyAttachedBar.UpdateTime(7);
+                            AdjustLuminance(.4f);
+                            break;
+                        case .5f:
+                            if (isIndestructible)
+                            {
+                                StopCoroutine(inmunidadCoroutine);
+                                ui_IndestructibleBar.gameObject.SetActive(false);
+                                GlowSpriteEffect.SetActive(false);
+                                AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                                isIndestructible = false;
+                                SetAllCompositeCollidersTrigger(compositeColliders, false);
+                            }
+
+                            if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+
+                            CurrentEffectPanel(6);
+                            ui_enemyAttachedBar.UpdateTime(6);
+                            AdjustLuminance(.5f);
+                            break;
+                        case .6f:
+                            if (isIndestructible)
+                            {
+                                StopCoroutine(inmunidadCoroutine);
+                                ui_IndestructibleBar.gameObject.SetActive(false);
+                                GlowSpriteEffect.SetActive(false);
+                                AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                                isIndestructible = false;
+                                SetAllCompositeCollidersTrigger(compositeColliders, false);
+                            }
+                            if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+                            CurrentEffectPanel(5);
+                            ui_enemyAttachedBar.UpdateTime(5);
+                            AdjustLuminance(.6f);
+                            break;
+                        case .7f:
+                            if (isIndestructible)
+                            {
+                                StopCoroutine(inmunidadCoroutine);
+                                ui_IndestructibleBar.gameObject.SetActive(false);
+                                GlowSpriteEffect.SetActive(false);
+                                AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                                isIndestructible = false;
+                                SetAllCompositeCollidersTrigger(compositeColliders, false);
+                            }
+                            if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+                            CurrentEffectPanel(4);
+                            ui_enemyAttachedBar.UpdateTime(4);
+                            AdjustLuminance(.7f);
+                            break;
+                        case .8f:
+                            if (isIndestructible)
+                            {
+                                StopCoroutine(inmunidadCoroutine);
+                                ui_IndestructibleBar.gameObject.SetActive(false);
+                                GlowSpriteEffect.SetActive(false);
+                                AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                                isIndestructible = false;
+                                SetAllCompositeCollidersTrigger(compositeColliders, false);
+                            }
+                            if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+                            CurrentEffectPanel(3);
+                            ui_enemyAttachedBar.UpdateTime(3);
+                            AdjustLuminance(.8f);
+                            break;
+                        case .9f:
+                            if (isIndestructible)
+                            {
+                                StopCoroutine(inmunidadCoroutine);
+                                ui_IndestructibleBar.gameObject.SetActive(false);
+                                GlowSpriteEffect.SetActive(false);
+                                AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                                isIndestructible = false;
+                                SetAllCompositeCollidersTrigger(compositeColliders, false);
+                            }
+                            if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+                            CurrentEffectPanel(2);
+                            ui_enemyAttachedBar.UpdateTime(2);
+                            AdjustLuminance(.9f);
+                            break;
+                        case 1:
+                            AdjustLuminance(1);
+                            break;
+                        default:
+                            ui_enemyAttachedBar.UpdateTime(1);
+                            break;
                     }
-                    if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) enemyCameraShake = StartCoroutine(EnemyCameraShake(8));
-                    CurrentEffectPanel(8);
-                    ui_enemyAttachedBar.UpdateTime(8);
-                    AdjustLuminance(.3f);
-                    break;
-                case .4f:
-                    if (isIndestructible)
+                }
+                else if (currentItem.GetComponent<EnemyNew>().sustanceType == EnemyNew.SustanceType.Cannabis ||
+             currentItem.GetComponent<EnemyNew>().sustanceType == EnemyNew.SustanceType.Extasis ||
+             currentItem.GetComponent<EnemyNew>().sustanceType == EnemyNew.SustanceType.Cocaina ||
+             currentItem.GetComponent<EnemyNew>().sustanceType == EnemyNew.SustanceType.Metanfetamina ||
+             currentItem.GetComponent<EnemyNew>().sustanceType == EnemyNew.SustanceType.Psilocibina ||
+             currentItem.GetComponent<EnemyNew>().sustanceType == EnemyNew.SustanceType.Heroina)
+                {
+                    isAlcohol = false;
+                    isTabaco = false;
+
+                    switch (currentSalud)
                     {
-                        StopCoroutine(inmunidadCoroutine);
-                        ui_IndestructibleBar.gameObject.SetActive(false);
-                        GlowSpriteEffect.SetActive(false);
-                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
-                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
-                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
-                        isIndestructible = false;
-                        SetAllCompositeCollidersTrigger(compositeColliders, false);
+                        case 0:
+                            break;
+                        case .1f:
+
+                            if (isIndestructible)
+                            {
+                                StopCoroutine(inmunidadCoroutine);
+                                ui_IndestructibleBar.gameObject.SetActive(false);
+                                GlowSpriteEffect.SetActive(false);
+                                AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                                isIndestructible = false;
+                                SetAllCompositeCollidersTrigger(compositeColliders, false);
+
+                            }
+                            if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+                            CurrentEffectPanel(10);
+                            ui_enemyAttachedBar.UpdateTime(10);
+                            AdjustLuminance(.1f);
+                            break;
+                        case .2f:
+                            if (isIndestructible)
+                            {
+                                StopCoroutine(inmunidadCoroutine);
+                                ui_IndestructibleBar.gameObject.SetActive(false);
+                                GlowSpriteEffect.SetActive(false);
+                                AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                                isIndestructible = false;
+                                SetAllCompositeCollidersTrigger(compositeColliders, false);
+                            }
+
+                            if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+                            CurrentEffectPanel(9);
+                            ui_enemyAttachedBar.UpdateTime(9);
+                            AdjustLuminance(.2f);
+                            break;
+                        case .3f:
+                            if (isIndestructible)
+                            {
+                                StopCoroutine(inmunidadCoroutine);
+                                ui_IndestructibleBar.gameObject.SetActive(false);
+                                GlowSpriteEffect.SetActive(false);
+                                AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                                isIndestructible = false;
+                                SetAllCompositeCollidersTrigger(compositeColliders, false);
+                            }
+                            if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+                            CurrentEffectPanel(8);
+                            ui_enemyAttachedBar.UpdateTime(8);
+                            AdjustLuminance(.3f);
+                            break;
+                        case .4f:
+                            if (isIndestructible)
+                            {
+                                StopCoroutine(inmunidadCoroutine);
+                                ui_IndestructibleBar.gameObject.SetActive(false);
+                                GlowSpriteEffect.SetActive(false);
+                                AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                                isIndestructible = false;
+                                SetAllCompositeCollidersTrigger(compositeColliders, false);
+                            }
+                            if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+                            CurrentEffectPanel(7);
+                            ui_enemyAttachedBar.UpdateTime(7);
+                            AdjustLuminance(.4f);
+                            break;
+                        case .5f:
+                            if (isIndestructible)
+                            {
+                                StopCoroutine(inmunidadCoroutine);
+                                ui_IndestructibleBar.gameObject.SetActive(false);
+                                GlowSpriteEffect.SetActive(false);
+                                AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                                isIndestructible = false;
+                                SetAllCompositeCollidersTrigger(compositeColliders, false);
+                            }
+                            if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+                            CurrentEffectPanel(6);
+                            ui_enemyAttachedBar.UpdateTime(6);
+                            AdjustLuminance(.5f);
+                            break;
+                        case .6f:
+                            if (isIndestructible)
+                            {
+                                StopCoroutine(inmunidadCoroutine);
+                                ui_IndestructibleBar.gameObject.SetActive(false);
+                                GlowSpriteEffect.SetActive(false);
+                                AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                                isIndestructible = false;
+                                SetAllCompositeCollidersTrigger(compositeColliders, false);
+                            }
+                            if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+                            CurrentEffectPanel(5);
+                            ui_enemyAttachedBar.UpdateTime(5);
+                            AdjustLuminance(.6f);
+                            break;
+                        case .7f:
+                            if (isIndestructible)
+                            {
+                                StopCoroutine(inmunidadCoroutine);
+                                ui_IndestructibleBar.gameObject.SetActive(false);
+                                GlowSpriteEffect.SetActive(false);
+                                AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                                isIndestructible = false;
+                                SetAllCompositeCollidersTrigger(compositeColliders, false);
+                            }
+                            if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+                            CurrentEffectPanel(4);
+                            ui_enemyAttachedBar.UpdateTime(4);
+                            AdjustLuminance(.7f);
+                            break;
+                        case .8f:
+                            if (isIndestructible)
+                            {
+                                StopCoroutine(inmunidadCoroutine);
+                                ui_IndestructibleBar.gameObject.SetActive(false);
+                                GlowSpriteEffect.SetActive(false);
+                                AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                                isIndestructible = false;
+                                SetAllCompositeCollidersTrigger(compositeColliders, false);
+                            }
+                            if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+                            CurrentEffectPanel(3);
+                            ui_enemyAttachedBar.UpdateTime(3);
+                            AdjustLuminance(.8f);
+                            break;
+                        case .9f:
+                            if (isIndestructible)
+                            {
+                                StopCoroutine(inmunidadCoroutine);
+                                ui_IndestructibleBar.gameObject.SetActive(false);
+                                GlowSpriteEffect.SetActive(false);
+                                AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                                isIndestructible = false;
+                                SetAllCompositeCollidersTrigger(compositeColliders, false);
+                            }
+                            if (enemyCameraShake != null) StopCoroutine(enemyCameraShake);
+                            CurrentEffectPanel(2);
+                            ui_enemyAttachedBar.UpdateTime(2);
+                            AdjustLuminance(.9f);
+                            break;
+                        case 1:
+                            AdjustLuminance(1);
+                            break;
+                        default:
+                            ui_enemyAttachedBar.UpdateTime(1);
+                            break;
                     }
-                    if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) enemyCameraShake = StartCoroutine(EnemyCameraShake(7));
-                    CurrentEffectPanel(7);                  
-                    ui_enemyAttachedBar.UpdateTime(7);
-                    AdjustLuminance(.4f);
-                    break;
-                case .5f:
-                    if (isIndestructible)
-                    {
-                        StopCoroutine(inmunidadCoroutine);
-                        ui_IndestructibleBar.gameObject.SetActive(false);
-                        GlowSpriteEffect.SetActive(false);
-                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
-                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
-                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
-                        isIndestructible = false;
-                        SetAllCompositeCollidersTrigger(compositeColliders, false);
-                    }
-                    if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) enemyCameraShake = StartCoroutine(EnemyCameraShake(6));
-                    CurrentEffectPanel(6);                    
-                    ui_enemyAttachedBar.UpdateTime(6);
-                    AdjustLuminance(.5f);
-                    break;
-                case .6f:
-                    if (isIndestructible)
-                    {
-                        StopCoroutine(inmunidadCoroutine);
-                        ui_IndestructibleBar.gameObject.SetActive(false);
-                        GlowSpriteEffect.SetActive(false);
-                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
-                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
-                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
-                        isIndestructible = false;
-                        SetAllCompositeCollidersTrigger(compositeColliders, false);
-                    }
-                    if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) enemyCameraShake = StartCoroutine(EnemyCameraShake(5));
-                    CurrentEffectPanel(5); 
-                    ui_enemyAttachedBar.UpdateTime(5);
-                    AdjustLuminance(.6f);
-                    break;
-                case .7f:
-                    if (isIndestructible)
-                    {
-                        StopCoroutine(inmunidadCoroutine);
-                        ui_IndestructibleBar.gameObject.SetActive(false);
-                        GlowSpriteEffect.SetActive(false);
-                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
-                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
-                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
-                        isIndestructible = false;
-                        SetAllCompositeCollidersTrigger(compositeColliders, false);
-                    }
-                    if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) enemyCameraShake = StartCoroutine(EnemyCameraShake(4));
-                    CurrentEffectPanel(4);                  
-                    ui_enemyAttachedBar.UpdateTime(4);                   
-                    AdjustLuminance(.7f);
-                    break;
-                case .8f:
-                    if (isIndestructible)
-                    {
-                        StopCoroutine(inmunidadCoroutine);
-                        ui_IndestructibleBar.gameObject.SetActive(false);
-                        GlowSpriteEffect.SetActive(false);
-                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
-                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
-                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
-                        isIndestructible = false;
-                        SetAllCompositeCollidersTrigger(compositeColliders, false);
-                    }
-                    if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) enemyCameraShake = StartCoroutine(EnemyCameraShake(3));
-                    CurrentEffectPanel(3);                  
-                    ui_enemyAttachedBar.UpdateTime(3);
-                    AdjustLuminance(.8f);
-                    break;
-                case .9f:
-                    if (isIndestructible)
-                    {
-                        StopCoroutine(inmunidadCoroutine);
-                        ui_IndestructibleBar.gameObject.SetActive(false);
-                        GlowSpriteEffect.SetActive(false);
-                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
-                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
-                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
-                        isIndestructible = false;
-                        SetAllCompositeCollidersTrigger(compositeColliders, false);
-                    }
-                    if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) enemyCameraShake = StartCoroutine(EnemyCameraShake(2));
-                    CurrentEffectPanel(2);             
-                    ui_enemyAttachedBar.UpdateTime(2);
-                    AdjustLuminance(.9f);
-                    break;
-                case 1:
-                    AdjustLuminance(1);
-                    break;
-                default:
-                    ui_enemyAttachedBar.UpdateTime(1);
-                    break;
+                }
+            }
+            else
+            {
+
+                switch (currentSalud)
+                {
+                    case 0:
+
+                        break;
+                    case .1f:
+
+                        if (isIndestructible)
+                        {
+                            StopCoroutine(inmunidadCoroutine);
+                            ui_IndestructibleBar.gameObject.SetActive(false);
+                            GlowSpriteEffect.SetActive(false);
+                            if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                            if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
+                            if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                            isIndestructible = false;
+                            SetAllCompositeCollidersTrigger(compositeColliders, false);
+
+                        }
+
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) enemyCameraShake = StartCoroutine(EnemyCameraShake(10));
+                        CurrentEffectPanel(10);
+                        ui_enemyAttachedBar.UpdateTime(10);
+                        AdjustLuminance(.1f);
+                        break;
+                    case .2f:
+                        if (isIndestructible)
+                        {
+                            StopCoroutine(inmunidadCoroutine);
+                            ui_IndestructibleBar.gameObject.SetActive(false);
+                            GlowSpriteEffect.SetActive(false);
+                            if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                            if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
+                            if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                            isIndestructible = false;
+                            SetAllCompositeCollidersTrigger(compositeColliders, false);
+                        }
+
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) enemyCameraShake = StartCoroutine(EnemyCameraShake(9));
+                        CurrentEffectPanel(9);
+                        ui_enemyAttachedBar.UpdateTime(9);
+                        AdjustLuminance(.2f);
+                        break;
+                    case .3f:
+                        if (isIndestructible)
+                        {
+                            StopCoroutine(inmunidadCoroutine);
+                            ui_IndestructibleBar.gameObject.SetActive(false);
+                            GlowSpriteEffect.SetActive(false);
+                            if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                            if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
+                            if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                            isIndestructible = false;
+                            SetAllCompositeCollidersTrigger(compositeColliders, false);
+                        }
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) enemyCameraShake = StartCoroutine(EnemyCameraShake(8));
+                        CurrentEffectPanel(8);
+                        ui_enemyAttachedBar.UpdateTime(8);
+                        AdjustLuminance(.3f);
+                        break;
+                    case .4f:
+                        if (isIndestructible)
+                        {
+                            StopCoroutine(inmunidadCoroutine);
+                            ui_IndestructibleBar.gameObject.SetActive(false);
+                            GlowSpriteEffect.SetActive(false);
+                            if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                            if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
+                            if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                            isIndestructible = false;
+                            SetAllCompositeCollidersTrigger(compositeColliders, false);
+                        }
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) enemyCameraShake = StartCoroutine(EnemyCameraShake(7));
+                        CurrentEffectPanel(7);
+                        ui_enemyAttachedBar.UpdateTime(7);
+                        AdjustLuminance(.4f);
+                        break;
+                    case .5f:
+                        if (isIndestructible)
+                        {
+                            StopCoroutine(inmunidadCoroutine);
+                            ui_IndestructibleBar.gameObject.SetActive(false);
+                            GlowSpriteEffect.SetActive(false);
+                            if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                            if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
+                            if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                            isIndestructible = false;
+                            SetAllCompositeCollidersTrigger(compositeColliders, false);
+                        }
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) enemyCameraShake = StartCoroutine(EnemyCameraShake(6));
+                        CurrentEffectPanel(6);
+                        ui_enemyAttachedBar.UpdateTime(6);
+                        AdjustLuminance(.5f);
+                        break;
+                    case .6f:
+                        if (isIndestructible)
+                        {
+                            StopCoroutine(inmunidadCoroutine);
+                            ui_IndestructibleBar.gameObject.SetActive(false);
+                            GlowSpriteEffect.SetActive(false);
+                            if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                            if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
+                            if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                            isIndestructible = false;
+                            SetAllCompositeCollidersTrigger(compositeColliders, false);
+                        }
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) enemyCameraShake = StartCoroutine(EnemyCameraShake(5));
+                        CurrentEffectPanel(5);
+                        ui_enemyAttachedBar.UpdateTime(5);
+                        AdjustLuminance(.6f);
+                        break;
+                    case .7f:
+                        if (isIndestructible)
+                        {
+                            StopCoroutine(inmunidadCoroutine);
+                            ui_IndestructibleBar.gameObject.SetActive(false);
+                            GlowSpriteEffect.SetActive(false);
+                            if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                            if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
+                            if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                            isIndestructible = false;
+                            SetAllCompositeCollidersTrigger(compositeColliders, false);
+                        }
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) enemyCameraShake = StartCoroutine(EnemyCameraShake(4));
+                        CurrentEffectPanel(4);
+                        ui_enemyAttachedBar.UpdateTime(4);
+                        AdjustLuminance(.7f);
+                        break;
+                    case .8f:
+                        if (isIndestructible)
+                        {
+                            StopCoroutine(inmunidadCoroutine);
+                            ui_IndestructibleBar.gameObject.SetActive(false);
+                            GlowSpriteEffect.SetActive(false);
+                            if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                            if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
+                            if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                            isIndestructible = false;
+                            SetAllCompositeCollidersTrigger(compositeColliders, false);
+                        }
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) enemyCameraShake = StartCoroutine(EnemyCameraShake(3));
+                        CurrentEffectPanel(3);
+                        ui_enemyAttachedBar.UpdateTime(3);
+                        AdjustLuminance(.8f);
+                        break;
+                    case .9f:
+                        if (isIndestructible)
+                        {
+                            StopCoroutine(inmunidadCoroutine);
+                            ui_IndestructibleBar.gameObject.SetActive(false);
+                            GlowSpriteEffect.SetActive(false);
+                            if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+                            if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
+                            if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
+                            isIndestructible = false;
+                            SetAllCompositeCollidersTrigger(compositeColliders, false);
+                        }
+                        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) enemyCameraShake = StartCoroutine(EnemyCameraShake(2));
+                        CurrentEffectPanel(2);
+                        ui_enemyAttachedBar.UpdateTime(2);
+                        AdjustLuminance(.9f);
+                        break;
+                    case 1:
+                        AdjustLuminance(1);
+                        break;
+                    default:
+                        ui_enemyAttachedBar.UpdateTime(1);
+                        break;
+                }
+
             }
 
             StartBlinking(0);
@@ -600,7 +1088,7 @@ public class PlayerControllerNew : MonoBehaviour
         if (collision.tag == "Pieza")
         {
 
-            if(showPiezasPanel)
+            if (showPiezasPanel)
             {
                 audioPause.Pause(true);
                 playerMovement.swipeDetector.gameObject.SetActive(false);
@@ -608,12 +1096,12 @@ public class PlayerControllerNew : MonoBehaviour
                 showPiezasPanel = false;
             }
             currenPiece = collision.gameObject;
-            if ( collision.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasA)
+            if (collision.GetComponent<Rompecabezas>().rompecabezasType == Rompecabezas.RompecabezasType.RompecabezasA)
             {
                 if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) UserData.piezaA_N1 = true;
                 else if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) UserData.piezaA_N2 = true;
                 else if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) UserData.piezaA_N3 = true;
-               // piezaA = true;
+                // piezaA = true;
                 StartCoroutine(TakePieceAnim());
                 piezasPanel.piezaA.SetActive(false);
             }
@@ -689,7 +1177,7 @@ public class PlayerControllerNew : MonoBehaviour
 
                 playerMovement.capsuleCollider.size = playerMovement.capsuleColliderSize;
                 playerMovement.doingRoll = false;
-            }        
+            }
             currentSalud -= saludAmount;
             currentSalud = Mathf.Clamp(currentSalud, 0f, 1);
             saludBar.healthFillBar.fillAmount = currentSalud;
@@ -800,7 +1288,7 @@ public class PlayerControllerNew : MonoBehaviour
         if (!playerMovement.isFallingMode)
         {
             StartCoroutine(DeactivateEnfasis());
-           // playerMovement.rb.gravityScale = 0;
+            // playerMovement.rb.gravityScale = 0;
             playerMovement.inputsEnabled = false;
             playerMovement.rb.bodyType = RigidbodyType2D.Static;
             playerMovement.direction = Vector2.zero;
@@ -851,9 +1339,9 @@ public class PlayerControllerNew : MonoBehaviour
             //playerMovement.rb.gravityScale = playerMovement.gravityScale;
             playerMovement.rb.bodyType = RigidbodyType2D.Dynamic;
             playerMovement.anim.SetBool("HitBadFloor", false);
-            if(playerMovement.isGrounded)playerMovement.anim.SetBool("Walk", true);   
+            if (playerMovement.isGrounded) playerMovement.anim.SetBool("Walk", true);
             else playerMovement.anim.SetBool("Jump", true);
-      // playerMovement.inputsEnabled = true;
+            // playerMovement.inputsEnabled = true;
 
         }
         else
@@ -908,7 +1396,7 @@ public class PlayerControllerNew : MonoBehaviour
             playerMovement.direction = new Vector2(1.2f, 1);
             playerMovement.inputsEnabled = true;
             playerMovement.isHitBadFloor = false;
-            panelFeedbackBadFloor.SetActive(false);   
+            panelFeedbackBadFloor.SetActive(false);
             playerMovement.rb.bodyType = RigidbodyType2D.Dynamic;
             playerMovement.anim.SetBool("HitBadFloor", false);
             if (playerMovement.isGrounded) playerMovement.anim.SetBool("Walk", true);
@@ -920,7 +1408,7 @@ public class PlayerControllerNew : MonoBehaviour
     }
     public void ResetCollisionHitBadFloor()
     {
-        if(resetCollision != null)
+        if (resetCollision != null)
         {
             StopCoroutine(resetCollision);
         }
@@ -1054,7 +1542,7 @@ public class PlayerControllerNew : MonoBehaviour
 
     private IEnumerator Inmunidad()
     {
-        AudioManager.Instance.PlayMusic("Indestructible_loop",0);
+        AudioManager.Instance.PlayMusic("Indestructible_loop", 0);
 
         isIndestructible = true;
 
@@ -1069,7 +1557,7 @@ public class PlayerControllerNew : MonoBehaviour
         //spriteRenderer.material = materials[0];
         isIndestructible = false;
         SetAllCompositeCollidersTrigger(compositeColliders, false);
-        if(levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
+        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1) AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
         if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) AudioManager.Instance.PlayMusic("Bg_Nivel_2", 0);
         if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3) AudioManager.Instance.PlayMusic("Bg_Nivel_3", 0);
 
@@ -1077,46 +1565,69 @@ public class PlayerControllerNew : MonoBehaviour
     }
     private void CurrentEffectPanel(float delay)
     {
-        if(enemyEffectCoroutine != null)
+        if (enemyEffectCoroutine != null)
         {
             StopCoroutine(enemyEffectCoroutine);
             isSmokePanelEffect = false;
         }
-        if(!isSmokePanelEffect) enemyEffectCoroutine = StartCoroutine(CurrentEffect(delay));
-
+        if (!isSmokePanelEffect) enemyEffectCoroutine = StartCoroutine(CurrentEffect(delay));
     }
     private IEnumerator CurrentEffect(float delay)
     {
         isSmokePanelEffect = true;
         //audioSource.Play();
-        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1)
+        //if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1)
+        if (currentItem.GetComponent<EnemyNew>().sustanceType == EnemyNew.SustanceType.Tabaco)
         {
-            AudioManager.Instance.PlaySfx("Tos");
             effectPanel.SetActive(true);
+            rendererSwitcher.SwitchRenderer(rendererSwitcher.YourCamera, 0);
+            AudioManager.Instance.PlaySfx("Tos");
         }
-        //if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) effectPanel.GetComponent<Animator>().Play("Alcohol");
-        else if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2)
+        //else if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2)
+        else if (currentItem.GetComponent<EnemyNew>().sustanceType == EnemyNew.SustanceType.Alcohol)
         {
             rendererSwitcher.SwitchRenderer(rendererSwitcher.YourCamera, 1);
+            effectPanel.SetActive(false);
+
         }
-        else if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3)
+        //else if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3)
+        else if (currentItem.GetComponent<EnemyNew>().sustanceType == EnemyNew.SustanceType.Cannabis ||
+            currentItem.GetComponent<EnemyNew>().sustanceType == EnemyNew.SustanceType.Extasis ||
+            currentItem.GetComponent<EnemyNew>().sustanceType == EnemyNew.SustanceType.Cocaina ||
+            currentItem.GetComponent<EnemyNew>().sustanceType == EnemyNew.SustanceType.Metanfetamina ||
+            currentItem.GetComponent<EnemyNew>().sustanceType == EnemyNew.SustanceType.Psilocibina ||
+            currentItem.GetComponent<EnemyNew>().sustanceType == EnemyNew.SustanceType.Heroina)
         {
             rendererSwitcher.SwitchRenderer(rendererSwitcher.YourCamera, 2);
+            effectPanel.SetActive(false);
+
         }
 
         //effectPanel.GetComponent<Animator>().SetBool("Smoke", true);
 
         yield return new WaitForSeconds(delay);
-        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1)
+        //rendererSwitcher.SwitchRenderer(rendererSwitcher.YourCamera, 0);
+        if (BossCollider.isBossLevel)
         {
             effectPanel.SetActive(false);
-
-        }
-        //if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) effectPanel.GetComponent<Animator>().Play("Alcohol");
-        else if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2 || levelManager.currentScene == LevelManager.CurrentScene.Nivel3)
-        {
             rendererSwitcher.SwitchRenderer(rendererSwitcher.YourCamera, 0);
-           
+        }
+        else
+        {
+
+
+
+            if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1)
+            {
+                effectPanel.SetActive(false);
+
+            }
+            //if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) effectPanel.GetComponent<Animator>().Play("Alcohol");
+            else if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2 || levelManager.currentScene == LevelManager.CurrentScene.Nivel3)
+            {
+                rendererSwitcher.SwitchRenderer(rendererSwitcher.YourCamera, 0);
+
+            }
         }
 
         //enemyAttached.SetActive(false);

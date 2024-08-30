@@ -1,16 +1,15 @@
-using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
+    public static SpawnManager Instance;
+
     public GameObject[] platformPrefabs;
     public GameObject[] itemPrefabs;
     public ObjectPool platformPool;
     public ObjectPool itemPool;
     public Transform spawnParent;
-
-    public Vector2[] platformSpawnPositions;
-    public Vector2[] itemSpawnPositions;
 
     public AnimationCurve difficultyCurve; // Curva de dificultad para el intervalo de spawn
     public float initialSpawnInterval = 10f; // Intervalo de spawn inicial
@@ -18,6 +17,14 @@ public class SpawnManager : MonoBehaviour
 
     private float spawnInterval;
     private float timer;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+    }
 
     private void Start()
     {
@@ -30,17 +37,7 @@ public class SpawnManager : MonoBehaviour
 
     void Update()
     {
-        timer += Time.deltaTime;
-
-        // Actualizar el intervalo de spawn basado en la curva de dificultad
-        float normalizedTime = Mathf.Clamp01(timer / (initialSpawnInterval * 2)); // Normaliza el tiempo en un rango de 0 a 1
-        spawnInterval = Mathf.Lerp(initialSpawnInterval, minSpawnInterval, difficultyCurve.Evaluate(normalizedTime));
-
-        if (timer >= spawnInterval)
-        {
-            SpawnObject();
-            timer = 0f;
-        }
+        // Código para el manejo de spawn basado en dificultad (comentado)
     }
 
     private void SpawnObject()
@@ -57,12 +54,11 @@ public class SpawnManager : MonoBehaviour
 
     private void SpawnPlatform()
     {
-        Vector2 spawnPosition = platformSpawnPositions[Random.Range(0, platformSpawnPositions.Length)];
         GameObject platformPrefab = GetRandomPlatformPrefab();
         if (platformPrefab != null)
         {
             GameObject platform = platformPool.GetObjectFromPool(platformPrefab);
-            platform.transform.position = new Vector2(Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0, 0)).x, spawnPosition.y);
+            platform.transform.position = new Vector2(spawnParent.transform.position.x, spawnParent.transform.position.y);
 
             // Ajustar la posición basado en el TilemapRenderer o TilemapCollider2D
             TilemapRenderer tilemapRenderer = platform.GetComponent<TilemapRenderer>();
@@ -81,14 +77,13 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    private void SpawnItem()
+    public GameObject SpawnItem()
     {
-        Vector2 spawnPosition = itemSpawnPositions[Random.Range(0, itemSpawnPositions.Length)];
         GameObject itemPrefab = GetRandomItemPrefab();
         if (itemPrefab != null)
         {
             GameObject item = itemPool.GetObjectFromPool(itemPrefab);
-            item.transform.position = new Vector2(Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0, 0)).x, spawnPosition.y);
+            item.transform.position = new Vector2(spawnParent.transform.position.x, spawnParent.transform.position.y);
 
             // Ajustar la posición basado en el SpriteRenderer
             SpriteRenderer spriteRenderer = item.GetComponent<SpriteRenderer>();
@@ -97,7 +92,13 @@ public class SpawnManager : MonoBehaviour
                 Vector3 pivotAdjustment = spriteRenderer.bounds.center - item.transform.position;
                 item.transform.position -= pivotAdjustment;
             }
+
+            // Devuelve el ítem instanciado
+            return item;
         }
+
+        // Devuelve null si no se pudo crear el ítem
+        return null;
     }
 
     private GameObject GetRandomPlatformPrefab()
