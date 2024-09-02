@@ -10,7 +10,6 @@ public class BigBoss : MonoBehaviour
     private PlayerMovementNew playerMovementNew;
     private Coroutine bossSolidify, bossDissolve;
     private Material material;
-
     private void Awake()
     {
         material = GetComponent<SpriteRenderer>().material;
@@ -22,6 +21,7 @@ public class BigBoss : MonoBehaviour
         BossSolidify();
         
     }
+
     //private void Update()
     //{
     //    transform.position = new Vector3(playerMovementNew.transform.position.x + 8.4f,
@@ -32,13 +32,18 @@ public class BigBoss : MonoBehaviour
 
     public float smoothTime = 0.3f; // Tiempo que tarda en alcanzar la posición objetivo
     private float velocityX = 0.0f; // Velocidad inicial en X (se modifica automáticamente)
+    public bool isfollowPlayer = true;
 
     void Update()
     {
-        float targetX = playerMovementNew.transform.position.x;
-        float smoothX = Mathf.SmoothDamp(transform.position.x, targetX + 12.0f, ref velocityX, smoothTime);
+        if (isfollowPlayer)
+        {
 
-        transform.position = new Vector3(smoothX, transform.position.y, 0f);
+            float targetX = playerMovementNew.transform.position.x;
+            float smoothX = Mathf.SmoothDamp(transform.position.x, targetX + 12.0f, ref velocityX, smoothTime);
+
+            transform.position = new Vector3(smoothX, transform.position.y, 0f);
+        }
     }
 
     public void BossSolidify()
@@ -107,4 +112,6 @@ public class BigBoss : MonoBehaviour
         playerMovementNew.anim.SetBool("SlowWalk", true);
         playerMovementNew.anim.SetBool("Walk", true);
     }
+    
+
 }

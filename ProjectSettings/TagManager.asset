@@ -27,6 +27,7 @@ TagManager:
   - CurrentEffect
   - DieEffect
   - TilesGrid
+  - SuccessfulEvasion
   layers:
   - Default
   - TransparentFX

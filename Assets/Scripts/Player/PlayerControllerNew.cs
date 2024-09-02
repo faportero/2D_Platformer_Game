@@ -88,6 +88,8 @@ public class PlayerControllerNew : MonoBehaviour
     public bool doingEnemyShake;
     private bool takingPiece;
     private bool takingSalud;
+
+    [SerializeField] GameObject bigBoss;
     #endregion
     #region Unity Callbacks
     private void Awake()
@@ -1159,6 +1161,16 @@ public class PlayerControllerNew : MonoBehaviour
             }
 
         }
+        if (collision.tag == "SuccessfulEvasion")
+        {
+            float randomValue = UnityEngine.Random.value;
+            float playAnimationThreshold = 0.5f;
+
+            if (randomValue < playAnimationThreshold)
+            {
+                StartCoroutine(PlayBossHungry());
+            }
+        }
     }
 
     private IEnumerator ResetHitBadFloorDestructible()
@@ -1213,6 +1225,19 @@ public class PlayerControllerNew : MonoBehaviour
 
             StartCoroutine(HitBadFloor());
 
+            if (BossCollider.isBossLevel)
+            {
+                float randomValue = UnityEngine.Random.value;
+                float playAnimationThreshold = 0.5f;
+
+                if (randomValue < playAnimationThreshold)
+                {
+                    StartCoroutine(PlayBossHappy());
+                }
+                //StartCoroutine(PlayBossHappy());
+            }
+
+
             AudioManager.Instance.PlaySfx("HitWall", true);
 
         }
@@ -1234,6 +1259,38 @@ public class PlayerControllerNew : MonoBehaviour
         //    collision.gameObject.GetComponent<ExplodeOnClick>().Explode();
         //    // }
         //}
+    }
+    private IEnumerator PlayBossHappy()
+    {
+        // Reproduce la animación "Happy"
+        bigBoss.GetComponent<Animator>().Play("Happy");
+
+        // Espera a que la animación "Happy" termine
+        AnimatorStateInfo currentState = bigBoss.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0);
+        while (!(currentState.IsName("Happy") && currentState.normalizedTime >= 1.0f))
+        {
+            currentState = bigBoss.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0);
+            yield return null;
+        }
+
+        // Reproduce la animación "Idle"
+        bigBoss.GetComponent<Animator>().Play("Idle");
+    }
+    private IEnumerator PlayBossHungry()
+    {
+        // Reproduce la animación "Happy"
+        bigBoss.GetComponent<Animator>().Play("Hungry");
+
+        // Espera a que la animación "Happy" termine
+        AnimatorStateInfo currentState = bigBoss.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0);
+        while (!(currentState.IsName("Hungry") && currentState.normalizedTime >= 1.0f))
+        {
+            currentState = bigBoss.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0);
+            yield return null;
+        }
+
+        // Reproduce la animación "Idle"
+        bigBoss.GetComponent<Animator>().Play("Idle");
     }
     public void FirstEnemyEffect()
     {
@@ -1416,12 +1473,45 @@ public class PlayerControllerNew : MonoBehaviour
     }
     private IEnumerator ResetCollision()
     {
-        if (playerMovement.isFallingMode) playerMovement.rb.gravityScale = 1;
-        if (currenBadFloortItem != null) currenBadFloortItem.GetComponent<CompositeCollider2D>().isTrigger = true;
+        if (playerMovement.isFallingMode)
+            playerMovement.rb.gravityScale = 1;
+
+        if (currenBadFloortItem != null)
+        {
+            // Resetea el isTrigger en currenBadFloorItem
+            CompositeCollider2D[] colliders = currenBadFloortItem.GetComponentsInChildren<CompositeCollider2D>();
+            foreach (var collider in colliders)
+            {
+                collider.isTrigger = true;
+            }
+        }
+
+        // Espera 3 segundos
         yield return new WaitForSeconds(3);
-        if (playerMovement.isFallingMode) playerMovement.rb.gravityScale = 0;
-        if (currenBadFloortItem != null) currenBadFloortItem.GetComponent<CompositeCollider2D>().isTrigger = false;
+
+        if (playerMovement.isFallingMode)
+            playerMovement.rb.gravityScale = 0;
+
+        if (currenBadFloortItem != null)
+        {
+            // Reestablece el isTrigger a false en currenBadFloorItem y sus hijos
+            CompositeCollider2D[] colliders = currenBadFloortItem.GetComponentsInChildren<CompositeCollider2D>();
+            foreach (var collider in colliders)
+            {
+                collider.isTrigger = false;
+            }
+        }
     }
+
+
+    //private IEnumerator ResetCollision()
+    //{
+    //    if (playerMovement.isFallingMode) playerMovement.rb.gravityScale = 1;
+    //    if (currenBadFloortItem != null) currenBadFloortItem.GetComponent<CompositeCollider2D>().isTrigger = true;
+    //    yield return new WaitForSeconds(3);
+    //    if (playerMovement.isFallingMode) playerMovement.rb.gravityScale = 0;
+    //    if (currenBadFloortItem != null) currenBadFloortItem.GetComponent<CompositeCollider2D>().isTrigger = false;
+    //}
 
     //private IEnumerator ResetCollision()
     //{
