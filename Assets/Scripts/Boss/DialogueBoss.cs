@@ -18,6 +18,7 @@ public struct DialogueBossLine
 public class DialogueBoss : MonoBehaviour
 {
     [SerializeField] Boss boss;
+    [SerializeField] GameObject ente, finalExplosion;
     [SerializeField] TextMeshProUGUI textComponent;
     [SerializeField] List<DialogueLine> dialogueLines;
     [SerializeField] float textSpeed;
@@ -25,7 +26,7 @@ public class DialogueBoss : MonoBehaviour
     [SerializeField] GameObject continueBtn, backBtn, cambiarDestinoBtn;
     private LobbyManager lobbyManager;
     private PlayerMovementNew playerMovement;
-    private LevelManager levelManager;  
+    private LevelManager levelManager;
     private int index;
 
     private Coroutine blinkCoroutine; // Corrutina para el efecto de "pestañeo"
@@ -36,6 +37,7 @@ public class DialogueBoss : MonoBehaviour
 
     private bool wasPreviousPlayerSpeaking;
     private bool firstTime = true;
+    public bool isFinalPanel;
 
     private void Awake()
     {
@@ -60,6 +62,7 @@ public class DialogueBoss : MonoBehaviour
     private void Update()
     {
         playerMovement.anim.SetBool("SlowWalk", false);
+
 
     }
 
@@ -136,7 +139,37 @@ public class DialogueBoss : MonoBehaviour
             {
                 yield return new WaitUntil(() => !GetComponent<AudioSource>().isPlaying);
             }
+            
             NextLine();
+            if (!isFinalPanel)
+            {
+
+                if (index == 3 || index == 6)
+                {
+                    ente.SetActive(true);
+                    ente.GetComponent<Ente>().EnteSolidify();
+                    ente.transform.GetChild(0).gameObject.SetActive(true);
+                    ente.transform.GetChild(1).gameObject.SetActive(true);
+                }
+                if (ente.activeSelf && index == 4)
+                {
+                    //ente.GetComponent<SpriteRenderer>().material.SetFloat("_DissolveAmmount", 1);
+                    ente.GetComponent<Ente>().EnteDisolve();
+
+                }
+            }
+            else
+            {
+                if (index == 3)
+                {
+                    ente.SetActive(true);
+                    ente.GetComponent<Ente>().EnteSolidify();
+                    ente.transform.GetChild(0).gameObject.SetActive(true);
+                    ente.transform.GetChild(1).gameObject.SetActive(true);
+                    yield return null;
+                }
+
+            }
         }
         firstTime = false;
     }
@@ -227,6 +260,9 @@ public class DialogueBoss : MonoBehaviour
         if (index < dialogueLines.Count - 1)
         {
             index++;
+
+
+
             textComponent.text = string.Empty;
 
             // Verificar si el interlocutor ha cambiado
@@ -250,7 +286,37 @@ public class DialogueBoss : MonoBehaviour
             //backBtn.SetActive(true);
             //continueBtn.SetActive(true);
             //cambiarDestinoBtn.SetActive(true);
-            boss.BossDisolve();
+            if (!isFinalPanel)
+            {
+                boss.BossDisolve();
+                if (ente.activeSelf) ente.GetComponent<Ente>().EnteDisolve();
+            }
+            else
+            {
+                //playerMovement.inputsEnabled = true;
+                StartCoroutine(FinalLevel());
+            }
         }
+
+    }
+    private IEnumerator FinalLevel()
+    {
+        yield return new WaitForSeconds(2);
+        finalExplosion.SetActive(true);
+        finalExplosion.GetComponent<FinalExplosion>().StartExplosion();
+        yield return new WaitForSeconds(1);
+        StartCoroutine(StartRunner());
+    }
+        
+    private IEnumerator StartRunner()
+    {
+        yield return new WaitForSeconds(1f);
+        boss.gameObject.SetActive(false);
+        ente.SetActive(false);
+        gameObject.SetActive(false);
+        playerMovement.isMoving = true;
+        playerMovement.canMove = true;
+        playerMovement.rb.bodyType = RigidbodyType2D.Dynamic;
+        playerMovement.anim.SetBool("Walk", true);
     }
 }

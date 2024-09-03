@@ -255,7 +255,7 @@ public class LevelManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(5);
         if(currentScene == CurrentScene.Nivel1)SceneManager.LoadScene("Nivel_1");
         else if(currentScene == CurrentScene.Nivel2)SceneManager.LoadScene("Nivel_2");
-        else if(currentScene == CurrentScene.Nivel2)SceneManager.LoadScene("Nivel_3");
+        else if(currentScene == CurrentScene.Nivel3)SceneManager.LoadScene("Nivel_3");
 
     }
     private void CheckLevelPieces()

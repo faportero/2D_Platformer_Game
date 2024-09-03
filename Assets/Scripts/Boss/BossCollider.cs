@@ -27,7 +27,7 @@ public class BossCollider : MonoBehaviour
         playerMovementNew.isMoving = false;
         playerMovementNew.canMove = false;
         playerMovementNew.rb.bodyType = RigidbodyType2D.Static;
-        playerMovementNew.anim.SetBool("SlowWalk", false); 
+        playerMovementNew.anim.SetBool("SlowWalkSlowWalk", false); 
         playerMovementNew.anim.SetBool("Walk", false); 
     }
 }

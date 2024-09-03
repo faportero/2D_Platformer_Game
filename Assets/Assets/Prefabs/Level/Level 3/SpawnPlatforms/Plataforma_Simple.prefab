@@ -15,7 +15,7 @@ GameObject:
   m_TagString: TilesGrid
   m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &951300808162273863
 RectTransform:
@@ -67,7 +67,7 @@ GameObject:
   m_TagString: SuccessfulEvasion
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &298717332105280171
 RectTransform:
@@ -794,7 +794,7 @@ GameObject:
   - component: {fileID: 5402742204364223224}
   - component: {fileID: 5102467069454721729}
   - component: {fileID: 1851778325646230383}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: PlatformTest (1)
   m_TagString: BadFloor
   m_Icon: {fileID: 0}

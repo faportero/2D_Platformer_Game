@@ -226,6 +226,7 @@ public class PlayerControllerNew : MonoBehaviour
             isDrugged = false;
             isCannabis = false;
             isPsilo = false;
+            isTabaco = false;
             //audioSource.Stop();
 
             currentSalud += saludAmount;
@@ -1186,7 +1187,6 @@ public class PlayerControllerNew : MonoBehaviour
         {
             if (playerMovement.doingRoll)
             {
-
                 playerMovement.capsuleCollider.size = playerMovement.capsuleColliderSize;
                 playerMovement.doingRoll = false;
             }

@@ -19,9 +19,14 @@ public class BigBoss : MonoBehaviour
     {
         material = GetComponent<SpriteRenderer>().material;
         BossSolidify();
+        CameraManager.instance.StartCameraShake(5);
         
     }
-
+    private void OnDisable()
+    {
+        //material = GetComponent<SpriteRenderer>().material;
+        //BossDisolve();
+    }
     //private void Update()
     //{
     //    transform.position = new Vector3(playerMovementNew.transform.position.x + 8.4f,
@@ -105,11 +110,13 @@ public class BigBoss : MonoBehaviour
     {
         CameraManager.instance.SingleSwapCamera(runnerCam, 2);
         yield return new WaitForSeconds(2);
+        //CameraManager.instance.StartCameraShake(0);
+        //CameraManager.instance.StopCameraShake();
         playerMovementNew.inputsEnabled = true;
         playerMovementNew.isMoving = true;
         playerMovementNew.canMove = true;
         playerMovementNew.rb.bodyType = RigidbodyType2D.Dynamic;
-        playerMovementNew.anim.SetBool("SlowWalk", true);
+        //playerMovementNew.anim.SetBool("SlowWalk", true);
         playerMovementNew.anim.SetBool("Walk", true);
     }
     

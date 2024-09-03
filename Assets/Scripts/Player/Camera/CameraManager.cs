@@ -17,10 +17,12 @@ public class CameraManager : MonoBehaviour
 
     private Coroutine lerpYPanCoroutine;
     private Coroutine panCameraCoroutine;
-
+    private Coroutine shakeCoroutine;
+    
+    public bool isShaking = false;
     public CinemachineVirtualCamera currentCamera;
     private CinemachineFramingTransposer framingTransposer;
-
+    private CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin;
     private Vector3 startingTrackedObjectOffset;
     private float normYPanAmount;
 
@@ -141,4 +143,34 @@ public class CameraManager : MonoBehaviour
         }
     }
     #endregion
+    public void StartCameraShake(float amplitude)
+    {
+        cinemachineBasicMultiChannelPerlin = currentCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        if (shakeCoroutine != null)
+        {
+            StopCoroutine(shakeCoroutine);
+        }
+
+        isShaking = true;
+        shakeCoroutine = StartCoroutine(CameraShake(amplitude));
+    }
+
+    public void StopCameraShake()
+    {
+        isShaking = false;
+    }
+
+    private IEnumerator CameraShake(float amplitude)
+    {
+        while (isShaking)
+        {
+            cinemachineBasicMultiChannelPerlin = currentCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = Mathf.PingPong(Time.time * amplitude, amplitude);
+            yield return null;
+        }
+
+        cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0f;
+        shakeCoroutine = null; 
+    }
 }
+

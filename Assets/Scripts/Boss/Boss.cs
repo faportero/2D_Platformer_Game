@@ -8,7 +8,7 @@ public class Boss : MonoBehaviour
 
     private Coroutine bossSolidify, bossDissolve;
     private Material material;
-
+    public bool isFinalBoss;
     private void Awake()
     {
         material = GetComponent<SpriteRenderer>().material;
@@ -17,6 +17,13 @@ public class Boss : MonoBehaviour
     {
         material = GetComponent<SpriteRenderer>().material;
         BossSolidify();
+        
+        if (isFinalBoss)
+        {
+            //bigBoss.SetActive(false);
+            bigBoss.GetComponent<BigBoss>().BossDisolve();
+        }
+
     }
     public void BossSolidify()
     {
@@ -72,9 +79,11 @@ public class Boss : MonoBehaviour
         }
         material.SetFloat("_DissolveAmmount", 1);
         //gameObject.SetActive(false);
-        bigBoss.SetActive(true);
-        bigBoss.GetComponent<BigBoss>().BossSolidify();
-        dialoguePanel.SetActive(false);
-
+        if (!isFinalBoss)
+        {
+            bigBoss.SetActive(true);
+            bigBoss.GetComponent<BigBoss>().BossSolidify();
+            dialoguePanel.SetActive(false);
+        }
     }
 }

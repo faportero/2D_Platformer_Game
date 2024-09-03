@@ -559,6 +559,7 @@ public class PlayerMovementNew : MonoBehaviour
         else if (doingRoll && isGrounded) direction = new Vector2(2.5f, 0);
         if (anim.GetBool("SlowFall")) direction = new Vector2(slowFallGravity, .75f);
 
+       // print("Hit bad floor: " + isHitBadFloor + ". Anim Hit Bad floor: " + anim.GetBool("HitBadFloor"));
         if (!isDiying)
         {
 

@@ -12,13 +12,13 @@ public class Ente : MonoBehaviour
 
     private void Awake()
     {
-        
-    }
-    private void Start()
-    {
         playerMovementNew = FindAnyObjectByType<PlayerMovementNew>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         material = spriteRenderer.material;
+    }
+    private void Start()
+    {
+
     }
     private void OnEnable()
     {
@@ -43,7 +43,10 @@ public class Ente : MonoBehaviour
             
         }
     }
-
+    public void EnteSolidify()
+    {
+        StartCoroutine(PlayerSolidify());
+    }
     private IEnumerator PlayerSolidify()
     {
         AudioManager.Instance.PlaySfx("Solidify");
@@ -63,12 +66,12 @@ public class Ente : MonoBehaviour
 
         // Asegurarse de que el valor final sea exactamente 1
         material.SetFloat("_DissolveAmmount", 0);
-        dialoguePanel.SetActive(true);
+        if(dialoguePanel)dialoguePanel.SetActive(true);
        
     }
     public void EnteDisolve()
     {
-        StartCoroutine(PlayerDisolve());
+        StartCoroutine(PlayerDisolve());    
     }
     private IEnumerator PlayerDisolve()
     {
@@ -90,7 +93,7 @@ public class Ente : MonoBehaviour
         // Asegurarse de que el valor final sea exactamente 1
         material.SetFloat("_DissolveAmmount", 1);
         gameObject.SetActive(false);
-        dialoguePanel.SetActive(false);
+        if(dialoguePanel) dialoguePanel.SetActive(false);
 
     }
 }
