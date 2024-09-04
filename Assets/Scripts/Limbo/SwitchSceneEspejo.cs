@@ -20,7 +20,7 @@ public class SwitchSceneEspejo : MonoBehaviour
     }
     private void Update()
     {
-        print(nivel);
+        //print(nivel);
     }
     public void SwitchSceneFromUI()
     {

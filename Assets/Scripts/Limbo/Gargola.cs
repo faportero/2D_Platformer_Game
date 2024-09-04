@@ -103,6 +103,7 @@ public class Gargola : MonoBehaviour
         if(!InputManager.isPC)swipeDetector.enabled = false;
         playerMovementNew.isMoving = false;
         playerMovementNew.inputsEnabled = false;
+        playerMovementNew.canMove = false;
         playerMovementNew.targetPosition = playerMovementNew.transform.position;
         playerMovementNew.anim.SetBool("SlowWalk", false);
         playerMovementNew.anim.SetBool("Turn", true);

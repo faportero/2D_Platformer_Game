@@ -110,7 +110,7 @@ public class ArmSpawner : MonoBehaviour
 
             timeBeforeRestart = timeBeforeRestart - .01f;
             if (timeBeforeRestart <= 0.15f) timeBeforeRestart = 0.15f;
-            print("Time:" + timeBeforeRestart);
+            //print("Time:" + timeBeforeRestart);
 
             // Si no tiene un ítem, sigue con el spawn y la animación normalmente
             SpawnAndAttachItem();

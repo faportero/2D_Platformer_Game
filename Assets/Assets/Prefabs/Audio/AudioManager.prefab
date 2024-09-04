@@ -579,6 +579,8 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: d3968430926dc12439f5c59a6781e151, type: 3}
   - name: Die_Panel
     clip: {fileID: 8300000, guid: d3235582c152f2947a8ca34d9a4202da, type: 3}
+  - name: Bg_Nivel_3
+    clip: {fileID: 8300000, guid: 7dbfaedc92dd08c42af64c61f08e5523, type: 3}
   sfxSounds:
   - name: HourGlassTransition
     clip: {fileID: 8300000, guid: 9d8eeb4433ad7da40b14fe1a5a969bfd, type: 3}

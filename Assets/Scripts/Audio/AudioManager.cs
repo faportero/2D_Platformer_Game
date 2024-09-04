@@ -44,6 +44,32 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    //public void PlaySfx(string name, bool triggerDuck = false)
+    //{
+    //    Sound s = Array.Find(sfxSounds, x => x.name == name);
+    //    if (s == null)
+    //    {
+    //        Debug.Log("Sound Not Found");
+    //    }
+    //    else
+    //    {
+    //        // Controla el nivel de envío para activar o no el ducking.
+    //        if (triggerDuck)
+    //        {
+    //            // Aumenta el volumen de envío para activar el ducking.
+    //            audioMixer.SetFloat("SFXSendVolume", 0f);  // Volumen normal para activar ducking.
+    //        }
+    //        else
+    //        {
+    //            // Reduce el volumen de envío para evitar el ducking.
+    //            audioMixer.SetFloat("SFXSendVolume", -40f);  // Volumen muy bajo para desactivar ducking.
+    //            triggerDuck = false;
+    //        }
+
+    //        sfxSource.PlayOneShot(s.clip);
+    //    }
+    //}
+
     public void PlaySfx(string name, bool triggerDuck = false)
     {
         Sound s = Array.Find(sfxSounds, x => x.name == name);
@@ -63,11 +89,24 @@ public class AudioManager : MonoBehaviour
             {
                 // Reduce el volumen de envío para evitar el ducking.
                 audioMixer.SetFloat("SFXSendVolume", -40f);  // Volumen muy bajo para desactivar ducking.
-                triggerDuck = false;
             }
 
             sfxSource.PlayOneShot(s.clip);
+
+            // Inicia la corutina para restablecer el volumen después de un retraso.
+            if (triggerDuck)
+            {
+                StartCoroutine(RestoreDuckingVolumeAfterDelay(s.clip.length));
+            }
         }
+    }
+
+    private IEnumerator RestoreDuckingVolumeAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        // Restablece el volumen de envío a su valor normal.
+        audioMixer.SetFloat("SFXSendVolume", -40f);  // O el valor que consideres como volumen normal.
     }
 
     public void PlayDialogue(string name)

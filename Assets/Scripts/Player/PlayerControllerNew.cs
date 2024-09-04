@@ -1561,26 +1561,31 @@ public class PlayerControllerNew : MonoBehaviour
 
     private void GetCompositeColliders2D()
     {
-        // Obtener todos los GameObjects activos en la escena
-        GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
+        // Obtener todos los GameObjects, incluyendo los inactivos
+        GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>(true);
 
         // Iterar a través de todos los GameObjects y buscar CompositeCollider2D con el tag "BadFloor"
         foreach (GameObject obj in allObjects)
         {
-            // Obtener el CompositeCollider2D del GameObject actual, si existe
-            CompositeCollider2D collider = obj.GetComponent<CompositeCollider2D>();
-
-            // Verificar si el objeto tiene el tag "BadFloor" y el componente CompositeCollider2D
-            if (obj.CompareTag("BadFloor") && collider != null)
+            // Verificar si el objeto tiene el tag "BadFloor" y obtener el componente CompositeCollider2D
+            if (obj.CompareTag("BadFloor"))
             {
-                // Agregar el CompositeCollider2D a la lista
-                compositeColliders.Add(collider);
+                CompositeCollider2D collider = obj.GetComponent<CompositeCollider2D>();
+
+                // Verificar si el componente CompositeCollider2D existe
+                if (collider != null)
+                {
+                    // Agregar el CompositeCollider2D a la lista
+                    compositeColliders.Add(collider);
+                    //print(obj.name);
+                }
             }
         }
 
         // Método para convertir todos los CompositeCollider2D a trigger
         // SetAllCompositeCollidersTrigger(compositeColliders, true);
     }
+
     void SetAllCompositeCollidersTrigger(List<CompositeCollider2D> colliders, bool isTrigger)
     {
         foreach (CompositeCollider2D collider in colliders)
@@ -1588,7 +1593,6 @@ public class PlayerControllerNew : MonoBehaviour
             collider.isTrigger = isTrigger;
         }
     }
-
 
     #endregion
     #region Enemy Managment
