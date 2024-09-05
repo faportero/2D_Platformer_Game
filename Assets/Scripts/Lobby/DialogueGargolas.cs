@@ -70,7 +70,7 @@ public class DialogueGargolas : MonoBehaviour
             //{
             //    cambiarDestinoBtn.SetActive(false);
             //}
-        print("PlayerSpeaking: "+ dialogueLines[index].isPlayerSpeaking+ ". Audio reproduciendo: " + GetComponent<AudioSource>().isPlaying + ". WasPreviousPlayer: "+ wasPreviousPlayerSpeaking); 
+        //print("PlayerSpeaking: "+ dialogueLines[index].isPlayerSpeaking+ ". Audio reproduciendo: " + GetComponent<AudioSource>().isPlaying + ". WasPreviousPlayer: "+ wasPreviousPlayerSpeaking); 
 
     }
 

@@ -103,7 +103,7 @@ public class PlayerMovementNew : MonoBehaviour
     private bool canDoubleJump;
     private float dissolveAmount;
     private bool isAnimating;
-    private float clicDirection;
+    public float clicDirection;
     public bool isFacingRight = true;
     public bool tutorialActive;
     public bool isHitBadFloor;
@@ -408,7 +408,7 @@ public class PlayerMovementNew : MonoBehaviour
         }
     }
 
-    private IEnumerator MoveFixedDistance()
+    public IEnumerator MoveFixedDistance()
     {
         isMoving = true; // Marca el inicio del movimiento
         anim.SetBool("SlowWalk", true); // Activar animación de caminar

@@ -30,6 +30,9 @@ public class LevelManager : MonoBehaviour
     public static bool usedPA, usedPB, usedPC, usedPD, isFogTransition;
     private Material playerMaterial;
     private float progress;
+
+    public bool n1, n2, n3;
+
     //[SerializeField] private UI_Piezas uiPiezas;
 
     private void Awake()
@@ -128,6 +131,9 @@ public class LevelManager : MonoBehaviour
 
                 break;
         }
+        //UserData.completoNivel1 = n1;
+        //UserData.completoNivel2 = n2;
+        //UserData.completoNivel3 = n3;
     }
     private void Start()
     {

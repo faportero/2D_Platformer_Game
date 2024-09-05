@@ -43,7 +43,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _ConeSize: 0
-    - _DissolveAmount: 0.36
+    - _DissolveAmount: 0.35
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors: []

@@ -9,7 +9,7 @@ using static Gargola;
 
 public class Espejo : MonoBehaviour
 {
-    [SerializeField] GameObject p1, p2, p3, p4, pm1, pm2, pm3, pm4, GargolaBuena, GargolaMala, explodeObject, PiezasRecuerdoMalo, PiezasRecuerdoBueno;
+    [SerializeField] GameObject p1, p2, p3, p4, pm1, pm2, pm3, pm4, GargolaBuena, GargolaMala, explodeObject, PiezasRecuerdoMalo, PiezasRecuerdoBueno, turnCollider;
     public GameObject panelFeedback;
     public GameObject triggerParteFinal, panelHUD;
     [SerializeField] UI_Piezas piezasPanel;
@@ -183,15 +183,34 @@ public class Espejo : MonoBehaviour
         PiezasRecuerdoMalo.SetActive(false);//desactiva imagen de recuerdo bueno
 
     }
+    private IEnumerator MoveCharacterRight()
+    {
+        // Configura la dirección de movimiento a la derecha
+        playerMovement.clicDirection = 1;
+
+
+        Coroutine coroutine = null;
+        // Inicia la corutina para mover el personaje una distancia fija
+        coroutine = StartCoroutine(playerMovement.MoveFixedDistance());
+
+        // Espera a que la corutina de movimiento termine antes de continuar
+        yield return coroutine;
+    }
+
+
     private IEnumerator ActivateEnte()
     {
-        SwitchPlayerTransform(true);
-        yield return new WaitForSeconds(1);
-        transform.GetChild(0).gameObject.SetActive(true);
-        panelHUD.SetActive(false);//Desactiva HUD
-        panelDialogueGargolas.GetComponent<Animator>().enabled = true;
-        //playerMovement.transform.localScale = new Vector3(playerMovement.transform.localScale.x, playerMovement.transform.localScale.y, playerMovement.transform.localScale.z);
+        CameraManager.instance.SingleSwapCamera(cameraGeneral, 1f);
+        playerMovement.inputsEnabled = false;
+        yield return StartCoroutine(MoveCharacterRight()); // Mueve el personaje primero
+
+        yield return new WaitForSeconds(1); // Espera 1 segundo
+
+        transform.GetChild(0).gameObject.SetActive(true); // Activa el hijo
+        panelHUD.SetActive(false); // Desactiva HUD
+        panelDialogueGargolas.GetComponent<Animator>().enabled = true; // Activa el animador del panel de diálogo
     }
+
     public void SwitchPlayerTransform(bool isFacingRight)
     {
         //if (isFacingRight)
@@ -265,6 +284,8 @@ public class Espejo : MonoBehaviour
 
                 StartCoroutine(ActivateEnte());
                 GetComponent<BoxCollider2D>().enabled = false;
+                turnCollider.GetComponent<BoxCollider2D>().enabled = false;
+                
             }
 
         }
@@ -529,8 +550,6 @@ public class Espejo : MonoBehaviour
         }
 
 
-
-
         //if (LevelManager.usedPA)
         //{
            
@@ -641,6 +660,7 @@ public class Espejo : MonoBehaviour
         panelFeedback.transform.parent.gameObject.GetComponent<BoxCollider2D>().enabled = false;
         countPiezas = 0;
 
+        turnCollider.GetComponent<BoxCollider2D>().enabled = true;
 
         //switch (espejoType)
         //{

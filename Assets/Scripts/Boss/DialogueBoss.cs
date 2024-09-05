@@ -281,7 +281,7 @@ public class DialogueBoss : MonoBehaviour
         else
         {
             //Aqui termina los dialogos
-
+            unpaused.TransitionTo(.5f);
             StopCoroutine(autoAdvanceDialogue);
             //backBtn.SetActive(true);
             //continueBtn.SetActive(true);

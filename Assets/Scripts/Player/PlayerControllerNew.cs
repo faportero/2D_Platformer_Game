@@ -1338,7 +1338,8 @@ public class PlayerControllerNew : MonoBehaviour
     private IEnumerator HitBadFloor()
     {
         playerMovement.isHitBadFloor = true;
-        //playerMovement.inputsEnabled = false;
+        playerMovement.inputsEnabled = false;
+        playerMovement.swipeDetector.isJumping = false;
         //StartCoroutine(ResetCollision());
         ResetCollisionHitBadFloor();
         // playerMovement.anim.SetBool("HitBadFloor", true);
@@ -1398,6 +1399,9 @@ public class PlayerControllerNew : MonoBehaviour
             playerMovement.anim.SetBool("HitBadFloor", false);
             if (playerMovement.isGrounded) playerMovement.anim.SetBool("Walk", true);
             else playerMovement.anim.SetBool("Jump", true);
+
+            playerMovement.inputsEnabled = true;
+            playerMovement.swipeDetector.isJumping = true;
             // playerMovement.inputsEnabled = true;
 
         }
@@ -1458,6 +1462,9 @@ public class PlayerControllerNew : MonoBehaviour
             playerMovement.anim.SetBool("HitBadFloor", false);
             if (playerMovement.isGrounded) playerMovement.anim.SetBool("Walk", true);
             else playerMovement.anim.SetBool("Jump", true);
+
+            playerMovement.inputsEnabled = true;
+            playerMovement.swipeDetector.isJumping = true;
         }
 
 

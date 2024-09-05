@@ -1,7 +1,5 @@
 using Cinemachine;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -9,7 +7,7 @@ using UnityEngine.Video;
 
 public class Gargola : MonoBehaviour
 {
-    public GameObject videoPlayerPlane, viajarBtn, skipBtn, canvasFog;
+    public GameObject videoPlayerPlane, viajarBtn, skipBtn, canvasFog, vortexRays, vortexCircle;
     private Collider2D solidObjectCol;
     public VideoPlayer videoPlayer;
     [SerializeField] private string nivel;
@@ -24,121 +22,244 @@ public class Gargola : MonoBehaviour
     {
         Vortex1,
         Vortex2,
-        Vortex3        
+        Vortex3
     }
 
     public VortexType vortexType;
+
     private void Start()
     {
+
+
         playerMovementNew = FindAnyObjectByType<PlayerMovementNew>();
         playerController = FindAnyObjectByType<PlayerControllerNew>();
         animatorVideo = videoPlayerPlane.GetComponent<Animator>();
-        videoPlayer.loopPointReached += OnVideoEnd;
         solidObjectCol = transform.GetChild(0).gameObject.GetComponent<Collider2D>();
 
         playerMaterial = playerMovementNew.GetComponent<SpriteRenderer>().material;
-
         swipeDetector = playerMovementNew.swipeDetector;
+
+        // Suscribirse al evento prepareCompleted
+        videoPlayer.prepareCompleted += OnVideoPrepared;
+        videoPlayer.loopPointReached += OnVideoEnd;
+
+        // Preparar el video
+        videoPlayer.Prepare();
 
         AssignVortexType();
     }
+
     private void Update()
     {
-        //if(Input.GetKeyUp(KeyCode.L))
-        //{
-        //    videoPlayer.Stop();
-        //    OnVideoEnd(videoPlayer);
-
-        //}
-
+        // Lógica de depuración opcional aquí
     }
+
+    //public void AssignVortexType()
+    //{
+    //    switch (vortexType)
+    //    {
+    //        case VortexType.Vortex1:
+    //            viajarBtn.GetComponent<Button>().interactable = true;
+    //            if (UserData.completoNivel1)
+    //            {
+    //                vortexRays.GetComponent<SpriteRenderer>().material.SetFloat("_DissolveAmount", .23f);
+    //                vortexCircle.SetActive(false);
+    //            }
+
+    //            break;
+    //        case VortexType.Vortex2:
+    //            if (UserData.completoNivel1)
+    //            {
+    //                viajarBtn.GetComponent<Button>().interactable = true;
+    //                vortexRays.GetComponent<SpriteRenderer>().material.SetFloat("_DissolveAmount", .35f);
+    //                vortexCircle.SetActive(true);
+    //            }
+    //            else if (UserData.completoNivel2)
+    //            {
+    //                vortexRays.GetComponent<SpriteRenderer>().material.SetFloat("_DissolveAmount", .23f);
+    //                vortexCircle.SetActive(false);
+    //            }
+
+    //            break;
+    //        case VortexType.Vortex3:
+    //            if (UserData.completoNivel2)
+    //            {
+    //                viajarBtn.GetComponent<Button>().interactable = true;
+    //                vortexRays.GetComponent<SpriteRenderer>().material.SetFloat("_DissolveAmount", .35f);
+    //                vortexCircle.SetActive(true);
+    //            }
+    //            else if (UserData.completoNivel3)
+    //            {
+    //                vortexRays.GetComponent<SpriteRenderer>().material.SetFloat("_DissolveAmount", .23f);
+    //                vortexCircle.SetActive(false);
+    //            }
+    //            break;
+    //    }
+    //}
+
     public void AssignVortexType()
     {
+        // Desactivamos todos los vortex states antes de aplicar la lógica específica
+        if (UserData.completoNivel1 && UserData.completoNivel2 && UserData.completoNivel3)
+        {
+            DeactivateAllVortexStates();
+            viajarBtn.GetComponent<Button>().interactable = true;
+        }
+
+        // Aplicamos la lógica específica para el vortex actual basado en vortexType y el progreso de niveles
         switch (vortexType)
         {
             case VortexType.Vortex1:
-                viajarBtn.GetComponent<Button>().interactable = true;
+                // Estado inicial para Vortex1
+                if (!UserData.completoNivel1)
+                {
+                    SetVortexState(true);  // Vortex1 en estado normal si Nivel 1 no está completado
+                }
+                else
+                {
+                    SetVortexState(false);  // Vortex1 en estado normal si Nivel 1 no está completado
+                    viajarBtn.GetComponent<Button>().interactable = true;
+                }
+                if (UserData.completoNivel1 && UserData.completoNivel2 && UserData.completoNivel3)
+                {
+                    DeactivateAllVortexStates();
+                    viajarBtn.GetComponent<Button>().interactable = true;
+                }
                 break;
+
             case VortexType.Vortex2:
-                if (UserData.completoNivel1)
+                // Estado al completar Nivel 1
+                if (UserData.completoNivel1 && !UserData.completoNivel2 && !UserData.completoNivel3)
+                {
+                    SetVortexState(true);  // Vortex2 en estado normal si Nivel 1 está completado y Nivel 2 no
+                     viajarBtn.GetComponent<Button>().interactable = true;
+                }
+                if (UserData.completoNivel1 && UserData.completoNivel2)
                 {
                     viajarBtn.GetComponent<Button>().interactable = true;
                 }
-
+                if (UserData.completoNivel1 && UserData.completoNivel2 && UserData.completoNivel3)
+                {
+                    DeactivateAllVortexStates();
+                    viajarBtn.GetComponent<Button>().interactable = true;
+                }
                 break;
+
             case VortexType.Vortex3:
-                if (UserData.completoNivel2)
+                // Estado al completar Nivel 2
+                if (UserData.completoNivel1 && UserData.completoNivel2 && !UserData.completoNivel3)
                 {
+                    SetVortexState(true);  // Vortex3 en estado normal si Nivel 2 está completado y Nivel 3 no
                     viajarBtn.GetComponent<Button>().interactable = true;
                 }
-
+                if (UserData.completoNivel1 && UserData.completoNivel2 && UserData.completoNivel3)
+                {
+                    DeactivateAllVortexStates();
+                    viajarBtn.GetComponent<Button>().interactable = true;
+                }
                 break;
         }
     }
-        public void SkipVideo()
+
+    // Método para establecer el estado del vortex
+    private void SetVortexState(bool isActive)
     {
-        
+        if (isActive)
+        {
+            viajarBtn.GetComponent<Button>().interactable = true;
+            vortexRays.GetComponent<SpriteRenderer>().material.SetFloat("_DissolveAmount", .35f);
+            vortexCircle.SetActive(true);
+        }
+        else
+        {
+            viajarBtn.GetComponent<Button>().interactable = false;
+            vortexRays.GetComponent<SpriteRenderer>().material.SetFloat("_DissolveAmount", .23f);
+            vortexCircle.SetActive(false);
+        }
+    }
+
+    // Método para desactivar todos los vortex states
+    private void DeactivateAllVortexStates()
+    {
+        // Desactivar todos los vortex por defecto
+        viajarBtn.GetComponent<Button>().interactable = false;
+        vortexRays.GetComponent<SpriteRenderer>().material.SetFloat("_DissolveAmount", .23f);
+        vortexCircle.SetActive(false);
+    }
+
+
+    public void SkipVideo()
+    {
         videoPlayer.Stop();
         OnVideoEnd(videoPlayer);
     }
-    void OnVideoEnd(VideoPlayer vp)
+
+    private void OnVideoEnd(VideoPlayer vp)
     {
         // Lógica para cambiar al juego
-        if(vortexType == VortexType.Vortex1)UserData.terminoVideoVortex1 = true;
-        if(vortexType == VortexType.Vortex2)UserData.terminoVideoVortex2 = true;
-        if(vortexType == VortexType.Vortex3)UserData.terminoVideoVortex3 = true;
-        CameraManager.instance.SingleSwapCamera(camera1,2f);
-        //playerMovementNew.inputsEnabled = true;
-        if (UserData.terminoVideoVortex1) SelectDimension();
-        //playerMovementNew.inputsEnabled = true;
-        if (!InputManager.isPC) swipeDetector.enabled = true;
+        if (vortexType == VortexType.Vortex1) UserData.terminoVideoVortex1 = true;
+        if (vortexType == VortexType.Vortex2) UserData.terminoVideoVortex2 = true;
+        if (vortexType == VortexType.Vortex3) UserData.terminoVideoVortex3 = true;
 
+        CameraManager.instance.SingleSwapCamera(camera1, 2f);
+
+        if (UserData.terminoVideoVortex1) SelectDimension();
+
+        if (!InputManager.isPC) swipeDetector.enabled = true;
     }
+
     public void ShowVideo()
     {
         if (vortexType == VortexType.Vortex1 && UserData.terminoVideoVortex1) skipBtn.SetActive(true);
         if (vortexType == VortexType.Vortex2 && UserData.terminoVideoVortex2) skipBtn.SetActive(true);
         if (vortexType == VortexType.Vortex3 && UserData.terminoVideoVortex3) skipBtn.SetActive(true);
+
         CameraManager.instance.SingleSwapCamera(camera2, 2);
-        if(!InputManager.isPC)swipeDetector.enabled = false;
+        if (!InputManager.isPC) swipeDetector.enabled = false;
+
         playerMovementNew.isMoving = false;
         playerMovementNew.inputsEnabled = false;
         playerMovementNew.canMove = false;
         playerMovementNew.targetPosition = playerMovementNew.transform.position;
         playerMovementNew.anim.SetBool("SlowWalk", false);
         playerMovementNew.anim.SetBool("Turn", true);
+
         StartCoroutine(ShowVideoPanel());
-
-
-
-       // videoPlayer.Play();
-
     }
+
     private IEnumerator ShowVideoPanel()
     {
-        //GetComponent<Collider2D>().enabled = false;
         GetComponent<VortexAnimation>().enabled = true;
         yield return new WaitForSeconds(2);
         animatorVideo.enabled = true;
         videoPlayerPlane.SetActive(true);
+        AudioManager.Instance.ToggleMusic(false);
+
+        // Ahora esperamos un segundo para asegurarnos de que todo esté listo
         yield return new WaitForSeconds(.5f);
 
-        AudioManager.Instance.ToggleMusic(false);
-        //AudioManager.Instance.ToggleSFX();
-
-        videoPlayer.Play();
-        //playerMovementNew.inputsEnabled = false;
+        // Aquí comenzamos la reproducción del video si ya está preparado
+        if (videoPlayer.isPrepared)
+        {
+            videoPlayer.Play();
+        }
+        else
+        {
+            // De lo contrario, prepararlo y luego reproducir
+            videoPlayer.Prepare();
+        }
     }
 
+    private void OnVideoPrepared(VideoPlayer vp)
+    {
+        // Esta función se llama cuando el video está completamente preparado.
+        videoPlayerPlane.SetActive(true);
+        videoPlayer.Play(); // Reproducir el video solo cuando esté preparado
+    }
 
     public void SelectDimension()
     {
-        //playerMovementNew.isMoving = false;
-        //playerMovementNew.inputsEnabled = false;
-        //playerMovementNew.targetPosition = playerMovementNew.transform.position;
         videoPlayer.Stop();
-        //OnVideoEnd(videoPlayer);
-        //SkipVideo();
         StopAllCoroutines();
         StartCoroutine(SwitchScene());
         Espejo.isChecked = false;
@@ -163,15 +284,9 @@ public class Gargola : MonoBehaviour
         // Asegurarse de que el valor final sea exactamente 1
         playerMaterial.SetFloat("_DissolveAmmount", 1);
     }
+
     private IEnumerator SwitchScene()
     {
-        //AudioManager.Instance.ToggleMusic();
-
-        // playerMovementNew.isMoving = false;
-        //playerMovementNew.canMove = false;
-        //FogTransicion
-
-
         yield return new WaitForSecondsRealtime(1.5f);
         StartCoroutine(PlayerDisolve());
 
@@ -184,59 +299,33 @@ public class Gargola : MonoBehaviour
         AudioManager.Instance.PlaySfx("Fog_Transition");
 
         AsyncOperation asyncOperation;
-
-        //switch (vortexType)
-        //{
-        //    case VortexType.Vortex1:
-        //        asyncOperation = SceneManager.LoadSceneAsync(nivel);
-        //        break;
-        //    case VortexType.Vortex2:
-        //        asyncOperation = SceneManager.LoadSceneAsync(nivel);
-        //        break;
-        //    case VortexType.Vortex3:
-        //        asyncOperation = SceneManager.LoadSceneAsync(nivel);
-        //        break;
-        //}
         asyncOperation = SceneManager.LoadSceneAsync(nivel);
         asyncOperation.allowSceneActivation = false;
+
         while (!asyncOperation.isDone)
         {
             progress = asyncOperation.progress;
-            if (progress == .9f)
+            if (progress == 0.9f)
             {
-                //textoCarga.text = "100 %";
                 yield return new WaitForSecondsRealtime(3f);
-                //anim.Play("AnimacionSalida");
-                //yield return new WaitForSecondsRealtime(animacion.averageDuration / Mathf.Abs(anim.GetFloat("ExitSpeed")));
-                //isLoading = false;
-               // UserData.terminoNivel1 = true;
                 asyncOperation.allowSceneActivation = true;
-                //AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
-                //AudioManager.Instance.PlayMusic("Bg_Nivel_1", 0);
             }
         }
     }
-
-
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player")
         {
-
             viajarBtn.SetActive(true);
         }
-
     }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
-       // solidObjectCol.enabled = true;
         if (collision.tag == "Player")
         {
-
             viajarBtn.SetActive(false);
         }
-
     }
 }
-
