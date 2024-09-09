@@ -15,6 +15,7 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] private GameObject RelojPanel;
     [SerializeField] private Transform newPlayerPos;
     [SerializeField] private GameObject portalInicio;
+    [SerializeField] private GameObject playerGuide1, playerGuide2, playerGuide3;
 
     [SerializeField] private SwipeDetector swipeDetector;
     [SerializeField] private CinemachineVirtualCamera cameraInit,camera2;
@@ -100,6 +101,7 @@ public class LobbyManager : MonoBehaviour
            // panelHUD.SetActive(true);   
             panelVideo.SetActive(false);
             if(portalInicio != null) portalInicio.SetActive(true);
+
         }
 
         //else if(pasoIntro == true)
@@ -113,7 +115,36 @@ public class LobbyManager : MonoBehaviour
         //    //playerController.GetComponent<SpriteRenderer>().color = Color.white;
 
         //}
+        
+        if (!UserData.playerGuide1) 
+        {
+            playerGuide1.SetActive(true);
+            UserData.playerGuide1 = true;
+        } 
+        else
+        {
+            playerGuide1.SetActive(false);
+        }
 
+        if (!UserData.playerGuide2) 
+        {
+            playerGuide2.SetActive(true);
+            UserData.playerGuide2 = true;
+        } 
+        else
+        {
+            playerGuide2.SetActive(false);        
+        }
+
+        if (!UserData.playerGuide3 && UserData.completoNivel1) 
+        {
+            playerGuide3.SetActive(true);
+            UserData.playerGuide3 = true;
+        } 
+        else
+        {
+            playerGuide3.SetActive(false);
+        }
     }
     public void SkipInitVideo()
     {
@@ -124,7 +155,7 @@ public class LobbyManager : MonoBehaviour
     {
 
 
-        print("N1: " + UserData.completoNivel1 + ". N2: " + UserData.completoNivel2 + ". N3: " + UserData.completoNivel3);
+        //print("N1: " + UserData.completoNivel1 + ". N2: " + UserData.completoNivel2 + ". N3: " + UserData.completoNivel3);
         //if(Input.GetKeyDown(KeyCode.K))
         //{
         //    OnVideoEnd(videoPlayer);

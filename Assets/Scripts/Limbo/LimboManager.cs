@@ -9,6 +9,7 @@ public class LimboManager : MonoBehaviour
     [SerializeField] private Espejo[] espejos;
     [SerializeField] private bool completoN1, completoN2, completoN3;
     private UI_Piezas ui_piezas;
+    [SerializeField] GameObject playerGuide4, playerGuide5;
     private void Awake()
     {
         //gargolas = FindObjectsOfType<Gargola>();
@@ -84,6 +85,8 @@ public class LimboManager : MonoBehaviour
         //        g.videoPlayer.Pause();
         //    }
         //}
+
+
     }
 
 }

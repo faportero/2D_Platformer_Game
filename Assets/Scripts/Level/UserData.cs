@@ -22,4 +22,6 @@ public class UserData
     public static bool usedPiezaB_N1, usedPiezaB_N2, usedPiezaB_N3;
     public static bool usedPiezaC_N1, usedPiezaC_N2, usedPiezaC_N3;
     public static bool usedPiezaD_N1, usedPiezaD_N2, usedPiezaD_N3;
+
+    public static bool playerGuide1, playerGuide2, playerGuide3, playerGuide4, playerGuide5, playerGuide6;
 }

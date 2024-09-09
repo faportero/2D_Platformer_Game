@@ -9,7 +9,7 @@ using static Gargola;
 
 public class Espejo : MonoBehaviour
 {
-    [SerializeField] GameObject p1, p2, p3, p4, pm1, pm2, pm3, pm4, GargolaBuena, GargolaMala, explodeObject, PiezasRecuerdoMalo, PiezasRecuerdoBueno, turnCollider;
+    [SerializeField] GameObject p1, p2, p3, p4, pm1, pm2, pm3, pm4, GargolaBuena, GargolaMala, explodeObject, PiezasRecuerdoMalo, PiezasRecuerdoBueno, turnCollider, playerGuide4, playerGuide5;
     public GameObject panelFeedback;
     public GameObject triggerParteFinal, panelHUD;
     [SerializeField] UI_Piezas piezasPanel;
@@ -89,6 +89,26 @@ public class Espejo : MonoBehaviour
             explodeObject.SetActive(false);
             isPlaying = false;
         }
+
+        //if (!UserData.playerGuide4)
+        //{
+        //    playerGuide4.SetActive(true);
+        //    UserData.playerGuide4 = true;
+        //}
+        //else
+        //{
+        //    playerGuide4.SetActive(false);
+        //}
+
+        //if (!UserData.playerGuide5)
+        //{
+        //    playerGuide5.SetActive(true);
+        //    UserData.playerGuide5 = true;
+        //}
+        //else
+        //{
+        //    playerGuide5.SetActive(false);
+        //}
     }
 
     public void AssignEspejoType()
@@ -662,50 +682,71 @@ public class Espejo : MonoBehaviour
 
         turnCollider.GetComponent<BoxCollider2D>().enabled = true;
 
-        //switch (espejoType)
-        //{
-        //    case EspejoType.Espejo1:
-        //        UserData.piezaA_N1 = false;
-        //        UserData.piezaB_N1 = false;
-        //        UserData.piezaC_N1 = false;
-        //        UserData.piezaD_N1 = false;
-        //        UserData.usedPiezaA_N1 = false;
-        //        UserData.usedPiezaB_N1 = false;
-        //        UserData.usedPiezaC_N1 = false;
-        //        UserData.usedPiezaD_N1 = false;
-        //        break;
+        if (!UserData.playerGuide4 && UserData.completoNivel1)
+        {
+            playerGuide4.SetActive(true);
+            UserData.playerGuide4 = true;
+        }
+        else
+        {
+            playerGuide4.SetActive(false);
+        }
 
-        //    case EspejoType.Espejo2:
-        //        UserData.piezaA_N2 = false;
-        //        UserData.piezaB_N2 = false;
-        //        UserData.piezaC_N2 = false;
-        //        UserData.piezaD_N2 = false;
-        //        UserData.usedPiezaA_N2 = false;
-        //        UserData.usedPiezaB_N2 = false;
-        //        UserData.usedPiezaC_N2 = false;
-        //        UserData.usedPiezaD_N2 = false;
-        //        break;
+        if (!UserData.playerGuide5 && UserData.completoNivel1 && UserData.completoNivel2 && UserData.completoNivel3)
+        {
+            playerGuide5.SetActive(true);
+            UserData.playerGuide5 = true;
+        }
+        else
+        {
+            playerGuide5.SetActive(false);
+        }
+            //}
 
-        //    case EspejoType.Espejo3:
-        //        UserData.piezaA_N3 = false;
-        //        UserData.piezaB_N3 = false;
-        //        UserData.piezaC_N3 = false;
-        //        UserData.piezaD_N3 = false;
-        //        UserData.usedPiezaA_N3 = false;
-        //        UserData.usedPiezaB_N3 = false;
-        //        UserData.usedPiezaC_N3 = false;
-        //        UserData.usedPiezaD_N3 = false;
-        //        break;
-        //}
+            //switch (espejoType)
+            //{
+            //    case EspejoType.Espejo1:
+            //        UserData.piezaA_N1 = false;
+            //        UserData.piezaB_N1 = false;
+            //        UserData.piezaC_N1 = false;
+            //        UserData.piezaD_N1 = false;
+            //        UserData.usedPiezaA_N1 = false;
+            //        UserData.usedPiezaB_N1 = false;
+            //        UserData.usedPiezaC_N1 = false;
+            //        UserData.usedPiezaD_N1 = false;
+            //        break;
 
-        //LevelManager.usedPA = false;
-        //LevelManager.usedPB = false;
-        //LevelManager.usedPC = false;
-        //LevelManager.usedPD = false;
+            //    case EspejoType.Espejo2:
+            //        UserData.piezaA_N2 = false;
+            //        UserData.piezaB_N2 = false;
+            //        UserData.piezaC_N2 = false;
+            //        UserData.piezaD_N2 = false;
+            //        UserData.usedPiezaA_N2 = false;
+            //        UserData.usedPiezaB_N2 = false;
+            //        UserData.usedPiezaC_N2 = false;
+            //        UserData.usedPiezaD_N2 = false;
+            //        break;
 
-        //PlayerControllerNew.piezaA = false;
-        //PlayerControllerNew.piezaB = false;
-        //PlayerControllerNew.piezaC = false;
-        //PlayerControllerNew.piezaD = false;
-    }
+            //    case EspejoType.Espejo3:
+            //        UserData.piezaA_N3 = false;
+            //        UserData.piezaB_N3 = false;
+            //        UserData.piezaC_N3 = false;
+            //        UserData.piezaD_N3 = false;
+            //        UserData.usedPiezaA_N3 = false;
+            //        UserData.usedPiezaB_N3 = false;
+            //        UserData.usedPiezaC_N3 = false;
+            //        UserData.usedPiezaD_N3 = false;
+            //        break;
+            //}
+
+            //LevelManager.usedPA = false;
+            //LevelManager.usedPB = false;
+            //LevelManager.usedPC = false;
+            //LevelManager.usedPD = false;
+
+            //PlayerControllerNew.piezaA = false;
+            //PlayerControllerNew.piezaB = false;
+            //PlayerControllerNew.piezaC = false;
+            //PlayerControllerNew.piezaD = false;
+        }
 }
