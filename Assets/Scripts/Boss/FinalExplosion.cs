@@ -18,12 +18,14 @@ public class FinalExplosion : MonoBehaviour
     }
     public void StartExplosion()
     {
+
         witheFadePanel.SetActive(true);
         enteGodRayAnim.enabled = true;
         witheFadePanelAnim.enabled = true;
         enteGodRayAnim.Play("Expand");
         witheFadePanelAnim.Play("Fade");
         isFadeAnimationDone = false;
+        AudioManager.Instance.PlaySfx("Evil_FinalExplode", true);
     }
     private void Update()
     {

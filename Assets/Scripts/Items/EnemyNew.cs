@@ -27,6 +27,9 @@ public class EnemyNew : MonoBehaviour
 
     [HideInInspector] public string currentEffectTag = "CurrentEffect";
     [HideInInspector] public string dieEffectTag = "DieEffect";
+
+    [SerializeField] private List <Sprite> effectPanelSprites = new List<Sprite>();
+    private Image effectPanelImage;
     public enum SustanceType
     {
         Cannabis,
@@ -87,7 +90,7 @@ public class EnemyNew : MonoBehaviour
 
         effectPanelAnimator = effectPanel.GetComponent<Animator>();
 
-
+        effectPanelImage = effectPanel.transform.GetChild(0).GetComponent<Image>();
     }
     //private void OnTriggerEnter2D(Collider2D collision)
     //{
@@ -160,10 +163,12 @@ public class EnemyNew : MonoBehaviour
 
 
                // effectPanel.GetComponent<Image>().color = new Color(0, 1, 0, .25f);
-                effectText.text = "Cannabis";
+               // effectText.text = "Cannabis";
                 effectTextMensajeTitulo.text = "Cannabis";
                 effectTextMensajeDesc.text = "Las drogas distorsionan la realidad";
                 dieEffectImage.sprite = spriteRenderers[0];
+                
+                effectPanelImage.sprite = effectPanelSprites[0];
                 break;
 
             case SustanceType.Cocaina:
@@ -173,10 +178,12 @@ public class EnemyNew : MonoBehaviour
                 //PlayerControllerNew.isCocaMetaHero = true;
 
                 //effectPanel.GetComponent<Image>().color = new Color(1, 1, 1, .25f);
-                effectText.text = "Cocaina";
+               // effectText.text = "Cocaina";
                 effectTextMensajeTitulo.text = "Cocaina";
                 effectTextMensajeDesc.text = "Las drogas distorsionan la realidad";
                 dieEffectImage.sprite = spriteRenderers[1];
+
+                effectPanelImage.sprite = effectPanelSprites[1];
                 break;
             case SustanceType.Extasis:
                 //print("Exta");
@@ -185,10 +192,12 @@ public class EnemyNew : MonoBehaviour
                 //PlayerControllerNew.isCocaMetaHero = true;
 
                 //effectPanel.GetComponent<Image>().color = new Color(1, 1, 1, .25f);
-                effectText.text = "Éxtasis";
+               // effectText.text = "Éxtasis";
                 effectTextMensajeTitulo.text = "Extasis";
                 effectTextMensajeDesc.text = "Las drogas distorsionan la realidad";
                 dieEffectImage.sprite = spriteRenderers[2];
+                
+                effectPanelImage.sprite = effectPanelSprites[2];
                 break;
             case SustanceType.Metanfetamina:
                 //print("Metanfetamina");
@@ -196,10 +205,12 @@ public class EnemyNew : MonoBehaviour
 
                 //PlayerControllerNew.isCocaMetaHero = true;
                 //effectPanel.GetComponent<Image>().color = new Color(1, 1, 1, .25f);
-                effectText.text = "Metanfetamina";
+                //effectText.text = "Metanfetamina";
                 effectTextMensajeTitulo.text = "Metanfetamina";
                 effectTextMensajeDesc.text = "Las drogas distorsionan la realidad";
                 dieEffectImage.sprite = spriteRenderers[3];
+                
+                effectPanelImage.sprite = effectPanelSprites[3];
                 break;
             case SustanceType.Heroina:
                 // print("Heroinaaaa");
@@ -207,20 +218,24 @@ public class EnemyNew : MonoBehaviour
 
                // PlayerControllerNew.isCocaMetaHero = true;
                 //effectPanel.GetComponent<Image>().color = new Color(1, 1, 1, .25f);
-                effectText.text = "Heroina";
+                //effectText.text = "Heroina";
                 effectTextMensajeTitulo.text = "Heroina";
                 effectTextMensajeDesc.text = "Las drogas distorsionan la realidad";
                 dieEffectImage.sprite = spriteRenderers[4];
+                
+                effectPanelImage.sprite = effectPanelSprites[4];
                 break;
 
             case SustanceType.Psilocibina:
                 //print("Psilocibinaaaa");
                 PlayerControllerNew.isPsilo = true;
                 //effectPanel.GetComponent<Image>().color = new Color(.5f, 0, .75f, .25f);
-                effectText.text = "Psilocibina";
+               // effectText.text = "Psilocibina";
                 effectTextMensajeTitulo.text = "Psilocibina";
                 effectTextMensajeDesc.text = "Las drogas distorsionan la realidad";
                 dieEffectImage.sprite = spriteRenderers[5];
+                
+                effectPanelImage.sprite = effectPanelSprites[5];
                 break;
 
             case SustanceType.Alcohol:
@@ -228,10 +243,12 @@ public class EnemyNew : MonoBehaviour
                 PlayerControllerNew.isCannabis = true;
                 //PlayerControllerNew.isAlcohol = true;
                 //effectPanel.GetComponent<Image>().color = new Color(1, 1, 0, .25f);
-                effectText.text = "Alcohol";
+                //effectText.text = "Alcohol";
                 effectTextMensajeTitulo.text = "Alcohol";
                 effectTextMensajeDesc.text = "El alcohol te vuelve torpe";
                 dieEffectImage.sprite = spriteRenderers[6];
+                
+                effectPanelImage.sprite = effectPanelSprites[6];
                 break;
             case SustanceType.Tabaco:
                 //print("Tabacooooo");
@@ -239,10 +256,12 @@ public class EnemyNew : MonoBehaviour
                 //effectPanel.GetComponent<Image>().color = new Color(0, 0, 1, .25f);
                 //effectPanelAnimator.SetBool("Smoke", true);
 
-                effectText.text = "Tabaco";
+                //effectText.text = "Tabaco";
                 effectTextMensajeTitulo.text = "Tabaco";
                 effectTextMensajeDesc.text = "El tabaco te hace toser fuerte";
                 dieEffectImage.sprite = spriteRenderers[7];
+                
+                effectPanelImage.sprite = effectPanelSprites[7];
                 break;
 
         }

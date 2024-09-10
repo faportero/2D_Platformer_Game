@@ -11,10 +11,10 @@ public class ShowHideObjectsCollider : MonoBehaviour
     public bool p1,p2,p3,p4;
     private void Start()
     {
-        //UserData.piezaA_N3 = p1;
-        //UserData.piezaB_N3 = p2;
-        //UserData.piezaC_N3 = p3;
-        //UserData.piezaD_N3 = p4;
+        UserData.piezaA_N3 = p1;
+        UserData.piezaB_N3 = p2;
+        UserData.piezaC_N3 = p3;
+        UserData.piezaD_N3 = p4;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

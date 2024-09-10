@@ -52,6 +52,19 @@ public class ArmSpawner : MonoBehaviour
 
     }
 
+    public void PlayShowTentacleSFX()
+    {
+        AudioManager.Instance.PlaySfx("Evil_ShowTentacle", false);
+    }
+    public void PlayHideTentacleSFX()
+    {
+        AudioManager.Instance.PlaySfx("Evil_HideTentacle", false);
+    }
+    public void PlayHitTentacleSFX()
+    {
+        AudioManager.Instance.PlaySfx("Evil_HitTentacle", false);
+    }
+
     private IEnumerator AnimateYPosition()
     {
         timeBeforeRestart = initialTimeBeforeRestart;

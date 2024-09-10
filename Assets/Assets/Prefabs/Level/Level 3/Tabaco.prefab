@@ -400,6 +400,15 @@ MonoBehaviour:
   isRandom: 0
   currentEffectTag: CurrentEffect
   dieEffectTag: DieEffect
+  effectPanelSprites:
+  - {fileID: -4039319922067164972, guid: f93e9a562b7160c47a85de4e2ff766e6, type: 3}
+  - {fileID: -1506204237923452152, guid: f93e9a562b7160c47a85de4e2ff766e6, type: 3}
+  - {fileID: -4360460115072407345, guid: f93e9a562b7160c47a85de4e2ff766e6, type: 3}
+  - {fileID: 2041878061884932953, guid: f93e9a562b7160c47a85de4e2ff766e6, type: 3}
+  - {fileID: 5102416778320655433, guid: f93e9a562b7160c47a85de4e2ff766e6, type: 3}
+  - {fileID: -6294911993459672778, guid: f93e9a562b7160c47a85de4e2ff766e6, type: 3}
+  - {fileID: 3814120113649256626, guid: f93e9a562b7160c47a85de4e2ff766e6, type: 3}
+  - {fileID: -8720617779967435858, guid: f93e9a562b7160c47a85de4e2ff766e6, type: 3}
   sustanceType: 7
 --- !u!61 &6629368024380565252
 BoxCollider2D:

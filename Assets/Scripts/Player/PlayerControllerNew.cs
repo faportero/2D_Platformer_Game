@@ -1264,6 +1264,7 @@ public class PlayerControllerNew : MonoBehaviour
     {
         // Reproduce la animación "Happy"
         bigBoss.GetComponent<Animator>().Play("Happy");
+        AudioManager.Instance.PlaySfx("Evil_Happy", true);
 
         // Espera a que la animación "Happy" termine
         AnimatorStateInfo currentState = bigBoss.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0);
@@ -1280,6 +1281,7 @@ public class PlayerControllerNew : MonoBehaviour
     {
         // Reproduce la animación "Happy"
         bigBoss.GetComponent<Animator>().Play("Hungry");
+        AudioManager.Instance.PlaySfx("Evil_Hungry", true);
 
         // Espera a que la animación "Happy" termine
         AnimatorStateInfo currentState = bigBoss.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0);
@@ -1681,6 +1683,9 @@ public class PlayerControllerNew : MonoBehaviour
         if (currentItem.GetComponent<EnemyNew>().sustanceType == EnemyNew.SustanceType.Tabaco)
         {
             effectPanel.SetActive(true);
+            effectPanel.transform.GetChild(0).gameObject.SetActive(true);
+            effectPanel.transform.GetChild(0).GetComponent<UI_PanelDissolve>().enabled = true;
+
             rendererSwitcher.SwitchRenderer(rendererSwitcher.YourCamera, 0);
             AudioManager.Instance.PlaySfx("Tos");
         }
@@ -1688,7 +1693,9 @@ public class PlayerControllerNew : MonoBehaviour
         else if (currentItem.GetComponent<EnemyNew>().sustanceType == EnemyNew.SustanceType.Alcohol)
         {
             rendererSwitcher.SwitchRenderer(rendererSwitcher.YourCamera, 1);
-            effectPanel.SetActive(false);
+            effectPanel.SetActive(true);
+            effectPanel.transform.GetChild(0).gameObject.SetActive(true);
+            effectPanel.transform.GetChild(0).GetComponent<UI_PanelDissolve>().enabled = true;
 
         }
         //else if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3)
@@ -1700,7 +1707,9 @@ public class PlayerControllerNew : MonoBehaviour
             currentItem.GetComponent<EnemyNew>().sustanceType == EnemyNew.SustanceType.Heroina)
         {
             rendererSwitcher.SwitchRenderer(rendererSwitcher.YourCamera, 2);
-            effectPanel.SetActive(false);
+            effectPanel.SetActive(true);
+            effectPanel.transform.GetChild(0).gameObject.SetActive(true);
+            effectPanel.transform.GetChild(0).GetComponent<UI_PanelDissolve>().enabled = true;
 
         }
 
@@ -1710,7 +1719,8 @@ public class PlayerControllerNew : MonoBehaviour
         //rendererSwitcher.SwitchRenderer(rendererSwitcher.YourCamera, 0);
         if (BossCollider.isBossLevel)
         {
-            effectPanel.SetActive(false);
+            if(effectPanel.transform.GetChild(0).gameObject.activeSelf) effectPanel.transform.GetChild(0).GetComponent<UI_PanelDissolve>().StartDissolve();
+            Invoke("DeactivateEffectPanel", 1);
             rendererSwitcher.SwitchRenderer(rendererSwitcher.YourCamera, 0);
         }
         else
@@ -1720,13 +1730,16 @@ public class PlayerControllerNew : MonoBehaviour
 
             if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1)
             {
-                effectPanel.SetActive(false);
+                if (effectPanel.transform.GetChild(0).gameObject.activeSelf) effectPanel.transform.GetChild(0).GetComponent<UI_PanelDissolve>().StartDissolve();
+                Invoke("DeactivateEffectPanel", 1);
 
             }
             //if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2) effectPanel.GetComponent<Animator>().Play("Alcohol");
             else if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2 || levelManager.currentScene == LevelManager.CurrentScene.Nivel3)
             {
                 rendererSwitcher.SwitchRenderer(rendererSwitcher.YourCamera, 0);
+                effectPanel.transform.GetChild(0).GetComponent<UI_PanelDissolve>().StartDissolve();
+                Invoke("DeactivateEffectPanel", 1);
 
             }
         }
@@ -1758,7 +1771,10 @@ public class PlayerControllerNew : MonoBehaviour
         //    playerMovement.inputsEnabled = true;
         //}
     }
-
+   private void DeactivateEffectPanel()
+    {
+        effectPanel.SetActive(false);
+    }
     IEnumerator DeactivateEnfasis()
     {
         yield return new WaitForSeconds(.5f);
