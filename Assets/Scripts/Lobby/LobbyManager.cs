@@ -98,7 +98,7 @@ public class LobbyManager : MonoBehaviour
         else
         {
             playerMovementNew.inputsEnabled = true;
-           // panelHUD.SetActive(true);   
+            panelHUD.SetActive(true);   
             panelVideo.SetActive(false);
             if(portalInicio != null) portalInicio.SetActive(true);
 
@@ -198,6 +198,7 @@ public class LobbyManager : MonoBehaviour
             videoPlayer.enabled = false;
             panelVideo.SetActive(false);
             StartGame();
+            panelHUD.SetActive(true);
         }
     }
 

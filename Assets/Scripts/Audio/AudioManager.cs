@@ -10,7 +10,6 @@ public class AudioManager : MonoBehaviour
     public Sound[] musicSounds, sfxSounds, dialogueSounds;
     public AudioSource musicSource1, musicSource2, sfxSource, dialogueSource;
     public AudioMixer audioMixer;
-    public string musicVolume1Parameter = "musicVol";
     private AudioSource currentMusicSource;
     private AudioSource nextMusicSource;
     private bool isTransitioning = false;
@@ -139,7 +138,7 @@ public class AudioManager : MonoBehaviour
 
     public void MusicVolume(float volume)
     {
-        audioMixer.SetFloat(musicVolume1Parameter, Mathf.Log10(volume) * 20);
+      //  audioMixer.SetFloat(musicVolume1Parameter, Mathf.Log10(volume) * 20);
     }
 
     public void SFXVolume(float volume)
@@ -160,7 +159,7 @@ public class AudioManager : MonoBehaviour
         AudioSource activeSource = currentMusicSource;
         AudioSource newSource = nextMusicSource;
 
-        audioMixer.SetFloat(musicVolume1Parameter, activeSource == musicSource1 ? 0 : -80);
+       // audioMixer.SetFloat(musicVolume1Parameter, activeSource == musicSource1 ? 0 : -80);
        // audioMixer.SetFloat(musicVolume2Parameter, activeSource == musicSource2 ? 0 : -80);
 
         StartCoroutine(TransitionCoroutine(duration, activeSource, newSource));
@@ -170,10 +169,10 @@ public class AudioManager : MonoBehaviour
     {
         float elapsedTime = 0;
 
-        audioMixer.GetFloat(musicVolume1Parameter, out float startVolumeActive1);
+       // audioMixer.GetFloat(musicVolume1Parameter, out float startVolumeActive1);
        // audioMixer.GetFloat(musicVolume2Parameter, out float startVolumeActive2);
 
-        float startVolumeActive = Mathf.Exp(startVolumeActive1 / 20);
+      //  float startVolumeActive = Mathf.Exp(startVolumeActive1 / 20);
       //  float startVolumeNew = Mathf.Exp(startVolumeActive2 / 20);
 
         while (elapsedTime < duration)
@@ -181,16 +180,16 @@ public class AudioManager : MonoBehaviour
             elapsedTime += Time.deltaTime;
             float t = elapsedTime / duration;
 
-            float volumeActive = Mathf.Lerp(startVolumeActive, 0, t);
+           // float volumeActive = Mathf.Lerp(startVolumeActive, 0, t);
           //  float volumeNew = Mathf.Lerp(startVolumeNew, 1, t);
 
-            audioMixer.SetFloat(musicVolume1Parameter, Mathf.Log10(volumeActive) * 20);
+           // audioMixer.SetFloat(musicVolume1Parameter, Mathf.Log10(volumeActive) * 20);
          //   audioMixer.SetFloat(musicVolume2Parameter, Mathf.Log10(volumeNew) * 20);
 
             yield return null;
         }
 
-        audioMixer.SetFloat(musicVolume1Parameter, Mathf.Log10(0) * 20);
+      //  audioMixer.SetFloat(musicVolume1Parameter, Mathf.Log10(0) * 20);
       //  audioMixer.SetFloat(musicVolume2Parameter, Mathf.Log10(1) * 20);
 
         currentMusicSource = newSource;
