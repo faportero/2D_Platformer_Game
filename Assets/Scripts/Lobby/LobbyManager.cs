@@ -352,8 +352,8 @@ public class LobbyManager : MonoBehaviour
         StartCoroutine(PlayerDisolve());
         yield return new WaitForSeconds(1);
         RelojPanel.SetActive(true);
-        CameraManager.instance.SingleSwapCamera(camera2, 5);
-        yield return new WaitForSeconds(5);
+        CameraManager.instance.SingleSwapCamera(camera2, 15);
+        yield return new WaitForSeconds(15);
         //playerMovementNew.rb.position = newPlayerPos.position;
         playerMovementNew.transform.position = new Vector3(newPlayerPos.position.x, newPlayerPos.position.y, 0);
         playerMovementNew.targetPosition = playerController.transform.position;
