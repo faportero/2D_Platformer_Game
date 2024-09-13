@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -26,7 +28,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private UI_Lifes uiLifes;
     [SerializeField] private GameObject[] piezasNivel;
     [SerializeField] private GameObject fogPanel;
-    [SerializeField] private Transform newStartPos;
+    [SerializeField] private Transform newStartPos, newStartFinalPos;
     public static bool usedPA, usedPB, usedPC, usedPD, isFogTransition;
     private Material playerMaterial;
     private float progress;
@@ -34,7 +36,10 @@ public class LevelManager : MonoBehaviour
     public bool n1, n2, n3;
 
     //[SerializeField] private UI_Piezas uiPiezas;
-
+    private void Update()
+    {
+        //print("inputs enabled: " + playerMovementNew.inputsEnabled + ". CanMove: " + playerMovementNew.canMove + ". Is moving: " + playerMovementNew.isMoving);
+    }
     private void Awake()
     {
         playerMovementNew = FindAnyObjectByType<PlayerMovementNew>();
@@ -52,26 +57,52 @@ public class LevelManager : MonoBehaviour
         //print("TerminoLobby: " + UserData.terminoLobby);
         //print("TerminoLimbo: " + UserData.terminoLimbo);
         //print("TerminoNivel1: " + UserData.terminoNivel1);
+
+        //UserData.completoNivel3 = true;
         switch (currentScene)
         {
             case CurrentScene.Lobby:
 
                 InitFogTransition();
 
-                if (UserData.terminoLobby)
+                if (!UserData.completoNivel3)
                 {
-                    if (newStartPos)
-                    {
-                        AudioManager.Instance.PlayMusic("Bg_Lobby", 0);
-                        //AudioManager.Instance.ToggleMusic();
 
-                        playerController.transform.position = newStartPos.position;
+                    if (UserData.terminoLobby)
+                    {
+
+                        if (newStartPos)
+                        {
+                            AudioManager.Instance.PlayMusic("Bg_Lobby", 0);
+                            //AudioManager.Instance.ToggleMusic();
+
+                            playerController.transform.position = newStartPos.position;
+                            Vector3 rotator = new Vector3(transform.rotation.x, 0, transform.rotation.z);
+                            playerController.transform.rotation = Quaternion.Euler(rotator);
+                            playerMovementNew.TurnCheck();
+
+                        }
+                    }
+                }
+                else
+                {
+                    if (newStartFinalPos != null)
+                    {
+                        //Invoke("StartFinalSolidify", 4);
+                        StartCoroutine(PlayerSolidify());
+                        AudioManager.Instance.PlayMusic("Bg_Lobby2", 0);
+                        newStartFinalPos.gameObject.SetActive(true);
+                        playerController.transform.position = newStartFinalPos.position;
                         Vector3 rotator = new Vector3(transform.rotation.x, 0, transform.rotation.z);
                         playerController.transform.rotation = Quaternion.Euler(rotator);
                         playerMovementNew.TurnCheck();
 
+                       // playerMovementNew.inputsEnabled = true;
+                       //// playerMovementNew.isMoving = true;
+                       // playerMovementNew.canMove = true;
+                       // playerMovementNew.rb.bodyType = RigidbodyType2D.Dynamic;
+                       // playerMovementNew.anim.SetBool("SlowWalk", true);
                     }
-                    // print("Lobbyyyy");
                 }
                 break;
             case CurrentScene.Limbo:
@@ -134,6 +165,10 @@ public class LevelManager : MonoBehaviour
         //UserData.completoNivel1 = n1;
         //UserData.completoNivel2 = n2;
         //UserData.completoNivel3 = n3;
+    }
+    private void StartFinalSolidify()
+    {
+        StartCoroutine(PlayerSolidify());
     }
     private void Start()
     {
@@ -325,7 +360,6 @@ public class LevelManager : MonoBehaviour
                 }
                 break;
         }
-
 
 
         //if (usedPA)

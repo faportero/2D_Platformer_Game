@@ -16,6 +16,7 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] private Transform newPlayerPos;
     [SerializeField] private GameObject portalInicio;
     [SerializeField] private GameObject playerGuide1, playerGuide2, playerGuide3;
+    [SerializeField] private GameObject ente;
 
     [SerializeField] private SwipeDetector swipeDetector;
     [SerializeField] private CinemachineVirtualCamera cameraInit,camera2;
@@ -68,39 +69,49 @@ public class LobbyManager : MonoBehaviour
 
         //if(!UserData.terminoLobby)playerController.GetComponent<GhostController>().enabled = false;
         //else playerController.GetComponent<GhostController>().enabled = true;
-        
+
 
         // Obtener el componente VideoPlayer del objeto actual
 
 
         //if (pasoIntro == false)
-        if (!UserData.terminoLobby)
+        if (!UserData.completoNivel3)
         {
-            audioPause.Pause(true);
-            playerMovementNew.inputsEnabled = false;
-            if (videoPlayer != null)
+            if (!UserData.terminoLobby)
             {
-                panelVideo.SetActive(true);
-                
-                string videoPath = System.IO.Path.Combine(Application.streamingAssetsPath, "Introtest.mp4");
-                videoPlayer.url = videoPath;
-                videoPlayer.Play();
+                audioPause.Pause(true);
+                playerMovementNew.inputsEnabled = false;
+                if (videoPlayer != null)
+                {
+                    panelVideo.SetActive(true);
 
-                // Suscribirse al evento loopPointReached para saber cuándo termina el video
-                videoPlayer.loopPointReached += OnVideoEnd;
+                    string videoPath = System.IO.Path.Combine(Application.streamingAssetsPath, "Introtest.mp4");
+                    videoPlayer.url = videoPath;
+                    videoPlayer.Play();
+
+                    // Suscribirse al evento loopPointReached para saber cuándo termina el video
+                    videoPlayer.loopPointReached += OnVideoEnd;
+                }
+                else
+                {
+                    Debug.LogError("VideoPlayer component not found on this GameObject.");
+                }
+
             }
             else
             {
-                Debug.LogError("VideoPlayer component not found on this GameObject.");
-            }
+                playerMovementNew.inputsEnabled = true;
+                panelHUD.SetActive(true);
+                panelVideo.SetActive(false);
+                if (portalInicio != null) portalInicio.SetActive(true);
 
+            }
         }
         else
         {
-            playerMovementNew.inputsEnabled = true;
-            panelHUD.SetActive(true);   
-            panelVideo.SetActive(false);
-            if(portalInicio != null) portalInicio.SetActive(true);
+                //playerMovementNew.inputsEnabled = true;
+                panelHUD.SetActive(true);
+                panelVideo.SetActive(false);
 
         }
 
@@ -364,9 +375,21 @@ public class LobbyManager : MonoBehaviour
       //  panelHUD.SetActive(true);
 
         PlayerPrefs.SetInt("pasoIntro", 1);
+
+        CinemachineBrain cinemachineBrain = Camera.main.GetComponent<CinemachineBrain>();
+        if (cinemachineBrain != null)
+        {
+            cinemachineBrain.m_DefaultBlend.m_Time = 5;
+        }
+        else
+        {
+            Debug.LogWarning("CinemachineBrain no encontrado en la cámara principal (Main Camera). Asegúrate de que la cámara principal tenga un componente CinemachineBrain.");
+        }
+
+        ente.SetActive(false);
     }
 
-    private IEnumerator PlayerDisolve()
+    public IEnumerator PlayerDisolve()
     {
         AudioManager.Instance.PlaySfx("Dissolve");
 

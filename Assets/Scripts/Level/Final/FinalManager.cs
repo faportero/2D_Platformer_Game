@@ -9,7 +9,7 @@ public class FinalManager : MonoBehaviour
     [SerializeField]
     PlayerMovementNew playerMovementNew;
     [SerializeField]
-    GameObject explodeObject;
+    GameObject explodeObject, explodeClock, obstacle;
     [SerializeField]
     ParticleSystem dustParticle, shineParticle;
     [SerializeField]
@@ -19,24 +19,43 @@ public class FinalManager : MonoBehaviour
     [SerializeField]
     GameObject blockManoIz, blockManoDe;
     [SerializeField]
-    GameObject destello;
+    GameObject destello, destelloFinal;
     [SerializeField]
-    Animator destelloAnim;
+    Animator destelloAnim, destelloFinalAnim;
     [SerializeField]
     GameObject PanelFade, PanelVideo;
 
     [SerializeField]
     Coroutine finalCoroutine, finalShowCoroutine;
 
+    [SerializeField] 
+    GameObject[] objectsToShow, objectsToHide;
+
+
     [SerializeField]
     CinemachineVirtualCamera finalPanCamera;
+
+    private LobbyManager lobbyManager;
+
+    private void Awake()
+    {
+        lobbyManager = FindAnyObjectByType<LobbyManager>();
+    }
+    private void Update()
+    {
+     //   print( "min: " + minAnim.speed + ". hour: " + hourAnim.speed);
+
+    }
     public void StartFinal()
     {
+
+
         if(finalShowCoroutine != null)
         {
             StopCoroutine(finalShowCoroutine);
         }
         finalShowCoroutine = StartCoroutine(FinalCoroutineAnim());
+
     }
     public void StartVideoFinal()
     {
@@ -47,38 +66,6 @@ public class FinalManager : MonoBehaviour
         finalCoroutine = StartCoroutine(FinalShowVideoAnim());
     }
 
-    //private IEnumerator FinalCoroutineAnim()
-    //{
-    //    //bloqueo input
-    //    playerMovementNew.inputsEnabled = false;
-    //    playerMovementNew.isMoving = false;
-    //    playerMovementNew.canMove = false;
-    //    playerMovementNew.rb.bodyType = RigidbodyType2D.Static;
-    //    playerMovementNew.anim.SetBool("SlowWalkSlowWalk", false);
-    //    yield return null;
-    //    // animacion de manos se unen para poder caminar
-    //    manoIzAnim.enabled = true;
-    //    manoDeAnim.enabled = true;
-    //    //se invierte reloj
-    //    minAnim.speed = .1f;
-    //    hourAnim.speed = .1f;
-    //    yield return null;
-    //    //explota el muro
-    //    explodeObject.SetActive(true);
-    //    dustParticle.Play();
-    //    shineParticle.Play();
-    //    yield return null;
-    //    //se quitan colliders de bloqueo
-    //    blockManoIz.SetActive(false);
-    //    blockManoDe.SetActive(false);
-    //    //se deslbloquea input
-    //    playerMovementNew.inputsEnabled = true;
-    //    playerMovementNew.isMoving = true;
-    //    playerMovementNew.canMove = true;
-    //    playerMovementNew.rb.bodyType = RigidbodyType2D.Dynamic;
-    //    playerMovementNew.anim.SetBool("SlowWalkSlowWalk", true);
-    //}
-
     private IEnumerator FinalCoroutineAnim()
     {
         // Bloqueo de input
@@ -86,19 +73,30 @@ public class FinalManager : MonoBehaviour
         playerMovementNew.isMoving = false;
         playerMovementNew.canMove = false;
         playerMovementNew.rb.bodyType = RigidbodyType2D.Static;
-        playerMovementNew.anim.SetBool("SlowWalkSlowWalk", false);
-        playerMovementNew.anim.SetBool("Walk", false);
+        playerMovementNew.anim.SetBool("SlowWalk", false);
+
+
+        // Invertir reloj
+        //minAnim.speed = -1;
+        //hourAnim.speed = -1;
+
+
 
         // Espera de 0.5 segundos
         yield return new WaitForSeconds(5f);
+        explodeClock.SetActive(true);
+        //AudioManager.Instance.PlayMusic("Bg_Lobby2",0);
+        AudioManager.Instance.PlaySfx("fn_ExplocionTorre", true);
 
+        yield return new WaitForSeconds(.25f);
+        minAnim.SetBool("isInverse", false);
+        hourAnim.SetBool("isInverse", false);
+
+        yield return new WaitForSeconds(3f);
         // Activar animación de manos
         manoIzAnim.enabled = true;
         manoDeAnim.enabled = true;
-
-        // Invertir reloj
-        minAnim.speed = .1f;
-        hourAnim.speed = .1f;
+        AudioManager.Instance.PlaySfx("fn_Manos", false);
 
         // Obtener duración de la animación de la mano derecha
         float rightHandAnimationDuration = 0f;
@@ -118,80 +116,125 @@ public class FinalManager : MonoBehaviour
         explodeObject.SetActive(true);
         dustParticle.Play();
         shineParticle.Play();
+        AudioManager.Instance.PlaySfx("fn_ExplocionRocas", false);
 
         // Obtener duración de las partículas
         float explosionParticleDuration = dustParticle.main.duration;
 
         // Espera a que termine la animación de partículas de explosión
-        yield return new WaitForSeconds(explosionParticleDuration);
-        yield return new WaitForSeconds(1);
-        explodeObject.SetActive(false);
+        //yield return new WaitForSeconds(explosionParticleDuration);
+        yield return new WaitForSeconds(.1f);
+        obstacle.SetActive(false);
+        yield return new WaitForSeconds(.4f);
 
         // Se quitan colliders de bloqueo
         blockManoIz.SetActive(false);
         blockManoDe.SetActive(false);
 
+        yield return new WaitForSeconds(2f);
+        StartCoroutine(FadeDInDestello());
+        destelloAnim.enabled = true;
+        destelloAnim.Play("Guide");
+
+        HideObjects();
+        ShowObjects();
+
+
+        yield return new WaitForSeconds(1f);
         // Se desbloquea input
+        explodeObject.SetActive(false);
         playerMovementNew.inputsEnabled = true;
         playerMovementNew.isMoving = true;
         playerMovementNew.canMove = true;
         playerMovementNew.rb.bodyType = RigidbodyType2D.Dynamic;
-        playerMovementNew.anim.SetBool("SlowWalkSlowWalk", true);
-        destello.SetActive(true);
+        playerMovementNew.anim.SetBool("SlowWalkS", true);
+        explodeClock.SetActive(false);
+
+        Invoke("DeactivateDestello", 9);
     }
 
 
-    //private IEnumerator FinalShowVideoAnim()
-    //{
-    //    //bloqueo input
-    //    playerMovementNew.inputsEnabled = false;
-    //    playerMovementNew.isMoving = false;
-    //    playerMovementNew.canMove = false;
-    //    playerMovementNew.rb.bodyType = RigidbodyType2D.Static;
-    //    playerMovementNew.anim.SetBool("SlowWalkSlowWalk", false);
-    //    yield return null;
-    //    //se muestra destello
-    //    destelloAnim.enabled = true;
-    //    yield return null;       
-    //    //Paneo camara
-    //    CameraManager.instance.SingleSwapCamera(finalPanCamera, 5f);
-    //    yield return null;
-    //    //se activa video
-    //    PanelVideo.SetActive(true);
-    //    PanelVideo.GetComponent<VideoPlayer>().Play();
-    //}
-
     private IEnumerator FinalShowVideoAnim()
     {
+
         // Bloqueo de input
         playerMovementNew.inputsEnabled = false;
         playerMovementNew.isMoving = false;
         playerMovementNew.canMove = false;
         playerMovementNew.rb.bodyType = RigidbodyType2D.Static;
-        playerMovementNew.anim.SetBool("SlowWalkSlowWalk", false);
+        playerMovementNew.anim.SetBool("SlowWalk", false);
+        lobbyManager.StartCoroutine(lobbyManager.PlayerDisolve()); 
 
         // Espera de 0.5 segundos
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(1.5f);
 
         // Mostrar destello
-        destelloAnim.enabled = true;
+        //destelloAnim.enabled = true;
+        AudioManager.Instance.PlaySfx("fn_Woosh", false);
 
+        destelloFinal.GetComponent<Animator>().enabled = true;
+        destelloFinalAnim.Play("Expand0");
+        yield return new WaitForSeconds(1f);
+        PanelFade.SetActive(true);
+        Animator panelFadeAnim = PanelFade.transform.GetChild(0).GetComponent<Animator>();
+        panelFadeAnim.enabled = true;
+        panelFadeAnim.SetBool("isInverse", true);
+       
         // Esperar 2 segundos después de que comienza la animación de destello
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
 
         // Cambiar de cámara
-        CameraManager.instance.SingleSwapCamera(finalPanCamera, 5f);
+        CameraManager.instance.SingleSwapCamera(finalPanCamera, 6f);
 
         // Esperar 3 segundos para asegurar que quedan 2 segundos de cambio de cámara cuando activamos el video
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(5f);
 
         // Activar el video
-        PanelFade.SetActive(true);
-        PanelFade.transform.GetChild(0).GetComponent<Animator>().speed = -1;
+        PanelFade.SetActive(false);
         PanelVideo.SetActive(true);
-        PanelVideo.GetComponent<VideoPlayer>().Play();
+        PanelVideo.transform.GetChild(0).GetComponent<VideoPlayer>().Play();
+
+        AudioManager.Instance.ToggleMusic(false);
+        AudioManager.Instance.ToggleSFX();
         StopAllCoroutines();
     }
+    private void ShowObjects()
+    {
+        foreach (GameObject obj in objectsToShow)
+        {
+            obj.SetActive(true);
+        }
+    }
+    private void HideObjects()
+    {
+        foreach (GameObject obj in objectsToHide)
+        {
+            obj.SetActive(false);
+        }
+    }
+    private void DeactivateDestello()
+    {
+        destello.SetActive(false);
+    }
 
+    private IEnumerator FadeDInDestello()
+    {
+        AudioManager.Instance.PlaySfx("fn_Shine", false);
 
+        destello.SetActive(true);
+        Material material = destello.GetComponent<SpriteRenderer>().material;
+        float startOpacity = 0f;
+        float endOpacity = 3f;
+        material.SetFloat("_Opacity", startOpacity);
+        float timeElapsed = 0f;
+        while (timeElapsed < 1)
+        {
+            float t = timeElapsed / 1;
+            float currentOpacity = Mathf.Lerp(startOpacity, endOpacity, t);
+            material.SetFloat("_Opacity", currentOpacity);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+        material.SetFloat("_Opacity", endOpacity);
+    }
 }

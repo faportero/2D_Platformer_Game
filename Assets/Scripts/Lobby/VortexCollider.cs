@@ -29,6 +29,7 @@ public class VortexCollider : MonoBehaviour
     {
         if (collision != null && collision.CompareTag("Player"))
         {
+           // playerMovementNew.swipeDetector.enabled = false;
             isCollision = true;
             collision.GetComponent<PlayerMovementNew>().anim.SetBool("Turn", true);
             return;
@@ -39,6 +40,8 @@ public class VortexCollider : MonoBehaviour
     {
         if (collision != null && collision.CompareTag("Player"))
         {
+           // playerMovementNew.swipeDetector.enabled = true;
+
             isCollision = false;
         }
     }

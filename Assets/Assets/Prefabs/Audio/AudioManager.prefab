@@ -655,6 +655,16 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 12c6ad7c4f018504a96a2db68992da37, type: 3}
   - name: Evil_HitTentacle
     clip: {fileID: 8300000, guid: 8a7564a9373154c4e85b0ee9dd8c3d4b, type: 3}
+  - name: fn_ExplocionRocas
+    clip: {fileID: 8300000, guid: 1d8bf61844fbfdb4798ed37ff04f56d1, type: 3}
+  - name: fn_ExplocionTorre
+    clip: {fileID: 8300000, guid: 9eb659732d4e99f4480cebd8dfa90baa, type: 3}
+  - name: fn_Manos
+    clip: {fileID: 8300000, guid: 4b8642b41e7fe3245a5402aa9b973dca, type: 3}
+  - name: fn_Woosh
+    clip: {fileID: 8300000, guid: 899520699ccef894a9d0ef2a9b8f19b9, type: 3}
+  - name: fn_Shine
+    clip: {fileID: 8300000, guid: 384c8485db3afff4ba616d8d9bf2d1a5, type: 3}
   dialogueSounds: []
   musicSource1: {fileID: 768406074877280248}
   musicSource2: {fileID: 5876780549164642324}

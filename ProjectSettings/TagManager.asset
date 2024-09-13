@@ -28,6 +28,7 @@ TagManager:
   - DieEffect
   - TilesGrid
   - SuccessfulEvasion
+  - Swipe
   layers:
   - Default
   - TransparentFX

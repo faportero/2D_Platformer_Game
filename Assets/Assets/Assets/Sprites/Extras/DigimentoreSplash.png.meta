@@ -1,0 +1,1028 @@
+fileFormatVersion: 2
+guid: d4f92d4e021dc4d4d9d77f94607e36ad
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -4435396520507392456
+    second: DigimentoreSplash_0
+  - first:
+      213: 7378433055225105683
+    second: DigimentoreSplash_1
+  - first:
+      213: 377855783270381682
+    second: DigimentoreSplash_2
+  - first:
+      213: -4518991499408499420
+    second: DigimentoreSplash_3
+  - first:
+      213: -5335420702034726698
+    second: DigimentoreSplash_4
+  - first:
+      213: 6743187830602375995
+    second: DigimentoreSplash_5
+  - first:
+      213: -9218679831002227065
+    second: DigimentoreSplash_6
+  - first:
+      213: -374245774789855099
+    second: DigimentoreSplash_7
+  - first:
+      213: -6835347586808958140
+    second: DigimentoreSplash_8
+  - first:
+      213: -2592119586524785456
+    second: DigimentoreSplash_9
+  - first:
+      213: -637613030907386943
+    second: DigimentoreSplash_10
+  - first:
+      213: 7865508390817572000
+    second: DigimentoreSplash_11
+  - first:
+      213: 1683494432361540077
+    second: DigimentoreSplash_12
+  - first:
+      213: 7328686608202015692
+    second: DigimentoreSplash_13
+  - first:
+      213: 1906716044962749825
+    second: DigimentoreSplash_14
+  - first:
+      213: -8674639885795038886
+    second: DigimentoreSplash_15
+  - first:
+      213: -4742641937980805588
+    second: DigimentoreSplash_16
+  - first:
+      213: 408389079416417454
+    second: DigimentoreSplash_17
+  - first:
+      213: -239157535095630575
+    second: DigimentoreSplash_18
+  - first:
+      213: -6989816216367264330
+    second: DigimentoreSplash_19
+  - first:
+      213: 7942685420960506304
+    second: DigimentoreSplash_20
+  - first:
+      213: 2151885218722842746
+    second: DigimentoreSplash_21
+  - first:
+      213: -6801767943456004893
+    second: DigimentoreSplash_22
+  - first:
+      213: -7908282268652710405
+    second: DigimentoreSplash_23
+  - first:
+      213: 6293466285738648217
+    second: DigimentoreSplash_24
+  - first:
+      213: -3785765180079127292
+    second: DigimentoreSplash_25
+  - first:
+      213: -931716672475129562
+    second: DigimentoreSplash_26
+  - first:
+      213: -6831591216762647070
+    second: DigimentoreSplash_27
+  - first:
+      213: -3186483908075551736
+    second: DigimentoreSplash_28
+  - first:
+      213: 7352945101298929391
+    second: DigimentoreSplash_29
+  - first:
+      213: -8177189891053941636
+    second: DigimentoreSplash_30
+  - first:
+      213: -1263576961028213970
+    second: DigimentoreSplash_31
+  - first:
+      213: 7522921656737040573
+    second: DigimentoreSplash_32
+  - first:
+      213: -3945522391509114092
+    second: DigimentoreSplash_33
+  - first:
+      213: -9197011840610302145
+    second: DigimentoreSplash_34
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: DigimentoreSplash_0
+      rect:
+        serializedVersion: 2
+        x: 608
+        y: 683
+        width: 70
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83e37254d5e4272c0800000000000000
+      internalID: -4435396520507392456
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_1
+      rect:
+        serializedVersion: 2
+        x: 689
+        y: 683
+        width: 53
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31d41b765c5756660800000000000000
+      internalID: 7378433055225105683
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_2
+      rect:
+        serializedVersion: 2
+        x: 748
+        y: 682
+        width: 56
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 278782a35d96e3500800000000000000
+      internalID: 377855783270381682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_3
+      rect:
+        serializedVersion: 2
+        x: 804
+        y: 683
+        width: 75
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42d1fb68c215941c0800000000000000
+      internalID: -4518991499408499420
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_4
+      rect:
+        serializedVersion: 2
+        x: 885
+        y: 682
+        width: 60
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d074f7c327c4f5b0800000000000000
+      internalID: -5335420702034726698
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_5
+      rect:
+        serializedVersion: 2
+        x: 956
+        y: 683
+        width: 60
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b33aac0ea9d949d50800000000000000
+      internalID: 6743187830602375995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_6
+      rect:
+        serializedVersion: 2
+        x: 1021
+        y: 682
+        width: 75
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78edd0f498ba01080800000000000000
+      internalID: -9218679831002227065
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_7
+      rect:
+        serializedVersion: 2
+        x: 1108
+        y: 683
+        width: 50
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 588b5fe53796ecaf0800000000000000
+      internalID: -374245774789855099
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_8
+      rect:
+        serializedVersion: 2
+        x: 1165
+        y: 683
+        width: 123
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 443bde3c597f321a0800000000000000
+      internalID: -6835347586808958140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_9
+      rect:
+        serializedVersion: 2
+        x: 1294
+        y: 683
+        width: 70
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d49bdd38f0f60cd0800000000000000
+      internalID: -2592119586524785456
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_10
+      rect:
+        serializedVersion: 2
+        x: 1369
+        y: 682
+        width: 76
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c3ea9c935eb627f0800000000000000
+      internalID: -637613030907386943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_11
+      rect:
+        serializedVersion: 2
+        x: 454
+        y: 463
+        width: 66
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a4298c4536e72d60800000000000000
+      internalID: 7865508390817572000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_12
+      rect:
+        serializedVersion: 2
+        x: 522
+        y: 463
+        width: 77
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de9e1464449fc5710800000000000000
+      internalID: 1683494432361540077
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_13
+      rect:
+        serializedVersion: 2
+        x: 610
+        y: 464
+        width: 62
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc32b0024a9b4b560800000000000000
+      internalID: 7328686608202015692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_14
+      rect:
+        serializedVersion: 2
+        x: 731
+        y: 464
+        width: 138
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18dda830424067a10800000000000000
+      internalID: 1906716044962749825
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_15
+      rect:
+        serializedVersion: 2
+        x: 884
+        y: 464
+        width: 141
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5960ccebfc7d9780800000000000000
+      internalID: -8674639885795038886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_16
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 460
+        width: 149
+        height: 136
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2ea8c5f840ce2eb0800000000000000
+      internalID: -4742641937980805588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_17
+      rect:
+        serializedVersion: 2
+        x: 1207
+        y: 464
+        width: 109
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eaca3c834b3eaa500800000000000000
+      internalID: 408389079416417454
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_18
+      rect:
+        serializedVersion: 2
+        x: 1383
+        y: 464
+        width: 59
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 115544b2d775eacf0800000000000000
+      internalID: -239157535095630575
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_19
+      rect:
+        serializedVersion: 2
+        x: 1447
+        y: 463
+        width: 77
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6bd0a225f2f2ffe90800000000000000
+      internalID: -6989816216367264330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_20
+      rect:
+        serializedVersion: 2
+        x: 1534
+        y: 464
+        width: 60
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c16607ee461a3e60800000000000000
+      internalID: 7942685420960506304
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_21
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 68
+        width: 323
+        height: 326
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a78836b84380ddd10800000000000000
+      internalID: 2151885218722842746
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_22
+      rect:
+        serializedVersion: 2
+        x: 357
+        y: 239
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e46aadb7144b91a0800000000000000
+      internalID: -6801767943456004893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_23
+      rect:
+        serializedVersion: 2
+        x: 604
+        y: 239
+        width: 43
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf55f613d23204290800000000000000
+      internalID: -7908282268652710405
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_24
+      rect:
+        serializedVersion: 2
+        x: 1388
+        y: 66
+        width: 88
+        height: 215
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 992695f1e32e65750800000000000000
+      internalID: 6293466285738648217
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_25
+      rect:
+        serializedVersion: 2
+        x: 1964
+        y: 211
+        width: 69
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 405475660a2467bc0800000000000000
+      internalID: -3785765180079127292
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_26
+      rect:
+        serializedVersion: 2
+        x: 363
+        y: 68
+        width: 30
+        height: 162
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6299fc17f90e113f0800000000000000
+      internalID: -931716672475129562
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_27
+      rect:
+        serializedVersion: 2
+        x: 417
+        y: 0
+        width: 170
+        height: 231
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ed0f22dbff4131a0800000000000000
+      internalID: -6831591216762647070
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_28
+      rect:
+        serializedVersion: 2
+        x: 611
+        y: 68
+        width: 30
+        height: 162
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80488a0b4c557c3d0800000000000000
+      internalID: -3186483908075551736
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_29
+      rect:
+        serializedVersion: 2
+        x: 664
+        y: 68
+        width: 311
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fee0fdfac98ea0660800000000000000
+      internalID: 7352945101298929391
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_30
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 66
+        width: 170
+        height: 166
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7c80d26e19c48e80800000000000000
+      internalID: -8177189891053941636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_31
+      rect:
+        serializedVersion: 2
+        x: 1195
+        y: 68
+        width: 170
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e23bb8bd27fd67ee0800000000000000
+      internalID: -1263576961028213970
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_32
+      rect:
+        serializedVersion: 2
+        x: 1486
+        y: 66
+        width: 170
+        height: 166
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db887ee7369c66860800000000000000
+      internalID: 7522921656737040573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_33
+      rect:
+        serializedVersion: 2
+        x: 1680
+        y: 68
+        width: 91
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 413efb80a40be39c0800000000000000
+      internalID: -3945522391509114092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DigimentoreSplash_34
+      rect:
+        serializedVersion: 2
+        x: 1780
+        y: 66
+        width: 175
+        height: 166
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f378c557576ad5080800000000000000
+      internalID: -9197011840610302145
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      DigimentoreSplash_0: -4435396520507392456
+      DigimentoreSplash_1: 7378433055225105683
+      DigimentoreSplash_10: -637613030907386943
+      DigimentoreSplash_11: 7865508390817572000
+      DigimentoreSplash_12: 1683494432361540077
+      DigimentoreSplash_13: 7328686608202015692
+      DigimentoreSplash_14: 1906716044962749825
+      DigimentoreSplash_15: -8674639885795038886
+      DigimentoreSplash_16: -4742641937980805588
+      DigimentoreSplash_17: 408389079416417454
+      DigimentoreSplash_18: -239157535095630575
+      DigimentoreSplash_19: -6989816216367264330
+      DigimentoreSplash_2: 377855783270381682
+      DigimentoreSplash_20: 7942685420960506304
+      DigimentoreSplash_21: 2151885218722842746
+      DigimentoreSplash_22: -6801767943456004893
+      DigimentoreSplash_23: -7908282268652710405
+      DigimentoreSplash_24: 6293466285738648217
+      DigimentoreSplash_25: -3785765180079127292
+      DigimentoreSplash_26: -931716672475129562
+      DigimentoreSplash_27: -6831591216762647070
+      DigimentoreSplash_28: -3186483908075551736
+      DigimentoreSplash_29: 7352945101298929391
+      DigimentoreSplash_3: -4518991499408499420
+      DigimentoreSplash_30: -8177189891053941636
+      DigimentoreSplash_31: -1263576961028213970
+      DigimentoreSplash_32: 7522921656737040573
+      DigimentoreSplash_33: -3945522391509114092
+      DigimentoreSplash_34: -9197011840610302145
+      DigimentoreSplash_4: -5335420702034726698
+      DigimentoreSplash_5: 6743187830602375995
+      DigimentoreSplash_6: -9218679831002227065
+      DigimentoreSplash_7: -374245774789855099
+      DigimentoreSplash_8: -6835347586808958140
+      DigimentoreSplash_9: -2592119586524785456
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
