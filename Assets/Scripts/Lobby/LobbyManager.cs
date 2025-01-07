@@ -15,7 +15,7 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] private GameObject RelojPanel;
     [SerializeField] private Transform newPlayerPos;
     [SerializeField] private GameObject portalInicio;
-    [SerializeField] private GameObject playerGuide1, playerGuide2, playerGuide3;
+    [SerializeField] private GameObject playerGuide1, playerGuide2, playerGuide3, playerGuide4;
     [SerializeField] private GameObject ente;
 
     [SerializeField] private SwipeDetector swipeDetector;
@@ -85,7 +85,7 @@ public class LobbyManager : MonoBehaviour
                 {
                     panelVideo.SetActive(true);
 
-                    string videoPath = System.IO.Path.Combine(Application.streamingAssetsPath, "Introtest.mp4");
+                    string videoPath = System.IO.Path.Combine(Application.streamingAssetsPath, "Intro.mp4");
                     videoPlayer.url = videoPath;
                     videoPlayer.Play();
 
@@ -155,6 +155,16 @@ public class LobbyManager : MonoBehaviour
         else
         {
             playerGuide3.SetActive(false);
+        }
+        
+        if (!UserData.playerGuide6 && UserData.completoNivel2) 
+        {
+            playerGuide4.SetActive(true);
+            UserData.playerGuide6 = true;
+        } 
+        else
+        {
+            playerGuide4.SetActive(false);
         }
     }
     public void SkipInitVideo()

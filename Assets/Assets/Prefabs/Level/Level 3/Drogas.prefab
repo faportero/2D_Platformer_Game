@@ -486,7 +486,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0c89cf64624326a4697bd690b34e25f1, type: 2}
+  - {fileID: 2100000, guid: 1548919c4f2690441b4f378c61e8d62c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -645,6 +645,10 @@ MonoBehaviour:
   - {fileID: -6294911993459672778, guid: f93e9a562b7160c47a85de4e2ff766e6, type: 3}
   - {fileID: 3814120113649256626, guid: f93e9a562b7160c47a85de4e2ff766e6, type: 3}
   - {fileID: -8720617779967435858, guid: f93e9a562b7160c47a85de4e2ff766e6, type: 3}
+  flameMaterials:
+  - {fileID: 2100000, guid: 1548919c4f2690441b4f378c61e8d62c, type: 2}
+  - {fileID: 2100000, guid: 288934e6e48f0034db3630d5a0779849, type: 2}
+  - {fileID: 2100000, guid: 0c89cf64624326a4697bd690b34e25f1, type: 2}
   sustanceType: 0
 --- !u!61 &4679612099057282940
 BoxCollider2D:

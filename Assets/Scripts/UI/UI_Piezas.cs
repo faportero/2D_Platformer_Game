@@ -28,8 +28,8 @@ public class UI_Piezas : MonoBehaviour
     {
         Invoke("ShowPanelPieces", .75f);
     }
-
-    private void ShowPanelPieces()
+    
+        private void ShowPanelPieces()
     {
 
         switch (levelManager.currentScene)
@@ -123,8 +123,6 @@ public class UI_Piezas : MonoBehaviour
 
         if (levelManager.currentScene == LevelManager.CurrentScene.Nivel1 || levelManager.currentScene == LevelManager.CurrentScene.Limbo)
         {
-
-
             if (UserData.usedPiezaA_N1)
             {
                 piezaA.SetActive(true);

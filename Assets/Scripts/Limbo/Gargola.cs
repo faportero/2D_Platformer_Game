@@ -7,17 +7,18 @@ using UnityEngine.Video;
 
 public class Gargola : MonoBehaviour
 {
-    public GameObject videoPlayerPlane, viajarBtn, skipBtn, canvasFog, vortexRays, vortexCircle;
+    public GameObject videoPlayerPlane, viajarBtn, skipBtn, canvasFog, vortexRays, vortexCircle, letrasLetrero;
     private Collider2D solidObjectCol;
     public VideoPlayer videoPlayer;
     [SerializeField] private string nivel;
     [SerializeField] private CinemachineVirtualCamera camera1, camera2;
     private PlayerMovementNew playerMovementNew;
     private PlayerControllerNew playerController;
-    private Animator animatorVideo;
+    private Animator animatorVideo, animatorLetrero;
     private float progress;
     private Material playerMaterial;
     private SwipeDetector swipeDetector;
+    private bool isOnTrigger;
     public enum VortexType
     {
         Vortex1,
@@ -34,6 +35,7 @@ public class Gargola : MonoBehaviour
         playerMovementNew = FindAnyObjectByType<PlayerMovementNew>();
         playerController = FindAnyObjectByType<PlayerControllerNew>();
         animatorVideo = videoPlayerPlane.GetComponent<Animator>();
+        animatorLetrero = GetComponent<Animator>();
         solidObjectCol = transform.GetChild(0).gameObject.GetComponent<Collider2D>();
 
         playerMaterial = playerMovementNew.GetComponent<SpriteRenderer>().material;
@@ -254,9 +256,29 @@ public class Gargola : MonoBehaviour
     {
         // Esta función se llama cuando el video está completamente preparado.
         videoPlayerPlane.SetActive(true);
-        videoPlayer.Play(); // Reproducir el video solo cuando esté preparado
+        //videoPlayer.Play(); // Reproducir el video solo cuando esté preparado
+        Invoke("PlayVideo",0.2f);
     }
+    
+    private void PlayVideo()
+    {
+        //if (videoPlayer != null)
+        //{
+        //    string videoPath = System.IO.Path.Combine(Application.streamingAssetsPath, "Intro.mp4");
+        //    videoPlayer.url = videoPath;
+        //    videoPlayer.Play();
 
+        //    // Suscribirse al evento loopPointReached para saber cuándo termina el video
+        //    videoPlayer.loopPointReached += OnVideoEnd;
+        //}
+        //else
+        //{
+        //    Debug.LogError("VideoPlayer component not found on this GameObject.");
+        //}
+
+        videoPlayer.Play();
+
+    }
     public void SelectDimension()
     {
         videoPlayer.Stop();
@@ -313,19 +335,61 @@ public class Gargola : MonoBehaviour
         }
     }
 
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if (collision.tag == "Player")
+    //    {
+    //        viajarBtn.SetActive(true);
+    //    }
+    //}
+
+    //private void OnTriggerExit2D(Collider2D collision)
+    //{
+    //    if (collision.tag == "Player")
+    //    {
+    //        viajarBtn.SetActive(false);
+    //    }
+    //}
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.CompareTag("Player"))
         {
-            viajarBtn.SetActive(true);
+            swipeDetector.gameObject.SetActive(false);
+            isOnTrigger = true;
+            StartCoroutine(LetreroFadeAnim());
+
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.CompareTag("Player"))
         {
-            viajarBtn.SetActive(false);
+            swipeDetector.gameObject.SetActive(true);
+            isOnTrigger = false;
+            StartCoroutine(LetreroFadeAnim());
+        }
+    }
+
+    private IEnumerator LetreroFadeAnim()
+    {
+        if (isOnTrigger)
+        {
+            //letrasLetrero.SetActive(true);
+            //viajarBtn.SetActive(true);          
+          animatorLetrero.enabled = true;
+            animatorLetrero.Play("FadeNombreBotonVortice Animation"); 
+      
+        }
+        else
+        {    
+            animatorLetrero.Play("ReverseFadeNombreBotonVortice Animation");   
+
+            yield return new WaitForSeconds(2f);
+          animatorLetrero.enabled = false;
+            //letrasLetrero.SetActive(false);
+            //viajarBtn.SetActive(false);
         }
     }
 }

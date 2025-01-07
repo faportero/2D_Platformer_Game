@@ -35,10 +35,10 @@ public class LimboManager : MonoBehaviour
         }
         else
         {
-            ui_piezas.piezaA.SetActive(true);
-            ui_piezas.piezaB.SetActive(true);
-            ui_piezas.piezaC.SetActive(true);
-            ui_piezas.piezaD.SetActive(true);
+            //ui_piezas.piezaA.SetActive(true);
+            //ui_piezas.piezaB.SetActive(true);
+            //ui_piezas.piezaC.SetActive(true);
+            //ui_piezas.piezaD.SetActive(true);
 
         }
 
@@ -53,10 +53,10 @@ public class LimboManager : MonoBehaviour
         }
         else
         {
-            ui_piezas.piezaA.SetActive(true);
-            ui_piezas.piezaB.SetActive(true);
-            ui_piezas.piezaC.SetActive(true);
-            ui_piezas.piezaD.SetActive(true);
+            //ui_piezas.piezaA.SetActive(true);
+            //ui_piezas.piezaB.SetActive(true);
+            //ui_piezas.piezaC.SetActive(true);
+            //ui_piezas.piezaD.SetActive(true);
 
         }
         if (UserData.completoNivel3 && UserData.terminoVideoVortex3)
@@ -67,10 +67,10 @@ public class LimboManager : MonoBehaviour
         }
         else
         {
-            ui_piezas.piezaA.SetActive(true);
-            ui_piezas.piezaB.SetActive(true);
-            ui_piezas.piezaC.SetActive(true);
-            ui_piezas.piezaD.SetActive(true);
+            //ui_piezas.piezaA.SetActive(true);
+            //ui_piezas.piezaB.SetActive(true);
+            //ui_piezas.piezaC.SetActive(true);
+            //ui_piezas.piezaD.SetActive(true);
 
         }
         //if (UserData.terminoLimbo)

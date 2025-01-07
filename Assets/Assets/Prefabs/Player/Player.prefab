@@ -5414,6 +5414,7 @@ MonoBehaviour:
   - {fileID: 0}
   color: {r: 0, g: 0, b: 0, a: 0}
   NewStartPosition: {fileID: 0}
+  postMaterial: {fileID: 0}
   currentSalud: 0.6
   isDie: 0
   isCannabis: 0
@@ -5427,8 +5428,10 @@ MonoBehaviour:
   paracaidas: 0
   isDrugged: 0
   isAttack: 0
+  isPostEffect: 0
   isSmokePanelEffect: 0
   doingEnemyShake: 0
+  bigBoss: {fileID: 0}
 --- !u!114 &7392676511381590058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5495,6 +5498,7 @@ MonoBehaviour:
   mouseWalk: 0
   flappyMode: 0
   isFallingMode: 0
+  clicDirection: 0
   isFacingRight: 1
   tutorialActive: 1
   isHitBadFloor: 0
@@ -9143,7 +9147,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  healthFillBar: {fileID: 8599240900337111701}
+  healthFillBar: {fileID: 0}
   colorGradient:
     serializedVersion: 2
     key0: {r: 1, g: 0.68858093, b: 0, a: 1}
@@ -9868,6 +9872,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: ce35ba55e60e91348aa6a7a806985cde, type: 2}
+    - target: {fileID: 7953402629773856268, guid: e354c18c8081aa6498c5be243ec8b5b2, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 0c89cf64624326a4697bd690b34e25f1, type: 2}
     - target: {fileID: 8416440996108465780, guid: e354c18c8081aa6498c5be243ec8b5b2, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.56
@@ -9974,4 +9982,8 @@ MonoBehaviour:
   - {fileID: 545440941, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
   - {fileID: 1957117115, guid: 2c7cd7fab968d014ea56662c9e195166, type: 3}
   isRandom: 0
+  currentEffectTag: CurrentEffect
+  dieEffectTag: DieEffect
+  effectPanelSprites: []
+  flameMaterials: []
   sustanceType: 7

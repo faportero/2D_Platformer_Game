@@ -1683,6 +1683,10 @@ public class PlayerControllerNew : MonoBehaviour
         if (currentItem.GetComponent<EnemyNew>().sustanceType == EnemyNew.SustanceType.Tabaco)
         {
             effectPanel.SetActive(true);
+            effectPanel.GetComponent<Image>().color = Color.white;
+            //effectPanel.GetComponent<Animator>().enabled = true;
+            //effectPanel.GetComponent<Image>().enabled = true;
+            //effectPanel.GetComponent<Animator>().Play("Smoke");
             effectPanel.transform.GetChild(0).gameObject.SetActive(true);
             effectPanel.transform.GetChild(0).GetComponent<UI_PanelDissolve>().enabled = true;
 
@@ -1692,6 +1696,8 @@ public class PlayerControllerNew : MonoBehaviour
         //else if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2)
         else if (currentItem.GetComponent<EnemyNew>().sustanceType == EnemyNew.SustanceType.Alcohol)
         {
+            effectPanel.GetComponent<Image>().color = new Color(1,1,1,0);
+
             rendererSwitcher.SwitchRenderer(rendererSwitcher.YourCamera, 1);
             effectPanel.SetActive(true);
             effectPanel.transform.GetChild(0).gameObject.SetActive(true);
@@ -1706,6 +1712,7 @@ public class PlayerControllerNew : MonoBehaviour
             currentItem.GetComponent<EnemyNew>().sustanceType == EnemyNew.SustanceType.Psilocibina ||
             currentItem.GetComponent<EnemyNew>().sustanceType == EnemyNew.SustanceType.Heroina)
         {
+            effectPanel.GetComponent<Image>().color = new Color(1,1,1,0);
             rendererSwitcher.SwitchRenderer(rendererSwitcher.YourCamera, 2);
             effectPanel.SetActive(true);
             effectPanel.transform.GetChild(0).gameObject.SetActive(true);

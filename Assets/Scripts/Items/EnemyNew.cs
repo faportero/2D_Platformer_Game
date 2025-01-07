@@ -30,6 +30,9 @@ public class EnemyNew : MonoBehaviour
 
     [SerializeField] private List <Sprite> effectPanelSprites = new List<Sprite>();
     private Image effectPanelImage;
+
+    [SerializeField] Material[] flameMaterials;
+    Transform square;
     public enum SustanceType
     {
         Cannabis,
@@ -47,7 +50,7 @@ public class EnemyNew : MonoBehaviour
 
     private void Awake()
     {
-
+        //square = transform.Find("Square");
         //AssignSprite();
         PlayerControllerNew = FindAnyObjectByType<PlayerControllerNew>();
 
@@ -148,7 +151,7 @@ public class EnemyNew : MonoBehaviour
         //gameObject.SetActive(false);
         isAdict = false;
     }
-
+        
     public void Effect()
     {
 
@@ -157,6 +160,7 @@ public class EnemyNew : MonoBehaviour
         {
             case SustanceType.Cannabis:
                 //print("cannabisssss");
+                //transform.GetChild(0).GetComponent<SpriteRenderer>().material = flameMaterials[0];
                 PlayerControllerNew.isPsilo = true;
                 
                 //PlayerControllerNew.isCannabis = true;
@@ -172,6 +176,7 @@ public class EnemyNew : MonoBehaviour
                 break;
 
             case SustanceType.Cocaina:
+               // transform.GetChild(0).GetComponent<SpriteRenderer>().material = flameMaterials[0];
                 //print("Cocaa");
                 PlayerControllerNew.isPsilo = true;
                 
@@ -186,6 +191,7 @@ public class EnemyNew : MonoBehaviour
                 effectPanelImage.sprite = effectPanelSprites[1];
                 break;
             case SustanceType.Extasis:
+              //  transform.GetChild(0).GetComponent<SpriteRenderer>().material = flameMaterials[0];
                 //print("Exta");
                 PlayerControllerNew.isPsilo = true;
                 
@@ -200,6 +206,7 @@ public class EnemyNew : MonoBehaviour
                 effectPanelImage.sprite = effectPanelSprites[2];
                 break;
             case SustanceType.Metanfetamina:
+             //   transform.GetChild(0).GetComponent<SpriteRenderer>().material = flameMaterials[0];
                 //print("Metanfetamina");
                 PlayerControllerNew.isPsilo = true;
 
@@ -213,6 +220,7 @@ public class EnemyNew : MonoBehaviour
                 effectPanelImage.sprite = effectPanelSprites[3];
                 break;
             case SustanceType.Heroina:
+              //  transform.GetChild(0).GetComponent<SpriteRenderer>().material = flameMaterials[0];
                 // print("Heroinaaaa");
                 PlayerControllerNew.isPsilo = true;
 
@@ -227,6 +235,7 @@ public class EnemyNew : MonoBehaviour
                 break;
 
             case SustanceType.Psilocibina:
+             //   transform.GetChild(0).GetComponent<SpriteRenderer>().material = flameMaterials[0];
                 //print("Psilocibinaaaa");
                 PlayerControllerNew.isPsilo = true;
                 //effectPanel.GetComponent<Image>().color = new Color(.5f, 0, .75f, .25f);
@@ -239,6 +248,7 @@ public class EnemyNew : MonoBehaviour
                 break;
 
             case SustanceType.Alcohol:
+              //  transform.GetChild(0).GetComponent<SpriteRenderer>().material = flameMaterials[1];
                 //print("Alcoholllll");
                 PlayerControllerNew.isCannabis = true;
                 //PlayerControllerNew.isAlcohol = true;
@@ -251,6 +261,7 @@ public class EnemyNew : MonoBehaviour
                 effectPanelImage.sprite = effectPanelSprites[6];
                 break;
             case SustanceType.Tabaco:
+             //   transform.GetChild(0).GetComponent<SpriteRenderer>().material = flameMaterials[2];
                 //print("Tabacooooo");
                 PlayerControllerNew.isTabaco = true;
                 //effectPanel.GetComponent<Image>().color = new Color(0, 0, 1, .25f);
@@ -273,35 +284,51 @@ public class EnemyNew : MonoBehaviour
         {
             case SustanceType.Cannabis:
 
+                if(gameObject.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>() != null && flameMaterials.Length > 0) gameObject.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().material = flameMaterials[0];
+                //square.gameObject.GetComponent<SpriteRenderer>().material = flameMaterials[0];
                 gameObject.GetComponent<SpriteRenderer>().sprite = spriteRenderers[0];
                 break;
 
             case SustanceType.Cocaina:
+                if (gameObject.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>() != null && flameMaterials.Length > 0) gameObject.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().material = flameMaterials[0];
+                //square.gameObject.GetComponent<SpriteRenderer>().material = flameMaterials[0];
                 gameObject.GetComponent<SpriteRenderer>().sprite = spriteRenderers[1];
 
                 break;
             case SustanceType.Extasis:
+                if (gameObject.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>() != null && flameMaterials.Length > 0) gameObject.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().material = flameMaterials[0];
+                //square.gameObject.GetComponent<SpriteRenderer>().material = flameMaterials[0];
                 gameObject.GetComponent<SpriteRenderer>().sprite = spriteRenderers[2];
 
                 break;
             case SustanceType.Metanfetamina:
+                if (gameObject.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>() != null && flameMaterials.Length > 0) gameObject.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().material = flameMaterials[0];
+                //square.gameObject.GetComponent<SpriteRenderer>().material = flameMaterials[0];
                 gameObject.GetComponent<SpriteRenderer>().sprite = spriteRenderers[3];
 
                 break;
             case SustanceType.Heroina:
+                if (gameObject.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>() != null && flameMaterials.Length > 0) gameObject.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().material = flameMaterials[0];
+                //square.gameObject.GetComponent<SpriteRenderer>().material = flameMaterials[0];
                 gameObject.GetComponent<SpriteRenderer>().sprite = spriteRenderers[4];
 
                 break;
 
             case SustanceType.Psilocibina:
+                if (gameObject.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>() != null && flameMaterials.Length > 0) gameObject.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().material = flameMaterials[0];
+                //square.gameObject.GetComponent<SpriteRenderer>().material = flameMaterials[0];
                 gameObject.GetComponent<SpriteRenderer>().sprite = spriteRenderers[5];
 
                 break;
 
             case SustanceType.Alcohol:
+                if (gameObject.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>() != null && flameMaterials.Length > 0) gameObject.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().material = flameMaterials[1];
+                //square.gameObject.GetComponent<SpriteRenderer>().material = flameMaterials[1];
                 gameObject.GetComponent<SpriteRenderer>().sprite = spriteRenderers[6];
                 break;
             case SustanceType.Tabaco:
+                if (gameObject.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>() != null && flameMaterials.Length > 0) gameObject.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().material = flameMaterials[2];
+                //square.gameObject.GetComponent<SpriteRenderer>().material = flameMaterials[2];
                 gameObject.GetComponent<SpriteRenderer>().sprite = spriteRenderers[7];
                 break;
 
