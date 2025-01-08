@@ -362,22 +362,22 @@ public class LevelManager : MonoBehaviour
         }
 
 
-        //if (usedPA)
-        //{
-        //   if (piezasNivel[0] != null) piezasNivel[0].SetActive(false);
-        //}
-        //if (usedPB)
-        //{
-        //    if (piezasNivel[1] != null) piezasNivel[1].SetActive(false);
-        //}
-        //if (usedPC)
-        //{
-        //    if (piezasNivel[2] != null) piezasNivel[2].SetActive(false);
-        //}
-        //if (usedPD)
-        //{
-        //    if (piezasNivel[3] != null) piezasNivel[3].SetActive(false);
-        //}
+        if (usedPA)
+        {
+            if (piezasNivel[0] != null) piezasNivel[0].SetActive(false);
+        }
+        if (usedPB)
+        {
+            if (piezasNivel[1] != null) piezasNivel[1].SetActive(false);
+        }
+        if (usedPC)
+        {
+            if (piezasNivel[2] != null) piezasNivel[2].SetActive(false);
+        }
+        if (usedPD)
+        {
+            if (piezasNivel[3] != null) piezasNivel[3].SetActive(false);
+        }
     }
 
 }

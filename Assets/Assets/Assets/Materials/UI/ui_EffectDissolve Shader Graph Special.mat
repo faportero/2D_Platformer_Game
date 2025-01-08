@@ -29,7 +29,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DissolveAmmount: 0
+    - _DissolveAmmount: 1
     - _OutlineTrickness: 0.056
     m_Colors:
     - _Color: {r: 0.92353696, g: 0, b: 0.9716981, a: 0}

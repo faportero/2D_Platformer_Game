@@ -59,6 +59,8 @@ public class LobbyManager : MonoBehaviour
     }
     void Start()
     {
+        //completoN1 = true;
+        //completoN2 = true;
 
         playerController = FindAnyObjectByType<PlayerControllerNew>();
         playerMaterial = playerController.GetComponent<SpriteRenderer>().material;
@@ -364,9 +366,6 @@ public class LobbyManager : MonoBehaviour
         tapPanel.SetActive(true);
     }
 
-
-
-
     private IEnumerator ChangePlayerPosition()
     {
         AudioManager.Instance.PlaySfx("HourGlassTransition");
@@ -418,7 +417,6 @@ public class LobbyManager : MonoBehaviour
         // Asegurarse de que el valor final sea exactamente 1
         playerMaterial.SetFloat("_DissolveAmmount", 1);
         spriteRenderer.sortingOrder = 2;
-
     }
 
     private IEnumerator PlayerSolidify()

@@ -1513,31 +1513,33 @@ public class PlayerMovementNew : MonoBehaviour
 
         if(levelManager.currentScene == LevelManager.CurrentScene.Nivel1)
         {
+        UserData.ResetPieces(1);
 
-        UserData.piezaA_N1 = false;
-        UserData.piezaB_N1 = false;
-        UserData.piezaC_N1 = false;
-        UserData.piezaD_N1 = false;
+        //UserData.piezaA_N1 = false;
+        //UserData.piezaB_N1 = false;
+        //UserData.piezaC_N1 = false;
+        //UserData.piezaD_N1 = false;
         }
 
-        if(levelManager.currentScene == LevelManager.CurrentScene.Nivel2)
+        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel2)
         {
 
-        UserData.piezaA_N2 = false;
-        UserData.piezaB_N2 = false;
-        UserData.piezaC_N2 = false;
-        UserData.piezaD_N2 = false;
+            UserData.ResetPieces(2);
+        //UserData.piezaA_N2 = false;
+        //UserData.piezaB_N2 = false;
+        //UserData.piezaC_N2 = false;
+        //UserData.piezaD_N2 = false;
         }
 
-        if(levelManager.currentScene == LevelManager.CurrentScene.Nivel3)
+        if (levelManager.currentScene == LevelManager.CurrentScene.Nivel3)
         {
+            UserData.ResetPieces(3);
 
-        UserData.piezaA_N3 = false;
-        UserData.piezaB_N3 = false;
-        UserData.piezaC_N3 = false;
-        UserData.piezaD_N3 = false;
+        //UserData.piezaA_N3 = false;
+        //UserData.piezaB_N3 = false;
+        //UserData.piezaC_N3 = false;
+        //UserData.piezaD_N3 = false;
         }
-
 
         yield return new WaitForSeconds(.2f);
         //levelManager.ResetLevel();

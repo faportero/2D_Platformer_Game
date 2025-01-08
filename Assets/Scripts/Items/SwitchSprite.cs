@@ -10,7 +10,7 @@ public class SwitchSprite : MonoBehaviour
 
     private void Awake()
     {
-        _spriteRenderer = GetComponent<Image>();
+       // _spriteRenderer = GetComponent<Image>();
     }
     private void Start()
     {
@@ -18,6 +18,7 @@ public class SwitchSprite : MonoBehaviour
     }
     public void SwitchNewSprite()
     {
+        if(!_spriteRenderer) _spriteRenderer = GetComponent<Image>();
         _spriteRenderer.sprite = _newSprite;
   
     }

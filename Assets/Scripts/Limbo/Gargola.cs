@@ -198,6 +198,8 @@ public class Gargola : MonoBehaviour
 
     private void OnVideoEnd(VideoPlayer vp)
     {
+        UserData.terminoLobby = true;
+
         // Lógica para cambiar al juego
         if (vortexType == VortexType.Vortex1) UserData.terminoVideoVortex1 = true;
         if (vortexType == VortexType.Vortex2) UserData.terminoVideoVortex2 = true;
@@ -357,7 +359,7 @@ public class Gargola : MonoBehaviour
         {
             swipeDetector.gameObject.SetActive(false);
             isOnTrigger = true;
-            StartCoroutine(LetreroFadeAnim());
+            if(gameObject.activeSelf)StartCoroutine(LetreroFadeAnim());
 
         }
     }
@@ -366,9 +368,9 @@ public class Gargola : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            swipeDetector.gameObject.SetActive(true);
+            if(swipeDetector != null) swipeDetector.gameObject.SetActive(true);
             isOnTrigger = false;
-            StartCoroutine(LetreroFadeAnim());
+            if (gameObject.activeSelf) StartCoroutine(LetreroFadeAnim());
         }
     }
 

@@ -23,6 +23,7 @@ public class VortexCollider : MonoBehaviour
         {
             ResetCollider();
         }
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
