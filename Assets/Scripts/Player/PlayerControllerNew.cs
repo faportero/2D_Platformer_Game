@@ -1403,7 +1403,7 @@ public class PlayerControllerNew : MonoBehaviour
             else playerMovement.anim.SetBool("Jump", true);
 
             playerMovement.inputsEnabled = true;
-            playerMovement.swipeDetector.isJumping = true;
+            //playerMovement.swipeDetector.isJumping = true;
             // playerMovement.inputsEnabled = true;
 
         }
@@ -1466,7 +1466,7 @@ public class PlayerControllerNew : MonoBehaviour
             else playerMovement.anim.SetBool("Jump", true);
 
             playerMovement.inputsEnabled = true;
-            playerMovement.swipeDetector.isJumping = true;
+            //playerMovement.swipeDetector.isJumping = true;
         }
 
 

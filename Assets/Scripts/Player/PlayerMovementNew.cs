@@ -531,6 +531,7 @@ public class PlayerMovementNew : MonoBehaviour
         {
             if (coyoteTimeCounter > 0)
             {
+                print("Esta saltando: " + anim.GetBool("Jump"));
                 swipeDetector.TapPerformed = false;
                 anim.SetBool("Jump", true);
                 canDoubleJump = true;
@@ -545,6 +546,7 @@ public class PlayerMovementNew : MonoBehaviour
             }
             else if (canDoubleJump && !isGrounded && !playerController.isCocaMetaHero)
             {
+                print("Esta saltando doble: " + anim.GetBool("Jump"));
                 StartCoroutine(Jump(0));
                 canDoubleJump = false;
             }
@@ -632,6 +634,8 @@ public class PlayerMovementNew : MonoBehaviour
 
                 if (coyoteTimeCounter > 0)
                 {
+                    print("Esta saltando: " + anim.GetBool("Jump"));
+
                     anim.SetBool("Jump", true);
                     canDoubleJump = true;
 
@@ -662,6 +666,8 @@ public class PlayerMovementNew : MonoBehaviour
                     {
                         if (canDoubleJump)
                         {
+                            print("Esta saltando: " + anim.GetBool("Jump"));
+
                             StartCoroutine(Jump(0));
                             canDoubleJump = false;
 
@@ -1339,6 +1345,12 @@ public class PlayerMovementNew : MonoBehaviour
                     }
                 }
             }
+        }
+        print("CanMove: " + canMove);
+        if (canMove)
+        {
+            anim.SetBool("Turn", false);
+            // Lógica adicional de movimiento
         }
     }
     private void Mover(Vector2 direccion)

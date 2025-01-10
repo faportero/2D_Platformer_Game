@@ -62,7 +62,7 @@ GameObject:
   - component: {fileID: 298717332105280171}
   - component: {fileID: 6226217253647908187}
   - component: {fileID: 2058885192990946935}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: SuccesCollider
   m_TagString: SuccessfulEvasion
   m_Icon: {fileID: 0}
@@ -194,7 +194,7 @@ GameObject:
   - component: {fileID: 2835879715165921036}
   - component: {fileID: 4904077556022409888}
   - component: {fileID: 1911276732845903724}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: PlatformTest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1103,24 +1103,6 @@ Tilemap:
       e31: 0
       e32: 0
       e33: 1
-  - m_RefCount: 0
-    m_Data:
-      e00: 1e-45
-      e01: 0
-      e02: 1e-45
-      e03: -1.3224334e-38
-      e10: 0
-      e11: 0
-      e12: 0
-      e13: 7.41e-43
-      e20: -1.3708352e+20
-      e21: -1.3224334e-38
-      e22: 3.5650745e-29
-      e23: 6.509353e-25
-      e30: 4.5915e-41
-      e31: 7.41e-43
-      e32: 7.45e-43
-      e33: 7.43e-43
   m_TileColorArray:
   - m_RefCount: 7
     m_Data: {r: 1, g: 1, b: 1, a: 1}

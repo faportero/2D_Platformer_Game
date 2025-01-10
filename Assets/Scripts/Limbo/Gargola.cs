@@ -19,6 +19,7 @@ public class Gargola : MonoBehaviour
     private Material playerMaterial;
     private SwipeDetector swipeDetector;
     private bool isOnTrigger;
+    private Coroutine letreroCoroutine;
     public enum VortexType
     {
         Vortex1,
@@ -27,6 +28,7 @@ public class Gargola : MonoBehaviour
     }
 
     public VortexType vortexType;
+    private bool isShowLetrero;
 
     private void Start()
     {
@@ -47,7 +49,7 @@ public class Gargola : MonoBehaviour
 
         // Preparar el video
         videoPlayer.Prepare();
-
+        //viajarBtn.SetActive(false);
         AssignVortexType();
     }
 
@@ -352,14 +354,23 @@ public class Gargola : MonoBehaviour
     //        viajarBtn.SetActive(false);
     //    }
     //}
+    private void StartVortexState()
+    {
+        Invoke("AssignVortexType", 2f);
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            swipeDetector.gameObject.SetActive(false);
             isOnTrigger = true;
-            if(gameObject.activeSelf)StartCoroutine(LetreroFadeAnim());
+            //viajarBtn.GetComponent<Button>().interactable = true;
+            //if (viajarBtn != null)
+            //{
+            //    StartVortexState();
+            //}
+            swipeDetector.gameObject.SetActive(false);
+            if(gameObject.activeSelf) ShowLetrero();
 
         }
     }
@@ -368,20 +379,35 @@ public class Gargola : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            if(swipeDetector != null) swipeDetector.gameObject.SetActive(true);
             isOnTrigger = false;
-            if (gameObject.activeSelf) StartCoroutine(LetreroFadeAnim());
+            //if (viajarBtn != null)
+            //{
+            //    viajarBtn.GetComponent<Button>().interactable = false;
+            //}
+            if (swipeDetector != null) swipeDetector.gameObject.SetActive(true);
+            if (gameObject.activeSelf)ShowLetrero();
         }
     }
 
+    public void ShowLetrero()
+    {
+        if (letreroCoroutine != null)
+        {
+            StopCoroutine(letreroCoroutine);
+            isShowLetrero = false;
+        }
+        if (!isShowLetrero) letreroCoroutine = StartCoroutine(LetreroFadeAnim());
+    }
     private IEnumerator LetreroFadeAnim()
     {
+        isShowLetrero = true;
+
         if (isOnTrigger)
         {
             //letrasLetrero.SetActive(true);
             //viajarBtn.SetActive(true);          
           animatorLetrero.enabled = true;
-            animatorLetrero.Play("FadeNombreBotonVortice Animation"); 
+          animatorLetrero.Play("FadeNombreBotonVortice Animation"); 
       
         }
         else
@@ -393,5 +419,6 @@ public class Gargola : MonoBehaviour
             //letrasLetrero.SetActive(false);
             //viajarBtn.SetActive(false);
         }
+        isShowLetrero = false;
     }
 }

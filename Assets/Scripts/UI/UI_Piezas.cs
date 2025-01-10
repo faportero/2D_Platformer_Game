@@ -22,7 +22,7 @@ public class UI_Piezas : MonoBehaviour
 
 
         ShowPanelPieces();
-        print( "Nivel: " + UserData.nivelActual);
+        //print( "Nivel: " + UserData.nivelActual);
 
     }
     private void Update()

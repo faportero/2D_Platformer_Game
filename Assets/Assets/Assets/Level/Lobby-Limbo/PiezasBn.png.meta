@@ -1,0 +1,528 @@
+fileFormatVersion: 2
+guid: 53b974c0597f414479409925fe34ad75
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -10082335380987906
+    second: Piezas2_0
+  - first:
+      213: 8584284558740952547
+    second: Piezas2_1
+  - first:
+      213: 7267025728826359047
+    second: Piezas2_2
+  - first:
+      213: -7872240613802559244
+    second: Piezas2_3
+  - first:
+      213: 7321287467833304829
+    second: Piezas2_4
+  - first:
+      213: 9104758098224632801
+    second: Piezas2_5
+  - first:
+      213: 1672343526020695838
+    second: Piezas2_6
+  - first:
+      213: 4995052817511301599
+    second: Piezas2_7
+  - first:
+      213: -1725723537747383630
+    second: Piezas2_8
+  - first:
+      213: -8828422874458565742
+    second: Piezas2_9
+  - first:
+      213: -363378986961987424
+    second: Piezas2_10
+  - first:
+      213: -1384998354666340191
+    second: Piezas2_11
+  - first:
+      213: -4239163775746683400
+    second: Piezas2_12
+  - first:
+      213: -8185097796872181950
+    second: Piezas2_13
+  - first:
+      213: 7735449478885015513
+    second: Piezas2_14
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 128
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Piezas2_0
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 1279
+        width: 466
+        height: 767
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eff1c1d5b2e2cdff0800000000000000
+      internalID: -10082335380987906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Piezas2_1
+      rect:
+        serializedVersion: 2
+        x: 555
+        y: 669
+        width: 643
+        height: 1304
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e510ae1351812770800000000000000
+      internalID: 8584284558740952547
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Piezas2_2
+      rect:
+        serializedVersion: 2
+        x: 1579
+        y: 1315
+        width: 427
+        height: 178
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 70db154e569a9d460800000000000000
+      internalID: 7267025728826359047
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Piezas2_3
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 180
+        width: 465
+        height: 1075
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f835e3eede20c290800000000000000
+      internalID: -7872240613802559244
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Piezas2_4
+      rect:
+        serializedVersion: 2
+        x: 1321
+        y: 910
+        width: 296
+        height: 227
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df629b289207a9560800000000000000
+      internalID: 7321287467833304829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Piezas2_5
+      rect:
+        serializedVersion: 2
+        x: 1707
+        y: 907
+        width: 271
+        height: 361
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e35a8250499a5e70800000000000000
+      internalID: 9104758098224632801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Piezas2_6
+      rect:
+        serializedVersion: 2
+        x: 1348
+        y: 649
+        width: 286
+        height: 237
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1743e2939b553710800000000000000
+      internalID: 1672343526020695838
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Piezas2_7
+      rect:
+        serializedVersion: 2
+        x: 1721
+        y: 649
+        width: 286
+        height: 237
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd14316921ef15540800000000000000
+      internalID: 4995052817511301599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Piezas2_8
+      rect:
+        serializedVersion: 2
+        x: 558
+        y: 544
+        width: 567
+        height: 62
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ba6900f59ffc08e0800000000000000
+      internalID: -1725723537747383630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Piezas2_9
+      rect:
+        serializedVersion: 2
+        x: 1319
+        y: 398
+        width: 296
+        height: 227
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 293d6f0bb242b7580800000000000000
+      internalID: -8828422874458565742
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Piezas2_10
+      rect:
+        serializedVersion: 2
+        x: 1721
+        y: 267
+        width: 271
+        height: 361
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a81a439cb405faf0800000000000000
+      internalID: -363378986961987424
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Piezas2_11
+      rect:
+        serializedVersion: 2
+        x: 527
+        y: 410
+        width: 612
+        height: 58
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a0cc9f955f77cce0800000000000000
+      internalID: -1384998354666340191
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Piezas2_12
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 28
+        width: 492
+        height: 71
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8fd4ae981077b25c0800000000000000
+      internalID: -4239163775746683400
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Piezas2_13
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 0
+        width: 906
+        height: 383
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 247e9959be0b86e80800000000000000
+      internalID: -8185097796872181950
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Piezas2_14
+      rect:
+        serializedVersion: 2
+        x: 1560
+        y: 40
+        width: 427
+        height: 177
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9dffbee1156d95b60800000000000000
+      internalID: 7735449478885015513
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 1a8447ad6bc8d554281941e13655dd28
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Piezas2_0: -10082335380987906
+      Piezas2_1: 8584284558740952547
+      Piezas2_10: -363378986961987424
+      Piezas2_11: -1384998354666340191
+      Piezas2_12: -4239163775746683400
+      Piezas2_13: -8185097796872181950
+      Piezas2_14: 7735449478885015513
+      Piezas2_2: 7267025728826359047
+      Piezas2_3: -7872240613802559244
+      Piezas2_4: 7321287467833304829
+      Piezas2_5: 9104758098224632801
+      Piezas2_6: 1672343526020695838
+      Piezas2_7: 4995052817511301599
+      Piezas2_8: -1725723537747383630
+      Piezas2_9: -8828422874458565742
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

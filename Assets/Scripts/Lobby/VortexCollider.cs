@@ -30,10 +30,13 @@ public class VortexCollider : MonoBehaviour
     {
         if (collision != null && collision.CompareTag("Player"))
         {
-           // playerMovementNew.swipeDetector.enabled = false;
             isCollision = true;
-            collision.GetComponent<PlayerMovementNew>().anim.SetBool("Turn", true);
-            return;
+            var playerMovement = collision.GetComponent<PlayerMovementNew>();
+            if (playerMovement != null)
+            {
+                playerMovement.anim.SetBool("Turn", true);
+            }
+            //return;
         }
     }
 
@@ -41,9 +44,12 @@ public class VortexCollider : MonoBehaviour
     {
         if (collision != null && collision.CompareTag("Player"))
         {
-           // playerMovementNew.swipeDetector.enabled = true;
-
             isCollision = false;
+            var playerMovement = collision.GetComponent<PlayerMovementNew>();
+            if (playerMovement != null)
+            {
+                playerMovement.anim.SetBool("Turn", false);
+            }
         }
     }
 
@@ -61,4 +67,5 @@ public class VortexCollider : MonoBehaviour
     {
         vortexCollider2D.enabled = true;
     }
+
 }

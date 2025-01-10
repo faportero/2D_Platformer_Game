@@ -718,16 +718,6 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
-  - first: {x: 7, y: 0, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 81
-      m_TileSpriteIndex: 0
-      m_TileMatrixIndex: 3
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
   m_AnimatedTiles: {}
   m_TileAssetArray:
   - m_RefCount: 0
@@ -892,13 +882,11 @@ Tilemap:
     m_Data: {fileID: 0}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 1
-    m_Data: {fileID: 11400000, guid: 8cb49113b4f900b48928128e5f734116, type: 2}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  m_TileSpriteArray:
-  - m_RefCount: 1
-    m_Data: {fileID: 1417470010, guid: ba62c346ca0ce7e4f9f3d839fc3f5176, type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  m_TileSpriteArray: []
   m_TileMatrixArray:
   - m_RefCount: 5
     m_Data:
@@ -918,62 +906,8 @@ Tilemap:
       e31: 0
       e32: 0
       e33: 1
-  - m_RefCount: 0
-    m_Data:
-      e00: 1e-45
-      e01: 0
-      e02: 1e-45
-      e03: -1.3224334e-38
-      e10: 0
-      e11: 0
-      e12: 0
-      e13: 7.41e-43
-      e20: -1.3708352e+20
-      e21: -1.3224334e-38
-      e22: 3.5650745e-29
-      e23: 1.2755668e-24
-      e30: 4.5915e-41
-      e31: 7.41e-43
-      e32: 7.45e-43
-      e33: 7.43e-43
-  - m_RefCount: 0
-    m_Data:
-      e00: 1e-45
-      e01: 0
-      e02: 1e-45
-      e03: -1.3224334e-38
-      e10: 0
-      e11: 0
-      e12: 0
-      e13: 7.41e-43
-      e20: -1.3708352e+20
-      e21: -1.3224334e-38
-      e22: 3.5650745e-29
-      e23: 1.2757656e-24
-      e30: 4.5915e-41
-      e31: 7.41e-43
-      e32: 7.45e-43
-      e33: 7.43e-43
-  - m_RefCount: 1
-    m_Data:
-      e00: 0.000000059604645
-      e01: 0.99999994
-      e02: 0
-      e03: 0
-      e10: -0.99999994
-      e11: 0.000000059604645
-      e12: -0
-      e13: 0
-      e20: -0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
   m_TileColorArray:
-  - m_RefCount: 6
+  - m_RefCount: 5
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -1155,92 +1089,9 @@ CompositeCollider2D:
   m_EdgeRadius: 0
   m_ColliderPaths:
   - m_Collider: {fileID: 8457023714935870565}
-    m_ColliderPaths:
-    - - X: 70546872
-        Y: 468750
-      - X: 71171872
-        Y: 625000
-      - X: 71718752
-        Y: 781250
-      - X: 74687504
-        Y: 1562500
-      - X: 74921872
-        Y: 1640625
-      - X: 74609376
-        Y: 2187500
-      - X: 74296872
-        Y: 2265625
-      - X: 76953128
-        Y: 2734375
-      - X: 77031248
-        Y: 2890625
-      - X: 76953128
-        Y: 3125000
-      - X: 74218752
-        Y: 3593750
-      - X: 72890624
-        Y: 3828125
-      - X: 72421872
-        Y: 4062500
-      - X: 77109376
-        Y: 4687500
-      - X: 78906248
-        Y: 4921875
-      - X: 79062496
-        Y: 5078125
-      - X: 78984376
-        Y: 5312500
-      - X: 77968752
-        Y: 5546875
-      - X: 76796872
-        Y: 5625000
-      - X: 76250000
-        Y: 5703125
-      - X: 72734376
-        Y: 6171875
-      - X: 72109376
-        Y: 6328125
-      - X: 72968752
-        Y: 6484375
-      - X: 75703128
-        Y: 6953125
-      - X: 76875000
-        Y: 7187500
-      - X: 77031248
-        Y: 7343750
-      - X: 76953128
-        Y: 7578125
-      - X: 76015624
-        Y: 7734375
-      - X: 74218752
-        Y: 8046875
-      - X: 74687504
-        Y: 8203125
-      - X: 74843752
-        Y: 8359375
-      - X: 74843752
-        Y: 8437500
-      - X: 74531248
-        Y: 8671875
-      - X: 73046872
-        Y: 9062500
-      - X: 71250000
-        Y: 9531249
-      - X: 70000000
-        Y: 9843749
-      - X: 70000000
-        Y: 390625
+    m_ColliderPaths: []
   m_CompositePaths:
-    m_Paths:
-    - - {x: 7, y: 0.0391022}
-      - {x: 7.4921455, y: 0.1641041}
-      - {x: 7.4297385, y: 0.226579}
-      - {x: 7.6951656, y: 0.3125306}
-      - {x: 7.2423, y: 0.4062981}
-      - {x: 7.624888, y: 0.5703392}
-      - {x: 7.2969856, y: 0.6484825}
-      - {x: 7.6014714, y: 0.7734696}
-      - {x: 7, y: 0.9843301}
+    m_Paths: []
   m_VertexDistance: 0.05
   m_OffsetDistance: 0.00005
   m_UseDelaunayMesh: 0

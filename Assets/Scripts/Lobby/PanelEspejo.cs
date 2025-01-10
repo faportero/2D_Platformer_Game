@@ -35,7 +35,7 @@ public class PanelEspejo : MonoBehaviour
             if (collision.tag == "Player")
             {
 
-                if (playerMovementNew != null) playerMovementNew.swipeDetector.gameObject.SetActive(true);
+                if (playerMovementNew != null && playerMovementNew.swipeDetector != null) playerMovementNew.swipeDetector.gameObject.SetActive(true);
                 if (transform.GetChild(0).gameObject.activeSelf)
                 {
                     transform.GetChild(0).GetComponent<UI_PanelDissolve>().StartDissolve();
