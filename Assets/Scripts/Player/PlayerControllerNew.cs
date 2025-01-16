@@ -1,4 +1,6 @@
+using Character;
 using Cinemachine;
+using FireType;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -223,6 +225,30 @@ public class PlayerControllerNew : MonoBehaviour
 
         if (collision.tag == "Salud")
         {
+            //Suma de Puntos Ranking
+            ControlDatos._auxPoints += 100;
+            ControlDatos._points = ControlDatos._auxPoints;
+            ControlDatos._points = Mathf.Clamp(ControlDatos._points, 0, int.MaxValue); // Asegura que los puntos no sean menores a 0
+
+            PlayerPrefs.SetInt("Points", ControlDatos._points);
+            PlayerPrefs.Save();
+
+            ControlDatos._listaObjetosInventario = new List<Vector2>
+                {
+                    new Vector2(2, ControlDatos._points),
+                };
+            if (ControlDatos._points > ControlDatos._bestPoints)
+            {
+                ControlDatos._bestPoints = ControlDatos._points;
+                ControlDatos._listaObjetosInventario.Add(new Vector2(1, ControlDatos._bestPoints));
+            }
+            ControlDatos.CrearEditarObjetoInventario();
+            //if (ControlDatos._currentNivel > ControlDatos._nivel)
+            //{
+            //    ControlDatos._nivel = ControlDatos._currentNivel;
+            //    ControlDatos._listaObjetosInventario.Add(new Vector2(4, ControlDatos._nivel));
+            //}
+
             isDrugged = false;
             isCannabis = false;
             isPsilo = false;
@@ -376,6 +402,25 @@ public class PlayerControllerNew : MonoBehaviour
 
         if (collision.tag == "Enemy")
         {
+
+            //Suma de Puntos Ranking
+            ControlDatos._auxPoints -= 50;
+            ControlDatos._points = ControlDatos._auxPoints;
+            ControlDatos._points = Mathf.Clamp(ControlDatos._points, 0, int.MaxValue); // Asegura que los puntos no sean menores a 0
+
+            PlayerPrefs.SetInt("Points", ControlDatos._points);
+            PlayerPrefs.Save();
+
+            ControlDatos._listaObjetosInventario = new List<Vector2>
+                {
+                    new Vector2(2, ControlDatos._points),
+                };
+            if (ControlDatos._points > ControlDatos._bestPoints)
+            {
+                ControlDatos._bestPoints = ControlDatos._points;
+                ControlDatos._listaObjetosInventario.Add(new Vector2(1, ControlDatos._bestPoints));
+            }
+
             isDrugged = true;
             currentItem = collision.gameObject;
             collision.GetComponent<EnemyNew>().Effect();
@@ -1648,6 +1693,24 @@ public class PlayerControllerNew : MonoBehaviour
         AudioManager.Instance.PlayMusic("Indestructible_loop", 0);
 
         isIndestructible = true;
+
+        //Suma de Puntos Ranking
+        ControlDatos._auxPoints += 200;
+        ControlDatos._points = ControlDatos._auxPoints;
+        ControlDatos._points = Mathf.Clamp(ControlDatos._points, 0, int.MaxValue); // Asegura que los puntos no sean menores a 0
+
+        PlayerPrefs.SetInt("Points", ControlDatos._points);
+        PlayerPrefs.Save();
+
+        ControlDatos._listaObjetosInventario = new List<Vector2>
+                {
+                    new Vector2(2, ControlDatos._points),
+                };
+        if (ControlDatos._points > ControlDatos._bestPoints)
+        {
+            ControlDatos._bestPoints = ControlDatos._points;
+            ControlDatos._listaObjetosInventario.Add(new Vector2(1, ControlDatos._bestPoints));
+        }
 
         //spriteRenderer.material = materials[1];
         GlowSpriteEffect.SetActive(true);

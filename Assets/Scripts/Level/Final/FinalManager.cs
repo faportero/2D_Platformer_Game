@@ -192,11 +192,34 @@ public class FinalManager : MonoBehaviour
         // Activar el video
         PanelFade.SetActive(false);
         PanelVideo.SetActive(true);
-        PanelVideo.transform.GetChild(0).GetComponent<VideoPlayer>().Play();
+        
+        //PanelVideo.transform.GetChild(0).GetComponent<VideoPlayer>().Play();
+
+        if (PanelVideo.transform.GetChild(0).GetComponent<VideoPlayer>() != null)
+        {
+
+            string videoPath = System.IO.Path.Combine(Application.streamingAssetsPath, "Final.mp4");
+            PanelVideo.transform.GetChild(0).GetComponent<VideoPlayer>().url = videoPath;
+            PanelVideo.transform.GetChild(0).GetComponent<VideoPlayer>().Play();
+
+            // Suscribirse al evento loopPointReached para saber cuándo termina el video
+            PanelVideo.transform.GetChild(0).GetComponent<VideoPlayer>().loopPointReached += OnVideoEnd;
+        }
+        else
+        {
+            Debug.LogError("VideoPlayer component not found on this GameObject.");
+        }
 
         AudioManager.Instance.ToggleMusic(false);
         AudioManager.Instance.ToggleSFX();
         StopAllCoroutines();
+    }
+    void OnVideoEnd(VideoPlayer vp)
+    {
+
+        // Lógica para cambiar al juego
+        //
+
     }
     private void ShowObjects()
     {

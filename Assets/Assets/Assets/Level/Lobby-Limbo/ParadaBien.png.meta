@@ -169,7 +169,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      ParadaBien_0: 3541160824706854474
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -169,7 +169,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Avioneta_0: -6218615200366792272
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

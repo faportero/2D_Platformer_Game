@@ -59,6 +59,19 @@ public class LobbyManager : MonoBehaviour
     }
     void Start()
     {
+        //PlayerPrefs.SetInt("Points", ControlDatos._points);
+        //PlayerPrefs.Save();
+        //ControlDatos._listaObjetosInventario = new List<Vector2>
+        //        {
+        //            new Vector2(2, PlayerPrefs.GetInt("Points")),
+        //        };
+        //if (ControlDatos._points > ControlDatos._bestPoints)
+        //{
+        //    ControlDatos._bestPoints = ControlDatos._points;
+        //    ControlDatos._listaObjetosInventario.Add(new Vector2(1, ControlDatos._bestPoints));
+        //}
+        //ControlDatos.CrearEditarObjetoInventario();
+
         //completoN1 = true;
         //completoN2 = true;
 

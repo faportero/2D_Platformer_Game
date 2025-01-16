@@ -385,7 +385,17 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Superheroe2_0: -2747135431201422715
+      Superheroe2_1: 9026082099506476032
+      Superheroe2_2: -3599368534588987170
+      Superheroe2_3: 3803310404727859003
+      Superheroe2_4: 4019048042911178464
+      Superheroe2_5: 7671862309429245088
+      Superheroe2_6: 1387555128823199551
+      Superheroe2_7: -3944070708923858961
+      Superheroe2_8: 4244940610005163978
+      Superheroe2_9: 970852431136532464
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

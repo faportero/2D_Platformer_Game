@@ -118,9 +118,71 @@ public class UI_MenuController : MonoBehaviour
 
     public void ReturnToMain()
     {
-        SceneManager.LoadScene("Lobby2");
+        SceneManager.LoadScene("0. Menu Principal");
     }
 
+    public void ContinueGame()
+    {
+        SceneManager.LoadScene("Lobby2");
+    }
+    public static void PlayNewGame()
+    {
+        UserData.lifes = 3;
+        UserData.health = 0;
+        UserData.coins = 0;
+        UserData.escudo = false;
+        UserData.saltoDoble = false;
+        UserData.vidaExtra = false;
+        UserData.paracaidas = false;
+        UserData.terminoLobby = false;
+        UserData.terminoLimbo = false;
+        UserData.terminoNivel1 = false;
+        UserData.terminoTutorial = false;
+        UserData.terminoTutorial2 = false;
+        UserData.terminoTutorial3 = false;
+        UserData.terminoWorldTutorial1 = false;
+        UserData.terminoWorldTutorial2 = false;
+        UserData.terminoWorldTutorial3 = false;
+        UserData.terminoVideoInicio = false;
+        UserData.terminoVideoVortex1 = false;
+        UserData.terminoVideoVortex2 = false;
+        UserData.terminoVideoVortex3 = false;
+        UserData.piezaA_N1 = false;
+        UserData.piezaA_N2 = false;
+        UserData.piezaA_N3 = false;
+        UserData.piezaB_N1 = false;
+        UserData.piezaB_N2 = false;
+        UserData.piezaB_N3 = false;
+        UserData.piezaC_N1 = false;
+        UserData.piezaC_N2 = false;
+        UserData.piezaC_N3 = false;
+        UserData.piezaD_N1 = false;
+        UserData.piezaD_N2 = false;
+        UserData.piezaD_N3 = false;
+        UserData.usedPiezaA_N1 = false;
+        UserData.usedPiezaA_N2 = false;
+        UserData.usedPiezaA_N3 = false;
+        UserData.usedPiezaB_N1 = false;
+        UserData.usedPiezaB_N2 = false;
+        UserData.usedPiezaB_N3 = false;
+        UserData.usedPiezaC_N1 = false;
+        UserData.usedPiezaC_N2 = false;
+        UserData.usedPiezaC_N3 = false;
+        UserData.usedPiezaD_N1 = false;
+        UserData.usedPiezaD_N2 = false;
+        UserData.usedPiezaD_N3 = false;
+        UserData.playerGuide1 = false;
+        UserData.playerGuide2 = false;
+        UserData.playerGuide3 = false;
+        UserData.playerGuide4 = false;
+        UserData.playerGuide5 = false;
+        UserData.playerGuide6 = false;
+
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
+
+        SceneManager.LoadScene("Lobby2");
+    }
     public void QuitApplication()
     {
 #if UNITY_EDITOR

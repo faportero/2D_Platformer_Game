@@ -101,70 +101,74 @@ public class Portal : MonoBehaviour
         // yield return new WaitForSeconds(5);
         yield return new WaitForSecondsRealtime(3);
 
-        AsyncOperation asyncOperation;
+       // AsyncOperation asyncOperation;
         switch (dimensions)
         {
             case (Dimensions.Lobby):
-                asyncOperation = SceneManager.LoadSceneAsync(limbos[0]);
-                asyncOperation.allowSceneActivation = false;
-                while (!asyncOperation.isDone)
-                {
-                    progress = asyncOperation.progress;
-                    if (progress == .9f)
-                    {
-                        //textoCarga.text = "100 %";
-                        yield return new WaitForSecondsRealtime(1f);
-                        //anim.Play("AnimacionSalida");
-                        //yield return new WaitForSecondsRealtime(animacion.averageDuration / Mathf.Abs(anim.GetFloat("ExitSpeed")));
-                        //isLoading = false;
-                        UserData.terminoNivel1 = true;
-                        asyncOperation.allowSceneActivation = true;
-                    }
-                }
+                //asyncOperation = SceneManager.LoadSceneAsync(limbos[0]);
+                //asyncOperation.allowSceneActivation = false;
+                //while (!asyncOperation.isDone)
+                //{
+                //    progress = asyncOperation.progress;
+                //    if (progress == .9f)
+                //    {
+                //        //textoCarga.text = "100 %";
+                //        yield return new WaitForSecondsRealtime(1f);
+                //        //anim.Play("AnimacionSalida");
+                //        //yield return new WaitForSecondsRealtime(animacion.averageDuration / Mathf.Abs(anim.GetFloat("ExitSpeed")));
+                //        //isLoading = false;
+                //        UserData.terminoNivel1 = true;
+                //        asyncOperation.allowSceneActivation = true;
+                //    }
+                //}
+                SceneManager.LoadScene(limbos[0]);
 
-               
+
 
                 break;
             case (Dimensions.Limbo):
-                asyncOperation = SceneManager.LoadSceneAsync(limbos[1]);
-                asyncOperation.allowSceneActivation = false;
-                while (!asyncOperation.isDone)
-                {
-                    progress = asyncOperation.progress;
-                    if (progress == .9f)
-                    {
-                        //textoCarga.text = "100 %";
-                        yield return new WaitForSecondsRealtime(1f);
-                        //anim.Play("AnimacionSalida");
-                        //yield return new WaitForSecondsRealtime(animacion.averageDuration / Mathf.Abs(anim.GetFloat("ExitSpeed")));
-                        //isLoading = false;
-                        UserData.terminoLobby = true;
-                        asyncOperation.allowSceneActivation = true;
-                    }
-                }
+                //asyncOperation = SceneManager.LoadSceneAsync(limbos[1]);
+                //asyncOperation.allowSceneActivation = false;
+                //while (!asyncOperation.isDone)
+                //{
+                //    progress = asyncOperation.progress;
+                //    if (progress == .9f)
+                //    {
+                //        //textoCarga.text = "100 %";
+                //        yield return new WaitForSecondsRealtime(1f);
+                //        //anim.Play("AnimacionSalida");
+                //        //yield return new WaitForSecondsRealtime(animacion.averageDuration / Mathf.Abs(anim.GetFloat("ExitSpeed")));
+                //        //isLoading = false;
+                //        UserData.terminoLobby = true;
+                //        asyncOperation.allowSceneActivation = true;
+                //    }
+                //}
+                SceneManager.LoadScene(limbos[1]);
 
-               
+
 
 
                 break;
             case (Dimensions.Nivel1):
-                asyncOperation = SceneManager.LoadSceneAsync(limbos[2]);
-                asyncOperation.allowSceneActivation = false;
-                while (!asyncOperation.isDone)
-                {
-                    progress = asyncOperation.progress;
-                    if (progress == .9f)
-                    {
-                        //textoCarga.text = "100 %";
-                        yield return new WaitForSecondsRealtime(1f);
-                        //anim.Play("AnimacionSalida");
-                        //yield return new WaitForSecondsRealtime(animacion.averageDuration / Mathf.Abs(anim.GetFloat("ExitSpeed")));
-                        //isLoading = false;
-                        UserData.terminoLimbo = true;
+                //asyncOperation = SceneManager.LoadSceneAsync(limbos[2]);
+                //asyncOperation.allowSceneActivation = false;
+                //while (!asyncOperation.isDone)
+                //{
+                //    progress = asyncOperation.progress;
+                //    if (progress == .9f)
+                //    {
+                //        //textoCarga.text = "100 %";
+                //        yield return new WaitForSecondsRealtime(1f);
+                //        //anim.Play("AnimacionSalida");
+                //        //yield return new WaitForSecondsRealtime(animacion.averageDuration / Mathf.Abs(anim.GetFloat("ExitSpeed")));
+                //        //isLoading = false;
+                //        UserData.terminoLimbo = true;
 
-                        asyncOperation.allowSceneActivation = true;
-                    }
-                }
+                //        asyncOperation.allowSceneActivation = true;
+                //    }
+                //}
+                SceneManager.LoadScene(limbos[2]);
+
 
 
                 break;

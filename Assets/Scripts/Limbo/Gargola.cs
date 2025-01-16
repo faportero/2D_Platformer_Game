@@ -29,6 +29,7 @@ public class Gargola : MonoBehaviour
 
     public VortexType vortexType;
     private bool isShowLetrero;
+    public string videoPath = "";
 
     private void Start()
     {
@@ -43,14 +44,17 @@ public class Gargola : MonoBehaviour
         playerMaterial = playerMovementNew.GetComponent<SpriteRenderer>().material;
         swipeDetector = playerMovementNew.swipeDetector;
 
+        AssignVortexType();
+
+        videoPath = System.IO.Path.Combine(Application.streamingAssetsPath, videoPath);
+        videoPlayer.url = videoPath;
         // Suscribirse al evento prepareCompleted
-        videoPlayer.prepareCompleted += OnVideoPrepared;
+       // videoPlayer.prepareCompleted += OnVideoPrepared;
         videoPlayer.loopPointReached += OnVideoEnd;
 
         // Preparar el video
-        videoPlayer.Prepare();
+       // videoPlayer.Prepare();
         //viajarBtn.SetActive(false);
-        AssignVortexType();
     }
 
     private void Update()
@@ -245,15 +249,17 @@ public class Gargola : MonoBehaviour
         yield return new WaitForSeconds(.5f);
 
         // Aquí comenzamos la reproducción del video si ya está preparado
-        if (videoPlayer.isPrepared)
-        {
-            videoPlayer.Play();
-        }
-        else
-        {
-            // De lo contrario, prepararlo y luego reproducir
-            videoPlayer.Prepare();
-        }
+        videoPlayer.Play();
+
+        //if (videoPlayer.isPrepared)
+        //{
+        //    videoPlayer.Play();
+        //}
+        //else
+        //{
+        //    // De lo contrario, prepararlo y luego reproducir
+        //    videoPlayer.Prepare();
+        //}
     }
 
     private void OnVideoPrepared(VideoPlayer vp)
@@ -313,6 +319,7 @@ public class Gargola : MonoBehaviour
 
     private IEnumerator SwitchScene()
     {
+        Debug.Log("Switching to " + nivel);
         yield return new WaitForSecondsRealtime(1.5f);
         StartCoroutine(PlayerDisolve());
 
@@ -324,19 +331,21 @@ public class Gargola : MonoBehaviour
         canvasFog.transform.GetChild(0).GetComponent<Animator>().Play("FogTransition");
         AudioManager.Instance.PlaySfx("Fog_Transition");
 
-        AsyncOperation asyncOperation;
-        asyncOperation = SceneManager.LoadSceneAsync(nivel);
-        asyncOperation.allowSceneActivation = false;
+        //AsyncOperation asyncOperation;
+        //asyncOperation = SceneManager.LoadSceneAsync(nivel);
+        //asyncOperation.allowSceneActivation = false;
 
-        while (!asyncOperation.isDone)
-        {
-            progress = asyncOperation.progress;
-            if (progress == 0.9f)
-            {
-                yield return new WaitForSecondsRealtime(3f);
-                asyncOperation.allowSceneActivation = true;
-            }
-        }
+        //while (!asyncOperation.isDone)
+        //{
+        //    progress = asyncOperation.progress;
+        //    if (progress == 0.9f)
+        //    {
+        //        yield return new WaitForSecondsRealtime(3f);
+        //        asyncOperation.allowSceneActivation = true;
+        //    }
+        //}
+
+        SceneManager.LoadScene(nivel);
     }
 
     //private void OnTriggerEnter2D(Collider2D collision)

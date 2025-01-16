@@ -47,7 +47,9 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
         baseRect = GetComponent<RectTransform>();
         canvas = GetComponentInParent<Canvas>();
         if (canvas == null)
-            Debug.LogError("The Joystick is not placed inside a canvas");
+        {
+            //Debug.LogError("The Joystick is not placed inside a canvas");
+        }
 
         Vector2 center = new Vector2(0.5f, 0.5f);
         background.pivot = center;
@@ -75,7 +77,6 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
         HandleInput(input.magnitude, input.normalized, radius, cam);
         handle.anchoredPosition = input * radius * handleRange;
     }
-
     protected virtual void HandleInput(float magnitude, Vector2 normalised, Vector2 radius, Camera cam)
     {
         if (magnitude > deadZone)
@@ -130,6 +131,12 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
     }
 
     public virtual void OnPointerUp(PointerEventData eventData)
+    {
+        input = Vector2.zero;
+        handle.anchoredPosition = Vector2.zero;
+    }
+
+    public void ResetValues()
     {
         input = Vector2.zero;
         handle.anchoredPosition = Vector2.zero;
