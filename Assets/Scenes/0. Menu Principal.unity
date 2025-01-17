@@ -2220,7 +2220,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 89.75
+  m_fontSize: 95.1
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -8091,7 +8091,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 23.6
+  m_fontSize: 22.4
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -9185,7 +9185,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 406044858}
   m_HandleRect: {fileID: 406044857}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -13526,7 +13526,7 @@ CanvasGroup:
   m_GameObject: {fileID: 1031057491}
   m_Enabled: 1
   m_Alpha: 0
-  m_Interactable: 1
+  m_Interactable: 0
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
 --- !u!114 &1031057497
@@ -13696,7 +13696,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -10.081299, y: -3.3707275}
+  m_AnchoredPosition: {x: -10.08136, y: -3.370758}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1081923182
@@ -15557,16 +15557,16 @@ MonoBehaviour:
   _mensaje: {fileID: 1459255344}
   _password: {fileID: 0}
   _panelEspera: {fileID: 290862004}
-  _panelLogin: {fileID: 1205976804}
-  _panelMenu: {fileID: 1233360575}
+  _panelLogin: {fileID: 1369161074}
+  _panelMenu: {fileID: 3783339450716000677}
   _panelRegistro: {fileID: 1843613627}
   _panelRestablecerPassword: {fileID: 0}
   _panelEditarDatos: {fileID: 0}
   player: {fileID: 0}
   audioSettings: {fileID: 1200960013}
   controlesPersonaje: {fileID: 2043955917}
-  _panelMenuController: {fileID: 0}
-  UI_MenuController: {fileID: 0}
+  _panelMenuController: {fileID: 2358576091401090429}
+  UI_MenuController: {fileID: 2163004118172903855}
 --- !u!95 &1205976807
 Animator:
   serializedVersion: 7
@@ -15746,7 +15746,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1205976804}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -16585,7 +16585,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 23.25
+  m_fontSize: 22.05
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -16983,7 +16983,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.032907963, y: 0.23685569}
   m_AnchorMax: {x: 0.4979686, y: 0.7075832}
-  m_AnchoredPosition: {x: 0.00012207031, y: 0.000061035156}
+  m_AnchoredPosition: {x: 0, y: 0.000061035156}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1339233126
@@ -17469,15 +17469,15 @@ MonoBehaviour:
   _password: {fileID: 489743153}
   _panelEspera: {fileID: 290862004}
   _panelLogin: {fileID: 1369161074}
-  _panelMenu: {fileID: 1233360575}
+  _panelMenu: {fileID: 3783339450716000677}
   _panelRegistro: {fileID: 1843613627}
   _panelRestablecerPassword: {fileID: 0}
   _panelEditarDatos: {fileID: 0}
   player: {fileID: 0}
   audioSettings: {fileID: 1200960013}
   controlesPersonaje: {fileID: 2043955917}
-  _panelMenuController: {fileID: 0}
-  UI_MenuController: {fileID: 0}
+  _panelMenuController: {fileID: 2358576091401090429}
+  UI_MenuController: {fileID: 2163004118172903855}
 --- !u!95 &1369161077
 Animator:
   serializedVersion: 7
@@ -20212,7 +20212,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0.5162644}
-  m_AnchoredPosition: {x: -10.081299, y: -3.3704834}
+  m_AnchoredPosition: {x: -10.08136, y: -3.370514}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1567980798
@@ -20945,7 +20945,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.00018310547}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1595551672
@@ -21375,8 +21375,8 @@ MonoBehaviour:
   panelRanking: {fileID: 1031057491}
   imgBest: {fileID: -1852101611, guid: ba1e9648c56fe3b409c2f93eafb8c53d, type: 3}
   imgGnrl: {fileID: 1650980568, guid: ba1e9648c56fe3b409c2f93eafb8c53d, type: 3}
-  colorTextBest: {r: 0, g: 0, b: 1, a: 1}
-  colorTextGnrl: {r: 1, g: 0, b: 0, a: 1}
+  colorTextBest: {r: 1, g: 0.71341777, b: 0, a: 1}
+  colorTextGnrl: {r: 0.3207547, g: 0.3207547, b: 0.3207547, a: 0}
   bestPos: 3
 --- !u!1 &1634637682
 GameObject:
@@ -22041,6 +22041,65 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1709576986}
   m_CullTransparentMesh: 1
+--- !u!1 &1710847536
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1710847538}
+  - component: {fileID: 1710847537}
+  m_Layer: 0
+  m_Name: LevelManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1710847537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1710847536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d31a9dcea635f1146918cb43d26e01c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentScene: 5
+  playerController: {fileID: 0}
+  panelHUD: {fileID: 0}
+  UI_Habilidades: {fileID: 0}
+  UI_MensajeHabilidades: {fileID: 0}
+  UI_CurrentEffect: {fileID: 0}
+  uiCoins: {fileID: 0}
+  uiLifes: {fileID: 0}
+  piezasNivel: []
+  fogPanel: {fileID: 0}
+  newStartPos: {fileID: 0}
+  newStartFinalPos: {fileID: 0}
+  n1: 0
+  n2: 0
+  n3: 0
+--- !u!4 &1710847538
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1710847536}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 167.32153, y: 832.8486, z: 2.0019124}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1717919247
 GameObject:
   m_ObjectHideFlags: 0
@@ -24200,14 +24259,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 236bc9515c9ae604ba484e9e31ea712b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nombre: {fileID: 0}
-  _correo: {fileID: 0}
-  _telefono: {fileID: 0}
-  _mensaje: {fileID: 0}
+  _nombre: {fileID: 1029824605}
+  _correo: {fileID: 260751446}
+  _telefono: {fileID: 1682617729}
+  _mensaje: {fileID: 564278258}
   _password: {fileID: 957803836}
   _panelEspera: {fileID: 290862004}
   _panelLogin: {fileID: 1369161074}
-  _panelMenu: {fileID: 1233360575}
+  _panelMenu: {fileID: 3783339450716000677}
   _panelRegistro: {fileID: 1843613627}
   _panelRestablecerPassword: {fileID: 0}
   _panelEditarDatos: {fileID: 0}
@@ -35370,6 +35429,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 957209304}
   - {fileID: 124930609}
+  - {fileID: 1710847538}
   - {fileID: 538116542}
   - {fileID: 5376965869851707092}
   - {fileID: 1376848062}

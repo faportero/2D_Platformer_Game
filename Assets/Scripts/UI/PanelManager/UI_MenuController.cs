@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 //tutorial aqui: "https://www.youtube.com/watch?v=9MIwIaRUUhc"
 
@@ -18,14 +19,40 @@ public class UI_MenuController : MonoBehaviour
 
     private Canvas rootCanvas;
     private Stack<UI_Page> pageStack = new Stack<UI_Page>();
+    
+    private LevelManager levelManager;
 
     private void Awake()
     {
+        levelManager = FindFirstObjectByType<LevelManager>();
         rootCanvas = GetComponent<Canvas>();
+        print("termino primer video en menu: " + UserData.terminoPrimerVideo);
+        if (levelManager.currentScene == LevelManager.CurrentScene.Menu)
+        {
+            if (UserData.terminoPrimerVideo == true)
+            {
+                if (firstFocusItem != null) 
+                {
+                    firstFocusItem.GetComponent<Button>().interactable = true;
+                } 
+
+            }
+            else
+            {
+                if (firstFocusItem != null)
+                {
+                    firstFocusItem.GetComponent<Button>().interactable = false;
+                }
+
+            }
+        }
     }
 
     private void Start()
     {
+
+
+
         if (firstFocusItem != null)
         {
             EventSystem.current.SetSelectedGameObject(firstFocusItem);
@@ -135,6 +162,7 @@ public class UI_MenuController : MonoBehaviour
         UserData.vidaExtra = false;
         UserData.paracaidas = false;
         UserData.terminoLobby = false;
+        UserData.terminoPrimerVideo = false;
         UserData.terminoLimbo = false;
         UserData.terminoNivel1 = false;
         UserData.terminoTutorial = false;
@@ -178,7 +206,18 @@ public class UI_MenuController : MonoBehaviour
         UserData.playerGuide5 = false;
         UserData.playerGuide6 = false;
 
+        // Guardar los datos del login
+        string loginEmail = PlayerPrefs.GetString("User_Email");
+        string loginPassword = PlayerPrefs.GetString("User_Password");
+
+        // Eliminar todas las preferencias
         PlayerPrefs.DeleteAll();
+
+        // Restaurar los datos del login
+        PlayerPrefs.SetString("User_Email", loginEmail);
+        PlayerPrefs.SetString("User_Password", loginPassword);
+
+        // Guardar los cambios
         PlayerPrefs.Save();
 
         SceneManager.LoadScene("Lobby2");

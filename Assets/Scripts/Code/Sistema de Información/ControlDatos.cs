@@ -25,8 +25,8 @@ public partial class ControlDatos : MonoBehaviour
     public static string _Correo;
     public static string _Password;
     public static string _NumeroCelular;
-    public static string _IdentificadorUsuario; // Es para ver el n鷐ero de c閐ula o pasaporte
-    public static string _tokenUsuario; // Es para ver el n鷐ero de c閐ula o pasaporte
+    public static string _IdentificadorUsuario; // Es para ver el n煤mero de c茅dula o pasaporte
+    public static string _tokenUsuario; // Es para ver el n煤mero de c茅dula o pasaporte
     public static string _nombreGame;
     public static int _IsDemo;
     public static int _IsScorm;
@@ -148,8 +148,8 @@ public partial class ControlDatos : MonoBehaviour
         }
         catch(Exception ex)
         {
-            //Debug.LogError("Excepci髇: " + ex.Message);
-            // Extraer el JSON v醠ido desde la excepci髇
+            //Debug.LogError("Excepci贸n: " + ex.Message);
+            // Extraer el JSON v谩lido desde la excepci贸n
             string jsonString = ex.Message;
             int jsonStartIndex = jsonString.IndexOf('{'); // Encontrar el inicio del JSON
             if (jsonStartIndex >= 0)
@@ -175,7 +175,7 @@ public partial class ControlDatos : MonoBehaviour
         if (_listaObjetosInventario.Count == 0) return;
         if (_tokenUsuario == "" || HasThirtyMinutesPassed())
             ObtenerUsuario();
-        // Agregar la lista recibida como par醡etro a una lista de objetos
+        // Agregar la lista recibida como par谩metro a una lista de objetos
         List<ObjetoModel> listaObjetos = new List<ObjetoModel>();
         foreach (var item in _listaObjetosInventario)
         {
@@ -195,7 +195,7 @@ public partial class ControlDatos : MonoBehaviour
 
         UnityWebRequest response = new UnityWebRequest(rutaPrincipal + "/objeto/create/usuario", "POST");
         SetUnityWebRequest(response, json);
-        // Agregar el encabezado de autorizaci髇
+        // Agregar el encabezado de autorizaci贸n
         string authHeader = "Bearer " + _tokenUsuario;
         response.SetRequestHeader("Authorization", authHeader);
         //print("Token: " + _tokenUsuario);        
@@ -229,7 +229,7 @@ public partial class ControlDatos : MonoBehaviour
         var json = inventarioModelEnviar.ToJson();
         UnityWebRequest response = new UnityWebRequest(rutaPrincipal + "/objeto/list_usuario", "GET");
         SetUnityWebRequest(response, json);
-        // Agregar el encabezado de autorizaci髇
+        // Agregar el encabezado de autorizaci贸n
         string authHeader = "Bearer " + _tokenUsuario;
         response.SetRequestHeader("Authorization", authHeader);
 
@@ -282,21 +282,23 @@ public partial class ControlDatos : MonoBehaviour
             }
             var json = modelo.ToJson();
             Debug.Log("JSON enviado para obtener el ranking: " + json);
+            // UnityWebRequest response = UnityWebRequest.Get(rutaPrincipal + "/objeto/list/" + cantidad + "?identificador=" + id);
             UnityWebRequest response = new UnityWebRequest(rutaPrincipal + "/objeto/list/" + cantidad + "?identificador=" + id, "GET");
             //response.certificateHandler = new AcceptAllCertificatesSignedWithASpecificKeyPublicKey();
 
             SetUnityWebRequest(response, json);
 
-            // Agregar el encabezado de autorizaci髇
+            // Agregar el encabezado de autorizaci贸n
             string authHeader = "Bearer " + token;
             Debug.Log("JSON enviado con el token para el ranking: " + token);
 
             response.SetRequestHeader("Authorization", authHeader);
             await response.SendWebRequest();
             Debug.Log("Response.DownloadHandler.text Ranking: " + response.downloadHandler.text);
-            if (response != null)
+            if (response.result == UnityWebRequest.Result.Success)
             {
                 var jsonString = response.downloadHandler.text;
+                Debug.Log("El response sin text: " + response.downloadHandler);
                 Debug.Log("JSON Ranking: " + jsonString);
                 respuestaRanking = JsonUtility.FromJson<Respuesta_Modelo<RankingModel>>(jsonString);
                 //string listaString = "";
@@ -307,7 +309,7 @@ public partial class ControlDatos : MonoBehaviour
         }
         catch (Exception ex)
         {
-            Debug.LogError("Excepci髇: " + ex.Message);
+            Debug.LogError("Excepci贸n: " + ex.Message);
         }
     }
     public static void SetUnityWebRequest(UnityWebRequest response, string json)
@@ -366,14 +368,14 @@ public partial class ControlDatos : MonoBehaviour
             return true;
         }
     }
-    // M閠odo que compara la fecha y hora actuales con la fecha y hora inicial
+    // M茅todo que compara la fecha y hora actuales con la fecha y hora inicial
     public static bool HasThirtyMinutesPassed()
     {
         int minutesTime = 30;
         _currentTime = DateTime.Now;
         TimeSpan timeDifference = _currentTime - _startTime;
         bool hasToken = timeDifference.TotalMinutes > minutesTime;
-        //Debug.Log("Fecha y Hora Inicial: " + _startTime.ToString("yyyy-MM-dd HH:mm:ss") + ". Fecha y Hora Actual: " + _currentTime.ToString("yyyy-MM-dd HH:mm:ss") + ". Han transcurrido: " + timeDifference.TotalMinutes + " minutos. Han pasado m醩 de 30 minutos? " + hasToken);
+        //Debug.Log("Fecha y Hora Inicial: " + _startTime.ToString("yyyy-MM-dd HH:mm:ss") + ". Fecha y Hora Actual: " + _currentTime.ToString("yyyy-MM-dd HH:mm:ss") + ". Han transcurrido: " + timeDifference.TotalMinutes + " minutos. Han pasado m谩s de 30 minutos? " + hasToken);
         return hasToken;
     }
 }

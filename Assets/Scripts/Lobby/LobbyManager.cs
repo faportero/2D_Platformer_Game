@@ -2,6 +2,7 @@ using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Video;
 
 public class LobbyManager : MonoBehaviour
@@ -11,6 +12,7 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] private VideoPlayer videoPlayer;
     [SerializeField] private AudioPause audioPause;
     [SerializeField] private GameObject panelVideo;
+    [SerializeField] private Button firstVideoBtn;
     [SerializeField] private GameObject tapPanel;
     [SerializeField] private GameObject RelojPanel;
     [SerializeField] private Transform newPlayerPos;
@@ -19,7 +21,7 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] private GameObject ente;
 
     [SerializeField] private SwipeDetector swipeDetector;
-    [SerializeField] private CinemachineVirtualCamera cameraInit,camera2;
+    [SerializeField] private CinemachineVirtualCamera cameraInit, camera2;
 
     private PlayerControllerNew playerController;
     private PlayerMovementNew playerMovementNew;
@@ -43,6 +45,23 @@ public class LobbyManager : MonoBehaviour
         //if (PlayerPrefs.GetInt("pasoIntro") == 0) PlayerPrefs.SetInt("pasoIntro", 0);
         //PlayerPrefs.SetInt("pasoIntro", 0);
         PlayerPrefs.GetInt("pasoIntro");
+
+        if (UserData.terminoPrimerVideo == true)
+        {
+            if (firstVideoBtn != null)
+            {
+                firstVideoBtn.GetComponent<Button>().interactable = true;
+            }
+
+        }
+        else
+        {
+            if (firstVideoBtn != null)
+            {
+                firstVideoBtn.GetComponent<Button>().interactable = false;
+            }
+
+        }
         // print("PasoIntro: " + PlayerPrefs.GetInt("pasoIntro"));
         //if (PlayerPrefs.GetInt("pasoIntro") != 0)
         //if (pasoIntro)
@@ -124,9 +143,9 @@ public class LobbyManager : MonoBehaviour
         }
         else
         {
-                //playerMovementNew.inputsEnabled = true;
-                panelHUD.SetActive(true);
-                panelVideo.SetActive(false);
+            //playerMovementNew.inputsEnabled = true;
+            panelHUD.SetActive(true);
+            panelVideo.SetActive(false);
 
         }
 
@@ -141,42 +160,42 @@ public class LobbyManager : MonoBehaviour
         //    //playerController.GetComponent<SpriteRenderer>().color = Color.white;
 
         //}
-        
-        if (!UserData.playerGuide1) 
+
+        if (!UserData.playerGuide1)
         {
             playerGuide1.SetActive(true);
             UserData.playerGuide1 = true;
-        } 
+        }
         else
         {
             playerGuide1.SetActive(false);
         }
 
-        if (!UserData.playerGuide2) 
+        if (!UserData.playerGuide2)
         {
             playerGuide2.SetActive(true);
             UserData.playerGuide2 = true;
-        } 
+        }
         else
         {
-            playerGuide2.SetActive(false);        
+            playerGuide2.SetActive(false);
         }
 
-        if (!UserData.playerGuide3 && UserData.completoNivel1) 
+        if (!UserData.playerGuide3 && UserData.completoNivel1)
         {
             playerGuide3.SetActive(true);
             UserData.playerGuide3 = true;
-        } 
+        }
         else
         {
             playerGuide3.SetActive(false);
         }
-        
-        if (!UserData.playerGuide6 && UserData.completoNivel2) 
+
+        if (!UserData.playerGuide6 && UserData.completoNivel2)
         {
             playerGuide4.SetActive(true);
             UserData.playerGuide6 = true;
-        } 
+        }
         else
         {
             playerGuide4.SetActive(false);
@@ -221,12 +240,14 @@ public class LobbyManager : MonoBehaviour
 
         }
     }
-    
+
 
     // Método llamado cuando el video termina
     void OnVideoEnd(VideoPlayer vp)
     {
-
+        UserData.terminoPrimerVideo = true;
+        print("Termino primer video: " + UserData.terminoPrimerVideo);
+        //UserData.terminoLobby = true;
         // Lógica para cambiar al juego
         //if (pasoIntro == false)
         if (!UserData.terminoLobby)
@@ -243,23 +264,23 @@ public class LobbyManager : MonoBehaviour
         // Aquí puedes agregar la lógica para iniciar tu juego
         // Por ejemplo, puedes desactivar el objeto VideoPlayerObject y activar otro objeto del juego
         PaneoCameraInit();
-       // StartCoroutine(AnimatePlayer());
+        // StartCoroutine(AnimatePlayer());
         audioPause.Pause(false);
         AudioManager.Instance.PlayMusic("Bg_Lobby", 0);
     }
 
-    
+
     public void PaneoCamera()
     {
-        
-        StartCoroutine( ChangePlayerPosition());
-        
+
+        StartCoroutine(ChangePlayerPosition());
+
     }
     public void PaneoCameraInit()
     {
         //CameraManager.instance.SingleSwapCamera(cameraInit);
         spriteRenderer.color = new Color(1, 1, 1, 0);
-       // playerController.AdjustLuminance(0);
+        // playerController.AdjustLuminance(0);
         canvasFade.SetActive(true);
         StartCoroutine(PaneoCameraInitAnim());
     }
@@ -394,7 +415,7 @@ public class LobbyManager : MonoBehaviour
         playerMovementNew.inputsEnabled = true;
         //playerMovementNew.anim.SetBool("SlowWalk", true);
         StartCoroutine(PlayerSolidify());
-      //  panelHUD.SetActive(true);
+        //  panelHUD.SetActive(true);
 
         PlayerPrefs.SetInt("pasoIntro", 1);
 

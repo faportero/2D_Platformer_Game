@@ -13,7 +13,7 @@ public class UserData
 
 
     private static bool _completoNivel1, _completoNivel2, _completoNivel3;
-    private static bool _terminoLobby, _terminoLimbo, _terminoNivel1, _terminoTutorial, _terminoTutorial2, _terminoTutorial3, _terminoWorldTutorial1, _terminoWorldTutorial2, _terminoWorldTutorial3;
+    private static bool _terminoPrimerVideo, _terminoLobby, _terminoLimbo, _terminoNivel1, _terminoTutorial, _terminoTutorial2, _terminoTutorial3, _terminoWorldTutorial1, _terminoWorldTutorial2, _terminoWorldTutorial3;
     private static bool _terminoVideoInicio, _terminoVideoVortex1, _terminoVideoVortex2, _terminoVideoVortex3;
     private static bool _piezaA_N1, _piezaA_N2, _piezaA_N3;
     private static bool _piezaB_N1, _piezaB_N2, _piezaB_N3;
@@ -55,6 +55,7 @@ public class UserData
             if (value) PlayerPrefs.SetInt("completoNivel3", 1);
         }
     }
+
     public static bool terminoLobby
     {
         get => _terminoLobby;
@@ -62,6 +63,15 @@ public class UserData
         {
             _terminoLobby = value;
             if (value) PlayerPrefs.SetInt("terminoLobby", 1);
+        }
+    }
+    public static bool terminoPrimerVideo
+    {
+        get => _terminoPrimerVideo;
+        set
+        {
+            _terminoPrimerVideo = value;
+            if (value) PlayerPrefs.SetInt("terminoPrimerVideo", 1);
         }
     }
 
@@ -494,6 +504,7 @@ public class UserData
     {
         _terminoLobby = PlayerPrefs.GetInt("terminoLobby", 0) == 1;
         _terminoLimbo = PlayerPrefs.GetInt("terminoLimbo", 0) == 1;
+        _terminoPrimerVideo = PlayerPrefs.GetInt("terminoPrimerVideo", 0) == 1;
         _terminoNivel1 = PlayerPrefs.GetInt("terminoNivel1", 0) == 1;
         _terminoTutorial = PlayerPrefs.GetInt("terminoTutorial", 0) == 1;
         _terminoTutorial2 = PlayerPrefs.GetInt("terminoTutorial2", 0) == 1;

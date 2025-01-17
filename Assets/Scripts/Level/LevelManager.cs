@@ -14,6 +14,7 @@ public class LevelManager : MonoBehaviour
         Nivel1,
         Nivel2,
         Nivel3,
+        Menu,
     }
     [Header("Current Level")]
     public CurrentScene currentScene;
@@ -43,7 +44,7 @@ public class LevelManager : MonoBehaviour
     private void Awake()
     {
         playerMovementNew = FindAnyObjectByType<PlayerMovementNew>();
-        playerMaterial = playerMovementNew.GetComponent<SpriteRenderer>().material;
+        if (playerMovementNew != null) playerMaterial = playerMovementNew.GetComponent<SpriteRenderer>().material;
 
         // fogPanel.SetActive(false);
         // if (newStartPos) playerController.transform.position = newStartPos.position;
