@@ -6,6 +6,7 @@ using TMPro;
 using System;
 using Unity.VisualScripting;
 using static UnityEngine.Rendering.DebugUI;
+using Cysharp.Threading.Tasks;
 
 public class Registrar : MonoBehaviour
 {
@@ -33,9 +34,60 @@ public class Registrar : MonoBehaviour
 
     [SerializeField]UI_Page _panelMenuController;
     [SerializeField]UI_MenuController UI_MenuController;
-    private void Start()
+    private async void Start()
     {
-        //WebGLInput.captureAllKeyboardInput = true;
+        // if (_panelEspera != null && gameObject.name != "Panel Registro") _panelEspera.SetActive(true);
+        print("Usuario Actual: " + ControlDatos._loginCorreo);
+        if (gameObject.name == "Panel Login")
+        {
+            _panelEspera.SetActive(true);
+            if (PlayerPrefs.HasKey("User_Email") && PlayerPrefs.HasKey("User_Password"))
+            {
+                string savedEmail = PlayerPrefs.GetString("User_Email");
+                string savedPassword = PlayerPrefs.GetString("User_Password");
+                await AutoLogin(savedEmail, savedPassword);
+            }
+            else
+            {
+                //  if (_panelEspera != null && gameObject.name != "Panel Registro") _panelEspera.SetActive(false);
+                _panelEspera.SetActive(false);
+                InitializeInputFields();
+
+            }
+        }
+        else
+        {
+            InitializeInputFields();
+
+        }
+        // if (_panelEspera != null) _panelEspera.SetActive(true);
+    }
+
+    private async UniTask AutoLogin(string email, string password)
+    {
+        ControlDatos._loginCorreo = email;
+        ControlDatos._loginPassword = password;
+        await ControlDatos.ObtenerUsuario();
+        if (ControlDatos._Estado != 0)
+        {
+            // Manejo de error: mostrar el panel de login
+            Debug.LogError("Error en el login automático: " + ControlDatos._Mensaje);
+            _panelEspera.SetActive(false);
+            //_panelLogin.SetActive(true);
+            //UI_MenuController.PushPage(_panelLogin.GetComponent<UI_Page>());
+
+        }
+        else
+        {
+            // Login exitoso: continuar con la aplicación
+            Debug.Log("Login automático exitoso. Usuario logueado: " + ControlDatos._loginCorreo);
+            if (UI_MenuController != null) UI_MenuController.PopAllPages();
+            if (UI_MenuController != null && _panelMenuController != null) UI_MenuController.PushPage(_panelMenuController);
+            _panelEspera.SetActive(false);
+        }
+    }
+    private void InitializeInputFields()
+    {
         if (_nombre != null) _nombre.contentType = TMP_InputField.ContentType.Standard;
         if (_correo != null) _correo.contentType = TMP_InputField.ContentType.Standard;
         if (_telefono != null) _telefono.contentType = TMP_InputField.ContentType.Standard;
@@ -49,7 +101,6 @@ public class Registrar : MonoBehaviour
         {
             gameObject.SetActive(false);
             UI_MenuController.PushPage(_panelMenuController);
-            //_panelMenu.SetActive(true);
             ControlDatos.menu = false;
         }
         else
@@ -101,23 +152,28 @@ public class Registrar : MonoBehaviour
                     if (tmp.gameObject.name == "InputCelular")
                         _telefono = tmp.GetComponent<TMP_InputField>();
                 }
-                //if (PlayerPrefs.GetString("User_Name") == "")
-                //{
-                //    _correo.text = "";
-                //    _password.text = "";
-                //}
-                //else
-                //{
-                //    transform.GetChild(1).GetChild(0).GetComponent<InputField>().text = PlayerPrefs.GetString("User_Name");
-                //    _password.text = PlayerPrefs.GetString("User_Password");
-                //    Login(_panelEspera);
-                //}
             }
         }
     }
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            // Borrar credenciales guardadas
+            PlayerPrefs.DeleteKey("User_Email");
+            PlayerPrefs.DeleteKey("User_Password");
+
+            // Verificar si las credenciales fueron borradas
+            bool emailDeleted = !PlayerPrefs.HasKey("User_Email");
+            bool passwordDeleted = !PlayerPrefs.HasKey("User_Password");
+
+            // Imprimir el estado de la operación
+            Debug.Log("Credenciales borradas: " + (emailDeleted && passwordDeleted));
+            Debug.Log("Usuario logueado actual: " + ControlDatos._loginCorreo);
+            Debug.Log("Usuario guardado actual: " + (PlayerPrefs.HasKey("User_Email") ? PlayerPrefs.GetString("User_Email") : "Ninguno"));
+        }
     }
+
     public void Registro(GameObject panel)
     {
         _panelReturn = 1;
@@ -136,6 +192,11 @@ public class Registrar : MonoBehaviour
             auxPassword = _password.text;
             _mensaje.text = "";
             _AuxMensaje = "";
+
+            PlayerPrefs.SetString("User_Email", _correo.text);
+            PlayerPrefs.SetString("User_Password", _password.text);
+            PlayerPrefs.Save();
+
             gameObject.SetActive(false);
             return;
         }
@@ -224,6 +285,10 @@ public class Registrar : MonoBehaviour
             auxPassword = _password.text;
             _mensaje.text = "";
             _AuxMensaje = "";
+
+            PlayerPrefs.SetString("User_Email", _correo.text);
+            PlayerPrefs.SetString("User_Password", _password.text);
+            PlayerPrefs.Save();
 
             panel.SetActive(true);
             gameObject.SetActive(false);

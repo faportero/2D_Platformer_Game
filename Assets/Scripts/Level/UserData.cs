@@ -11,7 +11,7 @@ public class UserData
 
     public static int nivelActual;
 
-
+    private static int _nivelTerminado;
     private static bool _completoNivel1, _completoNivel2, _completoNivel3;
     private static bool _terminoPrimerVideo, _terminoLobby, _terminoLimbo, _terminoNivel1, _terminoTutorial, _terminoTutorial2, _terminoTutorial3, _terminoWorldTutorial1, _terminoWorldTutorial2, _terminoWorldTutorial3;
     private static bool _terminoVideoInicio, _terminoVideoVortex1, _terminoVideoVortex2, _terminoVideoVortex3;
@@ -25,7 +25,29 @@ public class UserData
     private static bool _usedPiezaD_N1, _usedPiezaD_N2, _usedPiezaD_N3;
     private static bool _playerGuide1, _playerGuide2, _playerGuide3, _playerGuide4, _playerGuide5, _playerGuide6;
 
+    public static int nivelTerminado
+    {
+        get => _nivelTerminado;
+        set
+        {
+            if (value > _nivelTerminado)
+            {
+                _nivelTerminado = value;
+                PlayerPrefs.SetInt("nivelTerminado", value);
 
+            }
+        }
+    }
+    public static bool terminoPrimerVideo
+    {
+        get => _terminoPrimerVideo;
+        set
+        {
+            _terminoPrimerVideo = value;
+            if (value) PlayerPrefs.SetInt("terminoPrimerVideo", 1);
+            nivelTerminado = 1;
+        }
+    }
     public static bool completoNivel1
     {
         get => _completoNivel1;
@@ -33,6 +55,7 @@ public class UserData
         {
             _completoNivel1 = value;
             if (value) PlayerPrefs.SetInt("completoNivel1", 1);
+            nivelTerminado = 2;
         }
     }
 
@@ -43,6 +66,8 @@ public class UserData
         {
             _completoNivel2 = value;
             if (value) PlayerPrefs.SetInt("completoNivel2", 1);
+            nivelTerminado = 3;
+
         }
     }
 
@@ -53,6 +78,7 @@ public class UserData
         {
             _completoNivel3 = value;
             if (value) PlayerPrefs.SetInt("completoNivel3", 1);
+            nivelTerminado = 4;
         }
     }
 
@@ -65,15 +91,7 @@ public class UserData
             if (value) PlayerPrefs.SetInt("terminoLobby", 1);
         }
     }
-    public static bool terminoPrimerVideo
-    {
-        get => _terminoPrimerVideo;
-        set
-        {
-            _terminoPrimerVideo = value;
-            if (value) PlayerPrefs.SetInt("terminoPrimerVideo", 1);
-        }
-    }
+
 
     public static bool terminoLimbo
     {
@@ -546,6 +564,8 @@ public class UserData
         _playerGuide4 = PlayerPrefs.GetInt("playerGuide4", 0) == 1;
         _playerGuide5 = PlayerPrefs.GetInt("playerGuide5", 0) == 1;
         _playerGuide6 = PlayerPrefs.GetInt("playerGuide6", 0) == 1;
+
+        _nivelTerminado = PlayerPrefs.GetInt("nivelTerminado", 0);
     }
 
     // Metodo para reiniciar piezas al morir

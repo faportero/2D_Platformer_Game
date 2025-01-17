@@ -214,9 +214,9 @@ public partial class ControlDatos : MonoBehaviour
             //_Estado = respuestaModeloA.info;
         }
     }
-    public static void ObtenerObjetoInventarioPorUsuarioToken()
+    public static UniTask ObtenerObjetoInventarioPorUsuarioToken()
     {
-        AsyncObtenerObjetoInventarioPorUsuarioToken(_tokenUsuario);
+        return AsyncObtenerObjetoInventarioPorUsuarioToken(_tokenUsuario);
     }
     private static async UniTask AsyncObtenerObjetoInventarioPorUsuarioToken(string token)
     {
@@ -250,7 +250,9 @@ public partial class ControlDatos : MonoBehaviour
                 if (respuestaModelo.response.lista[i].identificador == 1) { _bestPoints = respuestaModelo.response.lista[i].cantidad; objeto = "BestPoints"; }
                 if (respuestaModelo.response.lista[i].identificador == 2) { _points = respuestaModelo.response.lista[i].cantidad; objeto = "Points"; }
                 if (respuestaModelo.response.lista[i].identificador == 3) { _coins = respuestaModelo.response.lista[i].cantidad; objeto = "Coins"; }
-                if (respuestaModelo.response.lista[i].identificador == 4) { _nivel = respuestaModelo.response.lista[i].cantidad; objeto = "Nivel"; }
+                // if (respuestaModelo.response.lista[i].identificador == 4) { _nivel = respuestaModelo.response.lista[i].cantidad; objeto = "Nivel"; }
+                if (respuestaModelo.response.lista[i].identificador == 4) { UserData.nivelTerminado = respuestaModelo.response.lista[i].cantidad; objeto = "NivelTerminado"; }
+                if (respuestaModelo.response.lista[i].identificador == 5) { UserData.terminoPrimerVideo = respuestaModelo.response.lista[i].cantidad == 1; objeto = "TerminoPrimerVideo"; }
                 stringLista = stringLista + "\n{Objeto: " + objeto + ". Identificador: " + respuestaModelo.response.lista[i].identificador + ". Cantidad: " + respuestaModelo.response.lista[i].cantidad + "}";
                 //print("identificador: " + respuestaModelo.response.lista[i].identificador + ". Cantidad: " + respuestaModelo.response.lista[i].cantidad);
             }
@@ -259,6 +261,11 @@ public partial class ControlDatos : MonoBehaviour
         }
     }
 
+    //public static UniTask ObtenerRanking()
+    //{
+    //    Permiso();
+    //    return AsyncObtenerRanking(_tokenUsuario, 25, 1);
+    //}
     public static async UniTask ObtenerRanking()
     {
         Permiso();

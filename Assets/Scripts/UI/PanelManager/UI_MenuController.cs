@@ -29,7 +29,7 @@ public class UI_MenuController : MonoBehaviour
         print("termino primer video en menu: " + UserData.terminoPrimerVideo);
         if (levelManager.currentScene == LevelManager.CurrentScene.Menu)
         {
-            if (UserData.terminoPrimerVideo == true)
+            if (UserData.nivelTerminado == 1)
             {
                 if (firstFocusItem != null) 
                 {
@@ -148,9 +148,40 @@ public class UI_MenuController : MonoBehaviour
         SceneManager.LoadScene("0. Menu Principal");
     }
 
-    public void ContinueGame()
+    public async void ContinueGame()
     {
-        SceneManager.LoadScene("Lobby2");
+        //SceneManager.LoadScene("Lobby2");
+
+        await ControlDatos.ObtenerObjetoInventarioPorUsuarioToken();
+
+        if (!UserData.terminoPrimerVideo)
+        {
+            // Si no ha terminado el primer video, cargar la escena correspondiente
+            SceneManager.LoadScene("Lobby2");
+            return;
+        }
+
+        switch (UserData.nivelTerminado)
+        {
+            case 1:
+                UserData.completoNivel1 = true;
+                SceneManager.LoadScene("Lobby2");
+                break;
+            case 2:
+                UserData.completoNivel1 = true;
+                UserData.completoNivel2 = true;
+                SceneManager.LoadScene("Lobby2");
+                break;
+            case 3:
+                UserData.completoNivel1 = true;
+                UserData.completoNivel2 = true;
+                UserData.completoNivel3 = true;
+                SceneManager.LoadScene("Lobby2");
+                break;
+            default:
+                SceneManager.LoadScene("Lobby2");
+                break;
+        }
     }
     public static void PlayNewGame()
     {

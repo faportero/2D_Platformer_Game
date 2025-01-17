@@ -9530,6 +9530,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1843613627}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 0
 --- !u!114 &682773265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12199,7 +12211,7 @@ MonoBehaviour:
   _password: {fileID: 0}
   _panelEspera: {fileID: 934072321}
   _panelLogin: {fileID: 1369161074}
-  _panelMenu: {fileID: 3783339450716000677}
+  _panelMenu: {fileID: 8632833494516243663}
   _panelRegistro: {fileID: 1843613627}
   _panelRestablecerPassword: {fileID: 0}
   _panelEditarDatos: {fileID: 0}
@@ -13696,7 +13708,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -10.08136, y: -3.370758}
+  m_AnchoredPosition: {x: -10.08136, y: -3.3708801}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1081923182
@@ -20212,7 +20224,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0.5162644}
-  m_AnchoredPosition: {x: -10.08136, y: -3.370514}
+  m_AnchoredPosition: {x: -10.08136, y: -3.370636}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1567980798
@@ -24264,7 +24276,7 @@ MonoBehaviour:
   _telefono: {fileID: 1682617729}
   _mensaje: {fileID: 564278258}
   _password: {fileID: 957803836}
-  _panelEspera: {fileID: 290862004}
+  _panelEspera: {fileID: 934072321}
   _panelLogin: {fileID: 1369161074}
   _panelMenu: {fileID: 3783339450716000677}
   _panelRegistro: {fileID: 1843613627}
