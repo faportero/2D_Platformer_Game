@@ -193,6 +193,7 @@ public class Registrar : MonoBehaviour
             _mensaje.text = "";
             _AuxMensaje = "";
 
+            PlayerPrefs.DeleteAll();
             PlayerPrefs.SetString("User_Email", _correo.text);
             PlayerPrefs.SetString("User_Password", _password.text);
             PlayerPrefs.Save();

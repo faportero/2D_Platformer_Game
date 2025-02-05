@@ -672,9 +672,28 @@ public class Espejo : MonoBehaviour
         SwitchPlayerTransform(true);
         triggerParteFinal.SetActive(false);
 
-        if(espejoType == EspejoType.Espejo1)UserData.completoNivel1 = true;
-        if(espejoType == EspejoType.Espejo2)UserData.completoNivel2 = true;
-        if(espejoType == EspejoType.Espejo3)UserData.completoNivel3 = true;
+        if (espejoType == EspejoType.Espejo1) 
+        {
+            UserData.completoNivel1 = true;
+            //Suma de Puntos Ranking 
+            PlayerPrefs.SetInt("nivelTerminado", 1);
+            PlayerPrefs.Save();
+        }
+        if (espejoType == EspejoType.Espejo2) 
+        {
+            UserData.completoNivel2 = true;
+            //Suma de Puntos Ranking 
+            PlayerPrefs.SetInt("nivelTerminado", 2);
+            PlayerPrefs.Save();
+
+        }
+        if (espejoType == EspejoType.Espejo3) 
+        {
+            UserData.completoNivel3 = true;
+            //Suma de Puntos Ranking 
+            PlayerPrefs.SetInt("nivelTerminado", 3);
+            PlayerPrefs.Save();
+        }
        
         GetComponent<BoxCollider2D>().enabled = false;
         panelFeedback.transform.parent.gameObject.GetComponent<BoxCollider2D>().enabled = false;

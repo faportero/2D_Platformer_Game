@@ -22,14 +22,17 @@ public class UI_MenuController : MonoBehaviour
     
     private LevelManager levelManager;
 
-    private void Awake()
+    private async void Awake()
     {
         levelManager = FindFirstObjectByType<LevelManager>();
         rootCanvas = GetComponent<Canvas>();
-        print("termino primer video en menu: " + UserData.terminoPrimerVideo);
+        Debug.Log("termino primer video en menu: " + UserData.terminoPrimerVideo);
+
+        await ControlDatos.ObtenerObjetoInventarioPorUsuarioToken();
+
         if (levelManager.currentScene == LevelManager.CurrentScene.Menu)
         {
-            if (UserData.nivelTerminado == 1)
+            if (UserData.terminoPrimerVideo == true)
             {
                 if (firstFocusItem != null) 
                 {
@@ -153,6 +156,8 @@ public class UI_MenuController : MonoBehaviour
         //SceneManager.LoadScene("Lobby2");
 
         await ControlDatos.ObtenerObjetoInventarioPorUsuarioToken();
+        Debug.Log("nivelTerminado: " + UserData.nivelTerminado);
+        Debug.Log("terminoPrimerVideo: " + UserData.terminoPrimerVideo);   
 
         if (!UserData.terminoPrimerVideo)
         {

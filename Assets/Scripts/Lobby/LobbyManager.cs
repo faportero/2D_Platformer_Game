@@ -246,7 +246,9 @@ public class LobbyManager : MonoBehaviour
     void OnVideoEnd(VideoPlayer vp)
     {
         UserData.terminoPrimerVideo = true;
-        print("Termino primer video: " + UserData.terminoPrimerVideo);
+        PlayerPrefs.SetInt("terminoPrimerVideo", 1);
+        PlayerPrefs.Save();
+        //print("Termino primer video: " + UserData.terminoPrimerVideo);
         //UserData.terminoLobby = true;
         // Lógica para cambiar al juego
         //if (pasoIntro == false)
